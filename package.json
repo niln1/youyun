@@ -9,7 +9,8 @@
     "express": "3.4.7",
     "jade": "*",
     "connect-redis": "~1.4.6",
-    "redis": "~0.10.0"
+    "redis": "~0.10.0",
+    "async": "~0.2.9"
   },
   "devDependencies": {
     "nconf": "~0.6.9"
