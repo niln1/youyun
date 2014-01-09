@@ -6,11 +6,12 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.7",
+    "express": "~3.4.7",
     "jade": "*",
     "connect-redis": "~1.4.6",
     "redis": "~0.10.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "colors": "~0.6.2"
   },
   "devDependencies": {
     "nconf": "~0.6.9"

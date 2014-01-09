@@ -1,0 +1,6 @@
+2014-01-08T22:18:05.971950000 0.359606s info: Creating directory /Users/Nil/??????????????????/Project/youyun/rethinkdb_data
+2014-01-08T22:18:05.972733000 0.360388s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/Nil/??????????????????/Project/youyun/rethinkdb_data' did not already exist.)
+2014-01-08T22:18:05.972994000 0.360649s info: Running rethinkdb 1.11.2 (CLANG 5.0 (clang-500.2.79))...
+2014-01-08T22:18:05.977585000 0.365240s info: Running on Darwin 13.0.0 x86_64
+2014-01-08T22:18:05.977630000 0.365285s info: Loading data from directory /Users/Nil/??????????????????/Project/youyun/rethinkdb_data
+2014-01-08T22:18:06.157054000 0.544709s error: Could not bind to cluster port: The address at localhost:29015 is reserved or already in use.
