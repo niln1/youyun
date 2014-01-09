@@ -9,8 +9,6 @@ var async = require('async');
 var index = require('./index');
 
 exports.route = function(app) {
-    console.log(index.main);
-    debugger;
     app.get('/', index.main);
 
     /*

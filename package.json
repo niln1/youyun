@@ -6,11 +6,18 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.7",
+    "express": "~3.4.7",
     "jade": "*",
     "connect-redis": "~1.4.6",
     "redis": "~0.10.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "colors": "~0.6.2",
+    "passport": "~0.1.18",
+    "passport-local": "~0.1.6",
+    "bcrypt": "~0.7.7",
+    "rethinkdb": "~1.11.0-1",
+    "debug": "~0.7.4",
+    "connect-flash": "~0.1.1"
   },
   "devDependencies": {
     "nconf": "~0.6.9"

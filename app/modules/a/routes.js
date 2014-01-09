@@ -5,5 +5,5 @@
 'use strict';
 
 exports.route = function(app) {
-    console.log('here');
+    console.log('a:here');
 }
