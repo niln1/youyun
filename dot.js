@@ -1,23 +1,27 @@
-/*
- * Vendor modules and variables
- */
+/* Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
+*/
+
+//Vendor modules and variables
 var express = require('express');
 var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
+var passport = require('passport');
+var local = require('passport-local').Strategy
+var bcrypt = require('bcrypt')
 var app;
 module.exports.app = app = express();
 
-/*
- * Local modules and variables
- */
+
+// Local modules and variables
 var routes = require('./app/routes');
 var env = app.get('env');
+var db = require('./app/modules/rethinkdb/db');
 
 /*
  * Configuration from nconf
  */
-nconf.argv().env().defaults({
+ nconf.argv().env().defaults({
     'PORT': 3000,
     'COOKIE_KEY': 'yy.sid',
     'COOKIE_MAXAGE': 900000,
@@ -27,47 +31,54 @@ nconf.argv().env().defaults({
     'RETHINKDB': 'localhost:3000',
 });
 
-/*
- * Setup environment
- */
-app.set('port', nconf.get('PORT'));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
-/*
- * Setup middlewares
- */
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
+ app.configure(function() {
+    /*
+     * Setup environment
+     */
+     app.set('port', nconf.get('PORT'));
+     app.set('views', path.join(__dirname, 'views'));
+     app.set('view engine', 'jade');
 
-// Setup session
-app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
-var store;
-if (env == 'test' || env == 'coverage') {
-    var MemoryStore = express.session.MemoryStore;
-    store = new MemoryStore();
-} else {
-    var RedisStore = require('connect-redis')(express);
-    // The line below will generates error message
-    var redis = require('redis').createClient();
-    var options = {
-        host: nconf.get('REDIS_HOST'),
-        port: nconf.get('REDIS_PORT'),
-        maxAge: nconf.get('COOKIE_MAXAGE')
-    };
-    store = new RedisStore(options);
-}
-app.use(express.session({
-    secret: nconf.get('COOKIE_SECRET'),
-    key: nconf.get('COOKIE_KEY'),
-    store: store,
-    cookie: {
-        maxAge: nconf.get('COOKIE_MAXAGE')
+    /*
+     * Setup middlewares
+     */
+     app.use(express.favicon());
+     app.use(express.logger('dev'));
+     app.use(express.json());
+     app.use(express.urlencoded());
+     app.use(express.methodOverride());
+
+    // Setup session
+    app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
+    var store;
+    if (env == 'test' || env == 'coverage') {
+        var MemoryStore = express.session.MemoryStore;
+        store = new MemoryStore();
+    } else {
+        var RedisStore = require('connect-redis')(express);
+        // The line below will generates error message
+        var redis = require('redis').createClient();
+        var options = {
+            host: nconf.get('REDIS_HOST'),
+            port: nconf.get('REDIS_PORT'),
+            maxAge: nconf.get('COOKIE_MAXAGE')
+        };
+        store = new RedisStore(options);
     }
-}));
+    app.use(express.session({
+        secret: nconf.get('COOKIE_SECRET'),
+        key: nconf.get('COOKIE_KEY'),
+        store: store,
+        cookie: {
+            maxAge: nconf.get('COOKIE_MAXAGE')
+        }
+    }));
+
+    db.setup();
+
+});
+
 
 // Authentication middleware
 // TODO
