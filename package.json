@@ -16,7 +16,8 @@
     "passport-local": "~0.1.6",
     "bcrypt": "~0.7.7",
     "rethinkdb": "~1.11.0-1",
-    "debug": "~0.7.4"
+    "debug": "~0.7.4",
+    "connect-flash": "~0.1.1"
   },
   "devDependencies": {
     "nconf": "~0.6.9"

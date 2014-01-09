@@ -7,8 +7,9 @@ var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
 var passport = require('passport');
-var local = require('passport-local').Strategy
-var bcrypt = require('bcrypt')
+var local = require('passport-local').Strategy;
+var bcrypt = require('bcrypt');
+var flash = require('connect-flash');
 var app;
 module.exports.app = app = express();
 
@@ -48,6 +49,9 @@ var db = require('./app/modules/rethinkdb/db');
      app.use(express.json());
      app.use(express.urlencoded());
      app.use(express.methodOverride());
+     app.use(passport.initialize());
+     app.use(passport.session());
+     app.use(flash());
 
     // Setup session
     app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
@@ -82,6 +86,64 @@ var db = require('./app/modules/rethinkdb/db');
 
 // Authentication middleware
 // TODO
+
+passport.use(new local(
+  function(username, password, next) {
+    // asynchronous verification
+    process.nextTick(function () {
+      var validateUser = function (err, user) {
+        console.log("[validating user]"+JSON.stringify(user));
+        if (err) { return next(err); }
+        if (!user) { return next(null, false, {message: 'Unknown user: ' + username})}
+
+            //@todo use bcrypt//bcrypt.compareSync(password, user.password)
+            if (password===user.password) {
+                console.log('Success');
+                return next(null, user);
+            }
+            else {
+                console.log('Invalid username or password');
+                return next(null, false, {message: 'Invalid username or password'});
+            }
+        };
+
+        db.findUserByUname(username, validateUser);
+    });
+}
+));
+
+passport.serializeUser(function(user, next) {
+  console.log("[DEBUG][passport][serializeUser] %j", user);
+  next(null, user.id);
+});
+
+passport.deserializeUser(function (id, next) {
+  db.findUserById(id, next);
+});
+
+
+// TODO: put this in routes.. too lazy
+app.post('/login',
+  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
+  function(req, res) {
+    console.log("Success!");
+}
+);
+
+app.get('/login', function (req, res) {
+  if (typeof req.user !== 'undefined') {
+    // User is logged in.
+    res.redirect('/chat');
+  }
+  else {
+    req.user = false;
+  }
+  var message = req.flash('error');
+  if (message.length < 1) {
+    message = false;
+  }
+  res.render('login', { title: 'Login', message: message, user: req.user });
+});
 
 // csrf()
 // app.use(require('express').csrf());
