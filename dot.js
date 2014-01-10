@@ -1,4 +1,5 @@
-/* Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
+/* 
+* Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
 */
 
 //Vendor modules and variables

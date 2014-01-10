@@ -34,6 +34,8 @@ function userNotAuthenticated(req, res, e) {
 }
 
 function isUserAuthenticated(req, res, next) {
+  // tmp workaround
+  req.session.user.api_key = 1;
   /* jshint -W106 */
   if (!req.session.user ||
       !req.session.user.user_id ||
