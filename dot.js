@@ -18,19 +18,20 @@ module.exports.app = app = express();
 // Local modules and variables
 var routes = require('./app/routes');
 var env = app.get('env');
+var auth = require('./app/middlewares/auth')
 var db = require('./app/modules/rethinkdb/db');
 
 /*
  * Configuration from nconf
  */
  nconf.argv().env().defaults({
-    'PORT': 3000,
-    'COOKIE_KEY': 'yy.sid',
-    'COOKIE_MAXAGE': 900000,
-    'COOKIE_SECRET': 'cac9904545bae07cb09bad9dab7f3ced',
-    'REDIS_HOST': 'localhost',
-    'REDIS_PORT': 6379,
-    'RETHINKDB': 'localhost:3000',
+  'PORT': 3000,
+  'COOKIE_KEY': 'yy.sid',
+  'COOKIE_MAXAGE': 900000,
+  'COOKIE_SECRET': 'cac9904545bae07cb09bad9dab7f3ced',
+  'REDIS_HOST': 'localhost',
+  'REDIS_PORT': 6379,
+  'RETHINKDB': 'localhost:3000',
 });
 
 
@@ -50,39 +51,44 @@ var db = require('./app/modules/rethinkdb/db');
      app.use(express.json());
      app.use(express.urlencoded());
      app.use(express.methodOverride());
-     app.use(passport.initialize());
-     app.use(passport.session());
-     app.use(flash());
 
     // Setup session
     app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
     var store;
     if (env == 'test' || env == 'coverage') {
-        var MemoryStore = express.session.MemoryStore;
-        store = new MemoryStore();
+      var MemoryStore = express.session.MemoryStore;
+      store = new MemoryStore();
     } else {
-        var RedisStore = require('connect-redis')(express);
+      var RedisStore = require('connect-redis')(express);
         // The line below will generates error message
         var redis = require('redis').createClient();
         var options = {
-            host: nconf.get('REDIS_HOST'),
-            port: nconf.get('REDIS_PORT'),
-            maxAge: nconf.get('COOKIE_MAXAGE')
+          host: nconf.get('REDIS_HOST'),
+          port: nconf.get('REDIS_PORT'),  
+          maxAge: nconf.get('COOKIE_MAXAGE')
         };
         store = new RedisStore(options);
-    }
-    app.use(express.session({
+      }
+      app.use(express.session({
         secret: nconf.get('COOKIE_SECRET'),
         key: nconf.get('COOKIE_KEY'),
         store: store,
         cookie: {
-            maxAge: nconf.get('COOKIE_MAXAGE')
+          secure:false,
+          maxAge: nconf.get('COOKIE_MAXAGE')
         }
-    }));
+      }));
+
+      app.use(passport.initialize());
+      app.use(passport.session());
+      app.use(flash());
+
+    // Global authentication middle ware
+    app.use(auth.checkUserSession);
 
     db.setup();
 
-});
+  });
 
 
 // Authentication middleware
@@ -98,23 +104,23 @@ passport.use(new local(
         if (!user) { return next(null, false, {message: 'Unknown user: ' + username})}
 
             //@todo use bcrypt//bcrypt.compareSync(password, user.password)
-            if (password===user.password) {
-                console.log('Success');
-                return next(null, user);
-            }
-            else {
-                console.log('Invalid username or password');
-                return next(null, false, {message: 'Invalid username or password'});
-            }
+          if (password===user.password) {
+            console.log('Success');
+            return next(null, user);
+          }
+          else {
+            console.log('Invalid username or password');
+            return next(null, false, {message: 'Invalid username or password'});
+          }
         };
 
         db.findUserByUname(username, validateUser);
-    });
-}
-));
+      });
+  }
+  ));
 
 passport.serializeUser(function(user, next) {
-  console.log("[DEBUG][passport][serializeUser] %j", user);
+  console.log("[DEBUG][passport][serializeUser] %j", user); 
   next(null, user.id);
 });
 
@@ -127,14 +133,13 @@ passport.deserializeUser(function (id, next) {
 app.post('/login',
   passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
   function(req, res) {
-    console.log("Success!");
-}
-);
+    console.log("Successfully logged in!");
+    res.redirect('/test');  
+  });
 
 app.get('/login', function (req, res) {
   if (typeof req.user !== 'undefined') {
-    // User is logged in.
-    res.redirect('/chat');
+    res.redirect('/test');
   }
   else {
     req.user = false;
@@ -144,6 +149,16 @@ app.get('/login', function (req, res) {
     message = false;
   }
   res.render('login', { title: 'Login', message: message, user: req.user });
+});
+
+app.get('/logout', function(req, res){
+  req.logout();
+  console.log("Successfully logged out!");
+  res.redirect('/login');
+});
+
+app.get('/test', function (req, res) {
+  res.send('in test page');
 });
 
 // csrf()
@@ -161,12 +176,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-    app.use(express.errorHandler());
+  app.use(express.errorHandler());
 }
 
 routes.route(app);
 // app.get('/', routes.route);
 
 http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express server listening on port ' + app.get('port'));
 });
