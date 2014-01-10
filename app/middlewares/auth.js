@@ -35,11 +35,11 @@ function userNotAuthenticated(req, res, e) {
 
 function isUserAuthenticated(req, res, next) {
   // tmp workaround
-  req.session.user.api_key = 1;
+  // req.session.user.api_key = 1;
   /* jshint -W106 */
-  if (!req.session.user ||
-      !req.session.user.user_id ||
-      !req.session.user.api_key) {
+  console.log(JSON.stringify(req.session));
+  if (!req.session.passport.user ||
+      !req.session.cookie) {
     userNotAuthenticated(req, res);
   } else {
     next();
