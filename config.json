@@ -1,0 +1,9 @@
+{
+	"PORT": 3000,
+	"COOKIE_KEY": "yy.sid",
+	"COOKIE_MAXAGE": 900000,
+	"COOKIE_SECRET": "cac9904545bae07cb09bad9dab7f3ced",
+	"REDIS_HOST": "localhost",
+	"REDIS_PORT": 6379,
+	"RETHINKDB": "localhost:3000"
+}
