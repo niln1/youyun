@@ -52,6 +52,7 @@ var db = require('./app/modules/rethinkdb/db');
      app.use(express.urlencoded());
      app.use(express.methodOverride());
 
+
     // Setup session
     app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
     var store;
@@ -168,11 +169,13 @@ app.get('/test', function (req, res) {
 //     next();
 // });
 
-// Router
-app.use(app.router);
 
 // Static file server
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.favicon(path.join(__dirname, 'public/favicon.ico'))); 
+
+// Router
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
