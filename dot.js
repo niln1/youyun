@@ -25,143 +25,110 @@ var db = require('./app/modules/rethinkdb/db');
  * Configuration from nconf
  */
  nconf.argv().env().defaults({
-  'PORT': 3000,
-  'COOKIE_KEY': 'yy.sid',
-  'COOKIE_MAXAGE': 900000,
-  'COOKIE_SECRET': 'cac9904545bae07cb09bad9dab7f3ced',
-  'REDIS_HOST': 'localhost',
-  'REDIS_PORT': 6379,
-  'RETHINKDB': 'localhost:3000',
+	'PORT': 3000,
+	'COOKIE_KEY': 'yy.sid',
+	'COOKIE_MAXAGE': 900000,
+	'COOKIE_SECRET': 'cac9904545bae07cb09bad9dab7f3ced',
+	'REDIS_HOST': 'localhost',
+	'REDIS_PORT': 6379,
+	'RETHINKDB': 'localhost:3000',
 });
 
 
  app.configure(function() {
-    /*
-     * Setup environment
-     */
-     app.set('port', nconf.get('PORT'));
-     app.set('views', path.join(__dirname, 'views'));
-     app.set('view engine', 'jade');
+		/*
+		 * Setup environment
+		 */
+		 app.set('port', nconf.get('PORT'));
+		 app.set('views', path.join(__dirname, 'views'));
+		 app.set('view engine', 'jade');
 
-    /*
-     * Setup middlewares
-     */
-     app.use(express.favicon());
-     app.use(express.logger('dev'));
-     app.use(express.json());
-     app.use(express.urlencoded());
-     app.use(express.methodOverride());
+		/*
+		 * Setup middlewares
+		 */
+		 app.use(express.logger('dev'));
+		 app.use(express.json());
+		 app.use(express.urlencoded());
+		 app.use(express.methodOverride());
 
+		// Setup session
+		app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
+		var store;
+		if (env == 'test' || env == 'coverage') {
+			var MemoryStore = express.session.MemoryStore;
+			store = new MemoryStore();
+		} else {
+			var RedisStore = require('connect-redis')(express);
+				// The line below will generates error message
+				var redis = require('redis').createClient();
+				var options = {
+					host: nconf.get('REDIS_HOST'),
+					port: nconf.get('REDIS_PORT'),  
+					maxAge: nconf.get('COOKIE_MAXAGE')
+				};
+				store = new RedisStore(options);
+			}
+			app.use(express.session({
+				secret: nconf.get('COOKIE_SECRET'),
+				key: nconf.get('COOKIE_KEY'),
+				store: store,
+				cookie: {
+					secure:false,
+					maxAge: nconf.get('COOKIE_MAXAGE')
+				}
+			}));
 
-    // Setup session
-    app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
-    var store;
-    if (env == 'test' || env == 'coverage') {
-      var MemoryStore = express.session.MemoryStore;
-      store = new MemoryStore();
-    } else {
-      var RedisStore = require('connect-redis')(express);
-        // The line below will generates error message
-        var redis = require('redis').createClient();
-        var options = {
-          host: nconf.get('REDIS_HOST'),
-          port: nconf.get('REDIS_PORT'),  
-          maxAge: nconf.get('COOKIE_MAXAGE')
-        };
-        store = new RedisStore(options);
-      }
-      app.use(express.session({
-        secret: nconf.get('COOKIE_SECRET'),
-        key: nconf.get('COOKIE_KEY'),
-        store: store,
-        cookie: {
-          secure:false,
-          maxAge: nconf.get('COOKIE_MAXAGE')
-        }
-      }));
+			app.use(passport.initialize());
+			app.use(passport.session());
+			app.use(flash());
 
-      app.use(passport.initialize());
-      app.use(passport.session());
-      app.use(flash());
+		// Global authentication middle ware
+		app.use(auth.checkUserSession);
 
-    // Global authentication middle ware
-    app.use(auth.checkUserSession);
+		db.setup();
 
-    db.setup();
-
-  });
+	});
 
 
 // Authentication middleware
 // TODO
 
 passport.use(new local(
-  function(username, password, next) {
-    // asynchronous verification
-    process.nextTick(function () {
-      var validateUser = function (err, user) {
-        console.log("[validating user]"+JSON.stringify(user));
-        if (err) { return next(err); }
-        if (!user) { return next(null, false, {message: 'Unknown user: ' + username})}
+	function(username, password, next) {
+		// asynchronous verification
+		process.nextTick(function () {
+			var validateUser = function (err, user) {
+				console.log("[validating user]"+JSON.stringify(user));
+				if (err) { return next(err); }
+				if (!user) { return next(null, false, {message: 'Unknown user: ' + username})}
 
-            //@todo use bcrypt//bcrypt.compareSync(password, user.password)
-          if (password===user.password) {
-            console.log('Success');
-            return next(null, user);
-          }
-          else {
-            console.log('Invalid username or password');
-            return next(null, false, {message: 'Invalid username or password'});
-          }
-        };
+						//@todo use bcrypt//bcrypt.compareSync(password, user.password)
+					if (password===user.password) {
+						console.log('Success');
+						return next(null, user);
+					}
+					else {
+						console.log('Invalid username or password');
+						return next(null, false, {message: 'Invalid username or password'});
+					}
+				};
 
-        db.findUserByUname(username, validateUser);
-      });
-  }
-  ));
+				db.findUserByUname(username, validateUser);
+			});
+	}
+	));
 
 passport.serializeUser(function(user, next) {
-  console.log("[DEBUG][passport][serializeUser] %j", user); 
-  next(null, user.id);
+	console.log("[DEBUG][passport][serializeUser] %j", user); 
+	next(null, user.id);
 });
 
 passport.deserializeUser(function (id, next) {
-  db.findUserById(id, next);
+	db.findUserById(id, next);
 });
 
 
 // TODO: put this in routes.. too lazy
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
-  function(req, res) {
-    console.log("Successfully logged in!");
-    res.redirect('/test');  
-  });
-
-app.get('/login', function (req, res) {
-  if (typeof req.user !== 'undefined') {
-    res.redirect('/test');
-  }
-  else {
-    req.user = false;
-  }
-  var message = req.flash('error');
-  if (message.length < 1) {
-    message = false;
-  }
-  res.render('login', { title: 'Login', message: message, user: req.user });
-});
-
-app.get('/logout', function(req, res){
-  req.logout();
-  console.log("Successfully logged out!");
-  res.redirect('/login');
-});
-
-app.get('/test', function (req, res) {
-  res.send('in test page');
-});
-
 // csrf()
 // app.use(require('express').csrf());
 // app.use(function(req, res, next) {
@@ -171,20 +138,19 @@ app.get('/test', function (req, res) {
 
 
 // Static file server
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.favicon(path.join(__dirname, 'public/favicon.ico'))); 
+app.use('/static', express.static(path.join(__dirname + '/public')));
+
+
 
 // Router
 app.use(app.router);
+routes.route(app);
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
-routes.route(app);
-// app.get('/', routes.route);
-
 http.createServer(app).listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });
