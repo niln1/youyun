@@ -7,40 +7,15 @@
 var fs = require('fs');
 var async = require('async');
 var index = require('./index');
-var passport = require('passport');
-var local = require('passport-local').Strategy;
 
 exports.route = function(app) {
     app.get('/', index.main);
 
-    app.post('/login',
-        passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
-        function(req, res) {
-            console.log("Successfully logged in!");
-            res.redirect('/test');  
-        });
+    app.post('/login', index.postLogin);
+    app.get('/login', index.getLogin);
+    app.get('/logout', index.logout);
 
-    app.get('/login', function (req, res) {
-        if (typeof req.user !== 'undefined') {
-            res.redirect('/test');
-        }
-        else {
-            req.user = false;
-        }
-        var message = req.flash('error');
-        if (message.length < 1) {
-            message = false;
-        }
-        res.render('login', { title: 'Login', message: message, user: req.user });
-    });
-
-    app.get('/logout', function(req, res){
-        req.logout();
-        console.log("Successfully logged out!");
-        res.redirect('/login');
-    });
-
-    app.get('/test', function (req, res) {
+    app.get('/test', function(req, res) {
         res.send('in test page');
     });
 
