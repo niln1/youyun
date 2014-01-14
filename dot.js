@@ -24,15 +24,7 @@ var session = require('./app/middlewares/session');
 /*
  * Configuration from nconf
  */
-nconf.argv().env().defaults({
-    'PORT': 3000,
-    'COOKIE_KEY': 'yy.sid',
-    'COOKIE_MAXAGE': 900000,
-    'COOKIE_SECRET': 'cac9904545bae07cb09bad9dab7f3ced',
-    'REDIS_HOST': 'localhost',
-    'REDIS_PORT': 6379,
-    'RETHINKDB': 'localhost:3000',
-});
+nconf.argv().env().file('./app/config.json');
 
 app.configure(function() {
     /*
@@ -53,6 +45,8 @@ app.configure(function() {
     session(app);
 
     app.use(flash());
+
+    console.log(nconf.get('MONGODB_URL'));
 
     mongoose.connect(nconf.get('MONGODB_URL'));
 
