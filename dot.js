@@ -11,6 +11,7 @@ var passport = require('passport');
 var local = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var flash = require('connect-flash');
+var lessMiddleware = require('less-middleware');
 var app;
 module.exports.app = app = express();
 
@@ -34,7 +35,7 @@ var db = require('./app/modules/rethinkdb/db');
 	'RETHINKDB': 'localhost:3000',
 });
 
-
+app.use(require('less-middleware')({ src: '/public', debug: true ,force:true}));
  app.configure(function() {
 		/*
 		 * Setup environment
@@ -50,6 +51,7 @@ var db = require('./app/modules/rethinkdb/db');
 		 app.use(express.json());
 		 app.use(express.urlencoded());
 		 app.use(express.methodOverride());
+     
 
 		// Setup session
 		app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));

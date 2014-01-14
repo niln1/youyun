@@ -4,10 +4,10 @@
 
 
 var r = require('rethinkdb')
-, util = require('util')
-, assert = require('assert')
-, logdebug = require('debug')('rdb:debug')
-, logerror = require('debug')('rdb:error');
+var util = require('util')
+var assert = require('assert')
+var logdebug = require('debug')('rdb:debug')
+var logerror = require('debug')('rdb:error');
 
 
 // #### Connection details
@@ -18,7 +18,13 @@ var dbConfig = {
 	port: parseInt(process.env.RDB_PORT) || 28015,
 	db  : process.env.RDB_DB || 'youyun_development',
 	tables: {
-		'users': 'id'
+		'Users': 'id',
+		'StudentWeeklyReports':'id',
+		'Student-Parent':'id',
+		'User-Class':'id',
+		'Messages':'id',
+		'Reminders':'id',
+		'Alerts':'id'
 	}
 };
 
@@ -62,7 +68,6 @@ var dbConfig = {
  */
  module.exports.findUserByUname = function (uname, callback) {
 
- 	console.log("in dbjs");
  	onConnect(function (err, connection) {
  		logdebug("[INFO][%s][findUserByUname] Login {user: %s, pwd: 'how about a cupcake log?'}", connection['_id'], uname);
 
