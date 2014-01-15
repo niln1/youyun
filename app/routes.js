@@ -18,6 +18,7 @@ exports.route = function(app) {
     app.get('/test', function(req, res) {
         res.send('in test page');
     });
+    app.get('/static/test1', index.test1);
 
 
     /*
