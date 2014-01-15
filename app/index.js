@@ -6,6 +6,7 @@
 
 var bcrypt = require('bcrypt');
 var async = require('async');
+var nconf = require('nconf');
 var User = require('./models/User');
 
 function userAuthenticationFailed(req, res, message) {
@@ -14,6 +15,8 @@ function userAuthenticationFailed(req, res, message) {
 }
 
 exports.main = function(req, res) {
+    console.log(nconf.get('VERSION'));
+
     return res.render('index', {
         env: process.env.NODE_ENV
     });

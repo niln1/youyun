@@ -26,7 +26,6 @@ var session = require('./app/middlewares/session');
  */
 nconf.argv().env().file('./app/config.json');
 
-var db;
 
 app.configure(function() {
     /*
@@ -50,8 +49,9 @@ app.configure(function() {
 
     mongoose.connect(nconf.get('MONGODB_URL'));
 
+    var db;
     db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
+    db.on('error', console.error.bind(console, 'connection error: can\'t connect to mongodb.'));
 
     // Global authentication middle ware
     app.use(auth.checkUserSession);
