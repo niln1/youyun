@@ -26,6 +26,8 @@ var session = require('./app/middlewares/session');
  */
 nconf.argv().env().file('./app/config.json');
 
+var db;
+
 app.configure(function() {
     /*
      * Setup environment
@@ -49,6 +51,9 @@ app.configure(function() {
     console.log(nconf.get('MONGODB_URL'));
 
     mongoose.connect(nconf.get('MONGODB_URL'));
+
+    db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
 
     // Global authentication middle ware
     app.use(auth.checkUserSession);
