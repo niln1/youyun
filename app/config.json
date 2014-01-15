@@ -5,5 +5,5 @@
     "COOKIE_SECRET": "cac9904545bae07cb09bad9dab7f3ced",
     "REDIS_HOST": "localhost",
     "REDIS_PORT": 6379,
-    "MONGODB_URL": "mongodb://localhost/youyun-dev"
+    "MONGODB_URL": "mongodb://localhost/yy-dev"
 }

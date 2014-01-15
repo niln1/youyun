@@ -48,8 +48,6 @@ app.configure(function() {
 
     app.use(flash());
 
-    console.log(nconf.get('MONGODB_URL'));
-
     mongoose.connect(nconf.get('MONGODB_URL'));
 
     db = mongoose.connection;
