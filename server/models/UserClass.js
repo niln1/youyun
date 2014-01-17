@@ -11,7 +11,7 @@ var UserClassSchema = new Schema({
     userId: {
         type: String,
         required: true
-    }
+    },
     classId: {
         type: String,
         required: true

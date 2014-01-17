@@ -8,9 +8,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ClassSchema = new Schema({
-    classname: {
+    className: {
         type: String,
         required: true
     }
 });
-module.exports = mongoose.model('Message', MessageSchema);
+module.exports = mongoose.model('Class', ClassSchema);
