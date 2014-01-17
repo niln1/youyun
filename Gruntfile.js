@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         'css-src-dir': nconf.get('in-dir') + '/css',
         'css-dest-dir': nconf.get('out-dir') + '/css',
         'css-dest-dir-dev': nconf.get('out-dir-dev') + '/css',
+        'ts-views-dir': 'server/views',
         'ts-src-dir': nconf.get('in-dir') + '/js',
         'ts-mid-dir': nconf.get('tmp-dir-build') + '/ts',
         'ts-dest-dir': nconf.get('out-dir') + '/js',
@@ -106,14 +107,6 @@ module.exports = function(grunt) {
                     declaration: false,
                     comments: false
                 }
-            }
-        },
-        shell: {
-            js: {
-                options: { // Options
-                    stdout: true
-                },
-                command: 'scripts/r.js.sh'
             }
         },
         exec: {
