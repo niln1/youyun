@@ -16,24 +16,22 @@ module.exports.app = app = express();
 
 
 // Local modules and variables
-var routes = require('./app/routes');
+var routes = require('./server/routes');
 var env = app.get('env');
-var auth = require('./app/middlewares/auth');
-var session = require('./app/middlewares/session');
+var auth = require('./server/middlewares/auth');
+var session = require('./server/middlewares/session');
 
 /*
  * Configuration from nconf
  */
-nconf.argv().env().file('./app/config.json');
-
-var db;
+nconf.argv().env().file('./server/config.json');
 
 app.configure(function() {
     /*
      * Setup environment
      */
     app.set('port', nconf.get('PORT'));
-    app.set('views', path.join(__dirname, 'views'));
+    app.set('views', path.join(__dirname, 'server', 'views'));
     app.set('view engine', 'jade');
 
     /*
@@ -50,7 +48,7 @@ app.configure(function() {
 
     mongoose.connect(nconf.get('MONGODB_URL'));
 
-    db = mongoose.connection;
+    var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
 
     // Global authentication middle ware
@@ -66,7 +64,7 @@ app.configure(function() {
 // });
 
 // Static file server
-app.use('/static', express.static(path.join(__dirname + '/public')));
+app.use('/static', express.static(path.join(__dirname, 'client')));
 
 // Router
 app.use(app.router);
