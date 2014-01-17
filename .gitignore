@@ -14,4 +14,8 @@ dump.rdb
 npm-debug.log
 node_modules
 
+/.tmp-build
+/development
+/production
 /rethinkdb_data
+/tscommand.tmp.txt

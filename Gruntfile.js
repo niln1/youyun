@@ -5,6 +5,7 @@
 'use strict';
 
 var nconf = require('nconf');
+var handlebars = require('handlebars');
 
 module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -20,7 +21,7 @@ module.exports = function(grunt) {
         'css-dest-dir-dev': nconf.get('out-dir-dev') + '/css',
         'ts-views-dir': 'server/views',
         'ts-src-dir': nconf.get('in-dir') + '/js',
-        'ts-mid-dir': nconf.get('tmp-dir-build') + '/ts',
+        'ts-tmp-dir': nconf.get('tmp-dir-build') + '/ts',
         'ts-dest-dir': nconf.get('out-dir') + '/js',
         'ts-dest-dir-dev': nconf.get('out-dir-dev') + '/js'
     });
@@ -41,7 +42,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('ts-src-dir'),
                     src: ['**/*'],
-                    dest: nconf.get('ts-mid-dir'),
+                    dest: nconf.get('ts-tmp-dir'),
                     filter: 'isFile'
                 }]
             },
@@ -99,7 +100,7 @@ module.exports = function(grunt) {
                 }
             },
             prod: {
-                src: [nconf.get('ts-mid-dir') + '/**/*.ts'],
+                src: [nconf.get('ts-tmp-dir') + '/**/*.ts'],
                 options: {
                     target: 'es5',
                     module: 'amd',
@@ -111,7 +112,16 @@ module.exports = function(grunt) {
         },
         exec: {
             js: {
-                command: 'grep -nr "data\-main" server/views | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | sed "s|^\\\/||; s|static\\\/js|.tmp-build\\\/ts|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^.tmp-build\/ts|production\/js|;s|\.js|\.min\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs(["`basename "$file"`"]);" >> "$outfile"; fi; done',
+                command: function() {
+                    var template = handlebars.compile('grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | sed "s|^\\\/||; s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;s|\\\.js|\\\.min\\\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs(["`basename "$file"`"]);" >> "$outfile"; fi; done');
+                    var options = {
+                        VIEW: nconf.get('ts-views-dir'),
+                        TMP: nconf.get('ts-tmp-dir'),
+                        DEST: nconf.get('ts-dest-dir'),
+                        STATIC: 'static\\\/js'
+                    }
+                    return template(options);
+                },
                 stdout: true,
                 stderr: true
             }
@@ -121,7 +131,7 @@ module.exports = function(grunt) {
     // Development build
     grunt.registerTask('css', ['sass:prod']);
     grunt.registerTask('css-dev', ['sass:dev', 'symlink:css']);
-    grunt.registerTask('js', ['symlink:js', 'ts:prod', 'shell:js']);
+    grunt.registerTask('js', ['symlink:js', 'ts:prod', 'exec:js']);
     grunt.registerTask('js-dev', ['symlink:js-dev', 'ts:dev']);
 
 };
