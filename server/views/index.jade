@@ -1,5 +1,11 @@
 extends layout
 
+block include
+	if (env == 'production')
+		script(src='/static/js/lib/require.min.js', data-main='/static/js/A.min')
+	else
+		script(src='/static/js/lib/require.js', data-main='/static/js/A')
+
 block content
   h1= title
   p Welcome to #{title}

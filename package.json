@@ -19,6 +19,21 @@
     "mongoose": "~3.8.4"
   },
   "devDependencies": {
-    "nconf": "~0.6.9"
+    "nconf": "~0.6.9",
+    "grunt": "~0.4.2",
+    "matchdep": "~0.3.0",
+    "grunt-contrib-sass": "~0.6.0",
+    "grunt-contrib-symlink": "~0.2.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-ts": "~1.6.4",
+    "grunt-shell": "~0.6.1"
+  },
+  "amd": {},
+  "volo": {
+    "baseUrl": "client/lib",
+    "dependencies": {
+      "jquery": "github:jquery/jquery/2.0.3"
+    }
   }
 }
