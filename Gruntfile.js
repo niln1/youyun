@@ -115,6 +115,13 @@ module.exports = function(grunt) {
                 },
                 command: 'scripts/r.js.sh'
             }
+        },
+        exec: {
+            js: {
+                command: 'grep -nr "data\-main" server/views | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | sed "s|^\\\/||; s|static\\\/js|.tmp-build\\\/ts|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^.tmp-build\/ts|production\/js|;s|\.js|\.min\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs(["`basename "$file"`"]);" >> "$outfile"; fi; done',
+                stdout: true,
+                stderr: true
+            }
         }
     });
 
