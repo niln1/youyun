@@ -10,12 +10,24 @@ var handlebars = require('handlebars');
 module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+    /************************************************************************************
+     * Setting & variables
+     ************************************************************************************/
+
     nconf.argv().env().defaults({
+        // Define global directories that will be used in the next defaults() function
         'in-dir': 'client',
         'out-dir': 'production',
         'out-dir-dev': 'development',
         'tmp-dir-build': '.tmp-build'
     }).defaults({
+        // Define build specific directories
+        // Global directories is included twice because otherwise nconf won't be able to use these
+        // global directories
+        'in-dir': 'client',
+        'out-dir': 'production',
+        'out-dir-dev': 'development',
+        'tmp-dir-build': '.tmp-build',
         'css-src-dir': nconf.get('in-dir') + '/css',
         'css-dest-dir': nconf.get('out-dir') + '/css',
         'css-dest-dir-dev': nconf.get('out-dir-dev') + '/css',
@@ -26,7 +38,28 @@ module.exports = function(grunt) {
         'ts-dest-dir-dev': nconf.get('out-dir-dev') + '/js'
     });
 
+    // Symlink all folder / files except the ones in js and css
+    var others = ['**/*', '!js/**/*', '!css/**/*'];
+    var cleanOthers = [
+        nconf.get('out-dir') + '/**/*',
+        '!' + nconf.get('out-dir') + '/js/**/*',
+        '!' + nconf.get('out-dir') + '/css/**/*',
+        nconf.get('out-dir-dev') + '/**/*',
+        '!' + nconf.get('out-dir-dev') + '/js/**/*',
+        '!' + nconf.get('out-dir-dev') + '/css/**/*'
+    ];
+
+    /************************************************************************************
+     * Setting & variables
+     ************************************************************************************/
+
     grunt.initConfig({
+        clean: {
+            all: [nconf.get('out-dir'), nconf.get('out-dir-dev'), nconf.get('tmp-dir-build')],
+            css: [nconf.get('css-dest-dir'), nconf.get('css-dest-dir-dev')],
+            ts: [nconf.get('ts-dest-dir'), nconf.get('ts-dest-dir-dev'), nconf.get('ts-tmp-dir')],
+            others: cleanOthers
+        },
         symlink: {
             css: {
                 files: [{
@@ -52,6 +85,57 @@ module.exports = function(grunt) {
                     cwd: nconf.get('ts-src-dir'),
                     src: ['**/*'],
                     dest: nconf.get('ts-dest-dir-dev'),
+                    filter: 'isFile'
+                }]
+            },
+            others: {
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: others,
+                    dest: nconf.get('out-dir-dev'),
+                    filter: 'isFile'
+                }]
+            }
+        },
+        copy: {
+            others: {
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: others,
+                    dest: nconf.get('out-dir-dev')
+                }]
+            }
+        },
+        htmlmin: { // Task
+            others: { // Target
+                options: { // Target options
+                    removeComments: true,
+                    removeCommentsFromCDATA: true,
+                    removeCDATASectionsFromCDATA: true,
+                    collapseWhitespace: true,
+                    collapseBooleanAttributes: true,
+                    removeAttributeQuotes: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: ['**/*.html'],
+                    dest: nconf.get('out-dir'),
+                    filter: 'isFile'
+                }]
+            }
+        },
+        minjson: {
+            others: {
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: ['**/*.json'],
+                    dest: nconf.get('out-dir'),
                     filter: 'isFile'
                 }]
             }
@@ -128,9 +212,13 @@ module.exports = function(grunt) {
         }
     });
 
-    // Development build
     grunt.registerTask('css', ['sass:prod']);
     grunt.registerTask('css-dev', ['sass:dev', 'symlink:css']);
     grunt.registerTask('js', ['symlink:js', 'ts:prod', 'exec:js']);
     grunt.registerTask('js-dev', ['symlink:js-dev', 'ts:dev']);
+    grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
+    grunt.registerTask('others-dev', ['symlink:others']);
+
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
 };
