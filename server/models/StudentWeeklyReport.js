@@ -6,54 +6,40 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR = 10;
 
 var StudentWeeklyReportSchema = new Schema({
-	userId: {
-		type: String
-		
-    password: {
+    userId: {
         type: String,
         required: true
     }
+    week: {
+        type: Number,
+        default: getWeekNumber(Date.now),
+        required: true,
+        unique: true
+    }
+    data: {
+        type: Number
+    }
 });
 
-var StudentWeeklyReport = schema.define('StudentWeeklyReports', {
-	id: 		  String, 
-	uid:          String,
-	timestamp:    { type: Number,  default: Date.now },
-	data:     	  Number
-});
 
-StudentWeeklyReportSchema.pre('save', function(next) {
-    var user = this;
+function getWeekNumber(d) {
+    // Copy date so don't modify original
+    d = new Date(+d);
+    d.setHours(0, 0, 0);
+    // Set to nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+    // Get first day of year
+    var yearStart = new Date(d.getFullYear(), 0, 1);
+    // Calculate full weeks to nearest Thursday
+    var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+    // Return array of year and week number
+    return [d.getFullYear(), weekNo];
+}
 
-    // only hash the password if it has been modified (or is new)
-    if (!user.isModified('password')) return next();
+module.exports = mongoose.model('StudentWeeklyReport', StudentWeeklyReportSchema);
 
-    // generate a salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) return next(err);
-
-        // hash the password using our new salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
-
-            // override the cleartext password with the hashed one
-            user.password = hash;
-            next();
-        });
-    });
-
-
-});
-
-StudentWeeklyReportSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
-
-module.exports = mongoose.model('User', StudentWeeklyReportSchema);
+//todo get week of the year
+//pre save/ find and update if the weeknumber is the same

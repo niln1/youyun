@@ -20,7 +20,11 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    userType: {
+        type: Number, // 0 - admin 1 - schoolhead 2 - teacher 3 - student 4 - parent 5 - alumini
+        required: true
+    } // need a json to store enterdate and graduate date
 });
 
 UserSchema.pre('save', function(next) {
