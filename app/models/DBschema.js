@@ -1,11 +1,6 @@
 
 
-var StudentWeeklyReport = schema.define('StudentWeeklyReports', {
-	id: 		  String, 
-	uid:          String,
-	timestamp:    { type: Number,  default: Date.now },
-	data:     	  Number
-});
+
 
 var StudentParent = schema.define('Student-Parent', {
 	id: 		  String, 
