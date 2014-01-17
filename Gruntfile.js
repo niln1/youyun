@@ -133,5 +133,4 @@ module.exports = function(grunt) {
     grunt.registerTask('css-dev', ['sass:dev', 'symlink:css']);
     grunt.registerTask('js', ['symlink:js', 'ts:prod', 'exec:js']);
     grunt.registerTask('js-dev', ['symlink:js-dev', 'ts:dev']);
-
 };

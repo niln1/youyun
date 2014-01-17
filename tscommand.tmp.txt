@@ -1,1 +1,0 @@
-".tmp-build/ts/a.ts" ".tmp-build/ts/b.ts" --removeComments --target ES5 --module amd
