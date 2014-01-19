@@ -10,6 +10,10 @@ exports.readClasses = function(req, res) {
     console.log(JSON.stringify(req.path));
     console.log(JSON.stringify(req.url));
 
-    res.send("hello");
+    var tempNext = function(req, res) {
+        res.send('success');
+    };
+
+    apiServer.verifySignature(req, res, tempNext);
     // apiServer.get(req, res, '/api/object/classes', 'get', 1);
 };

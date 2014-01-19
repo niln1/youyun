@@ -29,7 +29,7 @@ apiServer.sendError = function(error, req, res) {
         result: false,
         message: 'Internal Server Error',
         description: 'Unable to get data at this point of time.',
-        source: 'youyun'
+        source: nconf.get('SERVER_NAME')
     });
 }; // sendError //
 
@@ -42,12 +42,21 @@ apiServer.userNotAuthenticated = function(req, res, e) {
     });
 }; // userNotAuthenticated //
 
+apiServer.invalidUserSignature = function(req, res) {
+    res.json(401, {
+        result: 'false',
+        message: 'Signature Incorrect',
+        description: 'Plz stop hacking me or I will call the police',
+        source: 'youyun'
+    });
+}; // userNotAuthenticated //
+
 apiServer.missingQueryParameters = function(req, res, err) {
     res.json(400, {
         result: false,
         message: 'Missing Query Parameters',
         description: err,
-        source: 'youyun'
+        source: nconf.get('SERVER_NAME')
     });
 }; // missingQueryParameters //
 
@@ -77,29 +86,19 @@ apiServer.getSignature = function(url, privateKey) {
     return urlSafeSign;
 }; // getSignature //
 
-apiServer.verifySignature = function(req, path, method, version) {
-
-    var userId = req.session.user.user_id;
+apiServer.verifySignature = function(req, res, next) {
+    var userId = req.session.user._id;
     var apiKey = "tempkey";
-    var user_signature = req.body.s;
+    var user_signature = req.query.signature;
 
-    console.log("path: " + path);
-    console.log("user_signature: " + path);
-
-    var url = baseUrl + queryString;
-    var signature = apiServer.getSignature(url, apiKey);
-    return true
+    console.log("path: " + req.path);
+    console.log("user_signature: " + user_signature);
+    if (user_signature == apiKey) {
+        next(req, res);
+    } else {
+        apiServer.invalidUserSignature(req, res);
+    }
 }; //verifySignature//
 
-apiServer.get = function(req, res, path, method, version, success, failure) {
-    success = typeof success !== 'undefined' ? success : apiServer.sendResponse;
-    failure = typeof failure !== 'undefined' ? failure : apiServer.sendError;
-    var url = apiServer.constructUrl(req, path, method, version);
-    https.get(url, function(response) {
-        return success(response, req, res);
-    }).on('error', function(err) {
-        return failure(err, req, res);
-    });
-}; // get //
 
 module.exports = apiServer;

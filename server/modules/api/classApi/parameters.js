@@ -5,8 +5,15 @@
 
 exports.userId = {
     'type': 'string',
-    'param': 'index',
+    'param': 'userId',
     'description': 'userId',
+    'default': 0
+};
+
+exports.signature = {
+    'type': 'string',
+    'param': 'signature',
+    'description': 'signature',
     'default': 0
 };
 
