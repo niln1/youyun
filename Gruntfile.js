@@ -43,7 +43,7 @@ module.exports = function(grunt) {
     });
 
     // Symlink all folder / files except the ones in js, css & tmpl
-    var others = ['**/*', '!js/**/*', '!css/**/*', '!tmpl/**/*'];
+    var others = ['**/*', '!js/**/*', '!js', '!css/**/*', '!css', '!tmpl/**/*', '!tmpl'];
     var cleanOthers = [
         nconf.get('out-dir') + '/**/*',
         '!' + nconf.get('out-dir') + '/js/**/*',
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: others,
-                    dest: nconf.get('out-dir-dev')
+                    dest: nconf.get('out-dir')
                 }]
             }
         },
