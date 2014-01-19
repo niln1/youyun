@@ -215,6 +215,13 @@ module.exports = function(grunt) {
                 },
                 stdout: true,
                 stderr: true
+            },
+            install: {
+                command: function() {
+                    return 'cd ' + __dirname + '; make install;'
+                },
+                stdout: true,
+                stderr: true
             }
         },
         jade: {
@@ -276,6 +283,8 @@ module.exports = function(grunt) {
             }
         }
     });
+
+    grunt.registerTask('install', ['exec:install']);
 
     grunt.registerTask('css', ['sass:prod']);
     grunt.registerTask('css-dev', ['sass:dev', 'symlink:css']);
