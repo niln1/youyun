@@ -119,8 +119,20 @@ exports.test1 = function(req, res) {
             console.log(err);
         } else {
             tempArray.push(tempTeacher);
+            var tempUserClass = new UserClass({
+                userId: tempTeacher._id,
+                classId: tempClass._id
+            });
+            tempUserClass.save(function(err, tempUserClass) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(tempUserClass);
+                }
+            });
         }
     });
+
 
     for (var i = 0; i < 100; i++) {
         var tempStudent = new User({
