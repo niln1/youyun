@@ -42,8 +42,10 @@ endif
 
 install-npm:
 	@echo Installing npm dependencies
-	@$(NPM_SUDO) npm install -g requirejs clean-css karma grunt-cli less typescript jade bower
-	@sudo rm -rf ~/tmp
+	@$(NPM_SUDO) npm install -g requirejs clean-css karma grunt-cli less typescript jade bower youyun-cli
+ifeq ($(UNAME),Linux)
+	@sudo rm -rf ~/tmp ~/.tmp
+endif
 	@npm install
 
 install-rvm:
@@ -73,6 +75,18 @@ endif
 ifeq ($(UNAME),Darwin)
 	@brew install screen
 endif
+
+#############################################################################################
+# Development
+#############################################################################################
+
+#############################################################################################
+# Production
+#############################################################################################
+
+#############################################################################################
+# Clean
+#############################################################################################
 
 clean:
 	@grunt clean
