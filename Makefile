@@ -22,7 +22,7 @@ OFF := '\x1b[0m'
 # Install
 #############################################################################################
 
-install: install-nodejs install-npm install-rvm install-sass install-screen
+install: install-nodejs install-npm install-rvm install-sass install-screen change-ulimit
 
 install-nodejs:
 	@echo Installing Node.js
@@ -74,6 +74,14 @@ ifeq ($(UNAME),Linux)
 endif
 ifeq ($(UNAME),Darwin)
 	@brew install screen
+endif
+
+change-ulimit:
+ifeq ($(UNAME),Linux)
+	@ulimit -n 10240
+endif
+ifeq ($(UNAME),Darwin)
+	@launchctl limit maxfiles 10240 10240
 endif
 
 #############################################################################################

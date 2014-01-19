@@ -49,10 +49,22 @@ module.exports = function(grunt) {
         '!' + nconf.get('out-dir') + '/js/**/*',
         '!' + nconf.get('out-dir') + '/css/**/*',
         '!' + nconf.get('out-dir') + '/tmpl/**/*',
+        '!' + nconf.get('out-dir') + '/js',
+        '!' + nconf.get('out-dir') + '/css',
+        '!' + nconf.get('out-dir') + '/tmpl',
         nconf.get('out-dir-dev') + '/**/*',
         '!' + nconf.get('out-dir-dev') + '/js/**/*',
         '!' + nconf.get('out-dir-dev') + '/css/**/*',
-        '!' + nconf.get('out-dir-dev') + '/tmpl/**/*'
+        '!' + nconf.get('out-dir-dev') + '/tmpl/**/*',
+        '!' + nconf.get('out-dir-dev') + '/js',
+        '!' + nconf.get('out-dir-dev') + '/css',
+        '!' + nconf.get('out-dir-dev') + '/tmpl'
+    ];
+    var watchOthers = [
+        nconf.get('in-dir') + '/**/*',
+        '!' + nconf.get('in-dir') + '/js/**/*',
+        '!' + nconf.get('in-dir') + '/css/**/*',
+        '!' + nconf.get('in-dir') + '/tmpl/**/*'
     ];
 
     /************************************************************************************
@@ -64,7 +76,7 @@ module.exports = function(grunt) {
             all: [nconf.get('out-dir'), nconf.get('out-dir-dev'), nconf.get('tmp-dir-build')],
             css: [nconf.get('css-dest-dir'), nconf.get('css-dest-dir-dev')],
             ts: [nconf.get('ts-dest-dir'), nconf.get('ts-dest-dir-dev'), nconf.get('ts-tmp-dir')],
-            tmpl: [nconf.get('tmpl-dest-dir'), nconf.get('tmpl-dest-dir-dev'), nconf.get('tmpl-tmp-dir')],
+            tmpl: cleanOthers,
             others: cleanOthers
         },
         symlink: {
@@ -280,6 +292,36 @@ module.exports = function(grunt) {
                     src: nconf.get('tmpl-dest-dir') + '/templates.min.js',
                     dest: nconf.get('tmpl-dest-dir') + '/templates.min.js'
                 }]
+            }
+        },
+        watch: {
+            ts: {
+                files: nconf.get('ts-src-dir') + '/**/*',
+                tasks: ['clean:ts', 'js-dev'],
+                options: {
+                    debounceDelay: 250,
+                }
+            },
+            css: {
+                files: nconf.get('css-src-dir') + '/**/*',
+                tasks: ['clean:css', 'css-dev'],
+                options: {
+                    debounceDelay: 250,
+                }
+            },
+            tmpl: {
+                files: nconf.get('tmpl-src-dir') + '/**/*',
+                tasks: ['clean:tmpl', 'tmpl-dev'],
+                options: {
+                    debounceDelay: 250,
+                }
+            },
+            others: {
+                files: watchOthers,
+                tasks: ['clean:others', 'others-dev'],
+                options: {
+                    debounceDelay: 250,
+                }
             }
         }
     });
