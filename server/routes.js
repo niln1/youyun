@@ -27,7 +27,7 @@ exports.route = function(app) {
     function readModule(file, callback) {
         // Get absolute path of submodule file
         var cwd = process.cwd();
-        var modulesDir = cwd + '/app/modules';
+        var modulesDir = cwd + '/server/modules';
         var moduleDir = modulesDir + '/' + file;
 
         async.waterfall([
@@ -68,7 +68,7 @@ exports.route = function(app) {
      * Routes defined in submodules
      */
     var cwd = process.cwd();
-    var modulesDir = cwd + '/app/modules';
+    var modulesDir = cwd + '/server/modules';
     async.waterfall([
 
         function(callback) {
