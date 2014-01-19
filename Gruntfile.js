@@ -64,6 +64,7 @@ module.exports = function(grunt) {
             all: [nconf.get('out-dir'), nconf.get('out-dir-dev'), nconf.get('tmp-dir-build')],
             css: [nconf.get('css-dest-dir'), nconf.get('css-dest-dir-dev')],
             ts: [nconf.get('ts-dest-dir'), nconf.get('ts-dest-dir-dev'), nconf.get('ts-tmp-dir')],
+            tmpl: [nconf.get('tmpl-dest-dir'), nconf.get('tmpl-dest-dir-dev'), nconf.get('tmpl-tmp-dir')],
             others: cleanOthers
         },
         symlink: {
@@ -285,6 +286,6 @@ module.exports = function(grunt) {
     grunt.registerTask('tmpl', ['jade:prod', 'handlebars:prod', 'uglify:tmpl']);
     grunt.registerTask('tmpl-dev', ['jade:dev', 'handlebars:dev']);
 
-    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
-    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'tmpl', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'tmpl-dev', 'others-dev']);
 };
