@@ -35,18 +35,24 @@ module.exports = function(grunt) {
         'ts-src-dir': nconf.get('in-dir') + '/js',
         'ts-tmp-dir': nconf.get('tmp-dir-build') + '/ts',
         'ts-dest-dir': nconf.get('out-dir') + '/js',
-        'ts-dest-dir-dev': nconf.get('out-dir-dev') + '/js'
+        'ts-dest-dir-dev': nconf.get('out-dir-dev') + '/js',
+        'tmpl-src-dir': nconf.get('in-dir') + '/tmpl',
+        'tmpl-tmp-dir': nconf.get('tmp-dir-build') + '/tmpl',
+        'tmpl-dest-dir': nconf.get('out-dir') + '/js',
+        'tmpl-dest-dir-dev': nconf.get('out-dir-dev') + '/js'
     });
 
-    // Symlink all folder / files except the ones in js and css
-    var others = ['**/*', '!js/**/*', '!css/**/*'];
+    // Symlink all folder / files except the ones in js, css & tmpl
+    var others = ['**/*', '!js/**/*', '!css/**/*', '!tmpl/**/*'];
     var cleanOthers = [
         nconf.get('out-dir') + '/**/*',
         '!' + nconf.get('out-dir') + '/js/**/*',
         '!' + nconf.get('out-dir') + '/css/**/*',
+        '!' + nconf.get('out-dir') + '/tmpl/**/*',
         nconf.get('out-dir-dev') + '/**/*',
         '!' + nconf.get('out-dir-dev') + '/js/**/*',
-        '!' + nconf.get('out-dir-dev') + '/css/**/*'
+        '!' + nconf.get('out-dir-dev') + '/css/**/*',
+        '!' + nconf.get('out-dir-dev') + '/tmpl/**/*'
     ];
 
     /************************************************************************************
@@ -209,6 +215,64 @@ module.exports = function(grunt) {
                 stdout: true,
                 stderr: true
             }
+        },
+        jade: {
+            dev: {
+                options: {
+                    pretty: true,
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('tmpl-src-dir'),
+                    src: ['**/*.jade'],
+                    dest: nconf.get('tmpl-tmp-dir'),
+                    ext: '.tmpl'
+                }]
+            },
+            prod: {
+                options: {},
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('tmpl-src-dir'),
+                    src: ['**/*.jade'],
+                    dest: nconf.get('tmpl-tmp-dir'),
+                    ext: '.tmpl'
+                }]
+            }
+        },
+        handlebars: {
+            dev: {
+                options: {
+                    namespace: "Handlebars.templates",
+                    processName: function(filePath) {
+                        return filePath.replace(nconf.get('tmpl-tmp-dir') + "/", "").replace(".tmpl", "");
+                    }
+                },
+                files: [{
+                    src: nconf.get('tmpl-tmp-dir') + '/**/*.tmpl',
+                    dest: nconf.get('tmpl-dest-dir-dev') + '/templates.js'
+                }]
+            },
+            prod: {
+                options: {
+                    namespace: "Handlebars.templates",
+                    processName: function(filePath) {
+                        return filePath.replace(nconf.get('tmpl-tmp-dir') + "/", "").replace(".tmpl", "");
+                    }
+                },
+                files: [{
+                    src: nconf.get('tmpl-tmp-dir') + '/**/*.tmpl',
+                    dest: nconf.get('tmpl-dest-dir') + '/templates.min.js'
+                }]
+            }
+        },
+        uglify: {
+            tmpl: {
+                files: [{
+                    src: nconf.get('tmpl-dest-dir') + '/templates.min.js',
+                    dest: nconf.get('tmpl-dest-dir') + '/templates.min.js'
+                }]
+            }
         }
     });
 
@@ -218,6 +282,8 @@ module.exports = function(grunt) {
     grunt.registerTask('js-dev', ['symlink:js-dev', 'ts:dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
+    grunt.registerTask('tmpl', ['jade:prod', 'handlebars:prod', 'uglify:tmpl']);
+    grunt.registerTask('tmpl-dev', ['jade:dev', 'handlebars:dev']);
 
     grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
     grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
