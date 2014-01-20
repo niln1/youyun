@@ -100,5 +100,9 @@ apiServer.verifySignature = function(req, res, next) {
     }
 }; //verifySignature//
 
+//TODO
+function getStartOfTheDay() {
+    return 1
+}
 
 module.exports = apiServer;
