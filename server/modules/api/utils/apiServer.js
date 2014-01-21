@@ -1,5 +1,5 @@
 /*
- * file: apiServererate.js
+ * file: apiServer.js
  * CapiServeryright(c) 2013, Cyan Inc. All rights reserved.
  */
 'use strict';
@@ -12,19 +12,15 @@ var urlparse = require('url');
 var crypto = require('crypto');
 var apiServer = {};
 
-apiServer.sendResponse = function(response, req, res) {
-    res.writeHead(response.statusCode, {
-        'Content-Type': 'application/json'
-    });
-    response.on('data', function(data) {
-        res.write(data);
-    });
-    response.on('end', function(data) {
-        res.end(data);
+apiServer.sendResponse = function(req, res, resp, desc) {
+    res.json(200, {
+        result: resp,
+        description: desc,
+        source: nconf.get('SERVER_NAME')
     });
 }; // sendResponse //
 
-apiServer.sendError = function(error, req, res) {
+apiServer.sendError = function(req, res, error) {
     res.json(500, {
         result: false,
         message: 'Internal Server Error',
@@ -35,7 +31,7 @@ apiServer.sendError = function(error, req, res) {
 
 apiServer.userNotAuthenticated = function(req, res, e) {
     res.json(401, {
-        result: 'false',
+        result: false,
         message: !e ? 'User not authenticated' : e,
         description: 'Invalid Cookie. Please login',
         source: 'youyun'
@@ -44,7 +40,7 @@ apiServer.userNotAuthenticated = function(req, res, e) {
 
 apiServer.invalidUserSignature = function(req, res) {
     res.json(401, {
-        result: 'false',
+        result: false,
         message: 'Signature Incorrect',
         description: 'Plz stop hacking me or I will call the police',
         source: 'youyun'

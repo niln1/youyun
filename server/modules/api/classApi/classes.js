@@ -8,13 +8,13 @@ var apiServer = require('../utils/apiServer');
 var UserClass = require('../../..//models/UserClass');
 var Class = require('../../..//models/Class');
 
-
 exports.readClasses = function(req, res) {
     console.log(JSON.stringify(req.path));
     console.log(JSON.stringify(req.url));
 
     var findClassById = function(req, res) {
         var teacherId = req.session.user._id;
+        var desc = "List all class managed by the User"
         UserClass.find({
             userId: teacherId,
         }, function(err, data) {
@@ -22,11 +22,10 @@ exports.readClasses = function(req, res) {
             var tempUserClass = data;
             Class.findById(tempUserClass[0].classId, function(err, docs) {
                 console.log(tempUserClass.classId);
-                res.send(docs);
+                apiServer.sendResponse(req, res, docs, desc);
             })
         });
     };
 
     apiServer.verifySignature(req, res, findClassById);
-    // apiServer.get(req, res, '/api/object/classes', 'get', 1);
 };
