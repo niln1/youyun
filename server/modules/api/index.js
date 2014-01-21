@@ -37,7 +37,7 @@ function missingRequiredQueryParameters(req, res, desc) {
 
 function apiNotDefined(req, res, e) {
     res.json(401, {
-        'result': 'false',
+        'result': false,
         'message': !e ? 'API requested is not defined' : e,
         'description': req.url + ' is not defined',
         'source': nconf.get('SERVER_NAME')
