@@ -5,8 +5,8 @@
 'use strict';
 
 var apiServer = require('../utils/apiServer');
-var UserClass = require('../../..//models/UserClass');
-var Class = require('../../..//models/Class');
+var UserClass = require('../../../models/UserClass');
+var Class = require('../../../models/Class');
 
 exports.readClasses = function(req, res) {
     console.log(JSON.stringify(req.path));
