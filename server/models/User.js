@@ -24,7 +24,12 @@ var UserSchema = new Schema({
     userType: {
         type: Number, // 0 - admin 1 - schoolhead 2 - teacher 3 - student 4 - parent 5 - alumini
         required: true
-    } // need a json to store enterdate and graduate date
+    },
+    classes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Class'
+    }]
+    // need a json to store enterdate and graduate date
 });
 
 UserSchema.pre('save', function(next) {
