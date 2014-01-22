@@ -15,10 +15,7 @@ exports.route = function(app) {
     app.get('/login', index.getLogin);
     app.get('/logout', index.logout);
 
-    app.get('/test', function(req, res) {
-        res.send('in test page');
-    });
-    app.get('/static/test1', index.test1);
+    app.get('/static/populateDB', index.populateDB);
 
 
     /*
