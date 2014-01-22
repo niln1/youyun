@@ -51,62 +51,50 @@ exports.populateDB = function() {
                 if (!err && teacher) {
                     newClass.instructors.push(teacher._id);
                     newClass.save(function(err, newClass) {
-                        teacher.classes.push(newClass._id);
-                        teacher.save(function(err, teacher) {
-                            done(null, teacher);
-                        })
+                        if (!err && newClass) {
+                            teacher.classes.push(newClass._id);
+                            teacher.save(function(err, teacher) {
+                                done(null, newClass);
+                            })
+                        } else {
+                            done(err);
+                        }
                     });
                 } else {
                     done(err);
                 }
             });
+        },
+        function(newClass, done) {
+            var studentArray = [];
+            console.log("classid:" + newClass._id);
+
+            for (var i = 0; i < 100; i++) {
+                var tempStudent = new User({
+                    username: "student" + i,
+                    password: "student" + i + "pw",
+                    userType: 3,
+                });
+                tempStudent.save(function(err, student) {
+                    if (!err && student) {
+                        newClass.students.push(student._id);
+                        newClass.save(function(err, newClass) {
+                            if (!err && newClass) {
+                                student.classes.push(newClass._id);
+                                student.save(function(err, student) {
+                                    done(null, student);
+                                })
+                            } else {
+                                done(err);
+                            }
+                        });
+                    } else {
+                        done(err);
+                    }
+                });
+            }
+
         }
     ]);
 
-    /*
-    tempClass.save(function(err, tempClass) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(tempClass);
-        }
-    });
-    var studentArray = [];
-
-    for (var i = 0; i < 100; i++) {
-        var tempStudent = new User({
-            username: "student" + i,
-            password: "student" + i + "pw",
-            userType: 3,
-        });
-        studentArray.push(tempStudent);
-    }
-
-    tempAdmin.save(function(err, tempAdmin) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(tempAdmin);
-        }
-    });
-
-    tempTeacher.save(function(err, tempTeacher) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(tempTeacher)
-        }
-    });
-
-    for (tempStudent in studentArray) {
-        tempStudent.save(function(err, tempStudent) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(tempStudent);
-            }
-        });
-    };
-
-    */
 }
