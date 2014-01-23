@@ -8,30 +8,24 @@ var async = require('async');
 
 var apiServer = require('../utils/apiServer');
 var Class = require('../../../models/Class');
+var User = require('../../../models/User');
 
 exports.readClasses = function(req, res) {
-    apiServer.verifySignature(req, res, findClassManagedById);
+    apiServer.verifySignature(req, res, findClassesByUserId);
 };
 
-function findClassByUserId(req, res) {
+function findClassesByUserId(req, res) {
     var teacherId = req.session.user._id;
+    console.log(teacherId);
     var desc = "List all class managed by the User";
-    UserClass.find({
-        userId: teacherId,
-    }, function(err, data) {
+    User.findOne({
+        _id: teacherId
+    }).populate('classes').exec(function(err, user) {
         if (err) {
             apiServer.sendError();
             console.log(err);
-        }
-        for (var tempUserClass in data) {
-
+        } else {
+            apiServer.sendResponse(req, res, user.classes, desc);
         }
     });
-};
-
-function findClassByClassId(req, res) {
-    Class.findById(tempUserClass.classId, function(err, docs) {
-        console.log(tempUserClass.classId);
-
-    })
 }

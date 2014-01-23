@@ -5,6 +5,7 @@
 
 var async = require('async');
 var nconf = require('nconf');
+var User = require('./models/User');
 var db = require('./databases/db');
 
 function userAuthenticationFailed(req, res, message) {
