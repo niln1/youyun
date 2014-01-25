@@ -15,7 +15,6 @@ var apiSpec = {};
 
 __.each(apiModules, function(module) {
     __.each(module, function(api) {
-        console.log("APISPEC:" + JSON.stringify(api));
         apiSpec[api.url] = api;
     });
 });

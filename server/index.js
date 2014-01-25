@@ -5,45 +5,22 @@
 
 var async = require('async');
 var nconf = require('nconf');
-var User = require('./models/User');
 var db = require('./databases/db');
-
-function userAuthenticationFailed(req, res, message) {
-    req.flash('error', message); // TODO
-    return res.redirect('/login');
-}
+var auth = require('./middlewares/auth');
 
 exports.main = function(req, res) {
     console.log(nconf.get('VERSION'));
-
-    return res.render('index', {
+    res.render('index', {
         env: process.env.NODE_ENV
     });
 };
 
 exports.lost = function(req, res) {
-    return res.render('index', {
-        env: process.env.NODE_ENV
-    });
+    res.send(404);
 };
 
 exports.postLogin = function(req, res) {
-    if (!req.body.username || !req.body.password) {
-        return userAuthenticationFailed(req, res, '用户名或者密码不能为空');
-    }
-
-    User.findOne({
-        username: req.body.username
-    }, function(err, user) {
-        if (err || !user) return userAuthenticationFailed(req, res, '用户名或者密码错误');
-
-        user.comparePassword(req.body.password, function(err, match) {
-            if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
-
-            req.session.user = user;
-            res.redirect('/');
-        });
-    });
+    auth.doLogin(req, res);
 }
 
 exports.getLogin = function(req, res) {
