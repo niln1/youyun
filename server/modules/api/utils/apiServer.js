@@ -34,7 +34,7 @@ apiServer.userNotAuthenticated = function(req, res, e) {
         result: false,
         message: !e ? 'User not authenticated' : e,
         description: 'Invalid Cookie. Please login',
-        source: 'youyun'
+        source: nconf.get('SERVER_NAME')
     });
 }; // userNotAuthenticated //
 
@@ -43,7 +43,7 @@ apiServer.invalidUserSignature = function(req, res) {
         result: false,
         message: 'Signature Incorrect',
         description: 'Plz stop hacking me or I will call the police',
-        source: 'youyun'
+        source: nconf.get('SERVER_NAME')
     });
 }; // userNotAuthenticated //
 

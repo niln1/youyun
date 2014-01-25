@@ -88,19 +88,23 @@ function isRequiredQueryParams(req, res, queryParams) {
     }
 };
 
-exports.getObjects = function(req, res) {
+exports.getSpec = function(req, res) {
     if (req.path.search(/^\/api\/v\d*\/spec$/) !== -1) {
         return serveApiSpec(req, res);
     } else {
-        if (__.has(apiSpec, req.path)) {
-            var queryParams = __.keys(req.query);
-            if (isValidQueryParams(req, res, queryParams) &&
-                isRequiredQueryParams(req, res, queryParams)) {
-                return apiSpec[req.path][req.method]['handler'](req, res);
-            }
-        } else {
-            return apiNotDefined(req, res);
+        return apiNotDefined(req, res);
+    }
+};
+
+exports.getObjects = function(req, res) {
+    if (__.has(apiSpec, req.path)) {
+        var queryParams = __.keys(req.query);
+        if (isValidQueryParams(req, res, queryParams) &&
+            isRequiredQueryParams(req, res, queryParams)) {
+            return apiSpec[req.path][req.method]['handler'](req, res);
         }
+    } else {
+        return apiNotDefined(req, res);
     }
 };
 

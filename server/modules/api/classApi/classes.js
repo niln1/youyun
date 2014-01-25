@@ -15,9 +15,17 @@ exports.readClasses = function(req, res) {
 };
 
 function findClassesByUserId(req, res) {
+    if (req.session.user.userType < 2) {
+        findClassesByAdminId(req, res);
+    } else {
+        findClassesByTeacherId(req, res);
+    }
+}
+
+function findClassesByTeacherId(req, res) {
+    console.log("finding from teacher");
     var teacherId = req.session.user._id;
-    console.log(teacherId);
-    var desc = "List all class managed by the User";
+    var desc = "List all classes managed by the user";
     User.findOne({
         _id: teacherId
     }).populate('classes').exec(function(err, user) {
@@ -26,6 +34,20 @@ function findClassesByUserId(req, res) {
             console.log(err);
         } else {
             apiServer.sendResponse(req, res, user.classes, desc);
+        }
+    });
+}
+
+function findClassesByAdminId(req, res) {
+    console.log("finding from admin");
+    var adminId = req.session.user._id;
+    var desc = "List all classes ";
+    Class.find().exec(function(err, classes) {
+        if (err) {
+            apiServer.sendError();
+            console.log(err);
+        } else {
+            apiServer.sendResponse(req, res, classes, desc);
         }
     });
 }
