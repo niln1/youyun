@@ -14,6 +14,10 @@ exports.readClasses = function(req, res) {
     apiServer.verifySignature(req, res, findClassesByUserId);
 };
 
+exports.readStudentsByClasses = function(req, res) {
+    apiServer.verifySignature(req, res, findClassesByUserId); // todo change
+}
+
 function findClassesByUserId(req, res) {
     if (req.session.user.userType < 2) {
         findClassesByAdminId(req, res);

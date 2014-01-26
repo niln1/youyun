@@ -69,6 +69,29 @@ function isValidQueryParams(req, res, queryParams) {
     }
 };
 
+
+function isValidQueryParamsType(req, res, queryParams) {
+    var invalidQueryParameterList = [];
+    var optionalParams = __.pluck(apiSpec[req.path][req.method]
+        ['optional'], 'param');
+    var requiredParams = __.pluck(apiSpec[req.path][req.method]
+        ['required'], 'param');
+    // verifying if the query parameters supplied are valid query parameters
+    __.each(queryParams, function(queryParam) {
+        if (!__.contains(requiredParams, queryParam) && !__.contains(optionalParams, queryParam)) {
+            invalidQueryParameterList.push(queryParam);
+        }
+    });
+    if (invalidQueryParameterList.length > 0) {
+        invalidQueryParameters(req, res, 'Invalid Query Parameter(s) \'' +
+            invalidQueryParameterList + '\'.');
+        return false;
+    } else {
+        return true;
+    }
+};
+
+
 function isRequiredQueryParams(req, res, queryParams) {
     var requiredQueryParameterList = [];
     var requiredParams = __.pluck(apiSpec[req.path][req.method]
