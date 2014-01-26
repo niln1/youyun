@@ -69,6 +69,36 @@ function isValidQueryParams(req, res, queryParams) {
     }
 };
 
+
+function isValidQueryParamsType(req, res, queryParams) {
+    var optionalParamsList = apiSpec[req.path][req.method]['optional'];
+    var requiredParamsList = apiSpec[req.path][req.method]['required'];
+    var paramsList = optionalParamsList.concat(requiredParamsList);
+    // verifying if the query parameters supplied are valid query parameters
+    __.each(queryParams, function(queryParam) {
+        __.each(paramsList, function(parameter) {
+            if (parameter['param'] == queryParam) {
+                switch (parameter['type']) {
+                    case 'string':
+                        console.log("String: " + queryParam);
+                        break;
+                    case 'list':
+                        console.log("List: " + queryParam);
+                        break;
+                    case 'number':
+                        console.log("Number: " + queryParam);
+                        break;
+                    default:
+                        console.log("Err:" + queryParam);
+                        break;
+                }
+            }
+        })
+    });
+    return true;
+};
+
+
 function isRequiredQueryParams(req, res, queryParams) {
     var requiredQueryParameterList = [];
     var requiredParams = __.pluck(apiSpec[req.path][req.method]
@@ -100,7 +130,8 @@ exports.getObjects = function(req, res) {
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
         if (isValidQueryParams(req, res, queryParams) &&
-            isRequiredQueryParams(req, res, queryParams)) {
+            isRequiredQueryParams(req, res, queryParams) &&
+            isValidQueryParamsType(req, res, queryParams)) {
             return apiSpec[req.path][req.method]['handler'](req, res);
         }
     } else {
@@ -115,7 +146,8 @@ exports.postObjects = function(req, res) {
             apiSpec[req.path][req.method]['content-type'])) {
             var queryParams = __.keys(req.body);
             if (isValidQueryParams(req, res, queryParams) &&
-                isRequiredQueryParams(req, res, queryParams)) {
+                isRequiredQueryParams(req, res, queryParams) &&
+                isValidQueryParamsType(req, res, queryParams)) {
                 return apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {

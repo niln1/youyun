@@ -12,7 +12,7 @@ module.exports = [{
     'url': '/api/v1/classes/read',
     'GET': {
         'handler': classes.readClasses,
-        'required': [parameters.signature],
+        'required': [parameters.signature, parameters.classList],
         'optional': [],
         'description': 'List all class managed by the User',
         'response': {} // sample data
@@ -20,7 +20,7 @@ module.exports = [{
 }, {
     'url': '/api/v1/classes/students/read',
     'GET': {
-        'handler': classes.readClasses,
+        'handler': classes.readStudentsByClasses,
         'required': [parameters.signature],
         'optional': [],
         'description': 'List all class managed by the User',

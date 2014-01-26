@@ -88,7 +88,7 @@ apiServer.verifySignature = function(req, res, next) {
     var user_signature = req.query.signature;
 
     console.log("path: " + req.path);
-    console.log("user_signature: " + user_signature);
+
     if (user_signature == apiKey) {
         next(req, res);
     } else {
