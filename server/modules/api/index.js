@@ -88,7 +88,7 @@ function isValidQueryParamsType(req, res, query) {
                             return false;
                         }
                     case 'list':
-                        console.log("Check List: " + queryData);
+                        console.log("Check List: " + queryData.split(',') + "  " + queryData.split(',').length);
                         if (__.isArray(queryData.split(',')) && queryData.length != 0) {
                             break;
                         } else {
