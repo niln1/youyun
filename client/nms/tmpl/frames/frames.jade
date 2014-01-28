@@ -1,0 +1,16 @@
+extends ../_frames-master
+
+block html-templates
+    // content template
+
+    div(data-template='frames-content').container
+        div.well(data-element="primary-content")
+            p
+                button.btn.btn-default(data-element='dispose-button') Dispose All
+                button.btn.btn-default(data-element='send-button') Send to IFrame
+            p
+                textarea.form-control(rows='5', data-element='send-textarea')
+
+        // seamless I-frame template, used by the cy-iframe class
+
+        iframe(seamless, src="/framednodegrid", style="width:100%;height:400px")

@@ -1,0 +1,109 @@
+extends _master
+
+block append html-templates
+
+    div(data-template="cyan-about-box")
+        style(scoped).
+            div.about-container {
+                text-align: center;
+                margin-top: 90px;
+            }
+            .about-logo-image {
+                background-image: url(/static/img/cyan-bp-logo.png);
+                background-size: contain;
+                width: 45px;
+                height: 45px;
+                margin-right: 5px;
+                margin-top: 10px;
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .about-planet {
+                font-family: 'Ubuntu';
+                font-weight: 600;
+                font-size: 22pt;
+                color: #009cff;
+                vertical-align: middle;
+            }
+            .about-operate {
+                font-family: 'Ubuntu';
+                font-weight: 600;
+                font-size: 22pt;
+                color: black;
+                vertical-align: middle;
+            }
+
+        div.about-container
+            div.about-logo-image
+            span.about-planet planet
+            span.about-operate operate
+
+            div.about-version Version 1.0
+            div.cyan-copyright Copyright Cyan Inc. 2014
+
+    div(data-template="master-page-user-menu")
+        style(scoped).
+            div.cyan-user-menu {
+                position: absolute;
+                top: 0px;
+                right: 5px;
+                color: white;
+                line-height: 40px;
+                font-family: Ubuntu;
+                font-weight: 400;
+                font-size: 14px;
+                z-index: 10;
+                text-align: right;
+                min-width: 150px;
+                cursor: pointer;
+            }
+            div.cyan-user-menu.menu-active, div.cyan-user-menu:hover {
+                color: #009cff;
+            }
+            span.menu-indicator {
+                border-color: transparent;
+                border-style: solid;
+                cursor: pointer;
+                display: block;
+                float: right;
+                height: 2px;
+                width: 1px;
+                margin-right: 0.5em;
+                margin-left: 0.5em;
+                border-top-color: #FFFFFF;
+                border-width: 6px;
+                margin-top: 18px;
+            }
+            .menu-active .menu-indicator, div.cyan-user-menu:hover .menu-indicator {
+                border-top-color: #009cff;
+            }
+
+            div.cyan-user-menu .menu-panel {
+                display: none;
+                margin: 0;
+                padding: 5px;
+                color: #009cff;
+                background-color: white;
+                border: 1px solid #ccc;
+                list-style-type: none;
+                box-shadow: 5px 5px 5px #999999;
+                text-align: left;
+            }
+            div.cyan-user-menu .menu-panel li {
+                font-size: 12px;
+                line-height: 25px;
+            }
+            li.menu-divider {
+                border-bottom: 1px inset #ccc;
+                margin-top: .5em;
+                margin-bottom: .5em;
+            }
+
+        div.cyan-user-menu.no-user-select
+            span {{ user_name }}
+            span.menu-indicator
+            ul.menu-panel
+                li.menu-item(data-item="user-menu-about") About
+                li.menu-divider
+                li.menu-item(data-item="user-menu-signout") Sign Out
+

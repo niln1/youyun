@@ -1,0 +1,164 @@
+extends ../_frames-master
+
+block append html-templates
+
+    div(data-template="new-service-form-template")
+        div.new-service-form
+            form(role='form').form-horizontal
+                .form-group.section.group
+                    .col.span_1_of_12
+                        label.control-label(for='service-type-list') Service Type
+                    .col.span_1_of_12
+                        select#service-type-list.form-control
+                    .col.span_1_of_12
+                        label.control-label(for='circuit-id-input') Circut ID
+                    .col.span_2_of_12
+                        input#circuit-id-input(type="text").form-control
+                    .col.span_1_of_12
+                        label(for='oam-profile-list').control-label OAM Profile
+                    .col.span_1_of_12
+                        select#oam-profile-list.form-control
+                    .col.span_1_of_12
+                        label.control-label(for='customer-list') Customer
+                    .col.span_2_of_12
+                        select#customer-list.form-control
+                    .col.span_2_of_12
+                        label.checkbox-inline(for='eth-csv-checkbox')
+                            input#eth-csv-checkbox(type="checkbox")
+                            | ETH_CSF enable
+
+                .form-group.section.group
+                    .col.span_1_of_12
+                        label.control-label(for='owner-input') Owner
+                    .col.span_1_of_12
+                        input#owner-input.form-control
+                    .col.span_1_of_12
+                        label.control-label(for=description-input) Description
+                    .col.span_4_of_12
+                        input#description-input.form-control
+                    .col.span_1_of_12
+                        label.control-label(for=provider-profile-list) Provider Profile
+                    .col.span_2_of_12
+                        select#provider-profile-list.form-control
+                    .col.span_2_of_12
+                        label.checkbox-inline
+                            input#evc-llf-checkbox(type="checkbox")
+                            | EVC_LLF enabled
+
+                .section.group
+                    .col.span_6_of_12
+                        div.service-a-end-container
+                    .col.span_6_of_12
+                        div.service-z-end-container
+
+    div(data-template="uni-flow-domain-config-template")
+        div.uni-flow-domain
+            form(role='form').form-horizontal
+
+                .form-group.section-group
+                    .col.span_1_of_12
+                        label.control-label Node
+                    .col.span_11_of_12
+                        hr
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                        label(for="node_input").control-label Node
+                    .col.span_8_of_12
+                        input(type="text").form-control
+                    .col.span_2_of_12
+                        button.k-button Browse
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                    .col.span_3_of_12
+                        label.checkbox-inline
+                            input(type="checkbox")
+                            | OAM enabled
+                    .col.span_1_of_12
+                        label.control-label MEP ID
+                    .col.span_4_of_12
+                        input(type="text").form-control
+
+                .form-group.section-group
+                    .col.span_1_of_12
+                        label.control-label Flow Details
+                    .col.span_11_of_12
+                        hr
+
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                        label.control-label Port
+                    .col.span_8_of_12
+                        input(type="text").form-control
+                    .col.span_2_of_12
+                        button.k-button Browse
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                        label.control-label Bandwidth Profile
+                    .col.span_8_of_12
+                        select.form-control
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                    .col.span_4_of_12
+                        label.radio-inline
+                            input(type="radio")
+                            | KB
+                    .col.span_4_of_12
+                        label.radio-inline
+                            input(type="radio")
+                            | MB
+                .section.group
+                    .col.span_2_of_12
+                    .col.span_4_of_12
+                        .form-group
+                            label CIR (kbps)
+                            input(type="text").form-control
+
+                        .form-group
+                            label EIR (kbps)
+                            input(type="text").form-control
+                    .col.span_4_of_12
+                        .form-group
+                            label CBS (KB)
+                            input(type="text").form-control
+                        .form-group
+                            label EBS (KB)
+                            input(type="text").form-control
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                    .col.span_4_of_12
+                        label.checkbox-inline
+                            input(type="checkbox")
+                            | Color aware policer
+                    .col.span_4_of_12
+                        label.checkbox-inline
+                            input(type="checkbox")
+                            | Coupling flag
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                            label.control-label Service Profile
+                    .col.span_8_of_12
+                            select.form-control
+
+                .form-group.section-group
+                    .col.span_2_of_12
+                        label.control-label Filter Profile
+                    .col.span_8_of_12
+                        select.form-control
+
+                 .section.group
+                     .col.span_2_of_12
+                     .col.span_4_of_12
+                         .form-group
+                             label Outer VLAN ID
+                             input(type="text").form-control
+                     .col.span_4_of_12
+                         .form-group
+                             label Outer VLAN EtherType
+                             input(type="text").form-control

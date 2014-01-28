@@ -1,0 +1,16 @@
+
+<html>
+<head>
+    <script src="./socket.io.min.js"></script>
+    <script>
+    var socket = io.connect('/');
+    socket.emit('alarm_request_made', {
+        url: '/api/v1/alarms',
+        query: {index: 0, count: 25, m: 'get'}
+    });
+    socket.on('alarm_changes', function (data) {
+        console.log(data);
+    })
+    </script>
+</head>
+</html>

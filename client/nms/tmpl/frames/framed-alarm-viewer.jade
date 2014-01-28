@@ -1,0 +1,81 @@
+extends ../_frames-master
+
+block html-templates
+
+    div.cy-alarm-viewer(data-template="cyan-alarm-window-template")
+        div.cy-alarm-toolbar
+            ul.menu.k-dropdown-wrap.k-state-default
+                li Filter Severity
+                    ul
+                        li(severity='Warning')
+                            input(type='checkbox', checked='checked')
+                            span Warning
+                        li(severity='Minor')
+                            input(type='checkbox', checked='checked')
+                            span Minor
+                        li(severity='Major')
+                            input(type='checkbox', checked='checked')
+                            span Major
+                        li(severity='Critical')
+                            input(type='checkbox', checked='checked')
+                            span Critical
+            span Panel
+            select.alarm-panel-selector
+            button.k-button(data-element="close-all-button") Close All
+        div.cy-alarm-panels
+            ul
+
+    div(data-template="cyan-alarm-panel-header-template")
+        span(style="vertical-align:middle")
+            div.cy-alarm-node-label {{ label }}
+
+        div.k-panel-actions
+                    a.k-panel-action.k-link.cyan-button.alarm-viewer-close &times;
+
+        div.cy-alarm-graph(data-template="cyan-alarm-graph-template")
+
+    div(data-template="cy-timeline-tooltip-template")
+        div.cyt-tooltip-container
+            form.form-horizontal(role='form')
+                .form-group
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label Node-ID:
+                        .col.span_10_of_12
+                            .form-text {{ nodeid }}
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label Severity:
+                        .col.span_10_of_12
+                            .form-text {{ severity }}
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label Text:
+                        .col.span_10_of_12
+                            .form-text {{ text }}
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label P. Cause:
+                        .col.span_10_of_12
+                            .form-text {{ pcause }}
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label Started:
+                        .col.span_10_of_12
+                            .form-text {{ started }}
+                    .section.group
+                        .col.span_2_of_12.green
+                            label.control-label End:
+                        .col.span_10_of_12
+                            .form-text {{ ended }}
+
+        style(scoped).
+            .cyt-tooltip-container {
+                width: 350px;
+            }
+            /* clobber kendo' desire to center everything inside a tooltip */
+            .k-tooltip {
+                text-align: left !important;
+            }
+
+

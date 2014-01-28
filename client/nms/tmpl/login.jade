@@ -1,0 +1,26 @@
+extends _page-master
+
+block html-templates
+
+    // login form
+    div.cyan-login-container(data-template='cyan-login-template')
+        div.cyan-login-header Sign in to Planet Operate
+        form
+            div.cyan-login-form
+                div.cyan-login-alert.cyan-login-alert-hidden(data-element='alert')
+                    | Invalid Username - Password
+                    | Combination
+                input.k-textbox.cyan-login-username(data-element='username', type='text', placeholder='User Name', autofocus="autofocus")
+                br
+                input.k-textbox.cyan-login-password(data-element='password', type='password', placeholder='Password')
+                br
+                input.k-checkbox.cyan-login-checkbox(data-elements='remember', type='checkbox')
+                span.cyan-login-span  Keep me Signed In
+                button.cyan-button.cyan-login-button(data-element='submit', type='submit') Sign In
+
+    // login footer
+    div.cyan-login-footer
+        br
+        br
+        br
+        span.cyan-login-copyright Copyright 2013-2014 Cyan, Inc. All Rights Reserved

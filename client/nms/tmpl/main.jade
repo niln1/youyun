@@ -1,0 +1,21 @@
+extends _page-master
+
+block append html-templates
+
+    div(data-template="cyan-affected-services-toolbar-template").k-toolbar.k-grid-toolbar
+        button(data-element="toolbar-item", data-item="export").cyan-affected-services-export-button.cyan-link
+            span.cyan-icon.cyan-icon-export
+            span Export
+
+    div.inline-block.header-alarm-info(data-template="cyan-alarm-info-template")
+        div.master-page-alarm-button.master-page-alarm-critical(data-element="critical-alarm-header") &nbsp;
+        div.master-page-alarm-button.master-page-alarm-major(data-element="major-alarm-header") &nbsp;
+        div.master-page-alarm-button.master-page-alarm-minor(data-element="minor-alarm-header") &nbsp;
+        div.master-page-alarm-button.master-page-alarm-warning(data-element="warning-alarm-header") &nbsp;
+
+    div(data-template="cyan-node-selector-grid-template")
+        div.cyan-node-selector-grid
+        style(scoped).
+            .cyan-node-selector-grid {
+                margin-bottom: 5px;
+            }

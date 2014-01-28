@@ -1,0 +1,71 @@
+
+/* container for all grunts. Z position should be topmost */
+.gruntContainer {
+  position: fixed;
+  top: 4em;
+  right: 1em;
+  z-index: 50000;
+}
+
+/* style for a grunt */
+.grunt {
+  position:relative;
+  border-radius: 9px;
+  border: 3px white solid;
+  -moz-box-shadow: 4px 4px 2px 1px #aaa;
+  -webkit-box-shadow: 4px 4px 2px 1px #aaa;
+  box-shadow: 4px 4px 2px 1px #aaa;
+  opacity: 0.8;
+  padding: 0.25em;
+  color: white;
+  margin-bottom: 0.5em;
+  min-height: 2em;
+  transition: 0.25s left;
+}
+
+.grunt:hover {
+  opacity: 1;
+}
+.grunt-nudge {
+  left: -2em;
+}
+
+/* colors for grunts */
+.grunt-orange {
+  background-color: orangered;
+}
+.grunt-green{
+  background-color: darkgreen;
+}
+.grunt-blue {
+  background-color: dodgerblue;
+}
+.grunt-red {
+  background-color: red;
+}
+
+/* count element in a grunt */
+.gruntCount {
+  display: inline-block;
+  margin-right: 0.25em;
+  vertical-align:top;
+}
+.gruntText {
+  display:inline-block;
+  margin-right: 0.25em;
+  max-width: 30em;
+}
+.gruntClose {
+  width: 26px;
+  height: 26px;
+  background-image: url(/nms/img/close.png);
+  background-repeat:no-repeat;
+  overflow:hidden;
+  display: inline-block;
+  float: right;
+  opacity: 0.8;
+  cursor:pointer;
+}
+.gruntClose:hover {
+  opacity: 1.0;
+}

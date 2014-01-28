@@ -1,0 +1,360 @@
+block html-templates
+
+// template for timeline
+div.alarm-timeline(data-template="timeline")
+
+    div.alarm-timeline-content(data-element="content")
+        div.alarm-future.hidden(data-element="future")
+        div.alarm-zoom-buttons.hidden(data-element="zoom-holder")
+            div.alarm-zoom-button-plus(data-element="plus") +
+            div.alarm-zoom-button-minus(data-element="minus") -
+        div.alarm-timeline-emptylabel(data-element="empty-label") No Alarms
+        div.alarm-timeline-mouselabel.no-select.hidden(data-element="mouselabel")
+
+    div.alarm-timeline-time-scale.no-select-no-mouse.hidden(data-element="time-scale")
+    div.alarm-timelime-slider.hidden(data-element="slider")
+        div.alarm-start-time.no-select
+            div.alarm-start-inner(data-element="start-time")
+        div.alarm-scroller(data-element="scroller")
+            div.alarm-scroll-thumb(data-element="thumb")
+        div.alarm-end-time.no-select
+            div.alarm-end-inner(data-element="end-time")
+
+div.master-page-view-label
+
+div.master-page-alarm-button
+
+// template for the filter clear button used to input boxes
+
+div.cyan-autocomplete(data-template='cyan-autocomplete-template')
+    input.cyan-autocomplete-input
+    a.cyan-autocomplete-button.k-button.cyan-filter-box-button
+        span.k-icon.k-i-close
+
+div(data-template="tree-view-template")
+
+span(data-template="range-picker-template")
+    span Start
+    input.cyan-time-picker(data-element="start")
+    span End
+    input.cyan-time-picker(data-element="end")
+
+
+div(data-template='cyan-split-view-container-template').no-overflow.cyan-main-root-view
+
+div(data-template='cyan-split-view-template').cyan-split-view.no-overflow
+    div.no-overflow
+
+// template for primary tabs content
+div.tab-view.cyan-split-view(data-template='cyan-tab-panel-template')
+    div.tabHeader(data-element="header")
+    div.tabContent.k-header(data-element="content")
+
+// individual tab header
+div.tabHeaderButton.k-header(data-template='tab-header-button-template')
+div.tabContentPlaceHolder(data-template='tab-content-place-holder-template')
+
+
+iframe.cy-iframe(data-template="cy-iframe-template", seamless)
+
+// grunt error / message display templates
+div.gruntContainer(data-template="grunt-container-template")
+div.grunt(data-template="grunt-template")
+    div.gruntCount(data-element="grunt-count")
+    div.gruntText(data-element="grunt-text")
+    div.gruntClose(data-element="grunt-close")
+
+// for simple lists, i.e. in a debug console
+div(data-template="simple-console-template")
+    p
+        b(data-element="results")
+    div.simple-list
+    style(scoped).
+        .simple-list {
+            width: 100%;
+            max-height: 400px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border: 1px solid lightgray;
+            margin-bottom: 8px;
+        }
+
+div(data-template="browser-pass")
+    div.browser-pass
+    style(scoped).
+        .browser-pass {
+            width: -webkit-calc(100% - 10px);
+            width: -moz-calc(100% - 10px);
+            width: calc(100% - 10px);
+            border: 1px solid green;
+            background-color: rgba(0, 255, 0, 0.3);
+            color: black;
+            margin:2px;
+            text-indent:0.5em;
+        }
+
+div(data-template="browser-fail")
+    div.browser-fail
+    style(scoped).
+        .browser-fail {
+            width: -webkit-calc(100% - 10px);
+            width: -moz-calc(100% - 10px);
+            width: calc(100% - 10px);
+            border: 1px solid red;
+            background-color: rgba(255, 0, 0, 0.3);
+            color: black;
+            margin:2px;
+            text-indent:0.5em;
+        }
+
+// form test
+div(data-template="form-test-template")
+    div.form-test
+        .section.group
+            .col.span_8_of_12.red
+                form(role='form')
+                    .form-group
+                        label(for='exampleInputEmail1') Email address
+                        input#exampleInputEmail1.form-control(type='email', placeholder='Enter email')
+                    .form-group
+                        label(for='exampleInputPassword1') Password
+                        input#exampleInputPassword1.form-control(type='password', placeholder='Password')
+                    .form-group
+                        p.help-block Example block-level help text here.
+                    .form-group
+                        button.k-button Submit
+
+            .col.span_4_of_12.red Hello World
+
+        .section.group
+            .col.span_9_of_12.blue
+                form.form-inline(role='form')
+                    .form-group
+                        label.sr-only(for='exampleInputEmail2') Email address
+                        input#exampleInputEmail2.form-control(type='email', placeholder='Enter email')
+                    .form-group
+                        label.sr-only(for='exampleInputPassword2') Password
+                        input#exampleInputPassword2.form-control(type='password', placeholder='Password')
+                    .checkbox-inline
+                        label.control-label
+                            input(type='checkbox')
+                            | Remember me
+                    button.k-button(type='submit') Sign in
+            .col.span_3_of_12.blue Hello World
+
+
+        .section.group
+            .section.group
+                .col.span_6_of_12.green
+                    form.form-horizontal(role='form')
+                        .form-group
+                            .section.group
+                                .col.span_2_of_12.green
+                                    label.control-label(for='inputEmail3') Email
+                                .col.span_10_of_12.green
+                                    input#inputEmail3.form-control(type='email', placeholder='Email')
+
+                        .form-group
+                            .section.group
+                                .col.span_2_of_12.green
+                                    label.control-label(for='inputPassword3') Password
+                                .col.span_10_of_12.green
+                                    input#inputPassword3.form-control(type='password', placeholder='Password')
+
+                        .form-group
+                            .section.group
+                                .col.span_2_of_12.green
+                                .col.span_10_of_12.green
+                                    .checkbox
+                                        label.control-label Remember me
+                                            input(type='checkbox')
+
+                        .form-group
+                            .section.group
+                                .col.span_2_of_12.green
+                                .col.span_10_of_12.green
+                                    button.k-button(type="submit") Sign In
+                .col.span_6_of_12.blue Hello World
+
+        .section.group
+            .col.span_7_of_12.green
+                form.form-horizontal(role='form')
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label(for='ta1') Describe
+                        .col.span_10_of_12.green
+                            textarea#ta1.form-control(rows="3", placeholder='Describe something...')
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label(for='selector1') Combobox
+                        .col.span_10_of_12.green
+                            input#selector1(placeholder="Make a selection")
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label(for='selector2') Dropdown
+                        .col.span_10_of_12.green
+                            input#selector2(value="1")
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                        .col.span_10_of_12.green
+                            .checkbox
+                                label.control-label Remember me
+                                    input(type='checkbox')
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label Stacked Radios
+                        .col.span_10_of_12.green
+                            .radio
+                                label
+                                    input#optionsRadios1(type='radio', name='optionsRadios', value='option1', checked='checked')
+                                    | Option one
+                            .radio
+                                label
+                                    input#optionsRadios2(type='radio', name='optionsRadios', value='option2')
+                                    | Option two
+
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label Inline Inputs
+                        .col.span_10_of_12.green
+                            label.checkbox-inline
+                                input#inlineCheckbox1(type='checkbox', value='option1')
+                                | 1
+                            label.checkbox-inline
+                                input#inlineCheckbox2(type='checkbox', value='option2')
+                                | 2
+                            label.checkbox-inline
+                                input#inlineCheckbox3(type='checkbox', value='option3')
+                                | 3
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                            label.control-label
+                        .col.span_10_of_12.green
+                            span.form-inline-text Units
+                            label.radio-inline
+                                input#inlineRadio1(name="opt2", type='radio', value='option1')
+                                | 1
+                            label.radio-inline
+                                input#inlineRadio2(name="opt2", type='radio', value='option2')
+                                | 2
+                            label.radio-inline
+                                input#inlineRadio3(name="opt2", type='radio', value='option3')
+                                | 3
+
+                    .form-group.section.group
+                        .col.span_2_of_12.green
+                        .col.span_10_of_12.green
+                            button.k-button(type="submit") Ok
+                            button.k-button Cancel
+
+            .col.span_5_of_12.blue Hello World
+
+    style(scoped).
+        .form-test {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border: 1px solid lightgray;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .red {
+            background-color: whitesmoke;
+        }
+        .blue {
+            background-color: whitesmoke;
+        }
+        .green {
+            background-color: whitesmoke;
+        }
+
+
+div(data-template="cyan-grid-combo-toolbar-template").k-toolbar.k-grid-toolbar
+    div.vertical-align-middle.inline-block(data-element="filter-box",data-item="filter")
+    button(data-item="acknowledge",disabled="disabled").cyan-alarmgrid-ack-button.cyan-link
+
+    button(data-item="copy-to-clipboard", disabled="disabled").cyan-alarmgrid-ack-button.cyan-link
+        span.cyan-icon.cyan-icon-ack
+        span Copy
+
+    button(data-item="acknowledge").cyan-alarmgrid-ack-button.cyan-link(disabled="disabled")
+        span.cyan-icon.cyan-icon-ack
+        span Acknowledge
+    button(data-item="viewer", disabled="disabled").cyan-alarmgrid-viewer-button.cyan-link
+        span.cyan-icon.cyan-icon-viewer
+        span Alarm View
+    button(data-item="show-affected-services", disabled="disabled").cyan-show-affected-trail-button.cyan-link
+        span.cyan-icon.cyan-icon-affected-services
+        span Services
+
+div(data-template="cyan-date-time-picker-template")
+    div.cyan-date-time-picker
+        div(data-element="date")
+        div
+            input(data-element="time")
+    style(scoped).
+        .cyan-date-time-picker {
+            margin-bottom: 5px;
+        }
+        .k-timepicker {
+            width: 100%;
+        }
+
+div(data-template="cyan-alarm-ranges-template")
+    .range-picker
+        .range-calendar(data-element="start-cal")
+        .range-time-picker
+            p Time - 24hr Format:
+            input.range-time.k-block(data-element="start-hour", placeholder="Hour", maxlength="2")
+            .range-colon :
+            input.range-time.k-block(data-element="start-minutes", placeholder="Minutes", maxlength="2")
+            .range-colon :
+            input.range-time.k-block(data-element="start-seconds", placeholder="Seconds", maxlength="2")
+
+    .range-picker
+        .range-calendar(data-element="end-cal")
+        .range-time-picker
+            p Time - 24hr Format:
+            input.range-time.k-block(data-element="end-hour", placeholder="Hour", maxlength="2")
+            .range-colon :
+            input.range-time.k-block(data-element="end-minutes", placeholder="Minutes", maxlength="2")
+            .range-colon :
+            input.range-time.k-block(data-element="end-seconds", placeholder="Seconds", maxlength="2")
+
+    hr
+
+        
+div(data-template="cyan-services-toolbar-template").k-toolbar.k-grid-toolbar
+    div.vertical-align-middle.inline-block(data-element="filter-box",data-item="filter")
+    button(data-element="toolbar-item", data-item="new-services").cyan-services-new-button.cyan-link
+        span.cyan-icon.cyan-icon-new
+        span New
+    button(data-element="toolbar-item", data-item="related-services").cyan-link
+        span.cyan-icon.cyan-icon-related-services
+        span Related Services
+    button(data-element="toolbar-item", data-item="service-details").cyan-link
+        span.cyan-icon.cyan-icon-service-details
+        span Service Details
+
+div(data-template="cyan-node-selector-grid-template")
+    div.cyan-node-selector-grid
+    style(scoped).
+        .cyan-node-selector-grid {
+            margin-bottom: 5px;
+        }
+
+div(data-template="cyan-ports-selector-grid-template")
+    div.cyan-ports-selector-grid
+    style(scoped).
+        .cyan-ports-selector-grid {
+            margin-bottom: 5px;
+        }
