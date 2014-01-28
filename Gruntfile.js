@@ -30,6 +30,7 @@ module.exports = function(grunt) {
         tsSrc = nconf.get('module') + '/js/**/*.ts',
         tsTmpDir = nconf.get('tmp-dir-build'),
         tmplSrc = nconf.get('module') + '/js/**/*.jade',
+        compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
         oldTmplSrc = [nconf.get('module') + '/tmpl/**/*.jade', '!' + nconf.get('module') + '/tmpl/**/_*.jade'],
         tmplTmpDir = nconf.get('tmp-dir-build') + '/tmpl',
         viewsOutDir = nconf.get('out-dir'),
@@ -255,7 +256,9 @@ module.exports = function(grunt) {
         jade: {
             'tmpl-dev': {
                 options: {
-                    pretty: true
+                    pretty: true,
+                    namespace: false,
+                    client: true
                 },
                 files: [{
                     expand: true,
@@ -266,13 +269,42 @@ module.exports = function(grunt) {
                 }]
             },
             'tmpl-prod': {
-                options: {},
+                options: {
+                    namespace: false,
+                    client: true
+                },
                 files: [{
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
                     ext: '.tmpl'
+                }]
+            }
+        },
+        autowrap: {
+            dev: {
+                options: {
+                    wrapType: 'amd'
+                },
+                files: [{
+                    expand: true,
+                    cwd: tsTmpDir,
+                    src: [compiledTmplSrc],
+                    dest: nconf.get('out-dir-dev'),
+                    ext: '.js'
+                }]
+            },
+            prod: {
+                options: {
+                    wrapType: 'amd'
+                },
+                files: [{
+                    expand: true,
+                    cwd: tsTmpDir,
+                    src: [compiledTmplSrc],
+                    dest: tsTmpDir,
+                    ext: '.js'
                 }]
             }
         },
@@ -340,8 +372,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('css', ['sass:prod']);
     grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
-    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'exec:tmpl-prod', 'ts-prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'exec:tmpl-dev', 'ts-dev']);
+    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
+    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
 
