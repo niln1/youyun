@@ -26,4 +26,13 @@ module.exports = [{
         'description': 'List the students in a class managed by the User',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/classes/instructors/read',
+    'GET': {
+        'handler': classes.readInstructorsByClasses,
+        'required': [parameters.signature, parameters.classId],
+        'optional': [],
+        'description': 'List the instructors in a class managed by the User',
+        'response': {} // sample data
+    }
 }];
