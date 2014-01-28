@@ -15,17 +15,29 @@ exports.readClasses = function(req, res) {
 };
 
 exports.readStudentsByClasses = function(req, res) {
-    apiServer.verifySignature(req, res, findClassesByUserId); // todo change
+    apiServer.verifySignature(req, res, findStudentsByUserId); // todo change
 }
 
+//-----------------helpers--------------------//
+
 function findClassesByUserId(req, res) {
-    if (req.session.user.userType < 2) {
+    var userType = req.session.user.userType;
+    if (userType < 2) {
         findClassesByAdminId(req, res);
-    } else {
+    } else if (userType == 3) {
         findClassesByTeacherId(req, res);
+    } else {
+        apiServer.sendError();
+        console.log("Err: Cannot find classes using student / parent id")
     }
 }
 
+function findStudentsByUserId(req, res) {
+    var userType = req.session.user.userType;
+    findUsersByClassIdAndUserType(req, res, "students");
+}
+
+//----------------queries--------------------//
 function findClassesByTeacherId(req, res) {
     console.log("finding from teacher");
     var teacherId = req.session.user._id;
@@ -52,6 +64,25 @@ function findClassesByAdminId(req, res) {
             console.log(err);
         } else {
             apiServer.sendResponse(req, res, classes, desc);
+        }
+    });
+}
+
+/** 
+ * classUserType : students, instructors
+ */
+function findUsersByClassIdAndUserType(req, res, classUserType) {
+    console.log("finding users in a class");
+    var classId = req.query.classId;
+    var desc = "List all " + classUserType + " in that class";
+    Class.findOne({
+        _id: classId
+    }).populate(classUserType).exec(function(err, classes) {
+        if (err) {
+            apiServer.sendError();
+            console.log(err);
+        } else {
+            apiServer.sendResponse(req, res, classes[classUserType], desc);
         }
     });
 }
