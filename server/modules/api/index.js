@@ -115,7 +115,8 @@ function isValidQueryParamsType(req, res, query) {
                         break;
                     default:
                         console.log("Err:" + queryData);
-                        break;
+                        invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                        return false;
                 }
             }
         })
