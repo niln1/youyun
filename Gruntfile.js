@@ -184,7 +184,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: nconf.get('css-src-dir'),
+                    cwd: nconf.get('css-dest-dir-dev'),
                     src: ['**/*.sass', '!**/_*.sass', '**/*.scss', '!**/_*.scss'],
                     dest: nconf.get('css-dest-dir-dev'),
                     ext: '.css'
