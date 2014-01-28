@@ -1,10 +1,11 @@
 {
     "SERVER_NAME": "YouYun Server",
+    "ENV": "development",
     "HOST": "localhost",
     "PORT": 3000,
     "PROTOCOL": "http",
     "COOKIE_KEY": "yy.sid",
-    "COOKIE_MAXAGE": 900000,
+    "COOKIE_MAXAGE": 604800000,
     "COOKIE_SECRET": "cac9904545bae07cb09bad9dab7f3ced",
     "REDIS_HOST": "localhost",
     "REDIS_PORT": 6379,

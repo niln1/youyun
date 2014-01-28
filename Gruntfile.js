@@ -19,52 +19,53 @@ module.exports = function(grunt) {
         'in-dir': 'client',
         'out-dir': 'production',
         'out-dir-dev': 'development',
-        'tmp-dir-build': '.tmp-build'
-    }).defaults({
-        // Define build specific directories
-        // Global directories is included twice because otherwise nconf won't be able to use these
-        // global directories
-        'in-dir': 'client',
-        'out-dir': 'production',
-        'out-dir-dev': 'development',
+        'views-dir': 'server/views',
         'tmp-dir-build': '.tmp-build',
-        'css-src-dir': nconf.get('in-dir') + '/css',
-        'css-dest-dir': nconf.get('out-dir') + '/css',
-        'css-dest-dir-dev': nconf.get('out-dir-dev') + '/css',
-        'ts-views-dir': 'server/views',
-        'ts-src-dir': nconf.get('in-dir') + '/js',
-        'ts-tmp-dir': nconf.get('tmp-dir-build') + '/ts',
-        'ts-dest-dir': nconf.get('out-dir') + '/js',
-        'ts-dest-dir-dev': nconf.get('out-dir-dev') + '/js',
-        'tmpl-src-dir': nconf.get('in-dir') + '/tmpl',
-        'tmpl-tmp-dir': nconf.get('tmp-dir-build') + '/tmpl',
-        'tmpl-dest-dir': nconf.get('out-dir') + '/js',
-        'tmpl-dest-dir-dev': nconf.get('out-dir-dev') + '/js'
+        'module': '*'
     });
 
+    var outDir = nconf.get('out-dir'),
+        outDirDev = nconf.get('out-dir-dev'),
+        cssSrc = nconf.get('module') + '/css/**/*',
+        tsSrc = nconf.get('module') + '/js/**/*.ts',
+        tsTmpDir = nconf.get('tmp-dir-build'),
+        tmplSrc = nconf.get('module') + '/js/**/*.jade',
+        oldTmplSrc = [nconf.get('module') + '/tmpl/**/*.jade', '!' + nconf.get('module') + '/tmpl/**/_*.jade'],
+        tmplTmpDir = nconf.get('tmp-dir-build') + '/tmpl',
+        viewsOutDir = nconf.get('out-dir'),
+        viewsOutDirDev = nconf.get('out-dir-dev'),
+        viewsSrc = [
+            nconf.get('module') + '/**/*.jade',
+            '!' + nconf.get('module') + '/**/_*.jade'
+        ];
+
+    if (nconf.get('out')) {
+        outDir = nconf.get('out');
+        outDirDev = nconf.get('out');
+    }
+
+    nconf.set('css-src', nconf.get('module') + '/css/**/*');
+    nconf.set('ts-src', nconf.get('module') + '/js/**/*');
+    nconf.set('ts-tmp-dir', nconf.get('tmp-dir-build') + '/ts');
+    nconf.set('tmpl-src', nconf.get('module') + '/tmpl/**/*.jade');
+    nconf.set('tmpl-tmp-dir', nconf.get('tmp-dir-build') + '/tmpl');
+
     // Symlink all folder / files except the ones in js, css & tmpl
-    var others = ['**/*', '!js/**/*', '!js', '!css/**/*', '!css', '!tmpl/**/*', '!tmpl'];
-    var cleanOthers = [
-        nconf.get('out-dir') + '/**/*',
-        '!' + nconf.get('out-dir') + '/js/**/*',
-        '!' + nconf.get('out-dir') + '/css/**/*',
-        '!' + nconf.get('out-dir') + '/tmpl/**/*',
-        '!' + nconf.get('out-dir') + '/js',
-        '!' + nconf.get('out-dir') + '/css',
-        '!' + nconf.get('out-dir') + '/tmpl',
-        nconf.get('out-dir-dev') + '/**/*',
-        '!' + nconf.get('out-dir-dev') + '/js/**/*',
-        '!' + nconf.get('out-dir-dev') + '/css/**/*',
-        '!' + nconf.get('out-dir-dev') + '/tmpl/**/*',
-        '!' + nconf.get('out-dir-dev') + '/js',
-        '!' + nconf.get('out-dir-dev') + '/css',
-        '!' + nconf.get('out-dir-dev') + '/tmpl'
+    var others = [
+        nconf.get('module') + '/**/*',
+        '!' + nconf.get('module') + '/js/**',
+        '!' + nconf.get('module') + '/css/**',
+        '!' + nconf.get('module') + '/tmpl/**'
     ];
-    var watchOthers = [
-        nconf.get('in-dir') + '/**/*',
-        '!' + nconf.get('in-dir') + '/js/**/*',
-        '!' + nconf.get('in-dir') + '/css/**/*',
-        '!' + nconf.get('in-dir') + '/tmpl/**/*'
+    var cleanOthers = [
+        outDir + '/' + nconf.get('module') + '/**/*',
+        '!' + outDir + '/' + nconf.get('module') + '/js/**',
+        '!' + outDir + '/' + nconf.get('module') + '/css/**',
+        '!' + outDir + '/' + nconf.get('module') + '/tmpl/**',
+        outDirDev + '/' + nconf.get('module') + '/**/*',
+        '!' + outDirDev + '/' + nconf.get('module') + '/js/**',
+        '!' + outDirDev + '/' + nconf.get('module') + '/css/**',
+        '!' + outDirDev + '/' + nconf.get('module') + '/tmpl/**'
     ];
 
     /************************************************************************************
@@ -73,37 +74,46 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         clean: {
-            all: [nconf.get('out-dir'), nconf.get('out-dir-dev'), nconf.get('tmp-dir-build')],
-            css: [nconf.get('css-dest-dir'), nconf.get('css-dest-dir-dev')],
-            ts: [nconf.get('ts-dest-dir'), nconf.get('ts-dest-dir-dev'), nconf.get('ts-tmp-dir')],
-            tmpl: cleanOthers,
+            all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
+            css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
+            ts: [outDir + '/' + nconf.get('module') + '/js', outDirDev + '/' + nconf.get('module') + '/js', tsTmpDir + '/' + nconf.get('module') + '/ts'],
+            tmpl: [outDir + '/' + nconf.get('module') + '/tmpl', outDirDev + '/' + nconf.get('module') + '/tmpl', tsTmpDir + '/' + nconf.get('module') + '/tmpl'],
             others: cleanOthers
         },
         symlink: {
             css: {
                 files: [{
                     expand: true,
-                    cwd: nconf.get('css-src-dir'),
-                    src: ['**/*'],
-                    dest: nconf.get('css-dest-dir-dev'),
+                    cwd: nconf.get('in-dir'),
+                    src: [cssSrc],
+                    dest: outDirDev,
                     filter: 'isFile'
                 }]
             },
             js: {
                 files: [{
                     expand: true,
-                    cwd: nconf.get('ts-src-dir'),
-                    src: ['**/*'],
-                    dest: nconf.get('ts-tmp-dir'),
+                    cwd: nconf.get('in-dir'),
+                    src: [tsSrc],
+                    dest: tsTmpDir,
+                    filter: 'isFile'
+                }]
+            },
+            'js-tmp-others': {
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: others,
+                    dest: tsTmpDir,
                     filter: 'isFile'
                 }]
             },
             'js-dev': {
                 files: [{
                     expand: true,
-                    cwd: nconf.get('ts-src-dir'),
-                    src: ['**/*'],
-                    dest: nconf.get('ts-dest-dir-dev'),
+                    cwd: nconf.get('in-dir'),
+                    src: [tsSrc],
+                    dest: outDirDev,
                     filter: 'isFile'
                 }]
             },
@@ -112,7 +122,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: others,
-                    dest: nconf.get('out-dir-dev'),
+                    dest: outDirDev,
                     filter: 'isFile'
                 }]
             }
@@ -123,7 +133,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: others,
-                    dest: nconf.get('out-dir')
+                    dest: outDir
                 }]
             }
         },
@@ -143,7 +153,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: ['**/*.html'],
-                    dest: nconf.get('out-dir'),
+                    dest: outDir,
                     filter: 'isFile'
                 }]
             }
@@ -154,7 +164,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: ['**/*.json'],
-                    dest: nconf.get('out-dir'),
+                    dest: outDir,
                     filter: 'isFile'
                 }]
             }
@@ -169,9 +179,9 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: nconf.get('css-src-dir'),
+                    cwd: nconf.get('in-dir'),
                     src: ['**/*.sass', '!**/_*.sass', '**/*.scss', '!**/_*.scss'],
-                    dest: nconf.get('css-dest-dir'),
+                    dest: outDir,
                     ext: '.min.css'
                 }]
             },
@@ -184,49 +194,55 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: nconf.get('css-src-dir'),
+                    cwd: outDirDev,
                     src: ['**/*.sass', '!**/_*.sass', '**/*.scss', '!**/_*.scss'],
-                    dest: nconf.get('css-dest-dir-dev'),
+                    dest: outDirDev,
                     ext: '.css'
                 }]
-            }
-        },
-        ts: {
-            dev: {
-                src: [nconf.get('ts-dest-dir-dev') + '/**/*.ts'],
-                options: {
-                    target: 'es5',
-                    module: 'amd',
-                    sourcemap: true,
-                    declaration: false,
-                    comments: false
-                }
-            },
-            prod: {
-                src: [nconf.get('ts-tmp-dir') + '/**/*.ts'],
-                options: {
-                    target: 'es5',
-                    module: 'amd',
-                    sourcemap: false,
-                    declaration: false,
-                    comments: false
-                }
             }
         },
         exec: {
             js: {
                 command: function() {
-                    var template = handlebars.compile('grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | sed "s|^\\\/||; s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;s|\\\.js|\\\.min\\\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs(["`basename "$file"`"]);" >> "$outfile"; fi; done');
+                    var template = handlebars.compile('grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;s|\\\.js|\\\.min\\\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs([\\\"`basename "$file"`\\\"]);" >> "$outfile"; fi; done');
                     var options = {
-                        VIEW: nconf.get('ts-views-dir'),
-                        TMP: nconf.get('ts-tmp-dir'),
-                        DEST: nconf.get('ts-dest-dir'),
-                        STATIC: 'static\\\/js'
+                        VIEW: nconf.get('views-dir') + '/' + nconf.get('module'),
+                        TMP: tsTmpDir + '\\\/',
+                        DEST: outDir + '\\\/',
+                        STATIC: '^\\\/'
                     }
                     return template(options);
                 },
                 stdout: true,
                 stderr: true
+            },
+            'tmpl-dev': {
+                command: function() {
+                    var template = handlebars.compile('find {{TMP}} -name "*.{{EXT}}" | while read file; do outfile=`echo "$file" | sed "s|{{TMP}}|{{DEST}}|; s|\\\.{{EXT}}|\\\.js|"`; handlebarsPath="{{HANDLEBARS}}"; echo "File \"$outfile\" created."; mkdir -p `dirname "$outfile"`; node_modules/handlebars/bin/handlebars "$file" -h "$handlebarsPath" -e "{{EXT}}" -r "`dirname $file`" -f "$outfile" -n "{{NAMESPACE}}" --amd {{ADDITIONAL}}; done');
+                    var options = {
+                        TMP: tsTmpDir,
+                        EXT: 'tmpl',
+                        DEST: outDirDev,
+                        NAMESPACE: 'Handlebars.templates',
+                        HANDLEBARS: 'core/lib/handlebars/js/',
+                        ADDITIONAL: ''
+                    };
+                    return template(options);
+                }
+            },
+            'tmpl-prod': {
+                command: function() {
+                    var template = handlebars.compile('find {{TMP}} -name "*.{{EXT}}" | while read file; do outfile=`echo "$file" | sed "s|{{TMP}}|{{DEST}}|; s|\\\.{{EXT}}|\\\.js|"`; moduleDir=`echo "$outfile" | perl -pe "s|^.*?\\\/.*?\\\/||; s|.*?\\\/|\\\.\\\.\\\/|g;"`; moduleDir=`dirname "$moduleDir"`; handlebarsPath="$moduleDir/{{HANDLEBARS}}"; echo "File \"$outfile\" created."; mkdir -p `dirname "$outfile"`; node_modules/handlebars/bin/handlebars "$file" -h "$handlebarsPath" -e "{{EXT}}" -r "`dirname $file`" -f "$outfile" -n "{{NAMESPACE}}" --amd {{ADDITIONAL}}; done');
+                    var options = {
+                        TMP: tsTmpDir,
+                        EXT: 'tmpl',
+                        DEST: tsTmpDir,
+                        NAMESPACE: 'Handlebars.templates',
+                        HANDLEBARS: 'lib/handlebars/js/',
+                        ADDITIONAL: '--min'
+                    };
+                    return template(options);
+                }
             },
             install: {
                 command: function() {
@@ -237,106 +253,104 @@ module.exports = function(grunt) {
             }
         },
         jade: {
-            dev: {
+            'tmpl-dev': {
                 options: {
-                    pretty: true,
+                    pretty: true
                 },
                 files: [{
                     expand: true,
-                    cwd: nconf.get('tmpl-src-dir'),
-                    src: ['**/*.jade'],
-                    dest: nconf.get('tmpl-tmp-dir'),
+                    cwd: nconf.get('in-dir'),
+                    src: [tmplSrc],
+                    dest: tsTmpDir,
                     ext: '.tmpl'
                 }]
             },
-            prod: {
+            'tmpl-prod': {
                 options: {},
                 files: [{
                     expand: true,
-                    cwd: nconf.get('tmpl-src-dir'),
-                    src: ['**/*.jade'],
-                    dest: nconf.get('tmpl-tmp-dir'),
+                    cwd: nconf.get('in-dir'),
+                    src: [tmplSrc],
+                    dest: tsTmpDir,
                     ext: '.tmpl'
-                }]
-            }
-        },
-        handlebars: {
-            dev: {
-                options: {
-                    namespace: "Handlebars.templates",
-                    processName: function(filePath) {
-                        return filePath.replace(nconf.get('tmpl-tmp-dir') + "/", "").replace(".tmpl", "");
-                    }
-                },
-                files: [{
-                    src: nconf.get('tmpl-tmp-dir') + '/**/*.tmpl',
-                    dest: nconf.get('tmpl-dest-dir-dev') + '/templates.js'
-                }]
-            },
-            prod: {
-                options: {
-                    namespace: "Handlebars.templates",
-                    processName: function(filePath) {
-                        return filePath.replace(nconf.get('tmpl-tmp-dir') + "/", "").replace(".tmpl", "");
-                    }
-                },
-                files: [{
-                    src: nconf.get('tmpl-tmp-dir') + '/**/*.tmpl',
-                    dest: nconf.get('tmpl-dest-dir') + '/templates.min.js'
-                }]
-            }
-        },
-        uglify: {
-            tmpl: {
-                files: [{
-                    src: nconf.get('tmpl-dest-dir') + '/templates.min.js',
-                    dest: nconf.get('tmpl-dest-dir') + '/templates.min.js'
                 }]
             }
         },
         watch: {
             ts: {
-                files: nconf.get('ts-src-dir') + '/**/*',
+                files: tsSrc,
                 tasks: ['clean:ts', 'js-dev'],
                 options: {
-                    debounceDelay: 250,
+                    cwd: nconf.get('in-dir'),
+                    debounceDelay: 250
                 }
             },
             css: {
-                files: nconf.get('css-src-dir') + '/**/*',
+                files: cssSrc,
                 tasks: ['clean:css', 'css-dev'],
                 options: {
-                    debounceDelay: 250,
-                }
-            },
-            tmpl: {
-                files: nconf.get('tmpl-src-dir') + '/**/*',
-                tasks: ['clean:tmpl', 'tmpl-dev'],
-                options: {
-                    debounceDelay: 250,
+                    cwd: nconf.get('in-dir'),
+                    debounceDelay: 250
                 }
             },
             others: {
-                files: watchOthers,
+                files: others,
                 tasks: ['clean:others', 'others-dev'],
                 options: {
-                    debounceDelay: 250,
+                    cwd: nconf.get('in-dir'),
+                    debounceDelay: 250
                 }
             }
         }
     });
 
+    function compileTs(tsSrcDir, enableSrcMap, callback) {
+        return function() {
+            // read all subdirectories from typescript folder
+            grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
+                // get the current ts config
+                var ts = grunt.config.get('ts') || {};
+                var module = dir.replace(nconf.get('in-dir') + '/', "");
+
+                var dirTsSrc = [tsSrcDir + '/' + module + '/**/*.ts', '!' + tsSrcDir + '/' + module + '/**/*.d.ts'];
+                ts[dir] = {
+                    src: dirTsSrc,
+                    options: {
+                        target: 'es5',
+                        module: 'amd',
+                        sourcemap: enableSrcMap,
+                        declaration: false,
+                        comments: false
+                    }
+                }
+                // save the new ts config
+                grunt.config.set('ts', ts);
+            });
+            // when finished run the compiler
+            grunt.task.run('ts');
+            // call the callback
+            if (callback) callback();
+        }
+    };
+
+    grunt.registerTask('ts-dev', 'Compile typescript files in development', compileTs(outDirDev, true));
+    grunt.registerTask('ts-prod', 'Compile typescript files in production', compileTs(tsTmpDir, false));
+
     grunt.registerTask('install', ['exec:install']);
 
     grunt.registerTask('css', ['sass:prod']);
-    grunt.registerTask('css-dev', ['sass:dev', 'symlink:css']);
-    grunt.registerTask('js', ['symlink:js', 'ts:prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['symlink:js-dev', 'ts:dev']);
+    grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
+    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'exec:tmpl-prod', 'ts-prod', 'exec:js']);
+    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'exec:tmpl-dev', 'ts-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
-    grunt.registerTask('tmpl', ['jade:prod', 'handlebars:prod', 'uglify:tmpl']);
-    grunt.registerTask('tmpl-dev', ['jade:dev', 'handlebars:dev']);
 
-    grunt.registerTask('build', ['clean:all', 'css', 'js', 'tmpl', 'others']);
-    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'tmpl-dev', 'others-dev']);
+    grunt.registerTask('watch-ts', ['watch:ts']);
+    grunt.registerTask('watch-css', ['watch:css']);
+    grunt.registerTask('watch-others', ['watch:others']);
+
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
+
+    grunt.registerTask('default', ['install', 'build']);
 };

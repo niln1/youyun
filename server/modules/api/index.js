@@ -69,6 +69,62 @@ function isValidQueryParams(req, res, queryParams) {
     }
 };
 
+
+function isValidQueryParamsType(req, res, query) {
+    var optionalParamsList = apiSpec[req.path][req.method]['optional'];
+    var requiredParamsList = apiSpec[req.path][req.method]['required'];
+    var paramsList = optionalParamsList.concat(requiredParamsList);
+    // verifying if the query parameters supplied are valid query parameters
+    __.each(query, function(queryData, queryKey) {
+        __.each(paramsList, function(parameter) {
+            if (parameter['param'] == queryKey) {
+                switch (parameter['type']) {
+                    case 'string':
+                        console.log("Check String: " + queryData);
+                        if (__.isString(queryData) && queryData.length != 0) {
+                            break;
+                        } else {
+                            invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
+                    case 'list':
+                        console.log("Check List: " + queryData.split(',') + "  " + queryData.split(',').length);
+                        if (__.isArray(queryData.split(',')) && queryData.length != 0) {
+                            break;
+                        } else {
+                            invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
+                    case 'number':
+                        console.log("Check Number: " + queryData);
+                        if (Number(queryData) != NaN && queryData.length != 0) {
+                            break;
+                        } else {
+                            invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
+                        break;
+                    case 'boolean':
+                        console.log("Check Boolean: " + queryData);
+                        if (Number(queryData) > -1 && Number(queryData) < 2 && queryData.length != 0) {
+                            break;
+                        } else {
+                            invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
+                        break;
+                    default:
+                        console.log("Err:" + queryData);
+                        invalidQueryParameters(req, res, 'Invalid Query Parameter Type');
+                        return false;
+                }
+            }
+        })
+    });
+    return true;
+};
+
+
 function isRequiredQueryParams(req, res, queryParams) {
     var requiredQueryParameterList = [];
     var requiredParams = __.pluck(apiSpec[req.path][req.method]
@@ -100,7 +156,8 @@ exports.getObjects = function(req, res) {
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
         if (isValidQueryParams(req, res, queryParams) &&
-            isRequiredQueryParams(req, res, queryParams)) {
+            isRequiredQueryParams(req, res, queryParams) &&
+            isValidQueryParamsType(req, res, req.query)) {
             return apiSpec[req.path][req.method]['handler'](req, res);
         }
     } else {
@@ -115,7 +172,8 @@ exports.postObjects = function(req, res) {
             apiSpec[req.path][req.method]['content-type'])) {
             var queryParams = __.keys(req.body);
             if (isValidQueryParams(req, res, queryParams) &&
-                isRequiredQueryParams(req, res, queryParams)) {
+                isRequiredQueryParams(req, res, queryParams) &&
+                isValidQueryParamsType(req, res, queryParams)) {
                 return apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {

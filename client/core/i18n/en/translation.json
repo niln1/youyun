@@ -1,0 +1,127 @@
+{
+    "MainMenu": {
+        "FileMenu": {
+            "Title": "File",
+            "SignOut": "Sign Out"
+        },
+        "EditMenu": {
+            "Title": "Edit"
+        },
+        "ActionMenu": {
+            "Title": "Action",
+            "ViewNodeAlarms": "View Node Alarm"
+        },
+        "WindowMenu": {
+            "Title": "Window",
+            "NodeWindow": "Node Window",
+            "AlarmWindow": "Alarm Window",
+            "AlarmViewerWindow": "Alarm Viewer Window",
+            "LinkWindow": "Link Window",
+            "TrailWindow": "Trail Window",
+            "PrimaryTabWindow" : "Primary Tabs",
+            "SplitWindow": "Split Window",
+            "AffectedServicesWindow": "Affected Services"
+        }
+    },
+    "LoginForm": {
+        "Username": "Username",
+        "Password": "Password",
+        "Submit": "Submit",
+        "RememberMe": "Remember me",
+        "ForgotPassword": "Forgot password ?",
+        "ErrorMessage" : "Invalid username or password."
+    },
+    "Window": {
+        "Filter": "Filter",
+        "Refresh": "Refresh",
+        "Node": {
+            "Name": "Name",
+            "Comment": "Comment",
+            "User Label": "Name",
+            "Native EMS Name": "Native EMS Name",
+            "Owner": "Owner",
+            "Product Name": "Product Name",
+            "DCN IP Address": "DCN IP Address",
+            "DCN IP Address (resolved)": "DCN IP (resolved)",
+            "DCN Port": "DCN Port",
+            "Product Version": "Product Version",
+            "Software Version": "Software Version",
+            "Location X": "Location X",
+            "Location Y": "Location Y",
+            "EMS Id": "EMS Id",
+            "EA Server IP": "EA Server IP",
+            "EA Server Port": "EA Server Port",
+            "System Id": "System Id",
+            "Comm State": "Comm State",
+            "Alarm Status": "Alarm Status",
+            "In Sync": "In Sync",
+            "Sub Network": "Sub Network",
+            "Support Rated": "Support Rated",
+            "Type Group": "Type Group",
+            "Multi-Node Group": "Multi-Node Group"
+        },
+        "AlarmGrid": {
+            "Alarm ID": "Alarm ID",
+            "Additional": "Additional",
+            "Category": "Category",
+            "Annot Count": "Annot Count",
+            "Acknowledged": "Acknowledged",
+            "Source ID": "Source ID",
+            "Source Type": "Source Type",
+            "Node": "Node",
+            "Prob. Cause": "Prob. Cause",
+            "Prob. Cause Qlty.": "Prob. Cause Qlty.",
+            "Severity": "Severity",
+            "Timestamp": "Timestamp",
+            "State Change": "State Change"
+        },
+        "TrailsGrid": {
+            "Trail Type": "Trail Type",
+            "Name": "Name",
+            "Service State": "Service State",
+            "Last Sync State": "Last Sync State",
+            "Transport Provisioning": "Transport Provisioning",
+            "A-End Info": "A-End Info",
+            "Z-End Info": "Z-End Info",
+            "Admin State": "Admin State",
+            "Static Protection Level": "Static Protection Level",
+            "Layer Rate": "Layer Rate",
+            "User Label": "User Label",
+            "Owner": "Owner",
+            "Customer": "Customer"
+        },
+        "LinksGrid": {
+            "Trail Type": "Trail Type",
+            "Name": "Name",
+            "Service State": "Service State",
+            "Last Sync State": "Last Sync State",
+            "Transport Provisioning": "Transport Provisioning",
+            "A-End TP": "A-End TP",
+            "Z-End TP": "Z-End TP",
+            "Admin State": "Admin State",
+            "Static Protection Level": "Static Protection Level",
+            "Layer Rate": "Layer Rate",
+            "User Label": "User Label",
+            "Owner": "Owner",
+            "Customer": "Customer"
+        }
+    },
+    "Grid": {
+        "ServicesGrid": {
+            "CircuitID": "Circuit ID",
+            "ServiceState": "Service State",
+            "OpStateQualifier": "Op State Qualifier",
+            "ServiceType": "Service Type",
+            "TransportProvisioningState": "Transport Provisioning State",
+            "Customer": "Customer",
+            "Description": "Description",
+            "LastProvStateTransition": "Last Prov State Transition",
+            "Owner": "Owner",
+            "UniqueDBKey": "Unique DB Key",
+            "AdminState": "Admin State",
+            "Type": "Type",
+            "ProvisioningLog": "Provisioning Log",
+            "LastSyncState": "Last Sync State"
+        }
+    }
+}
