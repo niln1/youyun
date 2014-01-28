@@ -274,28 +274,6 @@ module.exports = function(grunt) {
                     dest: tsTmpDir,
                     ext: '.tmpl'
                 }]
-            },
-            'old-tmpl-dev': {
-                options: {
-                    pretty: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: nconf.get('in-dir'),
-                    src: oldTmplSrc,
-                    dest: outDirDev,
-                    ext: '.html'
-                }]
-            },
-            'old-tmpl-prod': {
-                options: {},
-                files: [{
-                    expand: true,
-                    cwd: nconf.get('in-dir'),
-                    src: oldTmplSrc,
-                    dest: outDir,
-                    ext: '.html'
-                }]
             }
         },
         watch: {
@@ -374,16 +352,14 @@ module.exports = function(grunt) {
     grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'exec:tmpl-dev', 'ts-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
-    grunt.registerTask('old-tmpl', ['jade:old-tmpl-prod']);
-    grunt.registerTask('old-tmpl-dev', ['jade:old-tmpl-dev']);
 
     grunt.registerTask('watch-ts', ['watch:ts']);
     grunt.registerTask('watch-css', ['watch:css']);
     grunt.registerTask('watch-tmpl', ['watch:old-tmpl']);
     grunt.registerTask('watch-others', ['watch:others']);
 
-    grunt.registerTask('build', ['clean:all', 'css', 'js', 'old-tmpl', 'others']);
-    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'old-tmpl-dev', 'others-dev']);
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
 
     grunt.registerTask('default', ['install', 'build']);
 };
