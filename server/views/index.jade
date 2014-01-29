@@ -2,9 +2,9 @@ extends _master
 
 block head-requirejs
 	if (env == 'production')
-		script(src='/core/lib/requirejs/js/require.min.js', data-main='/core/js/main.min')
+		script(src='/core/lib/requirejs/js/require.min.js', data-main='/core/js/app.min')
 	else
-		script(src='/core/lib/requirejs/js/require.js', data-main='/core/js/main')
+		script(src='/core/lib/requirejs/js/require.js', data-main='/core/js/app')
 
 block body-content
-	p Hello world
+	div(ng-view)
