@@ -31,25 +31,17 @@ module.exports = function(grunt) {
         tsTmpDir = nconf.get('tmp-dir-build'),
         tmplSrc = nconf.get('module') + '/js/**/*.jade',
         compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
-        oldTmplSrc = [nconf.get('module') + '/tmpl/**/*.jade', '!' + nconf.get('module') + '/tmpl/**/_*.jade'],
-        tmplTmpDir = nconf.get('tmp-dir-build') + '/tmpl',
-        viewsOutDir = nconf.get('out-dir'),
-        viewsOutDirDev = nconf.get('out-dir-dev'),
         viewsSrc = [
             nconf.get('module') + '/**/*.jade',
             '!' + nconf.get('module') + '/**/_*.jade'
-        ];
+        ],
+        viewsOutDir = nconf.get('out-dir'),
+        viewsOutDirDev = nconf.get('out-dir-dev');
 
     if (nconf.get('out')) {
         outDir = nconf.get('out');
         outDirDev = nconf.get('out');
     }
-
-    nconf.set('css-src', nconf.get('module') + '/css/**/*');
-    nconf.set('ts-src', nconf.get('module') + '/js/**/*');
-    nconf.set('ts-tmp-dir', nconf.get('tmp-dir-build') + '/ts');
-    nconf.set('tmpl-src', nconf.get('module') + '/tmpl/**/*.jade');
-    nconf.set('tmpl-tmp-dir', nconf.get('tmp-dir-build') + '/tmpl');
 
     // Symlink all folder / files except the ones in js, css & tmpl
     var others = [
@@ -280,6 +272,29 @@ module.exports = function(grunt) {
                     dest: tsTmpDir,
                     ext: '.tmpl'
                 }]
+            },
+            'views-dev': {
+                options: {
+                    pretty: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: viewsSrc,
+                    dest: viewsOutDirDev,
+                    ext: '.html'
+                }]
+            },
+            'views-prod': {
+                options: {
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: viewsSrc,
+                    dest: viewsOutDir,
+                    ext: '.html'
+                }]
             }
         },
         autowrap: {
@@ -374,6 +389,8 @@ module.exports = function(grunt) {
     grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
     grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
     grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
+    grunt.registerTask('views', ['jade:views-prod']);
+    grunt.registerTask('views-dev', ['jade:views-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
 
@@ -381,8 +398,8 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-css', ['watch:css']);
     grunt.registerTask('watch-others', ['watch:others']);
 
-    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
-    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'views', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
 
     grunt.registerTask('default', ['install', 'build']);
 };
