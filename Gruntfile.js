@@ -68,7 +68,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         clean: {
             all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
-            css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
+	        views: [outDir + '/' + nconf.get('module') + '/views', outDirDev + '/' + nconf.get('module') + '/views'],
+	        css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
             ts: [outDir + '/' + nconf.get('module') + '/js', outDirDev + '/' + nconf.get('module') + '/js', tsTmpDir + '/' + nconf.get('module') + '/ts'],
             tmpl: [outDir + '/' + nconf.get('module') + '/tmpl', outDirDev + '/' + nconf.get('module') + '/tmpl', tsTmpDir + '/' + nconf.get('module') + '/tmpl'],
             others: cleanOthers
@@ -340,6 +341,14 @@ module.exports = function(grunt) {
                     debounceDelay: 250
                 }
             },
+	        views: {
+		        files: viewsSrc,
+		        tasks: ['clean:views', 'views-dev'],
+		        options: {
+			        cwd: nconf.get('in-dir'),
+			        debounceDelay: 250
+		        }
+	        },
             others: {
                 files: others,
                 tasks: ['clean:others', 'others-dev'],
@@ -396,7 +405,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-ts', ['watch:ts']);
     grunt.registerTask('watch-css', ['watch:css']);
-    grunt.registerTask('watch-others', ['watch:others']);
+	grunt.registerTask('watch-views', ['watch:views']);
+	grunt.registerTask('watch-others', ['watch:others']);
 
     grunt.registerTask('build', ['clean:all', 'css', 'js', 'views', 'others']);
     grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
