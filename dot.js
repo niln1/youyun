@@ -7,7 +7,6 @@ var express = require('express');
 var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
-var bcrypt = require('bcrypt');
 var flash = require('connect-flash');
 var mongoose = require('mongoose');
 
@@ -17,7 +16,6 @@ module.exports.app = app = express();
 
 // Local modules and variables
 var routes = require('./server/routes');
-var env = app.get('env');
 var auth = require('./server/middlewares/auth');
 var session = require('./server/middlewares/session');
 
@@ -26,55 +24,61 @@ var session = require('./server/middlewares/session');
  */
 nconf.argv().env().file('./server/config.json');
 
-app.configure(function() {
-    /*
-     * Setup environment
-     */
-    app.set('port', nconf.get('PORT'));
-    app.set('views', path.join(__dirname, 'server', 'views'));
-    app.set('view engine', 'jade');
+/*
+ * Setup environment
+ */
 
-    /*
-     * Setup middlewares
-     */
-    app.use(express.logger('dev'));
-    app.use(express.json());
-    app.use(express.urlencoded());
-    app.use(express.methodOverride());
+var env = nconf.get('ENV')
+app.set('env', nconf.get('ENV'))
+app.set('port', nconf.get('PORT'));
+app.set('views', path.join(__dirname, 'server', 'views'));
+app.set('view engine', 'jade');
 
-    session(app);
+/*
+ * Setup middlewares
+ */
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
 
-    app.use(flash());
+session(app);
 
-    mongoose.connect(nconf.get('MONGODB_URL'));
+app.use(flash());
 
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'connection error:'));
+mongoose.connect(nconf.get('MONGODB_URL'));
 
-    // Global authentication middle ware
-    app.use(auth.checkUserSession);
-});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
+// Global authentication middle ware
+app.use(auth.checkUserSession);
 
 // TODO: put this in routes.. too lazy
 // csrf()
 // app.use(require('express').csrf());
-// app.use(function(req, res, next) {
-//     res.locals.token = req.csrfToken();
-//     next();
-// });
+app.use(function(req, res, next) {
+    // res.locals.token = req.csrfToken();
+    res.locals.env = env;
+    next();
+});
 
 // Static file server
-app.use('/static', express.static(path.join(__dirname, 'client')));
+if (env == 'development') {
+    app.use('/', express.static('development'));
+} else if (env == 'production') {
+    app.use('/', express.static('production'));
+}
 
 // Router
 app.use(app.router);
 routes.route(app);
 
 // development only
-if ('development' == app.get('env')) {
+if ('development' == env) {
     app.use(express.errorHandler());
 }
 
 http.createServer(app).listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
