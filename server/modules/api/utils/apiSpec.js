@@ -7,6 +7,7 @@
 var __ = require('underscore');
 
 var apiModules = [
+    require('../accountApi/api'),
     require('../classApi/api'),
 ];
 

@@ -20,14 +20,24 @@ var __ = require('underscore');
 var nconf = require('nconf');
 var User = require('../models/User');
 
+function apiLoginSuccess(req, res, user) {
+    req.session.user = user;
+    res.json({
+        message: user,
+        result: true,
+        description: 'User authenticated successfully',
+        source: nconf.get('SERVER_NAME'),
+    });
+}
+
 function userAuthenticationFailed(req, res, message) {
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
         res.json(401, {
-            'result': 'false',
-            'message': !e ? 'User not authenticated' : e,
-            'description': message + '. Please login',
-            'source': nconf.get('SERVER_NAME')
+            result: false,
+            message: !e ? 'User not authenticated' : e,
+            description: message + '. Please login',
+            source: nconf.get('SERVER_NAME')
         });
     } else {
         req.flash('error', message); // TODO
@@ -39,10 +49,10 @@ function userNotAuthenticated(req, res, e) {
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
         res.json(401, {
-            'result': 'false',
-            'message': !e ? 'User not authenticated' : e,
-            'description': 'Invalid Cookie. Please login',
-            'source': nconf.get('SERVER_NAME')
+            result: 'false',
+            message: !e ? 'User not authenticated' : e,
+            description: 'Invalid Cookie. Please login',
+            source: nconf.get('SERVER_NAME')
         });
     } else {
         // redirect to login page
@@ -71,8 +81,13 @@ exports.doLogin = function(req, res) {
         user.comparePassword(req.body.password, function(err, match) {
             if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
 
-            req.session.user = user;
-            res.redirect('/');
+            if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
+                apiLoginSuccess(req, res, user);
+            } else {
+                req.session.user = user;
+                // redirect to login page
+                res.redirect('/login');
+            }
         });
     });
 }
@@ -82,7 +97,7 @@ exports.checkUserSession = function(req, res, next) {
     var isInWhitelist = false;
     var whitelistPatterns = [
         /^\/(login|logout)/,
-        /^\/api\/v\d\/accounts\/(login|logout|getuser)/,
+        /^\/api\/v\d\/(login|logout|getuser)/,
         /^\/static\//
     ];
 
