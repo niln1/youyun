@@ -1,6 +1,6 @@
 /*
  * file: apiServer.js
- * CapiServeryright(c) 2013, Cyan Inc. All rights reserved.
+ * Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
  */
 'use strict';
 
