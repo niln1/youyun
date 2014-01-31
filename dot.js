@@ -13,7 +13,6 @@ var mongoose = require('mongoose');
 var app;
 module.exports.app = app = express();
 
-
 // Local modules and variables
 var routes = require('./server/routes');
 var auth = require('./server/middlewares/auth');
@@ -27,8 +26,7 @@ nconf.argv().env().file('./server/config.json');
 /*
  * Setup environment
  */
-
-var env = nconf.get('ENV')
+var env = nconf.get('ENV');
 app.set('env', nconf.get('ENV'))
 app.set('port', nconf.get('PORT'));
 app.set('views', path.join(__dirname, 'server', 'views'));
