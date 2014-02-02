@@ -6,6 +6,14 @@ html
 
 		title= title
 
+		meta(name='description', content='')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+
+		link(rel='icon', href='/core/img/favicon.png', type='image/x-icon')
+		link(rel='shortcut', href='/core/img/favicon.png', type='image/x-icon')
+		link(rel="shortcut", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
+		link(rel="icon", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
+
 		if (env == 'development')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
 
@@ -38,4 +46,9 @@ html
 		block head-requirejs
 
 	body
+		//if lt IE 8
+			p.browsehappy
+				| 你用的浏览器 <strong>太过时了！</strong>
+				| 请 <a href="http://browsehappy.com/">升级你的浏览器</a>
+				| 来正常使用本网站.
 		block body-content
