@@ -97,6 +97,7 @@ exports.checkUserSession = function(req, res, next) {
     var isInWhitelist = false;
     var whitelistPatterns = [
         /^\/(login|logout)/,
+        /^\/api\/v\d\/account\/(login|logout|getuser)/,
 	    /^\/$/
     ];
 
@@ -105,7 +106,7 @@ exports.checkUserSession = function(req, res, next) {
 		whitelistPatterns.push(/^.*\.js$/);
 		whitelistPatterns.push(/^.*\.ts$/);
 		whitelistPatterns.push(/^.*\.css$/);
-//		whitelistPatterns.push(/^.*\.scss$/);
+		whitelistPatterns.push(/^.*\.scss$/);
 		whitelistPatterns.push(/^.*\.sass$/);
 		whitelistPatterns.push(/^.*\.less$/);
 		whitelistPatterns.push(/^.*\/img\/.*$/);

@@ -8,9 +8,6 @@ var auth = require('../../../middlewares/auth');
 var nconf = require('nconf');
 
 exports.login = function(req, res) {
-    console.log("here");
-    req.body.username = req.query.username;
-    req.body.password = req.query.password;
     auth.doLogin(req, res);
 };
 

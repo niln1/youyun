@@ -4,7 +4,7 @@
 import Controller = require('controller')
 
 class LoginController extends Controller {
-    public static LOGIN_API_URL : string = '/login';
+    public static LOGIN_API_URL : string = '/api/v1/account/login';
 
     private scope:LoginControllerScope;
 
@@ -16,13 +16,13 @@ class LoginController extends Controller {
 
     doLogin () : void {
         console.log("Form clicked")
-        this.http.post(LoginController.LOGIN_API_URL, {
-            data: {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                username: this.scope.username,
-                password: this.scope.password
+        
+        this.http.post(LoginController.LOGIN_API_URL, $.param({
+            username: this.scope.username,
+            password: this.scope.password
+        }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         }).success((data, status, headers, config) => {
             console.log('Success');
