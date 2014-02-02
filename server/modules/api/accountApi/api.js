@@ -9,7 +9,8 @@ var parameters = require('./parameters');
 // An array containing Alarm API spec objects
 module.exports = [{
     'url': '/api/v1/account/login',
-    'GET': {
+    'POST': {
+        'content-type': 'application/x-www-form-urlencoded',
         'handler': accounts.login,
         'required': [parameters.username, parameters.password],
         'optional': [],
