@@ -1,0 +1,420 @@
+/* Simple responsive grid generated at:  http://www.responsivegridsystem.com/calculator/ */
+
+/*  SECTIONS  */
+.section {
+  clear: both;
+  padding: 0px;
+  margin: 0px;
+}
+
+$col-margin-vertical: 0.25em;
+
+/*  COLUMN SETUP  */
+.col {
+  display: block;
+  float: left;
+  margin: $col-margin-vertical 0 $col-margin-vertical 0.5%;
+  box-sizing: border-box;
+}
+
+.col:first-child {
+  margin-left: 0;
+}
+
+/*  GROUPING  */
+.group:before,
+.group:after {
+  content: "";
+  display: table;
+}
+
+.group:after {
+  clear: both;
+}
+
+/*  GRID OF TWELVE  */
+.span_12_of_12 {
+  width: 100%;
+}
+
+.span_11_of_12 {
+  width: 91.62%;
+}
+
+.span_10_of_12 {
+  width: 83.25%;
+}
+
+.span_9_of_12 {
+  width: 74.87%;
+}
+
+.span_8_of_12 {
+  width: 66.5%;
+}
+
+.span_7_of_12 {
+  width: 58.12%;
+}
+
+.span_6_of_12 {
+  width: 49.75%;
+}
+
+.span_5_of_12 {
+  width: 41.37%;
+}
+
+.span_4_of_12 {
+  width: 33%;
+}
+
+.span_3_of_12 {
+  width: 24.62%;
+}
+
+.span_2_of_12 {
+  width: 16.25%;
+}
+
+.span_1_of_12 {
+  width: 7.875%;
+}
+
+/*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+
+@media only screen and (max-width: 480px) {
+  .col {
+    margin: 1% 0 1% 0%;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .span_12_of_12 {
+    width: 100%;
+  }
+
+  .span_11_of_12 {
+    width: 100%;
+  }
+
+  .span_10_of_12 {
+    width: 100%;
+  }
+
+  .span_9_of_12 {
+    width: 100%;
+  }
+
+  .span_8_of_12 {
+    width: 100%;
+  }
+
+  .span_7_of_12 {
+    width: 100%;
+  }
+
+  .span_6_of_12 {
+    width: 100%;
+  }
+
+  .span_5_of_12 {
+    width: 100%;
+  }
+
+  .span_4_of_12 {
+    width: 100%;
+  }
+
+  .span_3_of_12 {
+    width: 100%;
+  }
+
+  .span_2_of_12 {
+    width: 100%;
+  }
+
+  .span_1_of_12 {
+    width: 100%;
+  }
+}
+
+/* the following is loosely based on bootstrap 3.0, to provide consistent size and spacing for form elements */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-text {
+  width: 100%;
+  display:inline-block;
+  padding-top: 4px;
+  text-indent: 0.25em;
+}
+
+input[type="search"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin: 4px 0 0;
+  margin-top: 1px \9;
+  /* IE8-9 */
+
+  line-height: normal;
+}
+
+input[type="file"] {
+  display: block;
+}
+
+select[multiple],
+select[size] {
+  height: auto;
+}
+
+select optgroup {
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  height: auto;
+}
+
+.form-inline-text {
+  vertical-align: middle;
+  color: #555555;
+  margin-right: 0.25em;
+}
+
+.form-control:-moz-placeholder {
+  color: #999999;
+}
+
+.form-control::-moz-placeholder {
+  color: #999999;
+}
+
+.form-control:-ms-input-placeholder {
+  color: #999999;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #999999;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 26px;
+  font-size: 12px;
+  padding-left: 4px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  cursor: not-allowed;
+  background-color: #eeeeee;
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.form-group {
+  margin-bottom: 3px;
+}
+
+.radio,
+.checkbox {
+  display: block;
+  min-height: 20px;
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  vertical-align: middle;
+}
+
+.radio label,
+.checkbox label {
+  display: inline;
+  margin-bottom: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"] {
+  float: left;
+  margin-left: -20px;
+  margin-top: 2px;
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+  margin-top: -5px;
+}
+
+.radio-inline,
+.checkbox-inline {
+  display: inline-block;
+  padding-left: 20px;
+  margin-bottom: 0;
+  font-weight: normal;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.form-inline .radio-inline,
+.form-inline .checkbox-inline {
+  margin-top: 4px;
+}
+
+.radio-inline + .radio-inline,
+.checkbox-inline + .checkbox-inline {
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+input[type="radio"][disabled],
+input[type="checkbox"][disabled],
+.radio[disabled],
+.radio-inline[disabled],
+.checkbox[disabled],
+.checkbox-inline[disabled],
+fieldset[disabled] input[type="radio"],
+fieldset[disabled] input[type="checkbox"],
+fieldset[disabled] .radio,
+fieldset[disabled] .radio-inline,
+fieldset[disabled] .checkbox,
+fieldset[disabled] .checkbox-inline {
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .form-inline .form-group {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+
+  .form-inline .form-control {
+    display: inline-block;
+  }
+
+  .form-inline .radio,
+  .form-inline .checkbox {
+    display: inline-block;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .form-inline .radio input[type="radio"],
+  .form-inline .checkbox input[type="checkbox"] {
+    float: none;
+    margin-left: 0;
+  }
+
+  .form-inline * {
+    margin-right: 4px;
+  }
+}
+
+.form-horizontal .control-label,
+.form-horizontal .radio,
+.form-horizontal .checkbox
+.form-horizontal .radio-inline,
+.form-horizontal .checkbox-inline {
+  padding-top: 4px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.form-horizontal .control-label,
+.form-horizontal .radio,
+.form-horizontal .checkbox {
+  width: 100%;
+}
+
+.form-horizontal .form-group {
+  //  margin-right: -15px;
+  //  margin-left: -15px;
+}
+
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after {
+  display: table;
+  content: " ";
+}
+
+.form-horizontal .form-group:after {
+  clear: both;
+}
+
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after {
+  display: table;
+  content: " ";
+}
+
+.form-horizontal .form-group:after {
+  clear: both;
+}
+
+@media (min-width: 768px) {
+  .form-horizontal .control-label {
+    text-align: right;
+  }
+}
+
+/* this section adds / modifies some styles on Kendo widgets when they appear in form groups */
+
+.form-group .k-dropdown,
+.form-group .k-combobox {
+  width: 100%;
+}
+
+.form-group .k-button {
+  margin-right: 4px;
+}

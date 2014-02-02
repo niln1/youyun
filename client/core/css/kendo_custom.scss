@@ -1,0 +1,72 @@
+// PanelBar collapse/expand icon
+.k-panelbar-expand, .k-panelbar-collapse {
+    position: absolute;
+    top: 7px;
+    left: 2px;
+}
+
+// PanelBar item header text
+.k-panelbar>.k-item>.k-link, .k-panel>.k-item>.k-link {
+    display: block;
+    position: relative;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 0 1.5em;
+    line-height: 2.34em;
+    text-decoration: none;
+    zoom: 1;
+}
+
+// PanelBar item header actions
+// Note: this is not from Kendo
+.k-panelbar>.k-item .k-panel-actions {
+    position: absolute;
+    top: 0;
+    right: .3em;
+    white-space: nowrap;
+}
+
+.k-panelbar .k-link.k-state-selected {
+  background-image: none;
+  background-image: none, -webkit-linear-gradient(top, #ececec 10px, #cccccc 100%);
+  background-image: none, -moz-linear-gradient(top, #ececec 10px, #cccccc 100%);
+  background-image: none, -o-linear-gradient(top, #ececec 10px, #cccccc 100%);
+  background-image: none, linear-gradient(to bottom, #ececec 10px, #cccccc 100%);
+  background-position: 50% 50%;
+  background-color: #ffffff;
+}
+
+.k-panel-action {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    text-decoration: none;
+    vertical-align: middle;
+    filter: alpha(opacity=70);
+    opacity: .7;
+}
+
+.k-panel-action .k-icon {
+    vertical-align: top;
+}
+
+.k-grid-toolbar {
+  background-color: #d5d5d5;
+  background-image: none;
+}
+
+.k-dropdown-wrap .k-link.k-state-active {
+  color: #373737;
+}
+
+.k-button[disabled] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  color: #c4c4c4;
+}

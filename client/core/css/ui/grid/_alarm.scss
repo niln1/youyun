@@ -1,0 +1,172 @@
+.cyan-alarm-splitter-div {
+  height: 100%;
+  width: 100%;
+}
+
+// this class is applied, via a template, to all cells in the severity column of the grid
+// it is used to find the cell when styling according to the items severity. Hence is has no css!
+.alarm-severity-column {
+
+}
+
+.alarm-severity-indeterminate {
+  background-color: silver;
+}
+
+.alarm-severity-non-alarmed {
+  background-color: #7fcd5b;
+}
+
+.alarm-severity-free-choice {
+  background-color: white;
+}
+
+.alarm-severity-warning {
+  background-color: #a8fff9;
+  fill: #a8fff9;
+  color: black;
+}
+
+.alarm-severity-warning:hover {
+  background-color: #00d9cc;
+  fill: #00d9cc;
+}
+
+.alarm-severity-minor {
+  background-color: #fff5b7;
+  fill: #fff5b7;
+  color: black;
+}
+
+.alarm-severity-minor:hover {
+  background-color: #f7d501;
+  fill: #f7d501;
+}
+
+.alarm-severity-major {
+  background-color: #ffc796;
+  fill: #ffc796;
+  color: black;
+}
+
+
+.alarm-severity-major:hover {
+  background-color: #ff8b02;
+  fill: #ff8b02;
+  color: black;
+}
+
+.alarm-severity-critical {
+  background-color: #ffbdbe;
+  fill: #ffbdbe;
+  color: black;
+}
+
+.alarm-severity-critical:hover {
+  background-color: #ff4546;
+  fill: #ff4546;
+}
+
+.alarm-severity-cleared {
+  background-color: dodgerblue;
+}
+.alarm-viewer-close {
+  font-size: 1.5em;
+  text-align: center;
+  line-height: .8em;
+}
+
+.cy-alarm-viewer {
+  height: calc(100% - 2px);
+  min-width: 745px;
+}
+
+.cy-alarm-viewer .k-panel-action {
+  margin-top: -2px;
+}
+
+.cy-alarm-panels {
+  height: -webkit-calc(100% - 29px) !important;
+  height: calc(100% - 29px) !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.cy-alarm-panels ul {
+  position: relative;
+  border-width: 0px;
+}
+
+.cy-alarm-graph {
+  position: relative;
+  height: 100%;
+}
+
+
+.cy-alarm-toolbar {
+  position: relative;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: white;
+  z-index: 4000;
+}
+
+.cy-alarm-toolbar > span {
+  vertical-align: middle;
+}
+
+.cy-alarm-toolbar .menu input[type="checkbox"] {
+  margin: 0 5px 0 5px;
+}
+
+.cy-alarm-toolbar .menu {
+  display: inline-block;
+  border: none;
+  box-shadow: none;
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
+.cy-alarm-toolbar ul.menu>li.k-item {
+  border: 1px solid #cccccc !important;
+}
+
+.cy-alarm-toolbar ul.menu .k-link {
+  padding: .3em .9em .4em;
+}
+
+.cy-alarm-toolbar ul.menu span.k-state-active {
+  background-color: #fff;
+}
+
+.cy-alarm-toolbar .k-dropdown-wrap {
+  padding-right: 0px;
+}
+
+.alarm-panel-selector {
+  margin-left: .5em;
+  margin-right: 1em;
+  width: 25%;
+  min-width: 100px;
+  max-width: 400px;
+}
+
+.alarm-grid tbody td {
+  border-bottom: 1px solid white;
+}
+
+
+/* set a better line height for the alarm panel header for vertical alignment */
+.cy-alarm-viewer .k-header.k-link {
+  line-height: 31px !important;
+}
+
+/* node name label at top left of alarm panels */
+.cy-alarm-node-label {
+  font-weight: bold;
+  min-width:15em;
+  display: inline-block;
+}

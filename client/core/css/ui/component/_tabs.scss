@@ -1,0 +1,75 @@
+$tab-header-height: 2.25em;
+$tab-header-edge-radius: 45px;
+$tab-button-selected-text-color: #373737;
+$tab-button-selected-color: #04c;
+$tab-button-selected-gradient: none, linear-gradient(to bottom, #ececec 10px, #cccccc 100%);
+$tab-button-text-color: black;
+$tab-button-color: lightgray;
+
+div.tab-view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+div.tabHeader {
+    width: calc(100% - 1px);
+    height: $tab-header-height;
+    margin: 0;
+    padding: 0;
+    margin: 0;
+    list-style-type : none;
+    line-height : $tab-header-height;
+    max-height: $tab-header-height;
+    overflow: hidden;
+    border-right: 1px solid #ccc;
+}
+
+div.tabContent {
+    width: 100%;
+    position: absolute;
+    top: $tab-header-height;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.tab-auto div.tabContent  {
+    position: relative;
+    top: 0;
+}
+
+//placeholder / parent for user content in tab
+div.tabContentPlaceHolder {
+    width: 100%;
+    height: 100%;
+}
+
+.tab-auto div.tabContentPlaceHolder {
+    heigth: auto;
+}
+
+div.tabHeaderButton {
+    text-align: center;
+    height: $tab-header-height;
+    line-height: $tab-header-height;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 0 0 0 1px;
+    background-image: none;
+    background-color: #f9f9f9;
+}
+
+div.tabHeaderButton.k-state-selected {
+  background-image: $tab-button-selected-gradient;
+  color: $tab-button-selected-text-color;
+
+}
+
+div.tabHeaderButton:last-of-type {
+  border-width: 0 1px 0 1px;
+}
+

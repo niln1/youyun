@@ -1,0 +1,395 @@
+/* constants */
+
+//border color for controls
+$border-color: black;
+
+//background of timeline
+$timeline-background: white;
+
+// bar border color
+$bar-border-color: lightgray;
+
+// tick line color
+$tick-color: lightgray;
+
+// border width on controls and bars
+$border-width: 1px;
+
+// height of slider area ( bootstrap/css line height )
+$one-line: 1.428571429em;
+
+// height of time scale area
+$timescale-height: $one-line;
+
+// color of mouse time text
+$mouse-label-color: black;
+
+// z-index of mouse label
+$mouse-label-zindex: 2000;
+
+// z-index of id labels
+$id-label-zindex: 3000;
+
+// id label colort
+$id-label-color: black;
+
+// z-index of bars
+$bar-zindex: 1000;
+
+// tick mark z-index
+$tick-zindex: 500;
+
+// width of tick mark labels
+$tick-label-width: 140px;
+
+// height of bars
+$bar-height: 20px;
+
+// color of selection area
+$selection-inner: rgba(0, 0, 0, 0.2);
+
+$selection-outer: rgb(0, 0, 0);
+
+// z-index of selection area
+$selection-zindex: 4000;
+
+// color of label that indicates no data set
+$empty-label-color: lightgray;
+
+// min height of content area
+$min-content-height: 100px;
+
+// width of thumbs
+$thumb-width: 10%;
+
+$thumb-height: $one-line;
+
+// color of thumb
+$thumb-color: lightgray;
+
+// generic corner radius on some elements
+$r: 8px;
+
+// line height for +/-
+$plus-line-height: 19px;
+
+$minus-line-height: 24px;
+
+/* make elements un-selectable */
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* no selection or mouse events */
+.no-select-no-mouse {
+  @extend .no-select;
+  pointer-events: none;
+}
+
+
+/* container for the timeline */
+.alarm-timeline {
+  width: 100%;
+}
+
+/* everything inside the timeline uses the border-box style */
+.alarm-timeline * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* actual graph area */
+.alarm-timeline-content {
+  border: solid $border-color $border-width;
+  position: relative;
+  background-color: $timeline-background;
+  overflow: hidden;
+  min-height: $min-content-height;
+  cursor: pointer;
+  cursor: grab;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* label displayed when we have no alarms */
+
+.alarm-timeline-emptylabel {
+
+  color: $empty-label-color;
+  text-align: center;
+  width: 100%;
+  font-size: 4em;
+  margin-top: 0.2em;
+}
+
+/* slider with start/end time at each end */
+
+.alarm-timelime-slider {
+  height: $one-line;
+  border-style: solid;
+  border-color: $border-color;
+  border-width: 0 $border-width $border-width $border-width;
+  overflow: hidden;
+  position: relative;
+  background-color: whitesmoke;
+}
+
+/* horizontal area reserved for time scale */
+.alarm-timeline-time-scale {
+  position: relative;
+  height: $timescale-height;
+  border-style: solid;
+  border-color: $border-color;
+  border-width: 0 $border-width $border-width $border-width;
+  overflow: hidden;
+  background-color: whitesmoke;
+}
+
+/* style for the label that shows the time under the mouse when the mouse is inside the timeline */
+
+.alarm-timeline-mouselabel {
+
+  z-index: $mouse-label-zindex;
+  color: $mouse-label-color;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+//  transition: opacity 0.4s ease;
+}
+
+/* time range selection box */
+.timeline-selection {
+  @extend .no-select;
+  z-index: $selection-zindex;
+  background-color: $selection-inner;
+  border-color: $selection-outer;
+  border-style: solid;
+  border-width: 0 1px 0 1px;
+  position: absolute;
+}
+
+/* style for ID labels */
+
+.alarm-timeline-idlabel {
+  @extend .no-select-no-mouse;
+  z-index: $id-label-zindex;
+  color: $id-label-color;
+  position: absolute;
+  width: 100%;
+  margin-left: 2px;
+  line-height: $bar-height;
+  transition: padding-left 0.4s ease, background-color 0.4s ease;
+}
+
+/* when the label is highlight this style is applied */
+
+.alarm-timeline-idlabel-selected {
+  padding-left: 20px;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+/* vertical line used to indicate time intervals */
+.timeline-tick {
+
+  background-color: $tick-color;
+  position: absolute;
+  width: 1px;
+  z-index: $tick-zindex;
+
+}
+
+.timeline-tick-label {
+  height: $one-line;
+  width: $tick-label-width;
+  line-height: $one-line;
+  text-align: center;
+  position: absolute;
+  cursor: default;
+}
+
+.alarm-bar {
+
+  position: absolute;
+  height: $bar-height;
+  z-index: $bar-zindex;
+  text-align: center;
+  border: 1px solid $bar-border-color;
+  transition: background-color 0.4s ease;
+}
+
+/* for critical alarms */
+.alarm-bar-critical {
+  background-color: #ffbdbe;
+}
+
+.alarm-bar-critical:hover {
+  background-color: #ff4546;
+}
+
+/* for medium alarms */
+.alarm-bar-major {
+  background-color: #ffc796;;
+  border: 1px $bar-border-color solid;
+}
+
+.alarm-bar-major:hover {
+  background-color: #ff8b02;
+}
+
+/* for weak alarms */
+.alarm-bar-minor {
+  background-color: #fff5b7;
+  border: 1px $bar-border-color solid;
+}
+
+.alarm-bar-minor:hover {
+  background-color: #f7d501;
+}
+
+/* for weak alarms */
+.alarm-bar-warning {
+  background-color: #a8fff9;
+  border: 1px $bar-border-color solid;
+}
+
+.alarm-bar-warning:hover {
+  background-color: #00d9cc;
+  border: 2px solid black;
+}
+
+/* start/end time markers in slider area */
+.alarm-start-time {
+  display: inline-block;
+  text-align: left;
+  width: 20%;
+  overflow: hidden;
+  cursor : default;
+}
+
+.alarm-start-inner {
+  background-color: #4d4644;
+  padding-left: 0.25em;
+  color: white;
+  border-radius: 0 $r $r 0;
+  width: 15em;
+  line-height: $one-line;
+  height: $one-line;
+}
+
+.alarm-end-time {
+  display: inline-block;
+  text-align: right;
+  float: right;
+  width: 20%;
+  line-height: $one-line;
+  height: $one-line;
+  overflow: hidden;
+  cursor: default;
+}
+
+.alarm-end-inner {
+  background-color: #4d4644;
+  padding-right: 0.25em;
+  color: white;
+  border-radius: $r 0 0 $r;
+  width: 15em;
+  float: right;
+}
+
+.alarm-scroller {
+  display: inline-block;
+  width: 60%;
+  height: $one-line;
+  position: absolute;
+  border-width: 0 $border-width $border-width $border-width;
+  border-style: solid;
+  border-color: $border-color;
+  background-color: white;
+}
+
+.alarm-scroll-thumb {
+  display: inline-block;
+  position: absolute;
+  width: $thumb-width;
+  height: $thumb-height;
+  background-color: $thumb-color;
+  cursor: pointer;
+  cursor: grab;
+  border-width: 0 $border-width $border-width $border-width;
+  border-style: solid;
+  border-color: $border-color;
+}
+
+/* used to animate thumb back to center, clicking is disabled while this occurs */
+
+.alarm-scroll-thumb-animate {
+  //.no-select;
+  transition: left 0.4s ease;
+}
+
+$zoom-button-width: 24px;
+$zoom-button-height: 24px;
+$zoom-button-zindex: 5000;
+
+.alarm-zoom-buttons {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: $zoom-button-width;
+  z-index: $zoom-button-zindex;
+  opacity: 0.2;
+  font-size: 24px;
+}
+
+.alarm-zoom-buttons:hover {
+  opacity: 1;
+}
+
+$zoom-button-border: rgba(0, 0, 0, 0.6);
+
+.alarm-zoom-button {
+  position: absolute;
+  width: $zoom-button-width;
+  height: $zoom-button-height;
+  background-color: white;
+  border-style: solid;
+  border-color: $zoom-button-border;
+  text-align: center;
+
+}
+
+.alarm-zoom-button-plus {
+  @extend .alarm-zoom-button;
+  border-width: $border-width;
+  line-height: $plus-line-height;
+}
+
+.alarm-zoom-button-minus {
+  @extend .alarm-zoom-button;
+  border-width: 0 $border-width $border-width $border-width;
+  top: $zoom-button-height;
+  line-height: $minus-line-height;
+}
+
+/* used to highlight section of the timeline that are in the future */
+
+.alarm-future {
+  @extend .no-select;
+  background-color: rgba(0,0,0,0.1);
+  box-sizing: border-box;
+  border-left: 1px solid red;
+  position: absolute;
+}
