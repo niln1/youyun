@@ -10,9 +10,8 @@ var auth = require('./middlewares/auth');
 
 exports.main = function(req, res) {
     console.log(nconf.get('VERSION'));
-    res.render('index', {
-        env: process.env.NODE_ENV
-    });
+    console.log(nconf.get('ENV'))
+    res.render('index', {});
 };
 
 exports.lost = function(req, res) {

@@ -30,25 +30,18 @@ module.exports = function(grunt) {
         tsSrc = nconf.get('module') + '/js/**/*.ts',
         tsTmpDir = nconf.get('tmp-dir-build'),
         tmplSrc = nconf.get('module') + '/js/**/*.jade',
-        oldTmplSrc = [nconf.get('module') + '/tmpl/**/*.jade', '!' + nconf.get('module') + '/tmpl/**/_*.jade'],
-        tmplTmpDir = nconf.get('tmp-dir-build') + '/tmpl',
-        viewsOutDir = nconf.get('out-dir'),
-        viewsOutDirDev = nconf.get('out-dir-dev'),
+        compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
         viewsSrc = [
             nconf.get('module') + '/**/*.jade',
             '!' + nconf.get('module') + '/**/_*.jade'
-        ];
+        ],
+        viewsOutDir = nconf.get('out-dir'),
+        viewsOutDirDev = nconf.get('out-dir-dev');
 
     if (nconf.get('out')) {
         outDir = nconf.get('out');
         outDirDev = nconf.get('out');
     }
-
-    nconf.set('css-src', nconf.get('module') + '/css/**/*');
-    nconf.set('ts-src', nconf.get('module') + '/js/**/*');
-    nconf.set('ts-tmp-dir', nconf.get('tmp-dir-build') + '/ts');
-    nconf.set('tmpl-src', nconf.get('module') + '/tmpl/**/*.jade');
-    nconf.set('tmpl-tmp-dir', nconf.get('tmp-dir-build') + '/tmpl');
 
     // Symlink all folder / files except the ones in js, css & tmpl
     var others = [
@@ -75,7 +68,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         clean: {
             all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
-            css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
+	        views: [outDir + '/' + nconf.get('module') + '/views', outDirDev + '/' + nconf.get('module') + '/views'],
+	        css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
             ts: [outDir + '/' + nconf.get('module') + '/js', outDirDev + '/' + nconf.get('module') + '/js', tsTmpDir + '/' + nconf.get('module') + '/ts'],
             tmpl: [outDir + '/' + nconf.get('module') + '/tmpl', outDirDev + '/' + nconf.get('module') + '/tmpl', tsTmpDir + '/' + nconf.get('module') + '/tmpl'],
             others: cleanOthers
@@ -218,13 +212,13 @@ module.exports = function(grunt) {
             },
             'tmpl-dev': {
                 command: function() {
-                    var template = handlebars.compile('find {{TMP}} -name "*.{{EXT}}" | while read file; do outfile=`echo "$file" | sed "s|{{TMP}}|{{DEST}}|; s|\\\.{{EXT}}|\\\.js|"`; moduleDir=`echo "$outfile" | perl -pe "s|^.*?\\\/.*?\\\/||; s|.*?\\\/|\\\.\\\.\\\/|g;"`; moduleDir=`dirname "$moduleDir"`; handlebarsPath="$moduleDir/{{HANDLEBARS}}"; echo "File \"$outfile\" created."; mkdir -p `dirname "$outfile"`; node_modules/handlebars/bin/handlebars "$file" -h "$handlebarsPath" -e "{{EXT}}" -r "`dirname $file`" -f "$outfile" -n "{{NAMESPACE}}" --amd {{ADDITIONAL}}; done');
+                    var template = handlebars.compile('find {{TMP}} -name "*.{{EXT}}" | while read file; do outfile=`echo "$file" | sed "s|{{TMP}}|{{DEST}}|; s|\\\.{{EXT}}|\\\.js|"`; handlebarsPath="{{HANDLEBARS}}"; echo "File \"$outfile\" created."; mkdir -p `dirname "$outfile"`; node_modules/handlebars/bin/handlebars "$file" -h "$handlebarsPath" -e "{{EXT}}" -r "`dirname $file`" -f "$outfile" -n "{{NAMESPACE}}" --amd {{ADDITIONAL}}; done');
                     var options = {
                         TMP: tsTmpDir,
                         EXT: 'tmpl',
                         DEST: outDirDev,
                         NAMESPACE: 'Handlebars.templates',
-                        HANDLEBARS: 'lib/handlebars/js/',
+                        HANDLEBARS: 'core/lib/handlebars/js/',
                         ADDITIONAL: ''
                     };
                     return template(options);
@@ -255,7 +249,9 @@ module.exports = function(grunt) {
         jade: {
             'tmpl-dev': {
                 options: {
-                    pretty: true
+                    pretty: true,
+                    namespace: false,
+                    client: true
                 },
                 files: [{
                     expand: true,
@@ -266,13 +262,65 @@ module.exports = function(grunt) {
                 }]
             },
             'tmpl-prod': {
-                options: {},
+                options: {
+                    namespace: false,
+                    client: true
+                },
                 files: [{
                     expand: true,
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
                     ext: '.tmpl'
+                }]
+            },
+            'views-dev': {
+                options: {
+                    pretty: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: viewsSrc,
+                    dest: viewsOutDirDev,
+                    ext: '.html'
+                }]
+            },
+            'views-prod': {
+                options: {
+                },
+                files: [{
+                    expand: true,
+                    cwd: nconf.get('in-dir'),
+                    src: viewsSrc,
+                    dest: viewsOutDir,
+                    ext: '.html'
+                }]
+            }
+        },
+        autowrap: {
+            dev: {
+                options: {
+                    wrapType: 'amd'
+                },
+                files: [{
+                    expand: true,
+                    cwd: tsTmpDir,
+                    src: [compiledTmplSrc],
+                    dest: nconf.get('out-dir-dev'),
+                    ext: '.js'
+                }]
+            },
+            prod: {
+                options: {
+                    wrapType: 'amd'
+                },
+                files: [{
+                    expand: true,
+                    cwd: tsTmpDir,
+                    src: [compiledTmplSrc],
+                    dest: tsTmpDir,
+                    ext: '.js'
                 }]
             }
         },
@@ -293,14 +341,14 @@ module.exports = function(grunt) {
                     debounceDelay: 250
                 }
             },
-            'old-tmpl': {
-                files: oldTmplSrc[0],
-                tasks: ['clean:tmpl', 'old-tmpl-dev'],
-                options: {
-                    cwd: nconf.get('in-dir'),
-                    debounceDelay: 250
-                }
-            },
+	        views: {
+		        files: viewsSrc,
+		        tasks: ['clean:views', 'views-dev'],
+		        options: {
+			        cwd: nconf.get('in-dir'),
+			        debounceDelay: 250
+		        }
+	        },
             others: {
                 files: others,
                 tasks: ['clean:others', 'others-dev'],
@@ -348,18 +396,20 @@ module.exports = function(grunt) {
 
     grunt.registerTask('css', ['sass:prod']);
     grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
-    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'exec:tmpl-prod', 'ts-prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'exec:tmpl-dev', 'ts-dev']);
+    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
+    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
+    grunt.registerTask('views', ['jade:views-prod']);
+    grunt.registerTask('views-dev', ['jade:views-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
 
     grunt.registerTask('watch-ts', ['watch:ts']);
     grunt.registerTask('watch-css', ['watch:css']);
-    grunt.registerTask('watch-tmpl', ['watch:old-tmpl']);
-    grunt.registerTask('watch-others', ['watch:others']);
+	grunt.registerTask('watch-views', ['watch:views']);
+	grunt.registerTask('watch-others', ['watch:others']);
 
-    grunt.registerTask('build', ['clean:all', 'css', 'js', 'others']);
-    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'others-dev']);
+    grunt.registerTask('build', ['clean:all', 'css', 'js', 'views', 'others']);
+    grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
 
     grunt.registerTask('default', ['install', 'build']);
 };

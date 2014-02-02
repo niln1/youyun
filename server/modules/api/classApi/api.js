@@ -1,6 +1,5 @@
 /*
- * file: alarmsApi.js
- * Copyright (c) 2013, Cyan, Inc. All rights reserved.
+ * Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
  */
 'use strict';
 
@@ -24,6 +23,15 @@ module.exports = [{
         'required': [parameters.signature, parameters.classId],
         'optional': [],
         'description': 'List the students in a class managed by the User',
+        'response': {} // sample data
+    }
+}, {
+    'url': '/api/v1/classes/instructors/read',
+    'GET': {
+        'handler': classes.readInstructorsByClasses,
+        'required': [parameters.signature, parameters.classId],
+        'optional': [],
+        'description': 'List the instructors in a class managed by the User',
         'response': {} // sample data
     }
 }];

@@ -1,6 +1,6 @@
 /*
  * file: apiServer.js
- * CapiServeryright(c) 2013, Cyan Inc. All rights reserved.
+ * Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
  */
 'use strict';
 
@@ -20,11 +20,11 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     });
 }; // sendResponse //
 
-apiServer.sendError = function(req, res, error) {
+apiServer.sendError = function(req, res, e) {
     res.json(500, {
         result: false,
         message: 'Internal Server Error',
-        description: 'Unable to get data at this point of time.',
+        description: !e ? 'Unable to get data at this point of time.' : e,
         source: nconf.get('SERVER_NAME')
     });
 }; // sendError //
