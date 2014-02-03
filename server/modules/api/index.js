@@ -165,7 +165,6 @@ exports.getObjects = function(req, res) {
     }
 };
 
-// not used
 exports.postObjects = function(req, res) {
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
