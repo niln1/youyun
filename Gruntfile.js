@@ -2,19 +2,19 @@
  * file: Gruntfile.js
  * Copyright (c) 2013, Cyan, Inc. All rights reserved.
  */
-'use strict';
+ 'use strict';
 
-var nconf = require('nconf');
-var handlebars = require('handlebars');
+ var nconf = require('nconf');
+ var handlebars = require('handlebars');
 
-module.exports = function(grunt) {
+ module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     /************************************************************************************
      * Setting & variables
      ************************************************************************************/
 
-    nconf.argv().env().defaults({
+     nconf.argv().env().defaults({
         // Define global directories that will be used in the next defaults() function
         'in-dir': 'client',
         'out-dir': 'production',
@@ -24,52 +24,52 @@ module.exports = function(grunt) {
         'module': '*'
     });
 
-    var outDir = nconf.get('out-dir'),
-        outDirDev = nconf.get('out-dir-dev'),
-        cssSrc = nconf.get('module') + '/css/**/*',
-        tsSrc = nconf.get('module') + '/js/**/*.ts',
-        tsTmpDir = nconf.get('tmp-dir-build'),
-        tmplSrc = nconf.get('module') + '/js/**/*.jade',
-        compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
-        viewsSrc = [
-            nconf.get('module') + '/**/*.jade',
-            '!' + nconf.get('module') + '/**/_*.jade'
-        ],
-        viewsOutDir = nconf.get('out-dir'),
-        viewsOutDirDev = nconf.get('out-dir-dev');
+     var outDir = nconf.get('out-dir'),
+     outDirDev = nconf.get('out-dir-dev'),
+     cssSrc = nconf.get('module') + '/css/**/*',
+     tsSrc = nconf.get('module') + '/js/**/*.ts',
+     tsTmpDir = nconf.get('tmp-dir-build'),
+     tmplSrc = nconf.get('module') + '/js/**/*.jade',
+     compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
+     viewsSrc = [
+     nconf.get('module') + '/**/*.jade',
+     '!' + nconf.get('module') + '/**/_*.jade'
+     ],
+     viewsOutDir = nconf.get('out-dir'),
+     viewsOutDirDev = nconf.get('out-dir-dev');
 
-    if (nconf.get('out')) {
+     if (nconf.get('out')) {
         outDir = nconf.get('out');
         outDirDev = nconf.get('out');
     }
 
     // Symlink all folder / files except the ones in js, css & tmpl
     var others = [
-        nconf.get('module') + '/**/*',
-        '!' + nconf.get('module') + '/js/**',
-        '!' + nconf.get('module') + '/css/**',
-        '!' + nconf.get('module') + '/tmpl/**'
+    nconf.get('module') + '/**/*',
+    '!' + nconf.get('module') + '/js/**',
+    '!' + nconf.get('module') + '/css/**',
+    '!' + nconf.get('module') + '/tmpl/**'
     ];
     var cleanOthers = [
-        outDir + '/' + nconf.get('module') + '/**/*',
-        '!' + outDir + '/' + nconf.get('module') + '/js/**',
-        '!' + outDir + '/' + nconf.get('module') + '/css/**',
-        '!' + outDir + '/' + nconf.get('module') + '/tmpl/**',
-        outDirDev + '/' + nconf.get('module') + '/**/*',
-        '!' + outDirDev + '/' + nconf.get('module') + '/js/**',
-        '!' + outDirDev + '/' + nconf.get('module') + '/css/**',
-        '!' + outDirDev + '/' + nconf.get('module') + '/tmpl/**'
+    outDir + '/' + nconf.get('module') + '/**/*',
+    '!' + outDir + '/' + nconf.get('module') + '/js/**',
+    '!' + outDir + '/' + nconf.get('module') + '/css/**',
+    '!' + outDir + '/' + nconf.get('module') + '/tmpl/**',
+    outDirDev + '/' + nconf.get('module') + '/**/*',
+    '!' + outDirDev + '/' + nconf.get('module') + '/js/**',
+    '!' + outDirDev + '/' + nconf.get('module') + '/css/**',
+    '!' + outDirDev + '/' + nconf.get('module') + '/tmpl/**'
     ];
 
     /************************************************************************************
      * Setting & variables
      ************************************************************************************/
 
-    grunt.initConfig({
+     grunt.initConfig({
         clean: {
             all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
-	        views: [outDir + '/' + nconf.get('module') + '/views', outDirDev + '/' + nconf.get('module') + '/views'],
-	        css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
+            views: [outDir + '/' + nconf.get('module') + '/views', outDirDev + '/' + nconf.get('module') + '/views'],
+            css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
             ts: [outDir + '/' + nconf.get('module') + '/js', outDirDev + '/' + nconf.get('module') + '/js', tsTmpDir + '/' + nconf.get('module') + '/ts'],
             tmpl: [outDir + '/' + nconf.get('module') + '/tmpl', outDirDev + '/' + nconf.get('module') + '/tmpl', tsTmpDir + '/' + nconf.get('module') + '/tmpl'],
             others: cleanOthers
@@ -341,14 +341,14 @@ module.exports = function(grunt) {
                     debounceDelay: 250
                 }
             },
-	        views: {
-		        files: viewsSrc,
-		        tasks: ['clean:views', 'views-dev'],
-		        options: {
-			        cwd: nconf.get('in-dir'),
-			        debounceDelay: 250
-		        }
-	        },
+            views: {
+                files: viewsSrc,
+                tasks: ['clean:views', 'views-dev'],
+                options: {
+                    cwd: nconf.get('in-dir'),
+                    debounceDelay: 250
+                }
+            },
             others: {
                 files: others,
                 tasks: ['clean:others', 'others-dev'],
@@ -360,8 +360,8 @@ module.exports = function(grunt) {
         }
     });
 
-    function compileTs(tsSrcDir, enableSrcMap, callback) {
-        return function() {
+function compileTs(tsSrcDir, enableSrcMap, callback) {
+    return function() {
             // read all subdirectories from typescript folder
             grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
                 // get the current ts config
@@ -405,8 +405,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('watch-ts', ['watch:ts']);
     grunt.registerTask('watch-css', ['watch:css']);
-	grunt.registerTask('watch-views', ['watch:views']);
-	grunt.registerTask('watch-others', ['watch:others']);
+    grunt.registerTask('watch-views', ['watch:views']);
+    grunt.registerTask('watch-others', ['watch:others']);
 
     grunt.registerTask('build', ['clean:all', 'css', 'js', 'views', 'others']);
     grunt.registerTask('build-dev', ['clean:all', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);

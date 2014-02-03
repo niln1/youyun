@@ -26,7 +26,7 @@ function apiLoginSuccess(req, res, user) {
         message: user,
         result: true,
         description: 'User authenticated successfully',
-        source: nconf.get('SERVER_NAME'),
+        source: nconf.get('SERVER_NAME')
     });
 }
 
@@ -97,10 +97,24 @@ exports.checkUserSession = function(req, res, next) {
     var isInWhitelist = false;
     var whitelistPatterns = [
         /^\/(login|logout)/,
-        /^\/api\/v\d\/(login|logout|getuser)/,
-        /^\/static\//
+        /^\/api\/v\d\/account\/(login|logout|getuser)/,
+	    /^\/$/
     ];
 
+	if (process.env.NODE_ENV !== 'nginx') {
+		whitelistPatterns.push(/^.*\.map$/);
+		whitelistPatterns.push(/^.*\.js$/);
+		whitelistPatterns.push(/^.*\.ts$/);
+		whitelistPatterns.push(/^.*\.css$/);
+		whitelistPatterns.push(/^.*\.scss$/);
+		whitelistPatterns.push(/^.*\.sass$/);
+		whitelistPatterns.push(/^.*\.less$/);
+		whitelistPatterns.push(/^.*\/img\/.*$/);
+		whitelistPatterns.push(/^.*\.json$/);
+		whitelistPatterns.push(/^.*\.tmpl$/);
+		whitelistPatterns.push(/^.*\.html$/);
+		whitelistPatterns.push(/^.*\.woff$/);
+	}
     __.each(whitelistPatterns, function(pattern) {
         isInWhitelist = isInWhitelist || (path.search(pattern) !== -1);
     });

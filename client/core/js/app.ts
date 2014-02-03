@@ -1,5 +1,7 @@
 
-/// <reference path="definitions/angular/angular.d.ts"/>
+/// <reference path="vendor/angular/angular.d.ts"/>
+
+import LoginController = require('login-controller')
 
 class App {
 	/**
@@ -32,7 +34,7 @@ class App {
                 }).
                 when('/login', {
                     templateUrl: 'core/views/login.html',
-                    controller: 'PhoneDetailCtrl'
+                    controller: LoginController
                 }).
                 otherwise({
                     redirectTo: '/'
