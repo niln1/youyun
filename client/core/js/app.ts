@@ -1,7 +1,9 @@
 
 /// <reference path="vendor/angular/angular.d.ts"/>
 
-import LoginController = require('login-controller')
+import MainController = require('main-controller');
+import LoginController = require('login-controller');
+import Authentication = require('authentication');
 
 class App {
 	/**
@@ -21,16 +23,18 @@ class App {
 		App.instance = I;
 	}
 
-	private module:ng.IModule;
+    private module:ng.IModule;
+    private http:ng.IHttpService;
 
 	constructor() {
-		this.module = angular.module('YouyunApp', ['ngRoute']);
+
+		this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
 
 		this.module.config(['$routeProvider', ($routeProvider) => {
             $routeProvider.
                 when('/', {
                     templateUrl: 'core/views/main.html',
-                    controller: 'PhoneListCtrl'
+                    controller: MainController
                 }).
                 when('/login', {
                     templateUrl: 'core/views/login.html',
@@ -42,33 +46,17 @@ class App {
         }]);
 
         // Custom object injection
-        this.module.factory('$auth', () : IAuth => {
-            var auth : IAuth = {
-                isAuthenticated: false,
-                user: null,
-                prevLocation: '/'
-            }
-            return auth
+        this.module.factory('$auth', ($http:ng.IHttpService, localStorageService:ng.ICookieStore, $location:ng.ILocationService) => {
+            return new Authentication($http, localStorageService, $location);
         });
 
         // Route redirect event
         this.module.run(function($rootScope, $location, $auth) {
             $rootScope.$on('$routeChangeStart', (event) => {
-                // Pages that doesn't need authentication
-                var whitelist : string[] = [
-                    '/login',
-                    '/404'
-                ];
-
-                if(!$auth.isAuthenticated && whitelist.indexOf($location.path()) === -1){
-                    $auth.prevLocation = $location.path();
-                    $location.url("/login");
-                }
-
+                $auth.checkAuthentication();
                 event.preventDefault();
             });
         })
-
 
         angular.bootstrap(document, ['YouyunApp']);
 	}
