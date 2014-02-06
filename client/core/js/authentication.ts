@@ -27,7 +27,7 @@ class Authentication {
                 user : null,
                 prevLocation : '/'
             };
-            localStorageService.set(Authentication.AUTH_COOKIE_KEY, this.setting);
+            this.save();
         } else {
             this.setting = storedSetting;
         }
