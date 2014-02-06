@@ -1,11 +1,10 @@
-header.stable
+header.labelheader
 	position: fixed
 	top: 0
 	left: 0
 	width: 100%
 	z-index: 13
-	height: 65px
-	line-height: 65px
+	//line-height: 65px
 
 header#content
 	z-index: 15
@@ -21,10 +20,12 @@ header .school-logo img
 	opacity: 0.8
 
 header a.school-logo
-	margin-left: 25px
-	//font-family: 'School Logo'
+	position: absolute
+	z-index: 13
+	top: 15px
+	left: 20px
 	font-weight: 700
-	vertical-align: middle
+	vertical-align: baseline
 	font-size: 25px
 	text-decoration: none
 	display: block
@@ -54,14 +55,13 @@ header nav.main ul li
 	margin-left: 30px
 
 header nav.main ul li a
-	-webkit-font-smoothing: antialiased
-	opacity: .7
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
-	filter: alpha(opacity=70)
+	opacity: .8
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"
+	filter: alpha(opacity=80)
 	color: #fff
-	font-size: 11px
+	font-size: 14px
 	font-weight: 700
-	text-transform: uppercase
 	text-decoration: none
 	letter-spacing: 2px
 	padding: 10px
+	+single-text-shadow
