@@ -29,4 +29,13 @@ module.exports = [{
         'description': 'List the students in a class managed by the User',
         'response': {} // sample data
     }
+},{
+	'url': '/api/v1/account/get_user',
+	'GET': {
+		'handler': accounts.getUser,
+		'required': [],
+		'optional': [],
+		'description': 'Get the user using session',
+		'response': {} // sample data
+	}
 }];

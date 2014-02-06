@@ -7,6 +7,8 @@
 var auth = require('../../../middlewares/auth');
 var nconf = require('nconf');
 
+var apiServer = require('../utils/apiServer');
+
 exports.login = function(req, res) {
     auth.doLogin(req, res);
 };
@@ -20,3 +22,21 @@ exports.logout = function(req, res) {
         description: 'User successfully logged out'
     });
 };
+
+exports.getUser = function(req, res) {
+	if(req.session.user){
+		sendSessionUser(req,res);
+	}else{
+		var e = "invalid user session";
+		apiServer.sendError(e);
+	}
+};
+
+function sendSessionUser(req, res) {
+	res.json({
+		message: req.session.user,
+		result: true,
+		description: 'User Information in Session',
+		source: nconf.get('SERVER_NAME')
+	});
+}
