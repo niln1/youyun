@@ -1,22 +1,21 @@
 /// <reference path="vendor/angular/angular.d.ts"/>
 /// <reference path='interface/scope.d.ts'/>
+/// <reference path='interface/auth.d.ts'/>
 
 import Controller = require('controller')
 
 class LoginController extends Controller {
     public static LOGIN_API_URL : string = '/api/v1/account/login';
 
-    private scope:LoginControllerScope;
+    private scope:ILoginControllerScope;
 
-    constructor ($scope:LoginControllerScope, $http: ng.IHttpService, $location: ng.ILocationService) {
-        super($scope, $http, $location)
-        this.scope = $scope
-        console.log('Login Controller')
+    constructor ($scope:ILoginControllerScope, $http: ng.IHttpService, $location: ng.ILocationService, $auth:IAuth) {
+        super($scope, $http, $location, $auth);
+        this.scope = $scope;
+        console.log('Login Controller');
     }
 
     doLogin () : void {
-        console.log("Form clicked")
-        
         this.http.post(LoginController.LOGIN_API_URL, $.param({
             username: this.scope.username,
             password: this.scope.password
@@ -26,7 +25,16 @@ class LoginController extends Controller {
             }
         }).success((data, status, headers, config) => {
             console.log('Success');
-        }).error((data, status, headers, config) => {
+            if (data && data.result && data.message) { // SUCCESS
+                var user : IUser = data.message;
+                this.auth.isAuthenticated = true;
+                this.location.url(this.auth.prevLocation);
+                this.auth.prevLocation = '/';
+            } else { // FAILURE
+                // TODO show failure
+            }
+        }).error((data, status, headers, config) => { // ERROR
+            // TODO show error
             console.log('Error');
         })
     }

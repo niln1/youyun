@@ -41,6 +41,35 @@ class App {
                 });
         }]);
 
+        // Custom object injection
+        this.module.factory('$auth', () : IAuth => {
+            var auth : IAuth = {
+                isAuthenticated: false,
+                user: null,
+                prevLocation: '/'
+            }
+            return auth
+        });
+
+        // Route redirect event
+        this.module.run(function($rootScope, $location, $auth) {
+            $rootScope.$on('$routeChangeStart', (event) => {
+                // Pages that doesn't need authentication
+                var whitelist : string[] = [
+                    '/login',
+                    '/404'
+                ];
+
+                if(!$auth.isAuthenticated && whitelist.indexOf($location.path()) === -1){
+                    $auth.prevLocation = $location.path();
+                    $location.url("/login");
+                }
+
+                event.preventDefault();
+            });
+        })
+
+
         angular.bootstrap(document, ['YouyunApp']);
 	}
 }
