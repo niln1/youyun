@@ -1,7 +1,9 @@
 
 /// <reference path="vendor/angular/angular.d.ts"/>
 
-import LoginController = require('login-controller')
+import MainController = require('main-controller');
+import LoginController = require('login-controller');
+import Authentication = require('authentication');
 
 class App {
 	/**
@@ -30,7 +32,7 @@ class App {
             $routeProvider.
                 when('/', {
                     templateUrl: 'core/views/main.html',
-                    controller: 'PhoneListCtrl'
+                    controller: MainController
                 }).
                 when('/login', {
                     templateUrl: 'core/views/login.html',
@@ -63,6 +65,8 @@ class App {
                 if(!$auth.isAuthenticated && whitelist.indexOf($location.path()) === -1){
                     $auth.prevLocation = $location.path();
                     $location.url("/login");
+                } else if ($auth.isAuthenticated && $location.path() === '/login') {
+                    $location.url($auth.prevLocation);
                 }
 
                 event.preventDefault();
