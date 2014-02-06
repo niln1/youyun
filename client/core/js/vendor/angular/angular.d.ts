@@ -18,6 +18,19 @@ interface Function {
 ///////////////////////////////////////////////////////////////////////////////
 declare module ng {
 
+    /************************************************************************
+     * Custom d.ts definitions
+     ************************************************************************/
+    interface ICookies {
+        [name: string]: Object;
+    }
+
+    interface ICookieStore {
+        get(key: string): Object;
+        set(key: string, value: Object);
+        remove(key: string);
+    }
+
     // All service providers extend this interface
     interface IServiceProvider {
         $get: any;

@@ -5,8 +5,8 @@
 import Controller = require('controller');
 
 class MainController extends Controller {
-    constructor ($scope:IMainControllerScope, $http: ng.IHttpService, $location: ng.ILocationService, $auth:IAuth) {
-        super($scope, $http, $location, $auth);
+    constructor ($scope:IMainControllerScope, $http: ng.IHttpService, $location: ng.ILocationService) {
+        super($scope);
     }
 }
 
