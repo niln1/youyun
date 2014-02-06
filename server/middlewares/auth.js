@@ -30,17 +30,17 @@ function apiLoginSuccess(req, res, user) {
     });
 }
 
-function userAuthenticationFailed(req, res, message) {
+function userAuthenticationFailed(req, res, e) {
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
         res.json(401, {
             result: false,
             message: !e ? 'User not authenticated' : e,
-            description: message + '. Please login',
+            description: e + '. Please login',
             source: nconf.get('SERVER_NAME')
         });
     } else {
-        req.flash('error', message); // TODO
+        req.flash('error', e); // TODO
         res.redirect('/login');
     }
 }

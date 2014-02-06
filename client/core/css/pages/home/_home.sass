@@ -64,3 +64,85 @@ header nav.main ul li a
 	text-decoration: none
 	letter-spacing: 2px
 	padding: 10px
+
+header nav.user .user-icon i
+	display: block
+	width: 35px
+	height: 35px
+	-webkit-border-radius: 35px
+	border-radius: 35px
+	overflow: hidden
+	-webkit-background-size: cover
+	-moz-background-size: cover
+	background-size: cover
+	background-position: top center
+	float: right
+	background-image: url('/core/img/login-view-background-1.jpg')
+
+header nav.user .user-icon
+	zoom: 1
+	width: 110px
+	padding-bottom: 20px
+
+header nav.user .user-icon:before
+	content: ""
+	display: table
+
+header nav.user .user-icon:after
+	content: ""
+	display: table
+	clear: both
+
+header nav.user
+	position: absolute
+	top: 15px
+	right: 20px
+	z-index: 15
+	text-align: right
+
+header nav.user ul
+	-webkit-box-sizing: border-box
+	-moz-box-sizing: border-box
+	box-sizing: border-box
+	display: none
+	position: absolute
+	-webkit-border-radius: 4px
+	border-radius: 4px
+	top: 54px
+	right: 0
+	padding: 12px
+	background: rgba(0,0,0,.5)
+
+header nav.user:hover ul
+	display: block
+
+header nav.user ul:before
+	content: ''
+	border-style: solid
+	border-width: 8px 8px 8px 8px
+	border-color: transparent rgba(0, 0, 0, 0.5) transparent transparent
+	height: 0
+	position: absolute
+	left: 70%
+	top: -16px
+	width: 0
+	-webkit-transform: rotate(90deg)
+
+
+header nav.user ul li:first-child
+	margin-top: 0
+
+header nav.user ul li
+	font-weight: 700
+	letter-spacing: 1px
+	font-size: 13px
+	display: block
+	line-height: 1
+	white-space: nowrap
+	margin-top: 10px
+
+header nav.user ul li a
+	color: #fff
+
+
+
