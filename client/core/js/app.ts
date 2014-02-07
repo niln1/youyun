@@ -4,6 +4,7 @@
 import MainController = require('main-controller');
 import LoginController = require('login-controller');
 import Authentication = require('authentication');
+import Menu = require('menu');
 
 class App {
 	/**
@@ -25,8 +26,11 @@ class App {
 
     private module:ng.IModule;
     private http:ng.IHttpService;
+    private menu:Menu;
 
 	constructor() {
+
+        this.menu = new Menu();
 
 		this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
 
