@@ -8,7 +8,7 @@ header.labelheader
 header#content
 	z-index: 15
 
-header#photo
+header#header-background
 	background-image: url('/core/img/login-view-background-1.jpg')
 	-webkit-background-size: cover
 	-moz-background-size: cover
@@ -16,11 +16,15 @@ header#photo
 	background-color: #333
 	background-position: center center
 	background-repeat: no-repeat
+	-webkit-box-shadow: inset 0px -1px 1px rgba(0,0,0,0.5)
+	-moz-box-shadow: inset 0px -1px 1px rgba(0,0,0,0.5)
+	box-shadow: inset 0px -1px 1px rgba(0,0,0,0.5)
 
-header#photo.opened
+header#header-background.opened
 	height: 446px
 
-header#photo.closed
+
+header#header-background.closed
 	height: 65px
 
 header .school-logo img
@@ -70,6 +74,7 @@ header nav.main ul li a
 	text-decoration: none
 	letter-spacing: 2px
 	padding: 10px
+	text-shadow: 0 2px 4px rgba(0,0,0,.1)
 
 header a
 	opacity: 0.7
@@ -159,6 +164,25 @@ header nav.user ul li
 
 header nav.user ul li a
 	color: #fff
+
+header.opened hgroup p
+	//width: 600px
+	margin: 0 auto
+	text-align: center
+
+#header-background p.user-photo i.saving
+	display: none
+	position: absolute
+	top: 0
+	left: 50%
+	margin: 0 0 0 -72px
+	font-weight: 300
+	text-shadow: 0 1px 0 rgba(0,0,0,.7)
+	font-style: normal
+	font-size: 24px
+	line-height: 144px
+	background: rgba(0,0,0,.1)
+
 
 
 
