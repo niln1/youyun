@@ -27,6 +27,7 @@ nconf.argv().env().file('./server/config.json');
  * Setup environment
  */
 var env = nconf.get('ENV');
+process.env.NODE_ENV = env;
 app.set('env', nconf.get('ENV'))
 app.set('port', nconf.get('PORT'));
 app.set('views', path.join(__dirname, 'server', 'views'));
