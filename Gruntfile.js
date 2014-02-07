@@ -1,14 +1,17 @@
 /*
  * file: Gruntfile.js
- * Copyright (c) 2013, Cyan, Inc. All rights reserved.
+ * Copyright (c) 2013, Ranchao Zhang & Zhihao Ni. All rights reserved.
  */
  'use strict';
 
  var nconf = require('nconf');
  var handlebars = require('handlebars');
+ var fs = require('fs');
 
  module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
+    grunt.option('force', true);
 
     /************************************************************************************
      * Setting & variables
@@ -360,8 +363,41 @@
         }
     });
 
-function compileTs(tsSrcDir, enableSrcMap, callback) {
-    return function() {
+    function compileSass(outDir, enableSrcMap, callback) {
+        return function() {
+            grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
+                var compass = grunt.config.get('compass') || {};
+                var module = dir.replace(nconf.get('in-dir') + '/', "");
+
+                var sassDir = dir + '/css';
+                var cssDir = sassDir.replace(nconf.get('in-dir') + '/', outDir + '/') 
+
+                if (fs.existsSync(sassDir)) {
+                    compass[dir] = {
+                        options: {
+                            httpPath: outDir,
+                            outputStyle: enableSrcMap ? 'compact' : 'compressed',
+                            sourcemap: enableSrcMap,
+                            sassDir: sassDir,
+                            cssDir: cssDir,
+                            raw: 'preferred_syntax = :sass\n' // Use `raw` since it's not directly available
+                        }
+                    }
+
+                    grunt.config.set('compass', compass);
+                }
+
+            });    
+
+            // when finished run the compiler
+            grunt.task.run('compass');
+            // call the callback
+            if (callback) callback();
+        }
+    }
+
+    function compileTs(tsSrcDir, enableSrcMap, callback) {
+        return function() {
             // read all subdirectories from typescript folder
             grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
                 // get the current ts config
@@ -391,6 +427,9 @@ function compileTs(tsSrcDir, enableSrcMap, callback) {
 
     grunt.registerTask('ts-dev', 'Compile typescript files in development', compileTs(outDirDev, true));
     grunt.registerTask('ts-prod', 'Compile typescript files in production', compileTs(tsTmpDir, false));
+
+    grunt.registerTask('compass-prod', 'Compile typescript files in production', compileSass(outDir, false));
+    grunt.registerTask('compass-dev', 'Compile typescript files in development', compileSass(outDirDev, true));
 
     grunt.registerTask('install', ['exec:install']);
 

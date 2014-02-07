@@ -21,3 +21,4 @@ node_modules
 /rethinkdb_data
 /tscommand.tmp.txt
 /.idea
+/.sass-cache
