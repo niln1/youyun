@@ -1,21 +1,44 @@
 #!/bin/bash
 
-screen -ls | grep \( | grep -o '[0-9]\+' | while read pid; do kill "$pid"; done
+LOG_DIR=".dev-logs"
+PID_FILE=".dev-pid"
+MAC_CMDS="mongod:mongod, redis:redis-server"
+NIX_CMDS="watch-ts:grunt watch-ts, watch-css:grunt watch-css, watch-views:grunt watch-views, watch-others:grunt watch-others"
 
-screen -dmS MongoDB
-screen -p 0 -S MongoDB -X eval 'stuff "mongod\015"'
+# runs a command in the background
+# @param string of commands
+run_cmd () {
 
-screen -dmS Redis
-screen -p 0 -S Redis -X eval 'stuff "redis-server\015"'
+    echo $1 | tr "," "\n" | while read cmd; do
+        filename=${cmd%:*}
+        command=${cmd##*:}
 
-screen -dmS WatchTs
-screen -p 0 -S WatchTs -X eval 'stuff "grunt watch:ts\015"'
+        # execute command and output to file matching last word in command
+        ${command} &> "${LOG_DIR}/${filename}" &
+        echo $! >> "${PID_FILE}"
+    done
+}
 
-screen -dmS WatchSass
-screen -p 0 -S WatchSass -X eval 'stuff "grunt watch:css\015"'
+# kills any pids stored in the pid file
+kill_pids () {
+    if [ -e "${PID_FILE}" ]; then
+        cat "${PID_FILE}" | while read pid; do
+            kill -9 $pid &> /dev/null
+        done
+    fi
+    cat /dev/null > "${PID_FILE}"
+}
 
-screen -dmS WatchViews
-screen -p 0 -S WatchViews -X eval 'stuff "grunt watch:views\015"'
+kill_pids
 
-screen -dmS WatchAssets
-screen -p 0 -S WatchAssets -X eval 'stuff "grunt watch:others\015"'
+if [ ! -d "${LOG_DIR}" ]; then
+    mkdir "${LOG_DIR}"
+fi
+
+if [ "$(uname)" == "Darwin" ]; then
+    run_cmd "$MAC_CMDS"
+fi
+
+run_cmd "$NIX_CMDS"
+
+

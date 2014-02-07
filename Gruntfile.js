@@ -27,19 +27,19 @@ module.exports = function(grunt) {
         'module': '*'
     });
 
-     var outDir = nconf.get('out-dir'),
-     outDirDev = nconf.get('out-dir-dev'),
-     cssSrc = nconf.get('module') + '/css/**/*',
-     tsSrc = nconf.get('module') + '/js/**/*.ts',
-     tsTmpDir = nconf.get('tmp-dir-build'),
-     tmplSrc = nconf.get('module') + '/js/**/*.jade',
-     compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
-     viewsSrc = [
-         nconf.get('module') + '/*/views/**/*.jade',
-         '!' + nconf.get('module') + '/*/views/**/_*.jade'
-     ],
-     viewsOutDir = nconf.get('out-dir'),
-     viewsOutDirDev = nconf.get('out-dir-dev');
+    var outDir = nconf.get('out-dir'),
+    outDirDev = nconf.get('out-dir-dev'),
+    cssSrc = nconf.get('module') + '/css/**/*',
+    tsSrc = nconf.get('module') + '/js/**/*.ts',
+    tsTmpDir = nconf.get('tmp-dir-build'),
+    tmplSrc = nconf.get('module') + '/js/**/*.jade',
+    compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
+    viewsSrc = [
+        nconf.get('module') + '/views/**/*.jade',
+        '!' + nconf.get('module') + '/views/**/_*.jade'
+    ],
+    viewsOutDir = nconf.get('out-dir'),
+    viewsOutDirDev = nconf.get('out-dir-dev');
 
      if (nconf.get('out')) {
         outDir = nconf.get('out');
@@ -329,7 +329,7 @@ module.exports = function(grunt) {
         },
         watch: {
             ts: {
-                files: tsSrc,
+                files: [].concat(tsSrc, tmplSrc),
                 tasks: ['clean:ts', 'js-dev'],
                 options: {
                     cwd: nconf.get('in-dir'),

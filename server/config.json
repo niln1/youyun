@@ -1,14 +1,12 @@
 {
-    "SERVER_NAME": "YouYun Server",
-    "ENV": "development",
-    "HOST": "localhost",
-    "PORT": 3000,
-    "PROTOCOL": "http",
-    "COOKIE_KEY": "yy.sid",
-    "COOKIE_MAXAGE": 604800000,
-    "COOKIE_SECRET": "cac9904545bae07cb09bad9dab7f3ced",
-    "REDIS_HOST": "localhost",
-    "REDIS_PORT": 6379,
-    "MONGODB_URL": "mongodb://localhost/yy-dev",
-    "VERSION": 1
+    "server-name": "YouYun Server",
+    "env": "development",
+    "port": 3000,
+    "cookie-key": "yy.sid",
+    "cookie-maxage": 604800000,
+    "cookie-secret": "cac9904545bae07cb09bad9dab7f3ced",
+    "redis-host": "localhost",
+    "redis-port": 6379,
+    "mongodb-url": "mongodb://localhost/yy-dev",
+    "version": 1
 }

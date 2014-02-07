@@ -13,7 +13,7 @@ function invalidContentType(req, res, desc) {
         'result': false,
         'message': 'Invalid Content-Type',
         'description': desc,
-        'source': nconf.get('SERVER_NAME')
+        'source': nconf.get('server-name')
     });
 }
 
@@ -22,7 +22,7 @@ function invalidQueryParameters(req, res, desc) {
         'result': false,
         'message': 'Invalid Query Parameters specified',
         'description': desc,
-        'source': nconf.get('SERVER_NAME')
+        'source': nconf.get('server-name')
     });
 }
 
@@ -31,7 +31,7 @@ function missingRequiredQueryParameters(req, res, desc) {
         'result': false,
         'message': 'Required Query Parameters missing',
         'description': desc,
-        'source': nconf.get('SERVER_NAME')
+        'source': nconf.get('server-name')
     });
 }
 
@@ -40,7 +40,7 @@ function apiNotDefined(req, res, e) {
         'result': false,
         'message': !e ? 'API requested is not defined' : e,
         'description': req.url + ' is not defined',
-        'source': nconf.get('SERVER_NAME')
+        'source': nconf.get('server-name')
     });
 }
 

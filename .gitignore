@@ -15,6 +15,8 @@ dump.rdb
 npm-debug.log
 node_modules
 
+/.dev-pid
+/.dev-logs
 /.tmp-build
 /development
 /production

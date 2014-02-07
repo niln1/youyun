@@ -26,10 +26,10 @@ nconf.argv().env().file('./server/config.json');
 /*
  * Setup environment
  */
-var env = nconf.get('ENV');
+var env = nconf.get('env');
 process.env.NODE_ENV = env;
-app.set('env', nconf.get('ENV'))
-app.set('port', nconf.get('PORT'));
+app.set('env', nconf.get('env'))
+app.set('port', nconf.get('port'));
 app.set('views', path.join(__dirname, 'server', 'views'));
 app.set('view engine', 'jade');
 
@@ -45,7 +45,7 @@ session(app);
 
 app.use(flash());
 
-mongoose.connect(nconf.get('MONGODB_URL'));
+mongoose.connect(nconf.get('mongodb-url'));
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
