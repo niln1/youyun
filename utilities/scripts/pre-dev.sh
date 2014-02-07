@@ -1,10 +1,6 @@
 #!/bin/bash
 
-kill -9 $(lsof -i:3000 -t) 2> /dev/null
-kill -9 $(lsof -i:6379 -t) 2> /dev/null
-
-killall SCREEN 2> /dev/null
-killall screen 2> /dev/null
+screen -ls | grep \( | grep -o '[0-9]\+' | while read pid; do kill "$pid"; done
 
 screen -dmS MongoDB
 screen -p 0 -S MongoDB -X eval 'stuff "mongod\015"'

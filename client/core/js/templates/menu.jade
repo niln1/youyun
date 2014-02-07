@@ -1,0 +1,33 @@
+header.labelheader
+	p.school-logo-container
+		a.school-logo(href="/")
+			img(src='/core/img/school-logo-pinghe-login-white.png')
+			| &nbsp;优云
+	nav.main
+		ul
+			li.home
+				a(href="/") 个人主页
+			li.messagebox
+				a(href="/") 消息中心
+			li.myclasses
+				a(href="/") 我的班级
+			li.mystudents
+				a(href="/") 我的学生
+			li.account
+				a(href="/") 账户管理
+					nav.user
+		div.user-icon
+			i
+		ul
+			li
+				a(href="/#/account") 我的账户
+			li
+				a(href="/#/logout") 登出
+
+div#content
+	header#header-background.opened
+		hgroup(style="opacity: 1;")
+			p.user-photo
+				i.photo
+					i
+				i.saving 保存中...
