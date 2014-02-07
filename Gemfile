@@ -1,0 +1,1 @@
+gem 'sass', '3.3.0.rc.2', :group => :development
