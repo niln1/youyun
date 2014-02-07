@@ -2,13 +2,13 @@
  * file: Gruntfile.js
  * Copyright (c) 2013, Ranchao Zhang & Zhihao Ni. All rights reserved.
  */
- 'use strict';
+'use strict';
 
- var nconf = require('nconf');
- var handlebars = require('handlebars');
- var fs = require('fs');
+var nconf = require('nconf');
+var handlebars = require('handlebars');
+var fs = require('fs');
 
- module.exports = function(grunt) {
+module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.option('force', true);
@@ -17,7 +17,7 @@
      * Setting & variables
      ************************************************************************************/
 
-     nconf.argv().env().defaults({
+    nconf.argv().env().defaults({
         // Define global directories that will be used in the next defaults() function
         'in-dir': 'client',
         'out-dir': 'production',
@@ -35,8 +35,8 @@
      tmplSrc = nconf.get('module') + '/js/**/*.jade',
      compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
      viewsSrc = [
-     nconf.get('module') + '/**/*.jade',
-     '!' + nconf.get('module') + '/**/_*.jade'
+         nconf.get('module') + '/*/views/**/*.jade',
+         '!' + nconf.get('module') + '/*/views/**/_*.jade'
      ],
      viewsOutDir = nconf.get('out-dir'),
      viewsOutDirDev = nconf.get('out-dir-dev');
@@ -179,7 +179,7 @@
                     cwd: nconf.get('in-dir'),
                     src: ['**/*.sass', '!**/_*.sass', '**/*.scss', '!**/_*.scss'],
                     dest: outDir,
-                    ext: '.min.css'
+                    ext: '.css'
                 }]
             },
             dev: {
@@ -201,7 +201,7 @@
         exec: {
             js: {
                 command: function() {
-                    var template = handlebars.compile('/bin/bash -c \'grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"\'"\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;s|\\\.js|\\\.min\\\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs([\\\"`basename "$file"`\\\"]);" >> "$outfile"; fi; done\'');
+                    var template = handlebars.compile('/bin/bash -c \'grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"\'"\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile"; fi; done\'');
                     var options = {
                         VIEW: nconf.get('views-dir') + '/' + nconf.get('module'),
                         TMP: tsTmpDir + '\\\/',
@@ -363,16 +363,17 @@
         }
     });
 
-    function compileSass(outDir, enableSrcMap, callback) {
+    function compileSass(inDir, outDir, enableSrcMap, watch, callback) {
         return function() {
-            grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
+            grunt.file.expand(inDir + '/' + nconf.get('module')).forEach(function(dir) {
                 var compass = grunt.config.get('compass') || {};
                 var module = dir.replace(nconf.get('in-dir') + '/', "");
 
                 var sassDir = dir + '/css';
-                var cssDir = sassDir.replace(nconf.get('in-dir') + '/', outDir + '/') 
+                var cssDir = sassDir.replace(nconf.get('in-dir') + '/', outDir + '/') ;
 
                 if (fs.existsSync(sassDir)) {
+
                     compass[dir] = {
                         options: {
                             httpPath: outDir,
@@ -380,17 +381,18 @@
                             sourcemap: enableSrcMap,
                             sassDir: sassDir,
                             cssDir: cssDir,
+                            watch: watch,
                             raw: 'preferred_syntax = :sass\n' // Use `raw` since it's not directly available
                         }
                     }
 
                     grunt.config.set('compass', compass);
                 }
-
             });    
 
             // when finished run the compiler
             grunt.task.run('compass');
+
             // call the callback
             if (callback) callback();
         }
@@ -428,13 +430,13 @@
     grunt.registerTask('ts-dev', 'Compile typescript files in development', compileTs(outDirDev, true));
     grunt.registerTask('ts-prod', 'Compile typescript files in production', compileTs(tsTmpDir, false));
 
-    grunt.registerTask('compass-prod', 'Compile typescript files in production', compileSass(outDir, false));
-    grunt.registerTask('compass-dev', 'Compile typescript files in development', compileSass(outDirDev, true));
+    grunt.registerTask('compass-prod', 'Compile typescript files in production', compileSass(nconf.get('in-dir'), outDir, false));
+    grunt.registerTask('compass-dev', 'Compile typescript files in development', compileSass(outDirDev, outDirDev, true));
 
     grunt.registerTask('install', ['exec:install']);
 
-    grunt.registerTask('css', ['sass:prod']);
-    grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
+    grunt.registerTask('css', ['compass-prod']);
+    grunt.registerTask('css-dev', ['symlink:css', 'compass-dev']);
     grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
     grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
     grunt.registerTask('views', ['jade:views-prod']);
