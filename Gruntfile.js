@@ -382,13 +382,14 @@ module.exports = function(grunt) {
 
                     compass[dir] = {
                         options: {
+                            // Disable sourcemaps for now
+                            // sourcemap: enableSrcMap,
+                            raw: 'preferred_syntax = :sass \n',
                             httpPath: outDir,
                             outputStyle: enableSrcMap ? 'compact' : 'compressed',
-                            sourcemap: enableSrcMap,
                             sassDir: sassDir,
                             cssDir: cssDir,
                             watch: watch,
-                            raw: 'preferred_syntax = :sass\n' // Use `raw` since it's not directly available
                         }
                     }
 
