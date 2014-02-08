@@ -7,7 +7,7 @@ class Menu {
     public static MAIN_MENU_SELECTOR : string = '.main-menu';
     public static MENU_BACKGROUND_SELECTOR : string = '#header-background';
     private menuContainer;
-    private menuBackground
+    private menuBackground;
 
     constructor () {
         // TODO JQuery selector
