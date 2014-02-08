@@ -9,8 +9,6 @@ var db = require('./databases/db');
 var auth = require('./middlewares/auth');
 
 exports.main = function(req, res) {
-    console.log(nconf.get('VERSION'));
-    console.log(nconf.get('ENV'))
     res.render('index', {});
 };
 

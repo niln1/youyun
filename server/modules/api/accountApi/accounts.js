@@ -16,7 +16,7 @@ exports.login = function(req, res) {
 exports.logout = function(req, res) {
     req.session.user = null;
     res.json({
-        source: nconf.get('SERVER_NAME'),
+        source: nconf.get('server-name'),
         message: 'User successfully logged out',
         result: true,
         description: 'User successfully logged out'
@@ -37,6 +37,6 @@ function sendSessionUser(req, res) {
 		message: req.session.user,
 		result: true,
 		description: 'User Information in Session',
-		source: nconf.get('SERVER_NAME')
+		source: nconf.get('server-name')
 	});
 }

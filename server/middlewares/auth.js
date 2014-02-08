@@ -26,7 +26,7 @@ function apiLoginSuccess(req, res, user) {
         message: user,
         result: true,
         description: 'User authenticated successfully',
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }
 
@@ -37,7 +37,7 @@ function userAuthenticationFailed(req, res, e) {
             result: false,
             message: !e ? 'User not authenticated' : e,
             description: e + '. Please login',
-            source: nconf.get('SERVER_NAME')
+            source: nconf.get('server-name')
         });
     } else {
         req.flash('error', e); // TODO
@@ -52,7 +52,7 @@ function userNotAuthenticated(req, res, e) {
             result: 'false',
             message: !e ? 'User not authenticated' : e,
             description: 'Invalid Cookie. Please login',
-            source: nconf.get('SERVER_NAME')
+            source: nconf.get('server-name')
         });
     } else {
         // redirect to login page

@@ -5,17 +5,19 @@ header.labelheader
 			| &nbsp;优云
 	nav.main.unselectable
 		ul
-			//如何换成dynamic的。。。
-			li.home
-				a 个人主页
-			li.messagebox
-				a 消息中心
-			li.myclasses
-				a 我的班级
-			li.mystudents
-				a 我的学生
-			li.account
-				a 账户管理
+			//- li.home
+			//- 	a(href="/") 个人主页
+			//- li.messagebox
+			//- 	a(href="/") 消息中心
+			//- li.myclasses
+			//- 	a(href="/") 我的班级
+			//- li.mystudents
+			//- 	a(href="/") 我的学生
+			//- li.account
+			//- 	a(href="/") 账户管理
+			for menuitem in menuitems
+				li(class="#{menuitem.class}")
+					a(href="#{menuitem.href}") menuitem.name
 	nav.user.unselectable
 		div.user-icon
 			i

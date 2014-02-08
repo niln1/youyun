@@ -5,7 +5,7 @@ module.exports = function(app) {
     var env = app.get('env');
 
     // Setup session
-    app.use(express.cookieParser(nconf.get('COOKIE_SECRET')));
+    app.use(express.cookieParser(nconf.get('cookie-secret')));
     var store;
     if (env == 'test' || env == 'coverage') {
         var MemoryStore = express.session.MemoryStore;
@@ -15,19 +15,19 @@ module.exports = function(app) {
         // The line below will generates error message
         var redis = require('redis').createClient();
         var options = {
-            host: nconf.get('REDIS_HOST'),
-            port: nconf.get('REDIS_PORT'),
-            maxAge: nconf.get('COOKIE_MAXAGE')
+            host: nconf.get('redis-host'),
+            port: nconf.get('redis-port'),
+            maxAge: nconf.get('cookie-maxage')
         };
         store = new RedisStore(options);
     }
     app.use(express.session({
-        secret: nconf.get('COOKIE_SECRET'),
-        key: nconf.get('COOKIE_KEY'),
+        secret: nconf.get('cookie-secret'),
+        key: nconf.get('cookie-key'),
         store: store,
         cookie: {
             secure: false,
-            maxAge: nconf.get('COOKIE_MAXAGE')
+            maxAge: nconf.get('cookie-maxage')
         }
     }));
 }

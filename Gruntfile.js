@@ -1,20 +1,23 @@
 /*
  * file: Gruntfile.js
- * Copyright (c) 2013, Cyan, Inc. All rights reserved.
+ * Copyright (c) 2013, Ranchao Zhang & Zhihao Ni. All rights reserved.
  */
- 'use strict';
+'use strict';
 
- var nconf = require('nconf');
- var handlebars = require('handlebars');
+var nconf = require('nconf');
+var handlebars = require('handlebars');
+var fs = require('fs');
 
- module.exports = function(grunt) {
+module.exports = function(grunt) {
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
+    grunt.option('force', true);
 
     /************************************************************************************
      * Setting & variables
      ************************************************************************************/
 
-     nconf.argv().env().defaults({
+    nconf.argv().env().defaults({
         // Define global directories that will be used in the next defaults() function
         'in-dir': 'client',
         'out-dir': 'production',
@@ -24,19 +27,21 @@
         'module': '*'
     });
 
-     var outDir = nconf.get('out-dir'),
-     outDirDev = nconf.get('out-dir-dev'),
-     cssSrc = nconf.get('module') + '/css/**/*',
-     tsSrc = nconf.get('module') + '/js/**/*.ts',
-     tsTmpDir = nconf.get('tmp-dir-build'),
-     tmplSrc = nconf.get('module') + '/js/**/*.jade',
-     compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
-     viewsSrc = [
-     nconf.get('module') + '/**/*.jade',
-     '!' + nconf.get('module') + '/**/_*.jade'
-     ],
-     viewsOutDir = nconf.get('out-dir'),
-     viewsOutDirDev = nconf.get('out-dir-dev');
+    var outDir = nconf.get('out-dir'),
+    outDirDev = nconf.get('out-dir-dev'),
+    cssSrc = nconf.get('module') + '/css/**/*',
+    tsSrc = nconf.get('module') + '/js/**/*.ts',
+    tsTmpDir = nconf.get('tmp-dir-build'),
+    tmplSrc = nconf.get('module') + '/js/**/*.jade',
+    tmplNamespace = 'template',
+    tmplExt = '.tmpl',
+    compiledTmplSrc = nconf.get('module') + '/js/**/*' + tmplExt,
+    viewsSrc = [
+        nconf.get('module') + '/views/**/*.jade',
+        '!' + nconf.get('module') + '/views/**/_*.jade'
+    ],
+    viewsOutDir = nconf.get('out-dir'),
+    viewsOutDirDev = nconf.get('out-dir-dev');
 
      if (nconf.get('out')) {
         outDir = nconf.get('out');
@@ -176,7 +181,7 @@
                     cwd: nconf.get('in-dir'),
                     src: ['**/*.sass', '!**/_*.sass', '**/*.scss', '!**/_*.scss'],
                     dest: outDir,
-                    ext: '.min.css'
+                    ext: '.css'
                 }]
             },
             dev: {
@@ -198,7 +203,7 @@
         exec: {
             js: {
                 command: function() {
-                    var template = handlebars.compile('grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;s|\\\.js|\\\.min\\\.js|"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile";  echo "requirejs([\\\"`basename "$file"`\\\"]);" >> "$outfile"; fi; done');
+                    var template = handlebars.compile('/bin/bash -c \'grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"\'"\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile"; fi; done\'');
                     var options = {
                         VIEW: nconf.get('views-dir') + '/' + nconf.get('module'),
                         TMP: tsTmpDir + '\\\/',
@@ -258,7 +263,7 @@
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
-                    ext: '.tmpl'
+                    ext: tmplExt
                 }]
             },
             'tmpl-prod': {
@@ -271,7 +276,7 @@
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
-                    ext: '.tmpl'
+                    ext: tmplExt
                 }]
             },
             'views-dev': {
@@ -298,10 +303,12 @@
                 }]
             }
         },
-        autowrap: {
+        wrap: {
             dev: {
                 options: {
-                    wrapType: 'amd'
+                    seperator: '',
+                    indent: '',
+                    wrapper: ['define(function (require, exports, module) { ', 'return ' + tmplNamespace + '; \n });']
                 },
                 files: [{
                     expand: true,
@@ -313,7 +320,9 @@
             },
             prod: {
                 options: {
-                    wrapType: 'amd'
+                    seperator: '',
+                    indent: '',
+                    wrapper: ['define(function (require, exports, module) { return ', '});']
                 },
                 files: [{
                     expand: true,
@@ -326,7 +335,7 @@
         },
         watch: {
             ts: {
-                files: tsSrc,
+                files: [].concat(tsSrc, tmplSrc),
                 tasks: ['clean:ts', 'js-dev'],
                 options: {
                     cwd: nconf.get('in-dir'),
@@ -360,8 +369,43 @@
         }
     });
 
-function compileTs(tsSrcDir, enableSrcMap, callback) {
-    return function() {
+    function compileSass(inDir, outDir, enableSrcMap, watch, callback) {
+        return function() {
+            grunt.file.expand(inDir + '/' + nconf.get('module')).forEach(function(dir) {
+                var compass = grunt.config.get('compass') || {};
+                var module = dir.replace(nconf.get('in-dir') + '/', "");
+
+                var sassDir = dir + '/css';
+                var cssDir = sassDir.replace(nconf.get('in-dir') + '/', outDir + '/') ;
+
+                if (fs.existsSync(sassDir)) {
+
+                    compass[dir] = {
+                        options: {
+                            httpPath: outDir,
+                            outputStyle: enableSrcMap ? 'compact' : 'compressed',
+                            sourcemap: enableSrcMap,
+                            sassDir: sassDir,
+                            cssDir: cssDir,
+                            watch: watch,
+                            raw: 'preferred_syntax = :sass\n' // Use `raw` since it's not directly available
+                        }
+                    }
+
+                    grunt.config.set('compass', compass);
+                }
+            });    
+
+            // when finished run the compiler
+            grunt.task.run('compass');
+
+            // call the callback
+            if (callback) callback();
+        }
+    }
+
+    function compileTs(tsSrcDir, enableSrcMap, callback) {
+        return function() {
             // read all subdirectories from typescript folder
             grunt.file.expand(nconf.get('in-dir') + '/' + nconf.get('module')).forEach(function(dir) {
                 // get the current ts config
@@ -392,12 +436,15 @@ function compileTs(tsSrcDir, enableSrcMap, callback) {
     grunt.registerTask('ts-dev', 'Compile typescript files in development', compileTs(outDirDev, true));
     grunt.registerTask('ts-prod', 'Compile typescript files in production', compileTs(tsTmpDir, false));
 
+    grunt.registerTask('compass-prod', 'Compile typescript files in production', compileSass(nconf.get('in-dir'), outDir, false));
+    grunt.registerTask('compass-dev', 'Compile typescript files in development', compileSass(outDirDev, outDirDev, true));
+
     grunt.registerTask('install', ['exec:install']);
 
-    grunt.registerTask('css', ['sass:prod']);
-    grunt.registerTask('css-dev', ['symlink:css', 'sass:dev']);
-    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
+    grunt.registerTask('css', ['compass-prod']);
+    grunt.registerTask('css-dev', ['symlink:css', 'compass-dev']);
+    grunt.registerTask('js', ['jade:tmpl-prod', 'wrap:prod', 'symlink:js', 'symlink:js-tmp-others', 'ts-prod', 'exec:js']);
+    grunt.registerTask('js-dev', ['jade:tmpl-dev', 'wrap:dev', 'symlink:js-dev', 'ts-dev']);
     grunt.registerTask('views', ['jade:views-prod']);
     grunt.registerTask('views-dev', ['jade:views-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);

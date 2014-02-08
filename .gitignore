@@ -6,6 +6,7 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.lock
 
 pids
 logs
@@ -14,9 +15,12 @@ dump.rdb
 npm-debug.log
 node_modules
 
+/.dev-pid
+/.dev-logs
 /.tmp-build
 /development
 /production
 /rethinkdb_data
 /tscommand.tmp.txt
 /.idea
+/.sass-cache

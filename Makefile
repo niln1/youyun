@@ -22,7 +22,7 @@ OFF := '\x1b[0m'
 # Install
 #############################################################################################
 
-install: install-nodejs install-npm install-rvm install-sass install-screen change-ulimit
+install: install-nodejs install-npm install-rvm install-sass
 
 install-nodejs:
 	@echo Installing Node.js
@@ -62,35 +62,7 @@ install-rvm:
 
 install-sass:
 	@echo Installing sass
-	@gem install sass --pre
-
-install-screen:
-ifeq ($(UNAME),Linux)
-	@sudo apt-get update
-	@sudo apt-get install -y python-software-properties python g++ make
-	@sudo add-apt-repository -y ppa:chris-lea/node.js
-	@sudo apt-get update
-	@sudo apt-get install nodejs
-endif
-ifeq ($(UNAME),Darwin)
-	@brew install screen
-endif
-
-change-ulimit:
-ifeq ($(UNAME),Linux)
-	@ulimit -n 10240
-endif
-ifeq ($(UNAME),Darwin)
-	@launchctl limit maxfiles 10240 10240
-endif
-
-#############################################################################################
-# Development
-#############################################################################################
-
-#############################################################################################
-# Production
-#############################################################################################
+	@bundle install
 
 #############################################################################################
 # Clean
