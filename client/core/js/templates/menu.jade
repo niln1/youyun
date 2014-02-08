@@ -1,21 +1,22 @@
 header.labelheader
-	p.school-logo-container
+	p.school-logo-container.unselectable
 		a.school-logo(href="/")
 			img(src='/core/img/school-logo-pinghe-login-white.png')
 			| &nbsp;优云
-	nav.main
+	nav.main.unselectable
 		ul
+			//如何换成dynamic的。。。
 			li.home
-				a(href="/") 个人主页
+				a 个人主页
 			li.messagebox
-				a(href="/") 消息中心
+				a 消息中心
 			li.myclasses
-				a(href="/") 我的班级
+				a 我的班级
 			li.mystudents
-				a(href="/") 我的学生
+				a 我的学生
 			li.account
-				a(href="/") 账户管理
-	nav.user
+				a 账户管理
+	nav.user.unselectable
 		div.user-icon
 			i
 		ul
@@ -31,3 +32,4 @@ div#content
 				i.photo
 					i
 				i.saving 保存中...
+	div#main-content
