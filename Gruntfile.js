@@ -33,7 +33,9 @@ module.exports = function(grunt) {
     tsSrc = nconf.get('module') + '/js/**/*.ts',
     tsTmpDir = nconf.get('tmp-dir-build'),
     tmplSrc = nconf.get('module') + '/js/**/*.jade',
-    compiledTmplSrc = nconf.get('module') + '/js/**/*.tmpl',
+    tmplNamespace = 'template',
+    tmplExt = '.tmpl',
+    compiledTmplSrc = nconf.get('module') + '/js/**/*' + tmplExt,
     viewsSrc = [
         nconf.get('module') + '/views/**/*.jade',
         '!' + nconf.get('module') + '/views/**/_*.jade'
@@ -261,7 +263,7 @@ module.exports = function(grunt) {
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
-                    ext: '.tmpl'
+                    ext: tmplExt
                 }]
             },
             'tmpl-prod': {
@@ -274,7 +276,7 @@ module.exports = function(grunt) {
                     cwd: nconf.get('in-dir'),
                     src: [tmplSrc],
                     dest: tsTmpDir,
-                    ext: '.tmpl'
+                    ext: tmplExt
                 }]
             },
             'views-dev': {
@@ -301,10 +303,12 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        autowrap: {
+        wrap: {
             dev: {
                 options: {
-                    wrapType: 'amd'
+                    seperator: '',
+                    indent: '',
+                    wrapper: ['define(function (require, exports, module) { ', 'return ' + tmplNamespace + '; \n });']
                 },
                 files: [{
                     expand: true,
@@ -316,7 +320,9 @@ module.exports = function(grunt) {
             },
             prod: {
                 options: {
-                    wrapType: 'amd'
+                    seperator: '',
+                    indent: '',
+                    wrapper: ['define(function (require, exports, module) { return ', '});']
                 },
                 files: [{
                     expand: true,
@@ -437,8 +443,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('css', ['compass-prod']);
     grunt.registerTask('css-dev', ['symlink:css', 'compass-dev']);
-    grunt.registerTask('js', ['symlink:js', 'symlink:js-tmp-others', 'jade:tmpl-prod', 'autowrap:prod', 'ts-prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['symlink:js-dev', 'jade:tmpl-dev', 'autowrap:dev', 'ts-dev']);
+    grunt.registerTask('js', ['jade:tmpl-prod', 'wrap:prod', 'symlink:js', 'symlink:js-tmp-others', 'ts-prod', 'exec:js']);
+    grunt.registerTask('js-dev', ['jade:tmpl-dev', 'wrap:dev', 'symlink:js-dev', 'ts-dev']);
     grunt.registerTask('views', ['jade:views-prod']);
     grunt.registerTask('views-dev', ['jade:views-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);

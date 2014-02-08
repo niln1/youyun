@@ -4,6 +4,7 @@
 import MainController = require('main-controller');
 import LoginController = require('login-controller');
 import Authentication = require('authentication');
+import Menu = require('menu');
 
 class App {
 	/**
@@ -25,42 +26,43 @@ class App {
 
     private module:ng.IModule;
     private http:ng.IHttpService;
+    private menu:Menu;
 
 	constructor() {
 
-//        this.menu = new Menu();
+       this.menu = new Menu();
 
-		this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
+		// this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
 
-		this.module.config(['$routeProvider', ($routeProvider) => {
-            $routeProvider.
-                when('/', {
-                    templateUrl: 'core/views/main.html',
-                    controller: MainController
-                }).
-                when('/login', {
-                    templateUrl: 'core/views/login.html',
-                    controller: LoginController
-                }).
-                otherwise({
-                    redirectTo: '/'
-                });
-        }]);
+		// this.module.config(['$routeProvider', ($routeProvider) => {
+  //           $routeProvider.
+  //               when('/', {
+  //                   templateUrl: 'core/views/main.html',
+  //                   controller: MainController
+  //               }).
+  //               when('/login', {
+  //                   templateUrl: 'core/views/login.html',
+  //                   controller: LoginController
+  //               }).
+  //               otherwise({
+  //                   redirectTo: '/'
+  //               });
+  //       }]);
 
-        // Custom object injection
-        this.module.factory('$auth', ($http:ng.IHttpService, localStorageService:ng.ICookieStore, $location:ng.ILocationService) => {
-            return new Authentication($http, localStorageService, $location);
-        });
+  //       // Custom object injection
+  //       this.module.factory('$auth', ($http:ng.IHttpService, localStorageService:ng.ICookieStore, $location:ng.ILocationService) => {
+  //           return new Authentication($http, localStorageService, $location);
+  //       });
 
-        // Route redirect event
-        this.module.run(function($rootScope, $location, $auth) {
-            $rootScope.$on('$routeChangeStart', (event) => {
-                $auth.checkAuthentication();
-                event.preventDefault();
-            });
-        })
+  //       // Route redirect event
+  //       this.module.run(function($rootScope, $location, $auth) {
+  //           $rootScope.$on('$routeChangeStart', (event) => {
+  //               $auth.checkAuthentication();
+  //               event.preventDefault();
+  //           });
+  //       })
 
-        angular.bootstrap(document, ['YouyunApp']);
+  //       angular.bootstrap(document, ['YouyunApp']);
 	}
 }
 
