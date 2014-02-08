@@ -16,7 +16,7 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     res.json(200, {
         result: resp,
         description: desc,
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }; // sendResponse //
 
@@ -25,7 +25,7 @@ apiServer.sendError = function(req, res, e) {
         result: false,
         message: 'Internal Server Error',
         description: !e ? 'Unable to get data at this point of time.' : e,
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }; // sendError //
 
@@ -34,7 +34,7 @@ apiServer.userNotAuthenticated = function(req, res, e) {
         result: false,
         message: !e ? 'User not authenticated' : e,
         description: 'Invalid Cookie. Please login',
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }; // userNotAuthenticated //
 
@@ -43,7 +43,7 @@ apiServer.invalidUserSignature = function(req, res) {
         result: false,
         message: 'Signature Incorrect',
         description: 'Plz stop hacking me or I will call the police',
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }; // userNotAuthenticated //
 
@@ -52,7 +52,7 @@ apiServer.missingQueryParameters = function(req, res, err) {
         result: false,
         message: 'Missing Query Parameters',
         description: err,
-        source: nconf.get('SERVER_NAME')
+        source: nconf.get('server-name')
     });
 }; // missingQueryParameters //
 
