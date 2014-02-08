@@ -5,6 +5,8 @@ import MainController = require('main-controller');
 import LoginController = require('login-controller');
 import Authentication = require('authentication');
 import Menu = require('menu');
+//import Router = require('router');
+
 
 class App {
 	/**
@@ -27,10 +29,12 @@ class App {
     private module:ng.IModule;
     private http:ng.IHttpService;
     private menu:Menu;
+//    private router:Router;
 
 	constructor() {
 
        this.menu = new Menu();
+//       this.router = new Router();
 
 		// this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
 
