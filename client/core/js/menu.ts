@@ -14,7 +14,21 @@ class Menu {
         var menuTemplate = require('templates/menu');
         if (menuTemplate && menuTemplate.template) {
             this.menuContainer = $(Menu.MAIN_MENU_SELECTOR);
-            var menuTemplate = menuTemplate.template({});
+            var menuTemplate = menuTemplate.template({
+                menuitems: [{
+                    class: 'home',
+                    href: '/',
+                    name: '个人主页'    
+                }, {
+                    class: 'message',
+                    href: '/',
+                    name: '消息中心'    
+                }, {
+                    class: 'class',
+                    href: '/',
+                    name: '我的班级'    
+                }]
+            });
             this.menuContainer.append(menuTemplate);
             this.menuBackground = $(Menu.MENU_BACKGROUND_SELECTOR);
             $('li.account a').click(function (_this : Menu) {
