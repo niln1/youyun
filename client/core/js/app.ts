@@ -33,7 +33,7 @@ class App {
 
 	constructor() {
 
-       this.menu = new Menu();
+//       this.menu = new Menu();
 //       this.router = new Router();
 
 		// this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
@@ -70,8 +70,8 @@ class App {
 	}
 }
 
-$(() => {
-	App.I = new App();
-});
+//$(() => {
+//	App.I = new App();
+//});
 
 export = App;

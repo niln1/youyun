@@ -3,12 +3,12 @@ extends _master
 block head-extra
 	link(rel='stylesheet', href='/core/css/app.css')
 
-block head-requirejs
-	if (env == 'production')
-		script(src='/core/lib/requirejs/js/require.min.js', data-main='/core/js/app')
-	else
-		script(src='/core/lib/requirejs/js/require.js', data-main='/core/js/app')
+//block head-requirejs
+//	if (env == 'production')
+//		script(src='/core/lib/requirejs/js/require.min.js', data-main='/core/js/app')
+//	else
+//		script(src='/core/lib/requirejs/js/require.js', data-main='/core/js/app')
 
 block body-content
-
 	div.view-container(ng-view)
+	script(src='/core/js/backbone/backbone-app.js')
