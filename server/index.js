@@ -43,3 +43,7 @@ exports.populateDB = function(req, res) {
     db.populateDB();
     res.send('see console');
 }
+
+exports.home = function(req, res) {
+	res.render('home', {});
+}
