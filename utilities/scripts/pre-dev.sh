@@ -2,7 +2,7 @@
 
 LOG_DIR=".dev-logs"
 PID_FILE=".dev-pid"
-MAC_CMDS="mongod:mongod, redis:redis-server"
+MAC_CMDS="mongod:mongod"
 NIX_CMDS="watch-ts:grunt watch-ts, watch-css:grunt watch-css, watch-views:grunt watch-views, watch-others:grunt watch-others"
 
 # runs a command in the background
