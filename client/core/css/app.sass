@@ -4,11 +4,13 @@
 @import "utils/_common"
 
 @import "pages/home/_home"
+@import "pages/home/_header"
 @import "pages/login/_login-form"
 
 body
 	Font-family: Helvetica, Tahoma, Arial, STXihei, “华文细黑”, “Microsoft YaHei”, “微软雅黑”, SimSun, “宋体”, Heiti, “黑体”, sans-serif
 	line-height: 1
+	//background-color: #eeeeee
 
 a
 	cursor: pointer
@@ -22,7 +24,17 @@ a
 a:hover
 	text-decoration: none
 
-ul
+h1, h2, h3, h4, h5, h6
+	margin: 0
+	text-rendering: optimizeLegibility
+
+h2
+	color: #66757f
+	font-size: 20px
+	font-weight: 200
+	line-height: 22px
+
+ul,ol
 	margin: 0
 	padding: 0
 	border: 0
@@ -34,8 +46,15 @@ ul
 	vertical-align: baseline
 	list-style: none
 
+s
+	text-decoration: none
+
+b
+	font-weight: normal
+
 p
 	line-height: 1.5
+	margin: 0
 
 body.school_color_line:before
 	content: ''
