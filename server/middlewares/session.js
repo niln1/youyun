@@ -11,15 +11,12 @@ module.exports = function(app) {
         var MemoryStore = express.session.MemoryStore;
         store = new MemoryStore();
     } else {
-        var RedisStore = require('connect-redis')(express);
-        // The line below will generates error message
-        var redis = require('redis').createClient();
+        var MongoStore = require('connect-mongo')(express);
         var options = {
-            host: nconf.get('redis-host'),
-            port: nconf.get('redis-port'),
+            url: nconf.get('mongodb-url') + '/' + nconf.get('mongodb-session-collection'),
             maxAge: nconf.get('cookie-maxage')
         };
-        store = new RedisStore(options);
+        store = new MongoStore(options);
     }
     app.use(express.session({
         secret: nconf.get('cookie-secret'),

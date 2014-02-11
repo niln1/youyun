@@ -16,7 +16,8 @@
     "debug": "~0.7.4",
     "connect-flash": "~0.1.1",
     "underscore": "~1.5.2",
-    "mongoose": "~3.8.4"
+    "mongoose": "~3.8.4",
+    "connect-mongo": "~0.4.0"
   },
   "devDependencies": {
     "nconf": "~0.6.9",
