@@ -16,7 +16,7 @@ exports.route = function(app) {
     app.get('/logout', index.logout);
 
     app.get('/static/populateDB', index.populateDB);
-
+	app.get('/static/home', index.home);
 
     /*
      * Helper method to load module

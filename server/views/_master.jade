@@ -16,9 +16,6 @@ html
 
 		if (env == 'development')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
-
-			//link(rel='stylesheet', href="/core/lib/flat-ui/css/flat-ui.css")
-
 			script(src='/core/lib/jquery/js/jquery.js')
 			script(src='/core/lib/modernizr/js/modernizr.js')
 			script(src='/core/lib/underscore/js/underscore.js')
@@ -26,11 +23,11 @@ html
 			script(src='/core/lib/socket.io/js/socket.io.js')
 			script(src='/core/lib/backbone/js/backbone-min.js')
 			script(src='/core/lib/jade/js/jade.js')
+			script(src='/core/lib/moment/js/moment-with-langs.min.js')
+
 
 		else if (env == 'production')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
-			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap-theme.min.css')
-
 			script(src='/core/lib/jquery/js/jquery.min.js')
 			script(src='/core/lib/modernizr/js/modernizr.min.js')
 			script(src='/core/lib/underscore/js/underscore.min.js')
@@ -38,6 +35,7 @@ html
 			script(src='/core/lib/socket.io/js/socket.io.min.js')
 			script(src='/core/lib/backbone/js/backbone-min.js')
 			script(src='/core/lib/jade/js/jade.min.js')
+			script(src='/core/lib/moment/js/moment-with-langs.min.js')
 
 		block head-extra
 
@@ -50,4 +48,4 @@ html
 				| 请 <a href="http://browsehappy.com/">升级你的浏览器</a>
 				| 来正常使用本网站.
 
-		block body-content
+		block app-content
