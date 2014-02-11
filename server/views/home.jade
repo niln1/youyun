@@ -3,13 +3,36 @@ block main-content
 	div#main-content.container-fluid
 		div.page-board
 			div.col-sm-5
-				div.page-board-shadow.left-panel hello
+				div.left-panel
+					div.pageboard-shadow.user-profile-container
+						a#user-profile-group
+							div.photo
+								i.user-image(style="background-image: url('/core/img/school-logo-pinghe-login.png')")
+							div.content-divider
+							div.fullname 平和学校
+							div.username
+								s @
+								b pingheschool
+
+					div.pageboard-shadow.reminder-container
+						div.content-header
+							div.header-inner
+								h2.text-left 提醒
+						div.content-divider
+						ol.reminder-items
+							li.reminder-item
+								div.reminder
+									div.content 26个学生的报告
+									div.time 今天
+
 			div.col-sm-7
-				div.page-board-shadow.right-panel
+				div.pageboard-shadow.right-panel
 					div.content-header
 						div.header-inner
 							h2#content-main-heading.text-left 消息中心
-							h2#content-time-heading.text-right 消息中心
+							h2#content-time-heading.text-right 时间
+					div.content-divider
+					div.streaminfo-container
 					div.stream-container
 						div.stream-item
 						div.stream.home-stream
