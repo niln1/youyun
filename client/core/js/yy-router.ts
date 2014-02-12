@@ -4,7 +4,7 @@
 
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 
-class Router extends Marionette.AppRouter {
+class YYRouter extends Marionette.AppRouter {
     constructor (private controller : any) {
         super({
             controller: controller,
@@ -18,4 +18,4 @@ class Router extends Marionette.AppRouter {
     }
 }
 
-export = Router;
+export = YYRouter;

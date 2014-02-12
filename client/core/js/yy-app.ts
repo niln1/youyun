@@ -2,28 +2,28 @@
 /// <reference path="vendor/angular/angular.d.ts"/>
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 
+import Router = require('yy-router');
 import HeaderView = require('views/header-view');
 import HeaderBackgroundView = require('views/header-background-view');
-import Router = require('router');
 import ContentRegion = require('regions/content-region');
 import HeaderRegion = require('regions/header-region');
 import HeaderBackgroundRegion = require('regions/header-background-region');
 
-class App extends Marionette.Application {
+class YYApp extends Marionette.Application {
 	/**
 	 * singleton instance for the app class. Access via the I() public/static method
 	 *
 	 * @method I
-	 * @return {App} A singleton instance of the application.
+	 * @return {YYApp} A singleton instance of the application.
 	 */
-	public static instance:App;
+	public static instance:YYApp;
 
-	public static get I():App {
-		if (!App.instance) App.instance = new App();
-		return App.instance;
+	public static get I():YYApp {
+		if (!YYApp.instance) YYApp.instance = new YYApp();
+		return YYApp.instance;
 	}
 
-	public static set I(I:App) {
+	public static set I(I:YYApp) {
 		App.instance = I;
 	}
 
@@ -55,7 +55,6 @@ class App extends Marionette.Application {
     }
 
     public showMain() {
-        console.log("Main page, biatch!");
         var headerContext = {
             menuitems: [{
                 class: 'home-link',
@@ -79,8 +78,8 @@ class App extends Marionette.Application {
  }
 
 $(() => {
-	var app = new App();
+	var app = new YYApp();
     app.start();
 });
 
-export = App;
+export = YYApp;

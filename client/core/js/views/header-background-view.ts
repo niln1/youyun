@@ -26,6 +26,11 @@ class HeaderBackgroundView extends Backbone.View {
         this.setElement(this.template(this.context));
         return this.el;
     }
+
+    close():{
+        $()
+    }
+
 }
 
 export = HeaderBackgroundView;
