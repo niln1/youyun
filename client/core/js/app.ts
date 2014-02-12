@@ -5,10 +5,9 @@ import MainController = require('main-controller');
 import LoginController = require('login-controller');
 import Authentication = require('authentication');
 import Menu = require('menu');
-//import Router = require('router');
+import Router = require('router');
 
-
-class App {
+class App extends Marionette.Application {
 	/**
 	 * singleton instance for the app class. Access via the I() public/static method
 	 *
@@ -26,52 +25,35 @@ class App {
 		App.instance = I;
 	}
 
-    private module:ng.IModule;
-    private http:ng.IHttpService;
     private menu:Menu;
-//    private router:Router;
+    private router:Router;
 
 	constructor() {
+        super();
 
-//       this.menu = new Menu();
-//       this.router = new Router();
+        this.router = new Router(this);
 
-		// this.module = angular.module('YouyunApp', ['ngRoute', 'LocalStorageModule']);
+        this.addInitializer(this.routingStarted);
+    }
 
-		// this.module.config(['$routeProvider', ($routeProvider) => {
-  //           $routeProvider.
-  //               when('/', {
-  //                   templateUrl: 'core/views/main.html',
-  //                   controller: MainController
-  //               }).
-  //               when('/login', {
-  //                   templateUrl: 'core/views/login.html',
-  //                   controller: LoginController
-  //               }).
-  //               otherwise({
-  //                   redirectTo: '/'
-  //               });
-  //       }]);
-
-  //       // Custom object injection
-  //       this.module.factory('$auth', ($http:ng.IHttpService, localStorageService:ng.ICookieStore, $location:ng.ILocationService) => {
-  //           return new Authentication($http, localStorageService, $location);
-  //       });
-
-  //       // Route redirect event
-  //       this.module.run(function($rootScope, $location, $auth) {
-  //           $rootScope.$on('$routeChangeStart', (event) => {
-  //               $auth.checkAuthentication();
-  //               event.preventDefault();
-  //           });
-  //       })
-
-  //       angular.bootstrap(document, ['YouyunApp']);
+    private routingStarted() {
+        if( ! Backbone.History.started ) {
+            Backbone.history.start();
+        }
 	}
-}
 
-//$(() => {
-//	App.I = new App();
-//});
+    public showLogin() {
+        console.log("here, bitch!");
+    }
+
+    public showMain() {
+        console.log("Main page, biatch!");
+    }
+ }
+
+$(() => {
+	var app = new App();
+    app.start();
+});
 
 export = App;
