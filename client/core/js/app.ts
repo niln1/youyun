@@ -6,6 +6,7 @@ import LoginController = require('login-controller');
 import Authentication = require('authentication');
 import Menu = require('menu');
 import Router = require('router');
+import ContentRegion = require('content-region');
 
 class App extends Marionette.Application {
 	/**
@@ -27,11 +28,14 @@ class App extends Marionette.Application {
 
     private menu:Menu;
     private router:Router;
+    private contentRegion:ContentRegion;
 
 	constructor() {
         super();
 
         this.router = new Router(this);
+
+        this.contentRegion = new ContentRegion();
 
         this.addInitializer(this.routingStarted);
     }
