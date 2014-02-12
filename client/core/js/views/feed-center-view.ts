@@ -5,10 +5,10 @@
 /// <reference path="../vendor/jquery/jquery.d.ts"/>
 /// <reference path='../vendor/backbone/marionette.d.ts'/>
 
-/// <amd-dependency path="../templates/header-background-view-tmpl" />
+/// <amd-dependency path="../templates/feed-center-view-tmpl" />
 
 
-class HeaderBackgroundView extends Backbone.View {
+class FeedCenterView extends Backbone.View {
 
     public events:Object;
     private template:any;
@@ -18,21 +18,13 @@ class HeaderBackgroundView extends Backbone.View {
         super(options);
 
         this.events = {};
-        this.template = require('../templates/header-background-view-tmpl');
+        this.template = require('../templates/feed-center-view-tmpl');
         this.context = context || {};
     }
 
     render(): Backbone.View {
         this.setElement(this.template(this.context));
         return this.el;
-    }
-
-    public close(): void{
-        $('#header-background').addClass('closed');
-    }
-
-    public open(): void{
-        $('#header-background').removeClass('closed');
     }
 
 }

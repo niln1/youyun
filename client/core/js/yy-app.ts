@@ -24,7 +24,7 @@ class YYApp extends Marionette.Application {
 	}
 
 	public static set I(I:YYApp) {
-		App.instance = I;
+		YYApp.instance = I;
 	}
 
     private router:Router;
@@ -74,6 +74,7 @@ class YYApp extends Marionette.Application {
         var headerBackgroundView = new HeaderBackgroundView();
         this.headerRegion.show(headerView);
         this.headerBackgroundRegion.show(headerBackgroundView);
+        headerBackgroundView.close();
     }
  }
 
