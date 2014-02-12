@@ -71,7 +71,7 @@ class Auth {
     }
 
     public logout () {
-        
+
     }
 
     private save() : void {
