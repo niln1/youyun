@@ -1,9 +1,13 @@
 
 /// <reference path="vendor/angular/angular.d.ts"/>
+/// <reference path='vendor/backbone/marionette.d.ts'/>
 
-import Menu = require('menu');
+import HeaderView = require('views/header-view');
+import HeaderBackgroundView = require('views/header-background-view');
 import Router = require('router');
-import ContentRegion = require('content-region');
+import ContentRegion = require('regions/content-region');
+import HeaderRegion = require('regions/header-region');
+import HeaderBackgroundRegion = require('regions/header-background-region');
 
 class App extends Marionette.Application {
 	/**
@@ -23,9 +27,10 @@ class App extends Marionette.Application {
 		App.instance = I;
 	}
 
-    private menu:Menu;
     private router:Router;
     private contentRegion:ContentRegion;
+    private headerRegion:HeaderRegion;
+    private headerBackgroundRegion:HeaderBackgroundRegion;
 
 	constructor() {
         super();
@@ -33,6 +38,8 @@ class App extends Marionette.Application {
         this.router = new Router(this);
 
         this.contentRegion = new ContentRegion();
+        this.headerRegion = new HeaderRegion();
+        this.headerBackgroundRegion = new HeaderBackgroundRegion();
 
         this.addInitializer(this.routingStarted);
     }
@@ -49,6 +56,25 @@ class App extends Marionette.Application {
 
     public showMain() {
         console.log("Main page, biatch!");
+        var headerContext = {
+            menuitems: [{
+                class: 'home',
+                href: '/',
+                name: '个人主页'
+            }, {
+                class: 'message',
+                href: '/',
+                name: '消息中心'
+            }, {
+                class: 'class',
+                href: '/',
+                name: '我的班级'
+            }]
+        };
+        var headerView = new HeaderView(headerContext);
+        var headerBackgroundView = new HeaderBackgroundView();
+        this.headerRegion.show(headerView);
+        this.headerBackgroundRegion.show(headerBackgroundView);
     }
  }
 

@@ -1,5 +1,4 @@
-
-/// <reference path='vendor/backbone/marionette.d.ts'/>
+/// <reference path='../vendor/backbone/marionette.d.ts'/>
 
 class ContentRegion extends Marionette.Region {
     private noRemove:boolean = false;
