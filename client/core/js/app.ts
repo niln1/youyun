@@ -4,6 +4,7 @@
 import Menu = require('menu');
 import Router = require('router');
 import ContentRegion = require('content-region');
+import LoginView = require('views/login-view');
 
 class App extends Marionette.Application {
 	/**
@@ -44,7 +45,9 @@ class App extends Marionette.Application {
 	}
 
     public showLogin() {
-        console.log("here, bitch!");
+        var loginView : LoginView = new LoginView();
+
+        this.contentRegion.show(loginView);
     }
 
     public showMain() {
