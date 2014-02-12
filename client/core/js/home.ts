@@ -1,6 +1,9 @@
 /**
  * Created by Nil on 2/9/14.
  */
+
+/// <reference path='vendor/moment/moment.d.ts'/>
+
 $(function() {
 	moment.lang("zh-cn");
     var time_view = moment().format('LL, dddd');
