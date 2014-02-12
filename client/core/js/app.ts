@@ -1,9 +1,6 @@
 
 /// <reference path="vendor/angular/angular.d.ts"/>
 
-import MainController = require('main-controller');
-import LoginController = require('login-controller');
-import Authentication = require('authentication');
 import Menu = require('menu');
 import Router = require('router');
 import ContentRegion = require('content-region');
