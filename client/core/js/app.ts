@@ -58,15 +58,15 @@ class App extends Marionette.Application {
         console.log("Main page, biatch!");
         var headerContext = {
             menuitems: [{
-                class: 'home',
+                class: 'home-link',
                 href: '/',
                 name: '个人主页'
             }, {
-                class: 'message',
+                class: 'message-link',
                 href: '/',
                 name: '消息中心'
             }, {
-                class: 'class',
+                class: 'class-link',
                 href: '/',
                 name: '我的班级'
             }]
