@@ -1,10 +1,10 @@
 
 /// <reference path="vendor/angular/angular.d.ts"/>
 
-import Menu = require('menu');
-import Router = require('router');
-import ContentRegion = require('content-region');
-import LoginView = require('views/login-view');
+import Menu = require('./menu');
+import Router = require('./router');
+import ContentRegion = require('./content-region');
+import LoginView = require('./views/login-view');
 
 class App extends Marionette.Application {
 	/**
