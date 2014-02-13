@@ -7,6 +7,8 @@ import Router = require('yy-router');
 import HeaderView = require('views/header-view');
 import HeaderBackgroundView = require('views/header-background-view');
 import FeedCenterView = require('views/feed-center-view');
+import LoginView = require('./views/login-view');
+
 
 import ContentRegion = require('regions/content-region');
 import HeaderRegion = require('regions/header-region');
@@ -62,7 +64,9 @@ class YYApp extends Marionette.Application {
 	}
 
     public showLogin() {
-        console.log("here, bitch!");
+        var loginView : LoginView = new LoginView();
+
+        this.contentRegion.show(loginView);
     }
 
     public showMain() {

@@ -1,7 +1,7 @@
 
 /// <reference path="vendor/require/require.d.ts"/>
 /// <reference path="vendor/jquery/jquery.d.ts"/>
-/// <amd-dependency path="templates/menu" />
+/// <amd-dependency path="./templates/menu" />
 
 class Menu {
     public static MAIN_MENU_SELECTOR : string = '.main-menu';
@@ -11,7 +11,7 @@ class Menu {
 
     constructor () {
         // TODO JQuery selector
-        var menuTemplate = require('templates/menu');
+        var menuTemplate = require('./templates/menu');
         if (menuTemplate && menuTemplate.template) {
             this.menuContainer = $(Menu.MAIN_MENU_SELECTOR);
             var menuTemplate = menuTemplate.template({
