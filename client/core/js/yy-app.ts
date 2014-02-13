@@ -3,11 +3,18 @@
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 
 import Router = require('yy-router');
+
 import HeaderView = require('views/header-view');
 import HeaderBackgroundView = require('views/header-background-view');
+import FeedCenterView = require('views/feed-center-view');
+
 import ContentRegion = require('regions/content-region');
 import HeaderRegion = require('regions/header-region');
 import HeaderBackgroundRegion = require('regions/header-background-region');
+import LeftPanelRegion = require('regions/left-panel-region');
+import RightPanelRegion = require('regions/right-panel-region');
+
+
 
 class YYApp extends Marionette.Application {
 	/**
@@ -31,6 +38,8 @@ class YYApp extends Marionette.Application {
     private contentRegion:ContentRegion;
     private headerRegion:HeaderRegion;
     private headerBackgroundRegion:HeaderBackgroundRegion;
+    private leftPanelRegion:LeftPanelRegion;
+    private rightPanelRegion:RightPanelRegion;
 
 	constructor() {
         super();
@@ -40,6 +49,8 @@ class YYApp extends Marionette.Application {
         this.contentRegion = new ContentRegion();
         this.headerRegion = new HeaderRegion();
         this.headerBackgroundRegion = new HeaderBackgroundRegion();
+        this.leftPanelRegion = new LeftPanelRegion();
+        this.rightPanelRegion = new RightPanelRegion();
 
         this.addInitializer(this.routingStarted);
     }
@@ -68,13 +79,28 @@ class YYApp extends Marionette.Application {
                 class: 'class-link',
                 href: '/',
                 name: '我的班级'
-            }]
+            }],
+            user:{
+                username: 'pingheschool',
+                full_name:  '平和学校',
+                user_image: '/core/img/school-logo-pinghe-login.png'
+            },
+            school:{
+                school_name: '平和学校',
+                school_logo: '/core/img/school-logo-pinghe-login-white.png'
+            }
         };
         var headerView = new HeaderView(headerContext);
         var headerBackgroundView = new HeaderBackgroundView();
+        var feedCenterView = new FeedCenterView();
+
         this.headerRegion.show(headerView);
         this.headerBackgroundRegion.show(headerBackgroundView);
-        headerBackgroundView.close();
+        this.rightPanelRegion.show(feedCenterView);
+
+        headerBackgroundView.collapse();
+        feedCenterView.updateTime();
+
     }
  }
 

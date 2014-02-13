@@ -1,7 +1,7 @@
 header.labelheader
 	p.school-logo-container.unselectable
 		a.school-logo(href="/")
-			img(src='/core/img/school-logo-pinghe-login-white.png')
+			img(src='#{school.school_logo}')
 			| &nbsp;优云
 	nav.main.unselectable
 		ul
@@ -10,7 +10,7 @@ header.labelheader
 					a(href="#{menuitem.href}") #{menuitem.name}
 	nav.user.unselectable
 		div.user-icon
-			i
+			i(style="background-image: url('#{user.user_image}');")
 		ul
 			li
 				a(href="/#/account") 我的账户

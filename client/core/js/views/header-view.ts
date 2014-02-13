@@ -19,7 +19,7 @@ class HeaderView extends Backbone.View {
         this.context = context || {};
     }
 
-    render(): Backbone.View {
+    public render(): Backbone.View {
         this.setElement(this.template(this.context));
         return this.el;
     }

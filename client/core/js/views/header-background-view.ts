@@ -14,6 +14,8 @@ class HeaderBackgroundView extends Backbone.View {
     private template:any;
     private context:any;
 
+    private static headerBackgroundID : string = '#header-background';
+
     constructor(context?:any, options?:Backbone.ViewOptions) {
         super(options);
 
@@ -27,14 +29,12 @@ class HeaderBackgroundView extends Backbone.View {
         return this.el;
     }
 
-    public close(): void{
-        $('#header-background').addClass('closed');
+    public collapse(): void{
+        $(HeaderBackgroundView.headerBackgroundID).addClass('closed');
     }
 
-    public open(): void{
-        $('#header-background').removeClass('closed');
+    public expand(): void{
+        $(HeaderBackgroundView.headerBackgroundID).removeClass('closed');
     }
-
 }
-
 export = HeaderBackgroundView;
