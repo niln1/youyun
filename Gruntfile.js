@@ -203,12 +203,11 @@ module.exports = function(grunt) {
         exec: {
             js: {
                 command: function() {
-                    var template = handlebars.compile('/bin/bash -c \'grep -nr "data\-main" {{VIEW}} | while read line; do file=`echo "$line" | sed "s|^.*data-main\s*=\s*||" | tr -d "()\"\\\'"\'"\'"" | perl -pe "s|{{STATIC}}|{{TMP}}|"`; if [[ "$file" != *.min ]]; then outfile=`echo "$file.js" | sed "s|^{{TMP}}|{{DEST}}|;"`; r.js -o baseUrl=`dirname "$file"` name=`basename "$file"` out="$outfile"; fi; done\'');
+                    var template = handlebars.compile('/bin/bash -c \'grep -nr requirejs\\( {{VIEW}} | while read line; do file=`echo "$line" | perl -pe "s|.*requirejs\\(\\[||g; s|\\]\\)||g; s|[\'"\'"\'\\";]||g"`; r.js -o baseUrl="{{TMP}}" name="$file" out="{{DEST}}/$file.js"; done\'');
                     var options = {
                         VIEW: nconf.get('views-dir') + '/' + nconf.get('module'),
-                        TMP: tsTmpDir + '\\\/',
-                        DEST: outDir + '\\\/',
-                        STATIC: '^\\\/'
+                        TMP: tsTmpDir,
+                        DEST: outDir
                     }
                     return template(options);
                 },
