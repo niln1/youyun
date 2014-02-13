@@ -14,7 +14,6 @@ class App extends Marionette.Application {
 	 * @return {App} A singleton instance of the application.
 	 */
 	public static instance:App;
-
 	public static get I():App {
 		if (!App.instance) App.instance = new App();
 		return App.instance;
@@ -39,7 +38,7 @@ class App extends Marionette.Application {
     }
 
     private routingStarted() {
-        if( ! Backbone.History.started ) {
+        if(!Backbone.History.started) {
             Backbone.history.start();
         }
 	}
