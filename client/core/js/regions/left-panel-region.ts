@@ -1,12 +1,20 @@
+/**
+ * Created by Nil on 2/12/14.
+ */
+/**
+ * Created by Nil on 2/12/14.
+ */
+/**
+ * Created by Nil on 2/11/14.
+ */
+/// <reference path='../vendor/backbone/marionette.d.ts'/>
 
-/// <reference path='vendor/backbone/marionette.d.ts'/>
-
-class ContentRegion extends Marionette.Region {
+class LeftPanelRegion extends Marionette.Region {
     private noRemove:boolean = false;
     private fade:boolean = false;
 
     constructor() {
-        super({el: "#page-content"});
+        super({el: "#left-panel-content"});
     }
 
     show(view:Backbone.View, noRemove:boolean = false, fade:boolean = false) : void {
@@ -43,4 +51,4 @@ class ContentRegion extends Marionette.Region {
     }
 }
 
-export = ContentRegion;
+export = LeftPanelRegion;

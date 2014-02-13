@@ -3,10 +3,10 @@
  */
 
 /// <reference path='vendor/backbone/marionette.d.ts'/>
-
 import Auth = require('./auth');
 
 class Router extends Marionette.AppRouter {
+
     public static instance:Router;
     public static get I():Router {
         if (!Router.instance) return null;

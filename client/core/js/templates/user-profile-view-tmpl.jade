@@ -1,0 +1,9 @@
+div.pageboard-shadow.user-profile-container
+	a#user-profile-group
+		div.photo
+			i.user-image(style="background-image: url('#{ user.user_image }')")
+		div.content-divider
+		div.fullname #{ user.full_name }
+		div.username
+			s @
+			b #{ user.username }
