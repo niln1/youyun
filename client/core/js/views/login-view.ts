@@ -2,6 +2,8 @@
 /// <reference path="../vendor/require/require.d.ts"/>
 /// <amd-dependency path='../templates/login-view-tmpl' />
 
+import Auth = require('../auth')
+
 class LoginView extends Backbone.View {
 
     private template : any;
@@ -22,7 +24,7 @@ class LoginView extends Backbone.View {
         this.template = require('../templates/login-view-tmpl');
 
         this.events = {
-            'click button.submit': 'login',
+            'click button#submit': 'login',
             'keydown' : 'keydownHandler'
         }
     }
@@ -60,7 +62,7 @@ class LoginView extends Backbone.View {
             return;
         }
 
-
+        Auth.I.login(this.$username.val(), this.$password.val());
     }
 
     public keydownHandler(event : any) : void {

@@ -23,9 +23,10 @@ html
 			script(src='/core/lib/socket.io/js/socket.io.js')
 			script(src='/core/lib/backbone/js/backbone.js')
 			script(src='/core/lib/backbone/js/backbone.marionette.js')
+			script(src='/core/lib/backbone/js/backbone.deep.model.js')
 			script(src='/core/lib/jade/js/jade.js')
-			script(src='/core/lib/moment/js/moment-with-langs.min.js')
-
+			script(src='/core/lib/moment/js/moment.js')
+			script(src='/core/lib/requirejs/js/require.js')
 
 		else if (env == 'production')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
@@ -36,15 +37,17 @@ html
 			script(src='/core/lib/socket.io/js/socket.io.min.js')
 			script(src='/core/lib/backbone/js/backbone.min.js')
 			script(src='/core/lib/backbone/js/backbone.marionette.min.js')
+			script(src='/core/lib/backbone/js/backbone.deep.model.min.js')
 			script(src='/core/lib/jade/js/jade.min.js')
-			script(src='/core/lib/moment/js/moment-with-langs.min.js')
+			script(src='/core/lib/moment/js/moment.min.js')
+			script(src='/core/lib/requirejs/js/require.min.js')
 
 		block head-extra
 
 		script.
-            requirejs.config({
-                baseUrl: '/'
-            });
+			requirejs.config({
+				baseUrl: '/'
+			});
 
 		block head-requirejs
 
