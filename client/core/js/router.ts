@@ -5,12 +5,12 @@
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 import Auth = require('./auth');
 
-class YYRouter extends Marionette.AppRouter {
+class Router extends Marionette.AppRouter {
 
-    public static instance:YYRouter;
-    public static get I():YYRouter {
-        if (!YYRouter.instance) return null;
-        return YYRouter.instance;
+    public static instance:Router;
+    public static get I():Router {
+        if (!Router.instance) return null;
+        return Router.instance;
     }
 
     constructor (private controller : any) {
@@ -21,7 +21,7 @@ class YYRouter extends Marionette.AppRouter {
                 "login": "showLogin"
             }
         });
-        YYRouter.instance = this;
+        Router.instance = this;
 
         this.bind('route', this.onRouteChanged);
     }
@@ -31,4 +31,4 @@ class YYRouter extends Marionette.AppRouter {
     }
 }
 
-export = YYRouter;
+export = Router;

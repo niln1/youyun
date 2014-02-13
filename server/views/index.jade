@@ -4,7 +4,8 @@ block head-extra
 	link(rel='stylesheet', href='/core/css/app.css')
 
 block head-requirejs
-	script.requirejs(['core/js/yy-app'])
+	script.
+		requirejs(['core/js/yy-app'])
 
 block body-content
 	div#header-content

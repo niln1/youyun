@@ -2,38 +2,38 @@
 /// <reference path="vendor/angular/angular.d.ts"/>
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 
-import Router = require('yy-router');
+import Router = require('./router');
 
-import HeaderView = require('views/header-view');
-import HeaderBackgroundView = require('views/header-background-view');
-import FeedCenterView = require('views/feed-center-view');
+import HeaderView = require('./views/header-view');
+import HeaderBackgroundView = require('./views/header-background-view');
+import FeedCenterView = require('./views/feed-center-view');
 import LoginView = require('./views/login-view');
 
 
-import ContentRegion = require('regions/content-region');
-import HeaderRegion = require('regions/header-region');
-import HeaderBackgroundRegion = require('regions/header-background-region');
-import LeftPanelRegion = require('regions/left-panel-region');
-import RightPanelRegion = require('regions/right-panel-region');
+import ContentRegion = require('./regions/content-region');
+import HeaderRegion = require('./regions/header-region');
+import HeaderBackgroundRegion = require('./regions/header-background-region');
+import LeftPanelRegion = require('./regions/left-panel-region');
+import RightPanelRegion = require('./regions/right-panel-region');
 
 
 
-class YYApp extends Marionette.Application {
+class App extends Marionette.Application {
 	/**
 	 * singleton instance for the app class. Access via the I() public/static method
 	 *
 	 * @method I
-	 * @return {YYApp} A singleton instance of the application.
+	 * @return {App} A singleton instance of the application.
 	 */
-	public static instance:YYApp;
+	public static instance:App;
 
-	public static get I():YYApp {
-		if (!YYApp.instance) YYApp.instance = new YYApp();
-		return YYApp.instance;
+	public static get I():App {
+		if (!App.instance) App.instance = new App();
+		return App.instance;
 	}
 
-	public static set I(I:YYApp) {
-		YYApp.instance = I;
+	public static set I(I:App) {
+		App.instance = I;
 	}
 
     private router:Router;
@@ -109,8 +109,8 @@ class YYApp extends Marionette.Application {
  }
 
 $(() => {
-	var app = new YYApp();
+	var app = new App();
     app.start();
 });
 
-export = YYApp;
+export = App;

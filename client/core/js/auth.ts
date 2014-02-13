@@ -1,5 +1,6 @@
 /// <reference path='interfaces/db.d.ts'/>
 /// <reference path='vendor/backbone/marionette.d.ts'/>
+/// <reference path='vendor/require/require.d.ts'/>
 
 import LocalStorage = require('./local-storage');
 import User = require('./models/user');
