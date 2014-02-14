@@ -52,7 +52,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 // Global authentication middle ware
-//app.use(auth.checkUserSession);
+app.use(auth.checkUserSession);
 
 // TODO: put this in routes.. too lazy
 // csrf()

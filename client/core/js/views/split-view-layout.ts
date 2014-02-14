@@ -1,5 +1,8 @@
+/// <reference path="../vendor/require/require.d.ts"/>
+/// <reference path="../vendor/jquery/jquery.d.ts"/>
+/// <reference path='../vendor/backbone/marionette.d.ts'/>
 
-
+/// <amd-dependency path="../templates/split-view-layout-tmpl" />
 
 class SplitViewLayout extends Marionette.Layout {
 
@@ -7,17 +10,21 @@ class SplitViewLayout extends Marionette.Layout {
     private regions: any;
     private context: any;
 
-    constructor(template, regions?: any, context?: any) {
+    //to remove the ws complain
+    public leftPanel: any;
+    public rightPanel: any;
+
+    constructor(regions?: any, context?: any) {
 
         super();
-        this.template = template;
+        this.template = require('../templates/split-view-layout-tmpl');
         this.regions = regions || {};
         this.context = context || {};
 
-        this.regions =  {
-            left_panel : '#left-panel',
-            right_panel: '#right-panel'
-        };
+        this.addRegions({
+            leftPanel : '#left-panel-content',
+            rightPanel: '#right-panel-content'
+        });
 
     }
 
