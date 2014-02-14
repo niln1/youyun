@@ -97,8 +97,7 @@ exports.checkUserSession = function(req, res, next) {
     var isInWhitelist = false;
     var whitelistPatterns = [
         /^\/(login|logout)/,
-        /^\/api\/v\d\/account\/(login|logout|getuser)/,
-	    /^\/$/
+        /^\/api\/v\d\/account\/(login|logout|getuser)/
     ];
 
 	if (process.env.NODE_ENV !== 'nginx') {

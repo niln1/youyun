@@ -17,17 +17,17 @@ class Router extends Marionette.AppRouter {
         super({
             controller: controller,
             appRoutes: {
-                "": "showMain",
+                "": "showMain"
             }
         });
         Router.instance = this;
 
-        this.bind('route', this.onRouteChanged);
+//        this.bind('route', this.onRouteChanged);
     }
 
-    private onRouteChanged(route?:string, params?:any[]) {
-        Auth.I.checkAuthentication();
-    }
+//    private onRouteChanged(route?:string, params?:any[]) {
+//        Auth.I.checkAuthentication();
+//    }
 }
 
 export = Router;
