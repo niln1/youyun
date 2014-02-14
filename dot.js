@@ -15,6 +15,7 @@ module.exports.app = app = express();
 
 // Local modules and variables
 var routes = require('./server/routes');
+var socketRoutes = require('./server/socket-routes');
 var auth = require('./server/middlewares/auth');
 var session = require('./server/middlewares/session');
 
@@ -78,6 +79,8 @@ if ('development' == env) {
     app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
+var io = require('socket.io').listen(server);
+socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
