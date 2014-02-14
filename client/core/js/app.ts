@@ -66,12 +66,6 @@ class App extends Marionette.Application {
         }
 	}
 
-    public showLogin() {
-        var loginView : LoginView = new LoginView();
-
-        this.contentRegion.show(loginView);
-    }
-
     public showMain() {
         var headerContext = {
             menuitems: [{

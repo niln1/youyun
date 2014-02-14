@@ -18,7 +18,6 @@ class Router extends Marionette.AppRouter {
             controller: controller,
             appRoutes: {
                 "": "showMain",
-                "login": "showLogin"
             }
         });
         Router.instance = this;
