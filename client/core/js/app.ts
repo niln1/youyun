@@ -8,7 +8,10 @@ import HeaderView = require('./views/header-view');
 import HeaderBackgroundView = require('./views/header-background-view');
 import FeedCenterView = require('./views/feed-center-view');
 import LoginView = require('./views/login-view');
+import UserProfileView = require('./views/user-profile-view');
+import ReminderView = require('./views/reminder-view');
 
+import SplitViewLayout = require('./views/split-view-layout');
 
 import ContentRegion = require('./regions/content-region');
 import HeaderRegion = require('./regions/header-region');
@@ -94,13 +97,16 @@ class App extends Marionette.Application {
                 school_logo: '/core/img/school-logo-pinghe-login-white.png'
             }
         };
+        var splitViewLayout = new SplitViewLayout();
         var headerView = new HeaderView(headerContext);
         var headerBackgroundView = new HeaderBackgroundView();
         var feedCenterView = new FeedCenterView();
 
         this.headerRegion.show(headerView);
         this.headerBackgroundRegion.show(headerBackgroundView);
-        this.rightPanelRegion.show(feedCenterView);
+//        $('#main-content').append(splitViewLayout.render());
+        this.contentRegion.show(splitViewLayout);
+        splitViewLayout.rightPanel.show(feedCenterView);
 
         headerBackgroundView.collapse();
         feedCenterView.updateTime();

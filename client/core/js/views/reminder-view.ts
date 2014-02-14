@@ -2,10 +2,10 @@
 /// <reference path="../vendor/jquery/jquery.d.ts"/>
 /// <reference path='../vendor/backbone/marionette.d.ts'/>
 
-/// <amd-dependency path="../templates/user-profile-view-tmpl" />
+/// <amd-dependency path="../templates/reminder-view-tmpl" />
 
 
-class UserProfileView extends Backbone.View {
+class ReminderView extends Backbone.View {
 
     public events:Object;
     private template:any;
@@ -15,7 +15,7 @@ class UserProfileView extends Backbone.View {
         super(options);
 
         this.events = {};
-        this.template = require('../templates/user-profile-view-tmpl');
+        this.template = require('../templates/reminder-view-tmpl');
         this.context = context || {};
     }
 
@@ -25,4 +25,4 @@ class UserProfileView extends Backbone.View {
     }
 }
 
-export = UserProfileView;
+export = ReminderView;
