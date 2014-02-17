@@ -39,72 +39,72 @@ class App extends Marionette.Application {
 		App.instance = I;
 	}
 
-    private router:Router;
-    private contentRegion:ContentRegion;
-    private headerRegion:HeaderRegion;
-    private headerBackgroundRegion:HeaderBackgroundRegion;
-    private leftPanelRegion:LeftPanelRegion;
-    private rightPanelRegion:RightPanelRegion;
+//    private router:Router;
+//    private contentRegion:ContentRegion;
+//    private headerRegion:HeaderRegion;
+//    private headerBackgroundRegion:HeaderBackgroundRegion;
+//    private leftPanelRegion:LeftPanelRegion;
+//    private rightPanelRegion:RightPanelRegion;
 
 	constructor() {
         super();
 
-        this.router = new Router(this);
+//        this.router = new Router(this);
+//
+//        this.contentRegion = new ContentRegion();
+//        this.headerRegion = new HeaderRegion();
+//        this.headerBackgroundRegion = new HeaderBackgroundRegion();
+//        this.leftPanelRegion = new LeftPanelRegion();
+//        this.rightPanelRegion = new RightPanelRegion();
 
-        this.contentRegion = new ContentRegion();
-        this.headerRegion = new HeaderRegion();
-        this.headerBackgroundRegion = new HeaderBackgroundRegion();
-        this.leftPanelRegion = new LeftPanelRegion();
-        this.rightPanelRegion = new RightPanelRegion();
-
-        this.addInitializer(this.routingStarted);
+        this.addInitializer(this.initializeModules);
     }
 
-    private routingStarted() {
-        if( ! Backbone.History.started ) {
-            Backbone.history.start();
-        }
+    private initializeModules() {
+        this.module("header-app").start();
+//        if( ! Backbone.History.started ) {
+//            Backbone.history.start();
+//        }
 	}
 
     public showMain() {
-        var headerContext = {
-            menuitems: [{
-                class: 'home-link',
-                href: '/',
-                name: '个人主页'
-            }, {
-                class: 'message-link',
-                href: '/',
-                name: '消息中心'
-            }, {
-                class: 'class-link',
-                href: '/',
-                name: '我的班级'
-            }],
-            user:{
-                username: 'pingheschool',
-                full_name:  '平和学校',
-                user_image: '/core/img/school-logo-pinghe-login.png'
-            },
-            school:{
-                school_name: '平和学校',
-                school_logo: '/core/img/school-logo-pinghe-login-white.png'
-            }
-        };
-        var splitViewLayout = new SplitViewLayout();
-        var headerView = new HeaderView(headerContext);
-        var headerBackgroundView = new HeaderBackgroundView();
-        var feedCenterView = new FeedCenterView();
-
-        this.headerRegion.show(headerView);
-        this.headerBackgroundRegion.show(headerBackgroundView);
-//        $('#main-content').append(splitViewLayout.render());
-        this.contentRegion.show(splitViewLayout);
-        splitViewLayout.rightPanel.show(feedCenterView);
-
-        headerBackgroundView.collapse();
-        feedCenterView.updateTime();
-
+//        var headerContext = {
+//            menuitems: [{
+//                class: 'home-link',
+//                href: '/',
+//                name: '个人主页'
+//            }, {
+//                class: 'message-link',
+//                href: '/',
+//                name: '消息中心'
+//            }, {
+//                class: 'class-link',
+//                href: '/',
+//                name: '我的班级'
+//            }],
+//            user:{
+//                username: 'pingheschool',
+//                full_name:  '平和学校',
+//                user_image: '/core/img/school-logo-pinghe-login.png'
+//            },
+//            school:{
+//                school_name: '平和学校',
+//                school_logo: '/core/img/school-logo-pinghe-login-white.png'
+//            }
+//        };
+//        var splitViewLayout = new SplitViewLayout();
+//        var headerView = new HeaderView(headerContext);
+//        var headerBackgroundView = new HeaderBackgroundView();
+//        var feedCenterView = new FeedCenterView();
+//
+//        this.headerRegion.show(headerView);
+//        this.headerBackgroundRegion.show(headerBackgroundView);
+////        $('#main-content').append(splitViewLayout.render());
+//        this.contentRegion.show(splitViewLayout);
+//        splitViewLayout.rightPanel.show(feedCenterView);
+//
+//        headerBackgroundView.collapse();
+//        feedCenterView.updateTime();
     }
  }
 

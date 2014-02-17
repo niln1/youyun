@@ -291,7 +291,7 @@ declare module Marionette {
         start(options?);
         addRegions(regions);
         removeRegion(region: Region);
-        module(moduleNames, moduleDefinition);
+        module(moduleNames, moduleDefinition?);
     }
 
     // modules mapped for convenience, but you should probably use TypeScript modules instead
