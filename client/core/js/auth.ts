@@ -3,7 +3,7 @@
 /// <reference path='vendor/require/require.d.ts'/>
 
 import LocalStorage = require('./local-storage');
-import User = require('./models/user');
+import User = require('./backbone/entities/user');
 import Router = require('./router');
 
 interface IAuthenticationSetting {

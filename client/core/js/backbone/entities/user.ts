@@ -1,5 +1,4 @@
-
-/// <reference path='../interfaces/db.d.ts'/>
+/// <reference path='../../interfaces/db.d.ts'/>
 /// <reference path='../vendor/backbone/marionette.d.ts'/>
 
 class User extends Backbone.DeepModel {
