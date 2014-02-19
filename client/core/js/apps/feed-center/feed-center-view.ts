@@ -1,19 +1,16 @@
 /**
  * Created by Nil on 2/11/14.
  */
-/// <reference path="../vendor/require/require.d.ts"/>
-/// <reference path="../vendor/jquery/jquery.d.ts"/>
-/// <reference path='../vendor/backbone/marionette.d.ts'/>
-/// <reference path='../vendor/moment/moment.d.ts'/>
+/// <reference path="../../vendor/require/require.d.ts"/>
+/// <reference path="../../vendor/jquery/jquery.d.ts"/>
+/// <reference path='../../vendor/backbone/marionette.d.ts'/>
+/// <reference path='../../vendor/moment/moment.d.ts'/>
 
-/// <amd-dependency path="../templates/feed-center-view-tmpl" />
+/// <amd-dependency path="./templates/feed-center-view-tmpl" />
 
+import BaseItemView = require('../../config/base-item-view');
 
-class FeedCenterView extends Backbone.View {
-
-    public events:Object;
-    private template:any;
-    private context:any;
+class FeedCenterView extends BaseItemView {
 
     private static timestampID : string = '#content-time-heading';
     private static momentConfigFormat : string = 'LL, dddd';
@@ -21,16 +18,11 @@ class FeedCenterView extends Backbone.View {
 
     constructor(context?:any, options?:Backbone.ViewOptions) {
         super(options);
-
         this.events = {};
-        this.template = require('../templates/feed-center-view-tmpl');
+        this.template = require('./templates/feed-center-view-tmpl');
         this.context = context || {};
     }
 
-    public render(): Backbone.View {
-        this.setElement(this.template(this.context));
-        return this.el;
-    }
 
     public updateTime(): void {
         moment.lang(FeedCenterView.momentConfigLang);
