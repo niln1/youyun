@@ -25,6 +25,7 @@ class BaseViewController {
     public showMainViewLayout(){
         this._view.mainRegion.show(new MainViewLayout());
         this._view.mainRegion.currentView.controller.showFeedCenter();
+        this._view.mainRegion.currentView.controller.showLeftPanel();
     }
 
 }

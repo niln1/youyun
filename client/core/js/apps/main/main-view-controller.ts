@@ -4,6 +4,7 @@
 
 import MainViewLayout = require('./main-view-layout');
 import FeedCenterView = require('../feed-center/feed-center-view');
+import LeftPanelViewLayout = require('../left-panel/left-panel-view-layout');
 
 class MainViewController {
 
@@ -16,6 +17,13 @@ class MainViewController {
     showFeedCenter(){
         this._view.rightPanelRegion.show(new FeedCenterView());
         this._view.rightPanelRegion.currentView.controller.updateTime();
+    }
+
+    showLeftPanel(){
+        var leftPanelLayout = new LeftPanelViewLayout();
+        this._view.leftPanelRegion.show(leftPanelLayout);
+        leftPanelLayout.controller.showUserProfile();
+        leftPanelLayout.controller.showReminder();
     }
 
 }

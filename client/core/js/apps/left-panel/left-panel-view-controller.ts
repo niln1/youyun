@@ -3,6 +3,8 @@
  */
 
 import BaseViewLayout = require('./left-panel-view-layout');
+import UserProfileView = require('../user-profile/user-profile-view');
+import ReminderView = require('../reminder/reminder-view');
 
 class LeftPanelViewController {
 
@@ -10,6 +12,14 @@ class LeftPanelViewController {
 
     constructor(View){
         this._view = View;
+    }
+
+    showUserProfile(){
+        this._view.leftTopRegion.show(new UserProfileView());
+    }
+
+    showReminder(){
+        this._view.leftBottomRegion.show(new ReminderView());
     }
 }
 

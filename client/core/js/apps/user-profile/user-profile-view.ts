@@ -5,16 +5,16 @@
 /// <amd-dependency path="./templates/user-profile-view-tmpl" />
 
 import BaseItemView = require('../../config/base-item-view');
+import UserModel = require('../../models/user-model');
 
 class UserProfileView extends BaseItemView {
 
     public controller:any;
 
-    constructor(context?:any, options?:Backbone.ViewOptions) {
+    constructor(options?:Backbone.ViewOptions) {
         super(options);
-
-        this.events = {};
         this.template = require('./templates/user-profile-view-tmpl');
+        this.context = new UserModel().data;
     }
 }
 

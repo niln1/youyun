@@ -4,25 +4,17 @@
 
 /// <amd-dependency path="./templates/reminder-view-tmpl" />
 
+import BaseItemView = require('../../config/base-item-view');
 
-class ReminderView extends Marionette.ItemView {
+class ReminderView extends BaseItemView {
 
-    public events:Object;
-    private template:any;
-    private context:any;
-
-    constructor(context?:any, options?:Backbone.ViewOptions) {
+    constructor(options?:Backbone.ViewOptions) {
         super(options);
 
         this.events = {};
         this.template = require('./templates/reminder-view-tmpl');
-        this.context = context || {};
     }
 
-    public onRender(): Marionette.ItemView {
-        this.setElement(this.template(this.context));
-        return this.el;
-    }
 }
 
 export = ReminderView;
