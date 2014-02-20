@@ -14,7 +14,8 @@ class MainViewController {
     }
 
     showFeedCenter(){
-        this._view.rightPanel.show(new FeedCenterView());
+        this._view.rightPanelRegion.show(new FeedCenterView());
+        this._view.rightPanelRegion.currentView.controller.updateTime();
     }
 
 }

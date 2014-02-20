@@ -19,7 +19,7 @@ class BaseLayout extends Marionette.Layout{
     }
 
     render(): BaseLayout {
-        this.$el.html(this.template(this.context));
+        this.setElement(this.template(this.context));
         return this.el;
     }
 }

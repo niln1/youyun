@@ -14,7 +14,7 @@ class HeaderBackgroundView extends BaseItemView {
 
     public controller:HeaderBackgroundViewController;
 
-    constructor(context?:any, options?:Backbone.ViewOptions) {
+    constructor(options?:Backbone.ViewOptions) {
         super(options);
         this.template = require('./templates/header-background-view-tmpl');
         this.controller = new HeaderBackgroundViewController(this);

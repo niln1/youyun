@@ -4,30 +4,22 @@
 /// <reference path="../../vendor/require/require.d.ts"/>
 /// <reference path="../../vendor/jquery/jquery.d.ts"/>
 /// <reference path='../../vendor/backbone/marionette.d.ts'/>
-/// <reference path='../../vendor/moment/moment.d.ts'/>
 
 /// <amd-dependency path="./templates/feed-center-view-tmpl" />
 
 import BaseItemView = require('../../config/base-item-view');
+import FeedCenterViewController = require('./feed-center-view-controller');
 
 class FeedCenterView extends BaseItemView {
 
-    private static timestampID : string = '#content-time-heading';
-    private static momentConfigFormat : string = 'LL, dddd';
-    private static momentConfigLang : string = 'zh-cn';
+    public controller : FeedCenterViewController;
 
-    constructor(context?:any, options?:Backbone.ViewOptions) {
+    public timestampID : string = '#content-time-heading';
+
+    constructor(options?:Backbone.ViewOptions) {
         super(options);
-        this.events = {};
         this.template = require('./templates/feed-center-view-tmpl');
-        this.context = context || {};
-    }
-
-
-    public updateTime(): void {
-        moment.lang(FeedCenterView.momentConfigLang);
-        var time_element = moment().format(FeedCenterView.momentConfigFormat);
-        $(FeedCenterView.timestampID).text(time_element);
+        this.controller = new FeedCenterViewController(this);
     }
 
 }

@@ -4,24 +4,17 @@
 
 /// <amd-dependency path="./templates/user-profile-view-tmpl" />
 
+import BaseItemView = require('../../config/base-item-view');
 
-class UserProfileView extends Marionette.ItemView {
+class UserProfileView extends BaseItemView {
 
-    public events:Object;
-    private template:any;
-    private context:any;
+    public controller:any;
 
     constructor(context?:any, options?:Backbone.ViewOptions) {
         super(options);
 
         this.events = {};
         this.template = require('./templates/user-profile-view-tmpl');
-        this.context = context || {};
-    }
-
-    public onRender(): Marionette.ItemView {
-        this.setElement(this.template(this.context));
-        return this.el;
     }
 }
 
