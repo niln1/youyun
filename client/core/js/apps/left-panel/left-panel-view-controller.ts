@@ -4,7 +4,7 @@
 
 import BaseViewLayout = require('./left-panel-view-layout');
 import UserProfileView = require('../user-profile/user-profile-view');
-import ReminderView = require('../reminder/reminder-view');
+import ReminderViewLayout = require('../reminder/reminder-view-layout');
 
 class LeftPanelViewController {
 
@@ -19,7 +19,7 @@ class LeftPanelViewController {
     }
 
     showReminder(){
-        this._view.leftBottomRegion.show(new ReminderView());
+        this._view.leftBottomRegion.show(new ReminderViewLayout());
     }
 }
 
