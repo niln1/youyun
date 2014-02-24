@@ -5,7 +5,7 @@
 /// <amd-dependency path="./templates/reminder-view-layout-tmpl" />
 
 import BaseLayout = require('../../config/base-layout');
-import ReminderViewController = require('./')
+import ReminderViewController = require('./reminder-view-controller');
 
 class ReminderViewLayout extends BaseLayout {
 
