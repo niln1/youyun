@@ -6,11 +6,12 @@ import MainViewLayout = require('./main-view-layout');
 import FeedCenterView = require('../feed-center/feed-center-view');
 import LeftPanelViewLayout = require('../left-panel/left-panel-view-layout');
 
-class MainViewController {
+class MainViewController extends Marionette.Controller{
 
     private _view : MainViewLayout;
 
     constructor(View){
+        super();
         this._view = View;
     }
 

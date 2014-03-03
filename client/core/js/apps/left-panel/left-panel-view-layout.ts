@@ -23,7 +23,7 @@ class LeftPanelViewLayout extends BaseLayout {
         this.template = require('./templates/left-panel-view-layout-tmpl');
         this.addRegions({
             leftTopRegion : '#left-top-region',
-            leftBottomRegion: '#left-bottom-region',
+            leftBottomRegion: '#left-bottom-region'
         });
         this.controller = new LeftPanelViewController(this);
     }

@@ -55,22 +55,12 @@ class App extends Marionette.Application {
         this.base.controller.showHeaderBackgroundView();
         this.base.controller.showMainViewLayout();
 
-//        var splitViewLayout = new SplitViewLayout();
-//        var headerView = new HeaderView(headerContext);
-//        var headerBackgroundView = new HeaderBackgroundView();
-//        var feedCenterView = new FeedCenterView();
-//
-//        this.headerRegion.show(headerView);
-//        this.headerBackgroundRegion.show(headerBackgroundView);
-////        $('#main-content').append(splitViewLayout.render());
-//        this.contentRegion.show(splitViewLayout);
-//        splitViewLayout.rightPanel.show(feedCenterView);
-//
-//        headerBackgroundView.collapse();
-//        feedCenterView.updateTime();
-
     }
  }
+
+Backbone.Marionette.Renderer.render = function(template, data){
+    return template(data);
+};
 
 $(() => {
 	var app = App.I;

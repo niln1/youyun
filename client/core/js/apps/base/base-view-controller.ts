@@ -7,11 +7,12 @@ import HeaderView = require('../header/header-view');
 import HeaderBackgroundView = require('../header-background/header-background-view');
 import MainViewLayout = require('../main/main-view-layout');
 
-class BaseViewController {
+class BaseViewController extends Marionette.Controller {
 
     private _view : BaseViewLayout;
 
     constructor(View){
+        super();
         this._view = View;
     }
 

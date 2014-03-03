@@ -4,11 +4,12 @@
 
 import HeaderBackgroundView = require('./header-background-view');
 
-class HeaderBackgroundViewController {
+class HeaderBackgroundViewController extends Marionette.Controller{
 
     private _view : HeaderBackgroundView;
 
     constructor(View){
+        super();
         this._view = View;
     }
 

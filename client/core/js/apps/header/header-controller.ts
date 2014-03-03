@@ -3,7 +3,7 @@
 import HeaderView = require('./header-view');
 import HeaderModel = require('../../models/header-model');
 
-class HeaderController {
+class HeaderController extends Marionette.Controller{
     public static instance:HeaderController;
 
     public static get I():HeaderController {
@@ -19,6 +19,7 @@ class HeaderController {
     private model:HeaderModel;
 
     constructor(){
+        super();
         this.model = new HeaderModel();
         this.view = new HeaderView(this.model.data);
     }

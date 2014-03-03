@@ -6,11 +6,12 @@ import BaseViewLayout = require('./left-panel-view-layout');
 import UserProfileView = require('../user-profile/user-profile-view');
 import ReminderViewLayout = require('../reminder/reminder-view-layout');
 
-class LeftPanelViewController {
+class LeftPanelViewController extends Marionette.Controller {
 
     private _view : BaseViewLayout;
 
     constructor(View){
+        super();
         this._view = View;
     }
 
@@ -19,7 +20,9 @@ class LeftPanelViewController {
     }
 
     showReminder(){
-        this._view.leftBottomRegion.show(new ReminderViewLayout());
+        var reminderViewLayout = new ReminderViewLayout();
+        this._view.leftBottomRegion.show(reminderViewLayout);
+        reminderViewLayout.controller.showCollectionView();
     }
 }
 

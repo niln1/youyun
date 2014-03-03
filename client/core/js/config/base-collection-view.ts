@@ -19,10 +19,6 @@ class BaseCollectionView extends Marionette.CollectionView{
         this.context = {};
     }
 
-    render():BaseCollectionView{
-        this.setElement(this.template(this.context));
-        return this.el;
-    }
 }
 
 export = BaseCollectionView;
