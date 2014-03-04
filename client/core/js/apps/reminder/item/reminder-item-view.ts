@@ -15,6 +15,7 @@ class ReminderItemView extends BaseItemView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
         this.template = require('./templates/reminder-item-view-tmpl');
+        this.context = this.model.attributes;
     }
 }
 

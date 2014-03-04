@@ -15,9 +15,9 @@ class ReminderCollectionView extends BaseCollectionView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
         this.collection = new Backbone.Collection([
-            {name: "Tim", age: 5},
-            {name: "Ida", age: 26},
-            {name: "Rob", age: 55}
+            {message: "Hello World", timestamp: 1000},
+            {message: "Hello pig", timestamp: 1000},
+            {message: "Hello monkey", timestamp: 1000}
         ]);
 //        this.template = require('./templates/reminder-collection-view-tmpl');
         this.itemView = ReminderItemView;
