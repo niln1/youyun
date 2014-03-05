@@ -20,13 +20,15 @@ class BaseViewController extends Marionette.Controller {
         this._view.headerRegion.show(new HeaderView());
     }
     public showHeaderBackgroundView(){
-        this._view.headerBackgroundRegion.show(new HeaderBackgroundView());
-        this._view.headerBackgroundRegion.currentView.controller.collapse();
+        var headerBackgroundView = new HeaderBackgroundView();
+        this._view.headerBackgroundRegion.show(headerBackgroundView);
+        headerBackgroundView.controller.collapse();
     }
     public showMainViewLayout(){
-        this._view.mainRegion.show(new MainViewLayout());
-        this._view.mainRegion.currentView.showFeedCenter();
-        this._view.mainRegion.currentView.showLeftPanel();
+        var mainViewLayout = new MainViewLayout();
+        this._view.mainRegion.show(mainViewLayout);
+        mainViewLayout.showFeedCenter();
+        mainViewLayout.showLeftPanel();
     }
 
 }

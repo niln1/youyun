@@ -1,6 +1,8 @@
 /// <reference path="../../vendor/require/require.d.ts"/>
 /// <reference path="../../vendor/jquery/jquery.d.ts"/>
 /// <reference path='../../vendor/backbone/marionette.d.ts'/>
+/// <reference path='../../vendor/bootstrap/bootstrap.d.ts'/>
+/// <reference path='../../vendor/bootstrap/bootstrap.datepicker.d.ts'/>
 
 /// <amd-dependency path="./templates/reminder-view-layout-tmpl" />
 
@@ -9,6 +11,7 @@ import ReminderCollectionView = require('./collection/reminder-collection-view')
 
 class ReminderViewLayout extends BaseLayout {
 
+    public addNewReminderModalId: string = "#addReminderModal";
     //to remove the ws complain
     public reminderItemsRegion: any;
 
@@ -21,6 +24,10 @@ class ReminderViewLayout extends BaseLayout {
         this.addRegions({
             reminderItemsRegion : '#reminder-items-region'
         });
+
+        $("#dateSelector").datepicker({
+            language: 'zh-CN'
+        });
     }
 
     public showCollectionView(){
@@ -30,7 +37,12 @@ class ReminderViewLayout extends BaseLayout {
     }
 
     public saveNewReminder(){
+        //TODO if datepicker exist dont setup
+        $("#dateSelector").datepicker({
+            language: 'zh-CN'
+        });
         console.log("saving new reminder");
+        $(this.addNewReminderModalId).modal('hide');
     }
 }
 
