@@ -5,22 +5,32 @@
 /// <amd-dependency path="./templates/reminder-view-layout-tmpl" />
 
 import BaseLayout = require('../../config/base-layout');
-import ReminderViewController = require('./reminder-view-controller');
+import ReminderCollectionView = require('./collection/reminder-collection-view');
 
 class ReminderViewLayout extends BaseLayout {
-
-    public controller:ReminderViewController;
 
     //to remove the ws complain
     public reminderItemsRegion: any;
 
     constructor() {
         super();
+        this.events = {
+            "click #saveNewReminder": "saveNewReminder"
+        };
         this.template = require('./templates/reminder-view-layout-tmpl');
         this.addRegions({
             reminderItemsRegion : '#reminder-items-region'
         });
-        this.controller = new ReminderViewController(this);
+    }
+
+    public showCollectionView(){
+        var reminderCollectionView = new ReminderCollectionView({tagName: "ol"});
+        reminderCollectionView.render();
+        this.reminderItemsRegion.show(reminderCollectionView);
+    }
+
+    public saveNewReminder(){
+        console.log("saving new reminder");
     }
 }
 

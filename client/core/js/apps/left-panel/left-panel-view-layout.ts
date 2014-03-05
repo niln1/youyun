@@ -8,11 +8,10 @@
 /// <amd-dependency path="./templates/left-panel-view-layout-tmpl" />
 
 import BaseLayout = require('../../config/base-layout')
-import LeftPanelViewController = require('./left-panel-view-controller');
+import UserProfileView = require('../user-profile/user-profile-view');
+import ReminderViewLayout = require('../reminder/reminder-view-layout');
 
 class LeftPanelViewLayout extends BaseLayout {
-
-    public controller:LeftPanelViewController;
 
     //to remove the ws complain
     public leftTopRegion: any;
@@ -25,7 +24,16 @@ class LeftPanelViewLayout extends BaseLayout {
             leftTopRegion : '#left-top-region',
             leftBottomRegion: '#left-bottom-region'
         });
-        this.controller = new LeftPanelViewController(this);
+    }
+
+    showUserProfile(){
+        this.leftTopRegion.show(new UserProfileView());
+    }
+
+    showReminder(){
+        var reminderViewLayout = new ReminderViewLayout();
+        this.leftBottomRegion.show(reminderViewLayout);
+        reminderViewLayout.showCollectionView();
     }
 
 }

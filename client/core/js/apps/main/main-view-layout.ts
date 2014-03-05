@@ -4,11 +4,11 @@
 
 /// <amd-dependency path="./templates/main-view-layout-tmpl" />
 
-import BaseLayout = require('../../config/base-layout')
-import MainViewController = require('./main-view-controller');
+import BaseLayout = require('../../config/base-layout');
+import FeedCenterView = require('../feed-center/feed-center-view');
+import LeftPanelViewLayout = require('../left-panel/left-panel-view-layout');
 
 class MainViewLayout extends BaseLayout {
-    public controller:MainViewController;
 
     //to remove the ws complain
     public leftPanelRegion: any;
@@ -21,7 +21,19 @@ class MainViewLayout extends BaseLayout {
             leftPanelRegion : '#left-panel-region',
             rightPanelRegion: '#right-panel-region'
         });
-        this.controller = new MainViewController(this);
+    }
+
+    showFeedCenter(){
+        var feedCenterView = new FeedCenterView();
+        this.rightPanelRegion.show(feedCenterView);
+        feedCenterView.updateTime();
+    }
+
+    showLeftPanel(){
+        var leftPanelLayout = new LeftPanelViewLayout();
+        this.leftPanelRegion.show(leftPanelLayout);
+        leftPanelLayout.showUserProfile();
+        leftPanelLayout.showReminder();
     }
 }
 

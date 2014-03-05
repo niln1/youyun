@@ -56,11 +56,7 @@ class App extends Marionette.Application {
         this.base.controller.showMainViewLayout();
 
     }
- }
-
-Backbone.Marionette.Renderer.render = function(template, data){
-    return template(data);
-};
+}
 
 $(() => {
 	var app = App.I;
