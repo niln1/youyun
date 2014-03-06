@@ -1,5 +1,3 @@
-
-/// <reference path="vendor/angular/angular.d.ts"/>
 /// <reference path='vendor/backbone/marionette.d.ts'/>
 
 import Router = require('./router');

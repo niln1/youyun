@@ -6,14 +6,18 @@ div.pageboard-shadow.reminder-container
 	div.content-divider
 	div#reminder-items-region
 	//Model
-	div(class="modal fade" id="addReminderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
-		div(class="modal-dialog")
-			div(class="modal-content")
+	div#addReminderModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+		div.modal-dialog
+			div.modal-content
 				div(class="modal-header")
 					button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
-					h4(class="modal-title" id="myModalLabel") 新的提醒
-				div(class="modal-body")
-					input#dateSelector(type="text" data-provide="datepicker" type="text" class="datepicker form-control")
-				div(class="modal-footer")
+					h4#myModalLabel.modal-title 新的提醒
+				div.modal-body
+					input#newReminderMessage
+					div.input-group.date.datepicker
+						input#newReminderDatePicker(data-provide="datepicker" type="text" class="form-control")
+						span.input-group-addon
+							i.glyphicon.glyphicon-calendar
+				div.modal-footer
 					button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
 					button#saveNewReminder(type="button" class="btn btn-primary") 保存

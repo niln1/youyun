@@ -24,10 +24,6 @@ class ReminderViewLayout extends BaseLayout {
         this.addRegions({
             reminderItemsRegion : '#reminder-items-region'
         });
-
-        $("#dateSelector").datepicker({
-            language: 'zh-CN'
-        });
     }
 
     public showCollectionView(){
@@ -36,11 +32,12 @@ class ReminderViewLayout extends BaseLayout {
         this.reminderItemsRegion.show(reminderCollectionView);
     }
 
+    public initDatePicker(){
+        var datePickerOptions = {language: "zh-CN", todayHighlight: true, autoclose: true};
+        $("#newReminderDatePicker").datepicker(datePickerOptions);
+    }
+
     public saveNewReminder(){
-        //TODO if datepicker exist dont setup
-        $("#dateSelector").datepicker({
-            language: 'zh-CN'
-        });
         console.log("saving new reminder");
         $(this.addNewReminderModalId).modal('hide');
     }

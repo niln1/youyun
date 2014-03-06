@@ -33,6 +33,7 @@ class LeftPanelViewLayout extends BaseLayout {
     showReminder(){
         var reminderViewLayout = new ReminderViewLayout();
         this.leftBottomRegion.show(reminderViewLayout);
+        reminderViewLayout.initDatePicker();
         reminderViewLayout.showCollectionView();
     }
 
