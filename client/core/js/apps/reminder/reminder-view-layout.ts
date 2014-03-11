@@ -32,9 +32,10 @@ class ReminderViewLayout extends BaseLayout {
         this.reminderItemsRegion.show(reminderCollectionView);
     }
 
-    public initDatePicker(){
+    public initDateTimePicker(){
         var datePickerOptions = {language: "zh-CN", todayHighlight: true, autoclose: true};
         $("#newReminderDatePicker").datepicker(datePickerOptions);
+        $('#newReminderTimePicker').timepicker();
     }
 
     public saveNewReminder(){
