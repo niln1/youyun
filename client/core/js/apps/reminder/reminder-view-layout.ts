@@ -1,5 +1,6 @@
 /// <reference path="../../vendor/require/require.d.ts"/>
 /// <reference path="../../vendor/jquery/jquery.d.ts"/>
+/// <reference path="../../vendor/jquery/jquery.timepicker.d.ts"/>
 /// <reference path='../../vendor/backbone/marionette.d.ts'/>
 /// <reference path='../../vendor/bootstrap/bootstrap.d.ts'/>
 /// <reference path='../../vendor/bootstrap/bootstrap.datepicker.d.ts'/>
