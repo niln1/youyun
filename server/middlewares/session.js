@@ -5,7 +5,9 @@ module.exports = function(app) {
     var env = app.get('env');
 
     // Setup session
-    app.use(express.cookieParser(nconf.get('cookie-secret')));
+	var cookieParser = express.cookieParser(nconf.get('cookie-secret'));
+    app.use(cookieParser);
+
     var store;
     if (env == 'test' || env == 'coverage') {
         var MemoryStore = express.session.MemoryStore;
@@ -18,6 +20,11 @@ module.exports = function(app) {
         };
         store = new MongoStore(options);
     }
+
+	// These session setting will be used by socket.io module
+	app.set('session-store', store);
+	app.set('cookie-parser', cookieParser);
+
     app.use(express.session({
         secret: nconf.get('cookie-secret'),
         key: nconf.get('cookie-key'),
