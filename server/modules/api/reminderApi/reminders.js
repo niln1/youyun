@@ -28,15 +28,21 @@ function createReminderWithMessage (req, res) {
 
 	newReminder.save(function (err, reminder) {
 		if (!err && reminder) {
-			var dataToReturn = reminder;
-			delete dataToReturn["_id"];
-			apiServer.sendResponse(req, res, dataToReturn, 'Reminder created successfully')
+			apiServer.sendResponse(req, res, reminder, 'Reminder created successfully')
 		} else {
 			apiServer.sendError(req, res, err);
 		}
 	})
 }
 
-function findRemindersByUserId (argument) {
-
+function findRemindersByUserId (req, res) {
+	Reminder.find({
+		userId: req.session.user._id
+	}, function (err, reminders) {
+		if (!err && reminders) {
+			apiServer.sendResponse(req, res, reminders, 'Reminder retrieved successfully')
+		} else {
+			apiServer.sendError(req, res, err);
+		}
+	});
 }
