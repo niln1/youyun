@@ -86,6 +86,8 @@ apiServer.verifySignature = function(req, res, next) {
     var userId = req.session.user._id;
     var apiKey = "tempkey";
     var user_signature = req.query.signature;
+    if (!user_signature && req.body && req.body.signature)
+        user_signature = req.body.signature;
 
     console.log("path: " + req.path);
 

@@ -9,6 +9,7 @@ var __ = require('underscore');
 var apiModules = [
     require('../accountApi/api'),
     require('../classApi/api'),
+    require('../reminderApi/api')
 ];
 
 // creating the global apiSpec object
