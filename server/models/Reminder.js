@@ -9,19 +9,22 @@ var Schema = mongoose.Schema;
 
 var ReminderSchema = new Schema({
     userId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    message: {
         type: String,
         required: true
     },
-    reminderMessage: {
-        type: String,
-        required: true
-    },
-    timestamp: {
-        type: Number,
+    createDate: {
+        type: Date,
         default: Date.now,
         required: true
     },
-    flag: {
+    dueDate: {
+        type: Date
+    },
+    isDone: {
         type: Boolean,
         default: false
     }

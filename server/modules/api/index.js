@@ -60,6 +60,9 @@ function isValidQueryParams(req, res, queryParams) {
             invalidQueryParameterList.push(queryParam);
         }
     });
+
+    console.log(queryParams);
+
     if (invalidQueryParameterList.length > 0) {
         invalidQueryParameters(req, res, 'Invalid Query Parameter(s) \'' +
             invalidQueryParameterList + '\'.');
@@ -170,6 +173,7 @@ exports.postObjects = function(req, res) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
             apiSpec[req.path][req.method]['content-type'])) {
             var queryParams = __.keys(req.body);
+
             if (isValidQueryParams(req, res, queryParams) &&
                 isRequiredQueryParams(req, res, queryParams) &&
                 isValidQueryParamsType(req, res, queryParams)) {

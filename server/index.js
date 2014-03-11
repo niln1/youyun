@@ -9,6 +9,7 @@ var db = require('./databases/db');
 var auth = require('./middlewares/auth');
 
 exports.main = function(req, res) {
+    if (!req.session.user) return res.redirect('/login');
     res.render('index', {});
 };
 
@@ -30,7 +31,7 @@ exports.getLogin = function(req, res) {
     res.render('login', {
         title: 'Login',
         message: message,
-        user: req.user 
+        user: req.session.user 
     });
 }
 
@@ -45,5 +46,6 @@ exports.populateDB = function(req, res) {
 }
 
 exports.home = function(req, res) {
+    if (!req.session.user) return res.redirect('/login');
 	res.render('home', {});
 }
