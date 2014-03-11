@@ -767,7 +767,7 @@ _.extend(Marionette.Controller.prototype, Backbone.Events, {
 // ------
 //
 // Manage the visual regions of your composite application. See
-// http://lostechies.com/derickbailey/2011/12/12/composite-js-apps-regions-and-region-managers/
+// http://lostechies.com/derickbailey/2011/12/12/composite-js-controllers-regions-and-region-managers/
 
 Marionette.Region = function(options){
   this.options = options || {};
