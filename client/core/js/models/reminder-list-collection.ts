@@ -8,11 +8,8 @@ import ReminderModel = require('./reminder-model');
 class ReminderListCollection extends Backbone.Collection {
 
     constructor() {
+        this.url = '/api/v1/reminders/read?signature=tempkey';
         super(null, {model:ReminderModel});
-    }
-
-    public url() {
-        return '/api/v1/reminders/read?signature=tempkey';
     }
 
     public parse(response) {

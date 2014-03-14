@@ -11,10 +11,10 @@ import ReminderListCollection = require('../../../models/reminder-list-collectio
 class ReminderCollectionView extends BaseCollectionView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
-        this.collection = new ReminderListCollection;
+        this.collection = new ReminderListCollection();
         this.itemView = ReminderItemView;
         this.listenTo(this.collection, "reset", this.render);
-        this.collection.fetch();
+        this.collection.fetch({reset: true});
     }
 
     onBeforeRender(){
