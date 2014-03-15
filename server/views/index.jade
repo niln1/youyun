@@ -1,15 +1,9 @@
 extends _master
 
 block head-extra
-	link(rel='stylesheet', href='/core/css/app.css')
 
 block head-requirejs
 	script.
 		requirejs(['core/js/app'])
 
 block body-content
-	div#header-content
-	div.full-size#page-content
-		div.content
-			div#header-background-content
-			div#main-content.container-fluid

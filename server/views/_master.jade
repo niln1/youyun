@@ -16,6 +16,8 @@ html
 
 		if (env == 'development')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
+			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
+			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
 			script(src='/core/lib/jquery/js/jquery.js')
 			script(src='/core/lib/modernizr/js/modernizr.js')
 			script(src='/core/lib/underscore/js/underscore.js')
@@ -26,10 +28,16 @@ html
 			script(src='/core/lib/backbone/js/backbone.deep.model.js')
 			script(src='/core/lib/jade/js/jade.js')
 			script(src='/core/lib/moment/js/moment.js')
+			script(src='/core/lib/bootstrap3/js/bootstrap.js')
+			script(src='/core/lib/timepicker/js/timepicker.js')
+			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
+			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
 			script(src='/core/lib/requirejs/js/require.js')
 
 		else if (env == 'production')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
+			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
+			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
 			script(src='/core/lib/jquery/js/jquery.min.js')
 			script(src='/core/lib/modernizr/js/modernizr.min.js')
 			script(src='/core/lib/underscore/js/underscore.min.js')
@@ -40,7 +48,13 @@ html
 			script(src='/core/lib/backbone/js/backbone.deep.model.min.js')
 			script(src='/core/lib/jade/js/jade.min.js')
 			script(src='/core/lib/moment/js/moment.min.js')
+			script(src='/core/lib/bootstrap3/js/bootstrap.min.js')
+			script(src='/core/lib/timepicker/js/timepicker.min.js')
+			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
+			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
 			script(src='/core/lib/requirejs/js/require.min.js')
+
+		link(rel='stylesheet', href='/core/css/app.css')
 
 		block head-extra
 
@@ -59,3 +73,4 @@ html
 				| 来正常使用本网站.
 
 		block body-content
+
