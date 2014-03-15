@@ -55,6 +55,9 @@ class ReminderViewLayout extends BaseLayout {
 
         console.log(dueDate);
 
+        var newReminder = new ReminderModel({message:message,dueDate:dueDate,signature:"tempkey"});
+        newReminder.save();
+
         $(this.newReminderMessage).val("");
         $(this.newReminderDate).val("");
         $(this.newReminderTime).val("");
