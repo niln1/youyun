@@ -8,18 +8,18 @@ var parameters = require('./parameters');
 
 // An array containing Alarm API spec objects
 module.exports = [{
-    'url': '/api/v1/reminders/read',
+    'url': '/api/v1/reminders/',
     'GET': {
         'handler': reminders.readReminders,
         'required': [
         	parameters.signature 
         ],
         'optional': [],
-        'description': 'List all class managed by the User',
+        'description': 'List all reminder for that user',
         'response': {} // sample data
     }
 }, {
-    'url': '/api/v1/reminders/create',
+    'url': '/api/v1/reminders/',
     'POST': {
         'handler': reminders.createReminder,
         'content-type': 'application/json',
@@ -30,7 +30,7 @@ module.exports = [{
         'optional': [
         	parameters.dueDate
         ],
-        'description': 'List the students in a class managed by the User',
+        'description': 'Create the reminder,
         'response': {} // sample data
     }
 }];
