@@ -6,19 +6,19 @@
 exports.signature = {
     'type': 'string',
     'param': 'signature',
-    'description': 'signature',
+    'description': 'signature'
 };
 
 exports.userId = {
     'type': 'string',
     'param': 'userId',
-    'description': 'userId',
+    'description': 'userId'
 };
 
 exports.message = {
     'type': 'string',
     'param': 'message',
-    'description': 'message',
+    'description': 'message'
 };
 
 exports.dueDate = {

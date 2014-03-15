@@ -6,9 +6,9 @@
 var reminders = require('./reminders');
 var parameters = require('./parameters');
 
-// An array containing Alarm API spec objects
+// An array containing Reminder API spec objects
 module.exports = [{
-    'url': '/api/v1/reminders/',
+    'url': '/api/v1/reminders',
     'GET': {
         'handler': reminders.readReminders,
         'required': [
@@ -17,20 +17,18 @@ module.exports = [{
         'optional': [],
         'description': 'List all reminder for that user',
         'response': {} // sample data
-    }
-}, {
-    'url': '/api/v1/reminders/',
-    'POST': {
-        'handler': reminders.createReminder,
-        'content-type': 'application/json',
-        'required': [
-        	parameters.signature, 
-        	parameters.message
-        ],
-        'optional': [
-        	parameters.dueDate
-        ],
-        'description': 'Create the reminder,
-        'response': {} // sample data
-    }
+    },
+	'POST': {
+		'handler': reminders.createReminder,
+		'content-type': 'application/json',
+		'required': [
+			parameters.signature,
+			parameters.message
+		],
+		'optional': [
+			parameters.dueDate
+		],
+		'description': 'Create the reminder',
+		'response': {} // sample data
+	}
 }];
