@@ -18,5 +18,5 @@ exports.password = {
 exports.signature = {
     'type': 'string',
     'param': 'signature',
-    'description': 'signature',
+    'description': 'signature'
 };
