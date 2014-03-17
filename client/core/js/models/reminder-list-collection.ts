@@ -16,6 +16,10 @@ class ReminderListCollection extends Backbone.Collection {
         console.log(response);
         return response.result;
     }
+
+    public comparator(model) {
+        return model.get('dueDate');
+    }
 }
 
 export = ReminderListCollection;

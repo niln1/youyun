@@ -12,7 +12,7 @@
 import BaseItemView = require('../../../config/base-item-view');
 
 class ReminderItemView extends BaseItemView {
-    public momentConfigFormat : string = 'LL, dddd';
+    public momentConfigFormat : string = 'L hh:mm A';
     public momentConfigLang : string = 'zh-cn';
 
     constructor(options?:Backbone.ViewOptions) {
