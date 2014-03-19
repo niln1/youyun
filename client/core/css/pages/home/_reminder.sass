@@ -7,31 +7,78 @@
 	margin-left: 0
 	list-style: none
 
-.reminder
-	min-height: 45px
-	padding: 10px 10px 12px 15px
-
 .reminder .content
 	margin-top: 4px
 	font-size: 15px
-	float: left
 
 .reminder .time
 	margin-top: 5px
-	font-size: 13px
-	float: right
+	font-size: 8px
 	color: #8899a6
 
 .reminder-item
 	background-color: #ffffff
-	border-bottom: 1px solid #e1e8ed
+	border-bottom: 1px dotted #e1e8ed
 	border-left: 1px solid #e8e8e8
 	border-right: 1px solid #e8e8e8
 	background-clip: padding-box
 
-.reminder-checkbox
-	float: left
-	margin-right: 20px
+.reminder .toggle
+	margin: 0
+	text-align: center
+	height: 40px
+	width: 40px
+	position: absolute
+	top: 0
+	bottom: 0
+	margin: auto 0
+	border: none
+	+appearance(none)
+
+li .toggle:after
+	content: '✔'
+	line-height: 40px
+	font-size: 18px
+	color: #d9d9d9
+	text-shadow: 0 -1px 0 #bfbfbf
+
+li .toggle:checked:after
+	color: #85ada7
+	text-shadow: 0 1px 0 #669991
+	bottom: 1px
+	position: relative
+
+li .destroy:after
+	content: '✖'
+
+.reminder .destroy
+	display: none
+	position: absolute
+	top: 0
+	right: 10px
+	bottom: 0
+	width: 40px
+	height: 40px
+	margin: auto 0
+	font-size: 22px
+	color: #a88a8a
+	+transition-property(all)
+	+transition-duration(0.2s)
+
+.reminder .destroy:hover
+	text-shadow: 0 0 1px #000, 0 0 10px rgba(199, 107, 107, 0.8)
+	+scale(1.3)
+
+.reminder .reminder-content:hover .destroy
+	display: block
+
+.reminder-content
+	padding: 10px 45px 10px 10px
+	display: block
+	line-height: 1.2
+	margin-left: 45px
+	+transition-property(color)
+	+transition-duration(0.4s)
 
 .reminder-add-button
 	position: absolute
@@ -48,3 +95,4 @@
 
 .reminder-modal-input
 	padding-top: 1px
+

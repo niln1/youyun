@@ -35,7 +35,7 @@ class ReminderViewLayout extends BaseLayout {
     }
 
     public showCollectionView(){
-        var reminderCollectionView = new ReminderCollectionView({tagName: "ol"});
+        var reminderCollectionView = new ReminderCollectionView({tagName: "ol",id:"reminder-items"});
         reminderCollectionView.render();
         this.reminderItemsRegion.show(reminderCollectionView);
     }
