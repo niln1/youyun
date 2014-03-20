@@ -179,19 +179,14 @@ header.opened hgroup p
 	line-height: 144px
 	background: rgba(0,0,0,.1)
 
-header.fixed
+#header-background-region.fixed
 	position: fixed
 	top: 0
 	left: 0
 	width: 100%
 	z-index: 12
 
-header.opened+*:before
-	display: block
-	content: ''
-	height: 446px
-
-header.closed+*:before
+#header-background-region+*:before
 	display: block
 	content: ''
 	height: 65px

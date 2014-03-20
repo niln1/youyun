@@ -25,7 +25,7 @@ class ReminderItemView extends BaseItemView {
     private getTimeString() {
         moment.lang(this.momentConfigLang);
         var timeString = this.model.get('dueDate');
-        return timeString ? moment(timeString).format(this.momentConfigFormat):"";
+        return timeString ? moment(timeString).calendar():"";
     }
 
 }
