@@ -18,6 +18,8 @@ class ReminderItemView extends BaseItemView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
         this.template = require('./templates/reminder-item-view-tmpl');
+        this.model.id = this.model.get('_id');
+        this.model.save({"isDone":true});
         this.context.message = this.model.get('message');
         this.context.dueDate = this.getTimeString();
     }

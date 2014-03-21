@@ -11,7 +11,7 @@ class ReminderListCollection extends Backbone.Collection {
 
     constructor(models?: any, options?: any) {
         this.url = '/api/v1/reminders?signature=tempkey';
-        super(null, {model:ReminderModel});
+        super(models, {model:ReminderModel});
     }
 
     public parse(response) {
@@ -28,7 +28,14 @@ class ReminderListCollection extends Backbone.Collection {
             var dueDate = reminder.get("dueDate");
             return moment(dueDate).diff(moment(),'days')===0;
         });
+        return new ReminderListCollection(filteredReminderItems);
+    }
 
+    public notDone(){
+        var filteredReminderItems = this.filter(function(reminder){
+            var isDone = reminder.get("isDone");
+            return !isDone;
+        });
         return new ReminderListCollection(filteredReminderItems);
     }
 }
