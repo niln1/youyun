@@ -22,22 +22,20 @@ class DataManager {
         DataManager.instance = I;
     }
 
-    private resources:{[index:string]:Backbone.Collection};
+    private resources:{[index:string] : any};
 
     constructor() {
-
         this.resources = {};
-
     }
 
-    public getReminderListCollection():ReminderListCollection{
+    public getReminderListCollection():ReminderListCollection {
         if(!this.resources["reminder-list-collection"]){
-            this.addResource("reminder-list-collection", new ReminderListCollection, true);
+            this.addResourceCollection("reminder-list-collection", new ReminderListCollection, true);
         }
         return this.resources["reminder-list-collection"];
     }
 
-    public addResource(type:string, resourceCollection:Backbone.Collection, fetch?:boolean):void {
+    public addResourceCollection(type:string, resourceCollection:Backbone.Collection, fetch?:boolean):void {
         if(fetch){
             resourceCollection.fetch({reset: true});
         }

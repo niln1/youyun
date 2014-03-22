@@ -19,7 +19,6 @@ class ReminderItemView extends BaseItemView {
         super(options);
         this.template = require('./templates/reminder-item-view-tmpl');
         this.model.id = this.model.get('_id');
-        this.model.save({"isDone":true});
         this.context.message = this.model.get('message');
         this.context.dueDate = this.getTimeString();
     }
@@ -28,6 +27,10 @@ class ReminderItemView extends BaseItemView {
         moment.lang(this.momentConfigLang);
         var timeString = this.model.get('dueDate');
         return timeString ? moment(timeString).calendar():"";
+    }
+
+    private setIsDone(isDone:boolean){
+        this.model.save({"isDone":isDone, "signature":"tempkey"});
     }
 
 }

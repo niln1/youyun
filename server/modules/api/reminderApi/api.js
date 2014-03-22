@@ -23,12 +23,28 @@ module.exports = [{
 		'content-type': 'application/json',
 		'required': [
 			parameters.signature,
-			parameters.message
-		],
-		'optional': [
+			parameters.message,
 			parameters.dueDate
 		],
+		'optional': [],
 		'description': 'Create the reminder',
 		'response': {} // sample data
 	}
-}];
+},{
+	'url': '/api/v1/reminders/{id}',
+	'PUT': {
+	'handler': reminders.updateReminderWithId,
+		'content-type': 'application/json',
+		'required': [
+		parameters.signature
+	],
+		'optional': [
+		parameters.message,
+		parameters.dueDate,
+		parameters.isDone
+	],
+		'description': 'update the reminder',
+		'response': {} // sample data
+}
+}
+];

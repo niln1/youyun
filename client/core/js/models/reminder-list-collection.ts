@@ -23,7 +23,7 @@ class ReminderListCollection extends Backbone.Collection {
         return model.get('dueDate');
     }
 
-    public dueToday(){
+    public dueToday():ReminderListCollection{
         var filteredReminderItems = this.filter(function(reminder){
             var dueDate = reminder.get("dueDate");
             return moment(dueDate).diff(moment(),'days')===0;
@@ -31,7 +31,7 @@ class ReminderListCollection extends Backbone.Collection {
         return new ReminderListCollection(filteredReminderItems);
     }
 
-    public notDone(){
+    public notDone():ReminderListCollection{
         var filteredReminderItems = this.filter(function(reminder){
             var isDone = reminder.get("isDone");
             return !isDone;

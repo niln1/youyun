@@ -14,6 +14,11 @@ exports.readReminders = function (req, res) {
 	apiServer.verifySignature(req, res, findRemindersByUserId)
 }
 
+exports.updateReminderWithId = function (req, res) {
+	console.log("HEY HERE HELLO"+req.params.id);
+	apiServer.verifySignature(req, res, updateReminderById)
+}
+
 //-----------------helpers--------------------//
 
 function createReminderWithMessage (req, res) {
@@ -41,6 +46,18 @@ function findRemindersByUserId (req, res) {
 	}, function (err, reminders) {
 		if (!err && reminders) {
 			apiServer.sendResponse(req, res, reminders, 'Reminder retrieved successfully')
+		} else {
+			apiServer.sendError(req, res, err);
+		}
+	});
+}
+
+function updateReminderById (req, res) {
+	Reminder.find({
+		_id: req.params.id
+	}, function (err, reminder) {
+		if (!err && reminder) {
+			apiServer.sendResponse(req, res, reminder, 'Reminder retrieved successfully')
 		} else {
 			apiServer.sendError(req, res, err);
 		}
