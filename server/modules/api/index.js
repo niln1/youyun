@@ -193,7 +193,6 @@ exports.createObject = function(req, res) {
 exports.updateObjectWithId = function(req, res) {
 	var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
 	var path = pathWithoutId + '/{id}';
-	console.log(path);
 	console.log(__.has(apiSpec, path));
 	if (__.has(apiSpec, path)) {
 		console.log(__.isEqual(req.headers['content-type'].split(';')[0],

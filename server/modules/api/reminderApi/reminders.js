@@ -53,9 +53,15 @@ function findRemindersByUserId (req, res) {
 }
 
 function updateReminderById (req, res) {
+	// cloning req.body
+	var param = JSON.parse(JSON.stringify(req.body));
+	delete param["signature"];
+	console.log(JSON.stringify(param));
+	console.log(JSON.stringify(req.body));
+
 	Reminder.findOneAndUpdate({
 		_id: req.params.id
-	}, {isDone:true}, function (err, reminder) {
+	}, param, function (err, reminder) {
 		if (!err && reminder) {
 			apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
 		} else {
