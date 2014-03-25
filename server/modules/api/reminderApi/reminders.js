@@ -15,7 +15,6 @@ exports.readReminders = function (req, res) {
 }
 
 exports.updateReminderWithId = function (req, res) {
-	console.log("HEY HERE HELLO"+req.params.id);
 	apiServer.verifySignature(req, res, updateReminderById)
 }
 
