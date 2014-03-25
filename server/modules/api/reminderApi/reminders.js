@@ -53,11 +53,11 @@ function findRemindersByUserId (req, res) {
 }
 
 function updateReminderById (req, res) {
-	Reminder.find({
+	Reminder.findOneAndUpdate({
 		_id: req.params.id
-	}, function (err, reminder) {
+	}, {isDone:true}, function (err, reminder) {
 		if (!err && reminder) {
-			apiServer.sendResponse(req, res, reminder, 'Reminder retrieved successfully')
+			apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
 		} else {
 			apiServer.sendError(req, res, err);
 		}
