@@ -11,6 +11,7 @@
 import BaseLayout = require('../../config/base-layout');
 import ReminderCollectionView = require('./collection/reminder-collection-view');
 import ReminderModel = require('../../models/reminder-model');
+import MsgBus = require('../../message-bus');
 
 class ReminderViewLayout extends BaseLayout {
 
@@ -18,6 +19,7 @@ class ReminderViewLayout extends BaseLayout {
     public newReminderMessage: string = "#newReminderMessage";
     public newReminderDate: string = "#newReminderDatePicker";
     public newReminderTime: string = "#newReminderTimePicker";
+
     //to remove the ws complain
     public reminderItemsRegion: any;
 
@@ -33,7 +35,7 @@ class ReminderViewLayout extends BaseLayout {
     }
 
     public showCollectionView(){
-        var reminderCollectionView = new ReminderCollectionView({tagName: "ol"});
+        var reminderCollectionView = new ReminderCollectionView({tagName: "ol",id:"reminder-items"});
         reminderCollectionView.render();
         this.reminderItemsRegion.show(reminderCollectionView);
     }
@@ -54,6 +56,13 @@ class ReminderViewLayout extends BaseLayout {
         var dueDate = moment(date + " " + time, "YYYY年MM月DD日 hh:mma");
 
         console.log(dueDate);
+
+        var newReminder = new ReminderModel({message:message,dueDate:dueDate,signature:"tempkey"});
+        var onSuccess = function(){
+          MsgBus.I.command.execute("reminders:rerender");
+          console.log("success");
+        };
+        newReminder.save({},{success:onSuccess});
 
         $(this.newReminderMessage).val("");
         $(this.newReminderDate).val("");

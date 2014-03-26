@@ -4,7 +4,7 @@
 /// <reference path='../vendor/backbone/marionette.d.ts'/>
 
 class ReminderModel extends Backbone.Model {
-    constructor(attrs, options) {
+    constructor(attrs, options?) {
         this.urlRoot = 'api/v1/reminders';
         super(attrs, options);
     }

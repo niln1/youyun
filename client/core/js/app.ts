@@ -2,7 +2,7 @@
 
 import Router = require('./router');
 import BaseViewLayout = require('./apps/base/base-view-layout');
-import ReminderListCollection = require('./models/reminder-list-collection');
+import MsgBus = require('./message-bus');
 
 class App extends Marionette.Application {
 	/**
@@ -30,7 +30,6 @@ class App extends Marionette.Application {
 
 	constructor() {
         super();
-
         this.router = new Router(this);
         this.base = new BaseViewLayout();
 

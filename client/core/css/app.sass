@@ -1,3 +1,5 @@
+@import "compass"
+
 @import "utils/_variables"
 @import "utils/_typography"
 @import "utils/_mixins"
@@ -94,3 +96,18 @@ body.school_color_line:before
 
 .noborderradius
 	border-radius: 0
+
+button,
+input[type="checkbox"]
+	outline: none !important
+
+button
+	margin: 0
+	padding: 0
+	border: 0
+	background: none
+	font-size: 100%
+	vertical-align: baseline
+	font-family: inherit
+	color: inherit
+	+appearance(none)

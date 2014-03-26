@@ -1,6 +1,7 @@
 li.reminder-item
 	div.reminder
-		div.reminder-checkbox
-			input(type="checkbox")
-		div.content #{message}
-		div.time #{dueDate}
+		input.toggle(type="checkbox")
+		div.reminder-content
+			div.content #{message}
+			div.time 提醒时间: #{dueDate}
+			button.destroy

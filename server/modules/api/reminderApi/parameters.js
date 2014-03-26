@@ -15,6 +15,12 @@ exports.userId = {
     'description': 'userId'
 };
 
+exports.reminderId = {
+	'type': 'string',
+	'param': 'reminderId',
+	'description': 'reminderId'
+};
+
 exports.message = {
     'type': 'string',
     'param': 'message',
@@ -25,4 +31,10 @@ exports.dueDate = {
 	'type': 'date',
     'param': 'dueDate',
     'description': 'dueDate'	
+}
+
+exports.isDone = {
+	'type': 'boolean',
+	'param': 'isDone',
+	'description': 'isDone'
 }

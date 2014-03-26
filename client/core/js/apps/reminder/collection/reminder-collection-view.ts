@@ -7,17 +7,19 @@
 import BaseCollectionView = require('../../../config/base-collection-view');
 import ReminderItemView = require('../item/reminder-item-view');
 import ReminderListCollection = require('../../../models/reminder-list-collection');
+import MsgBus = require('../../../message-bus');
+import DataManager = require('../../../data-manager');
 
 class ReminderCollectionView extends BaseCollectionView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
-        this.collection = new ReminderListCollection();
+        this.collection = DataManager.I.getReminderListCollection().dueToday().notDone();
         this.itemView = ReminderItemView;
-        this.listenTo(this.collection, "reset", this.render);
-        this.collection.fetch({reset: true});
+        this.listenTo(DataManager.I.getReminderListCollection(), "reset", this.render);
     }
 
     onBeforeRender(){
+        this.collection = DataManager.I.getReminderListCollection().dueToday().notDone();
         console.log("Before: "+JSON.stringify(this.collection));
     }
 }
