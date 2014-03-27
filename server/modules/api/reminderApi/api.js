@@ -34,8 +34,8 @@ module.exports = [{
 	}
 },{
 	'url': '/api/v1/reminders/{id}',
-	'PUT': {
-	'handler': reminders.updateReminderWithId,
+	'PATCH': {
+		'handler': reminders.updateReminderWithId,
 		'content-type': 'application/json',
 		'required': [
 			parameters.signature
