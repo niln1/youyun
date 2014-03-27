@@ -26,7 +26,9 @@ module.exports = [{
 			parameters.message,
 			parameters.dueDate
 		],
-		'optional': [],
+		'optional': [
+			parameters.isDone
+		],
 		'description': 'Create the reminder',
 		'response': {} // sample data
 	}
@@ -36,15 +38,15 @@ module.exports = [{
 	'handler': reminders.updateReminderWithId,
 		'content-type': 'application/json',
 		'required': [
-		parameters.signature
-	],
-		'optional': [
-		parameters.message,
-		parameters.dueDate,
-		parameters.isDone
-	],
-		'description': 'update the reminder',
-		'response': {} // sample data
-}
-}
+			parameters.signature
+		],
+			'optional': [
+				parameters.message,
+				parameters.dueDate,
+				parameters.isDone
+			],
+				'description': 'update the reminder',
+				'response': {} // sample data
+		}
+	}
 ];
