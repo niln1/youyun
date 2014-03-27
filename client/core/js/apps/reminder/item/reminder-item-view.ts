@@ -10,13 +10,19 @@
 /// <amd-dependency path="./templates/reminder-item-view-tmpl" />
 
 import BaseItemView = require('../../../config/base-item-view');
+import ReminderModel = require('../../../models/reminder-model');
 
 class ReminderItemView extends BaseItemView {
     public momentConfigFormat : string = 'lll';
     public momentConfigLang : string = 'zh-cn';
 
+    public model : ReminderModel;
+
     constructor(options?:Backbone.ViewOptions) {
         super(options);
+        this.events = {
+          "click .toggle-reminder": "afterToggle"
+        };
         this.template = require('./templates/reminder-item-view-tmpl');
         this.model.id = this.model.get('_id');
         this.context.message = this.model.get('message');
@@ -29,8 +35,9 @@ class ReminderItemView extends BaseItemView {
         return timeString ? moment(timeString).calendar():"";
     }
 
-    private setIsDone(isDone:boolean){
-        this.model.save({"isDone":isDone, "signature":"tempkey"});
+    private afterToggle() {
+        console.log("after Toggle");
+        this.model.toggle();
     }
 
 }
