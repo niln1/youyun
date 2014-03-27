@@ -8,6 +8,21 @@ class ReminderModel extends Backbone.Model {
         this.urlRoot = 'api/v1/reminders';
         super(attrs, options);
     }
+    defaults() {
+        return {
+            message: '',
+            dueDate: new Date(),
+            isDone: false
+        }
+    };
+
+    toggle() {
+        this.save({ isDone: !this.get('isDone'), signature: "tempkey" },{ patch : true });
+    }
+
+    clear() {
+        this.destroy();
+    }
 }
 
 export = ReminderModel;
