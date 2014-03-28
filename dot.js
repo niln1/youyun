@@ -13,16 +13,17 @@ var mongoose = require('mongoose');
 var app;
 module.exports.app = app = express();
 
+/*
+ * Configuration from nconf
+ */
+nconf.argv().env().file('./server/utils/config.json');
+
 // Local modules and variables
 var routes = require('./server/routes');
 var socketRoutes = require('./server/socket-routes');
 var auth = require('./server/middlewares/auth');
 var session = require('./server/middlewares/session');
-
-/*
- * Configuration from nconf
- */
-nconf.argv().env().file('./server/utils/config.json');
+var logger = require('./server/utils/logger');
 
 /*
  * Setup environment
@@ -80,7 +81,8 @@ if ('development' == env) {
 }
 
 var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
+    logger.info("LogLevel - " + nconf.get('log-level'));
+    logger.info('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
 var io = require('socket.io').listen(server);
 socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));

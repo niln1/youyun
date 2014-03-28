@@ -1,12 +1,14 @@
 var winston = require('winston');
+var nconf = require('nconf');
+var moment = require('moment');
 
 // Set up logger
 var customColors = {
-    trace: 'white',
-    debug: 'green',
+    trace: 'grey',
+    debug: 'cyan',
     info: 'green',
     warn: 'yellow',
-    crit: 'red',
+    crit: 'orange',
     fatal: 'red'
 };
 
@@ -22,9 +24,8 @@ var logger = new(winston.Logger)({
     },
     transports: [
         new(winston.transports.Console)({
-            level: app.settings.logLevel,
-            colorize: true,
-            timestamp: true
+            level: nconf.get('log-level'),
+            colorize: true
         })
         // new (winston.transports.File)({ filename: 'somefile.log' })
     ]

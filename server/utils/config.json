@@ -8,7 +8,8 @@
     "redis-host": "localhost",
     "redis-port": 6379,
     "mongodb-url": "mongodb://localhost/yy-dev",
-	"mongodb-socket-collection": "sockets",
+    "mongodb-socket-collection": "sockets",
     "mongodb-session-collection": "sessions",
+    "log-level": "trace",
     "version": 1
 }
