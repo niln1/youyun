@@ -74,7 +74,7 @@ function isValidQueryParams(path, method, res, queryParams) {
 
 
 function isValidQueryParamsType(path, method, res, query) {
-    logger.trace("isValidQueryParams", path, method, query);
+    logger.trace("isValidQueryParams path: " + path + ", method: " + method + ", query: " + JSON.stringify(query));
 
     var optionalParamsList = apiSpec[path][method]['optional'];
     var requiredParamsList = apiSpec[path][method]['required'];
