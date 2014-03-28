@@ -30,6 +30,7 @@ exports.route = function(app) {
 	// Match request with path like '/api/v1/classes/update' for POST
     app.post('/api/:version/:object/:action', index.createObject);
 
-	app.put('/api/:version/:object/:id', index.updateObjectWithId);
+//	app.put('/api/:version/:object/:id', index.updateObjectWithId);
+	app.patch('/api/:version/:object/:id', index.updateObjectWithId);
 //	app.delete('/api/:version/:object/:id', index.deleteObject);
 }

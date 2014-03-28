@@ -82,13 +82,22 @@ function isValidQueryParamsType(path, method, res, query) {
             if (parameter['param'] == queryKey) {
                 switch (parameter['type']) {
                     case 'string':
-                        console.log("Check String: " + queryData);
                         if (__.isString(queryData) && queryData.length != 0) {
-                            break;
+	                        console.log("Check String: " + queryData);
+	                        break;
                         } else {
                             invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
+	                case 'date':
+		                var date = new Date(queryData);
+		                if (date instanceof Date && !isNaN(date.valueOf()) && queryData.length != 0) {
+			                console.log("Check Date: " + queryData);
+			                break;
+		                } else {
+			                invalidQueryParameters(res, 'Invalid Query Parameter Type');
+			                return false;
+		                }
                     case 'list':
                         console.log("Check List: " + queryData.split(',') + "  " + queryData.split(',').length);
                         if (__.isArray(queryData.split(',')) && queryData.length != 0) {
@@ -105,7 +114,6 @@ function isValidQueryParamsType(path, method, res, query) {
                             invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
-                        break;
                     case 'boolean':
                         console.log("Check Boolean: " + queryData);
                         if (Number(queryData) > -1 && Number(queryData) < 2 && queryData.length != 0) {
@@ -114,7 +122,6 @@ function isValidQueryParamsType(path, method, res, query) {
                             invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
-                        break;
                     default:
                         console.log("Err:" + queryData);
                         invalidQueryParameters(res, 'Invalid Query Parameter Type');
@@ -148,7 +155,7 @@ function isRequiredQueryParams(path, method, res, queryParams) {
 
 exports.getSpec = function(req, res) {
     if (req.path.search(/^\/api\/v\d*\/spec$/) !== -1) {
-        serveApiSpec(req, res);
+        serveApiSpec(res);
     } else {
         apiNotDefined(req, res);
     }
@@ -193,10 +200,8 @@ exports.createObject = function(req, res) {
 exports.updateObjectWithId = function(req, res) {
 	var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
 	var path = pathWithoutId + '/{id}';
-	console.log(__.has(apiSpec, path));
+	console.log(req.body);
 	if (__.has(apiSpec, path)) {
-		console.log(__.isEqual(req.headers['content-type'].split(';')[0],
-			apiSpec[path][req.method]['content-type']));
 		if (__.isEqual(req.headers['content-type'].split(';')[0],
 			apiSpec[path][req.method]['content-type'])) {
 			var queryParams = __.keys(req.body);
