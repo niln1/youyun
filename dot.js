@@ -22,7 +22,7 @@ var session = require('./server/middlewares/session');
 /*
  * Configuration from nconf
  */
-nconf.argv().env().file('./server/config.json');
+nconf.argv().env().file('./server/utils/config.json');
 
 /*
  * Setup environment

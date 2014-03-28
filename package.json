@@ -19,7 +19,8 @@
     "mongoose": "~3.8.4",
     "connect-mongo": "~0.4.0",
     "mong.socket.io": "~0.9.0",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "winston": "~0.7.3"
   },
   "devDependencies": {
     "nconf": "~0.6.9",
