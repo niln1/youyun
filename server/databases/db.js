@@ -8,15 +8,17 @@ var async = require('async');
 var nconf = require('nconf');
 var User = require('../models/User');
 var Class = require('../models/Class');
+var logger = require(process.env.PWD + '/server/utils/logger');
 
 exports.populateDB = function() {
     // populate db with test data
     // cleaning the db
+
     User.remove({}, function(err) {
-        console.log('User removed')
+        logger.info('User removed')
     });
     Class.remove({}, function(err) {
-        console.log('Class removed')
+        logger.info('Class removed')
     });
 
     //testuser
@@ -67,7 +69,7 @@ exports.populateDB = function() {
         },
         function(newClass, done) {
             var studentArray = [];
-            console.log("classid:" + newClass._id);
+            logger.info("classid:" + newClass._id);
 
             for (var i = 0; i < 100; i++) {
                 var tempStudent = new User({

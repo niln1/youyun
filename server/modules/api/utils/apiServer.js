@@ -61,8 +61,6 @@ apiServer.getSignature = function(url, privateKey) {
     var path = urlObject.pathname;
     var querystring = urlObject.search;
 
-    console.log("urlObject: " + JSON.stringify(urlObject));
-
     // only the url path and query is needed to generate the signature
     var urlToSign = path + querystring;
 
@@ -88,8 +86,6 @@ apiServer.verifySignature = function(req, res, next) {
     var user_signature = req.query.signature;
     if (!user_signature && req.body && req.body.signature)
         user_signature = req.body.signature;
-
-    console.log("path: " + req.path);
 
     if (user_signature == apiKey) {
         next(req, res);
