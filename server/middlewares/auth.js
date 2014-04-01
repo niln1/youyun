@@ -19,6 +19,7 @@
 var __ = require('underscore');
 var nconf = require('nconf');
 var User = require('../models/User');
+var logger = require(process.env.PWD + '/server/utils/logger');
 
 function apiLoginSuccess(req, res, user) {
     req.session.user = user;
@@ -80,12 +81,16 @@ exports.doLogin = function(req, res) {
 
         user.comparePassword(req.body.password, function(err, match) {
             if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
+	        // casting out password
+	        user.password = "This is a Joke, My friend";
+
+	        logger.info("Login Success - " + user.username + "-" + user._id);
+	        logger.debug("User Data:" + JSON.stringify(user));
 
             if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
                 apiLoginSuccess(req, res, user);
             } else {
                 req.session.user = user;
-                // redirect to login page
                 res.redirect('/login');
             }
         });
@@ -100,20 +105,20 @@ exports.checkUserSession = function(req, res, next) {
         /^\/api\/v\d\/account\/(login|logout|getuser)/
     ];
 
-	if (process.env.NODE_ENV !== 'nginx') {
-		whitelistPatterns.push(/^.*\.map$/);
-		whitelistPatterns.push(/^.*\.js$/);
-		whitelistPatterns.push(/^.*\.ts$/);
-		whitelistPatterns.push(/^.*\.css$/);
-		whitelistPatterns.push(/^.*\.scss$/);
-		whitelistPatterns.push(/^.*\.sass$/);
-		whitelistPatterns.push(/^.*\.less$/);
-		whitelistPatterns.push(/^.*\/img\/.*$/);
-		whitelistPatterns.push(/^.*\.json$/);
-		whitelistPatterns.push(/^.*\.tmpl$/);
-		whitelistPatterns.push(/^.*\.html$/);
-		whitelistPatterns.push(/^.*\.woff$/);
-	}
+    if (process.env.NODE_ENV !== 'nginx') {
+        whitelistPatterns.push(/^.*\.map$/);
+        whitelistPatterns.push(/^.*\.js$/);
+        whitelistPatterns.push(/^.*\.ts$/);
+        whitelistPatterns.push(/^.*\.css$/);
+        whitelistPatterns.push(/^.*\.scss$/);
+        whitelistPatterns.push(/^.*\.sass$/);
+        whitelistPatterns.push(/^.*\.less$/);
+        whitelistPatterns.push(/^.*\/img\/.*$/);
+        whitelistPatterns.push(/^.*\.json$/);
+        whitelistPatterns.push(/^.*\.tmpl$/);
+        whitelistPatterns.push(/^.*\.html$/);
+        whitelistPatterns.push(/^.*\.woff$/);
+    }
     __.each(whitelistPatterns, function(pattern) {
         isInWhitelist = isInWhitelist || (path.search(pattern) !== -1);
     });
