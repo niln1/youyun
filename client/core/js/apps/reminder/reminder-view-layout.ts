@@ -12,6 +12,7 @@ import BaseLayout = require('../../config/base-layout');
 import ReminderCollectionView = require('./collection/reminder-collection-view');
 import ReminderModel = require('../../models/reminder-model');
 import MsgBus = require('../../message-bus');
+import DataManager = require('../../data-manager');
 
 class ReminderViewLayout extends BaseLayout {
 
@@ -59,7 +60,7 @@ class ReminderViewLayout extends BaseLayout {
 
         var newReminder = new ReminderModel({message:message,dueDate:dueDate,signature:"tempkey"});
         var onSuccess = function(){
-          MsgBus.I.command.execute("reminders:rerender");
+          DataManager.I.getReminderListCollection().fetch({reset: true});
           console.log("success");
         };
         newReminder.save({},{success:onSuccess});
