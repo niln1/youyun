@@ -18,6 +18,10 @@ exports.updateReminderWithId = function(req, res) {
     apiServer.verifySignature(req, res, updateReminderById)
 }
 
+exports.deleteReminderWithId = function(req, res) {
+    apiServer.verifySignature(req, res, deleteReminderById)
+}
+
 //-----------------helpers--------------------//
 
 function createReminderWithMessage(req, res) {
@@ -60,6 +64,22 @@ function updateReminderById(req, res) {
         _id: req.params.id
     }, param, function(err, reminder) {
         if (!err && reminder) {
+            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
+        } else {
+            apiServer.sendError(req, res, err);
+        }
+    });
+}
+
+function deleteReminderById(req, res) {
+    // cloning req.body
+    var param = JSON.parse(JSON.stringify(req.body));
+    delete param["signature"];
+
+    Reminder.remove({
+        _id: req.params.id
+    }, function(err) {
+        if (!err) {
             apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
         } else {
             apiServer.sendError(req, res, err);
