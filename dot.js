@@ -47,6 +47,11 @@ app.use(express.json({
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.send(500, 'Error');
+});
+
 session(app);
 
 app.use(flash());
@@ -54,7 +59,7 @@ app.use(flash());
 mongoose.connect(nconf.get('mongodb-url'));
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', logger.fatal.bind(logger, 'connection error:'));
 
 // Global authentication middle ware
 app.use(auth.checkUserSession);
@@ -67,6 +72,33 @@ app.use(function(req, res, next) {
     res.locals.env = env;
     next();
 });
+
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+
+function logErrors(err, req, res, next) {
+    logger.crit(err.stack);
+    next(err);
+}
+
+function clientErrorHandler(err, req, res, next) {
+    if (req.xhr) {
+        res.send(500, {
+            error: 'Something blew up!'
+        });
+    } else {
+        next(err);
+    }
+}
+
+function errorHandler(err, req, res, next) {
+    res.status(500);
+    res.render('Error', {
+        error: err
+    });
+}
+
 
 // Static file server
 if (env == 'development') {
