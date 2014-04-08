@@ -20,7 +20,7 @@ helper.clientErrorHandler = function(err, req, res, next) {
 
 helper.errorHandler = function(err, req, res, next) {
     res.status(500);
-    res.render('Error: ', {
+    res.render('500', {
         error: err
     });
 }
