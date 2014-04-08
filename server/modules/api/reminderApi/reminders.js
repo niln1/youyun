@@ -5,7 +5,7 @@
 
 var Reminder = require('../../../models/Reminder');
 var apiServer = require('../utils/apiServer');
-var logger = require(process.env.PWD + '/server/utils/logger');
+var logger = require('../../../utils/logger');
 
 exports.createReminder = function(req, res) {
     apiServer.verifySignature(req, res, createReminderWithMessage)

@@ -8,7 +8,7 @@ var async = require('async');
 var nconf = require('nconf');
 var User = require('../models/User');
 var Class = require('../models/Class');
-var logger = require(process.env.PWD + '/server/utils/logger');
+var logger = require('../utils/logger');
 
 exports.populateDB = function() {
     // populate db with test data

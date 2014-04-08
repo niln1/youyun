@@ -19,7 +19,7 @@
 var __ = require('underscore');
 var nconf = require('nconf');
 var User = require('../models/User');
-var logger = require(process.env.PWD + '/server/utils/logger');
+var logger = require('../utils/logger');
 
 function apiLoginSuccess(req, res, user) {
     req.session.user = user;
@@ -81,11 +81,11 @@ exports.doLogin = function(req, res) {
 
         user.comparePassword(req.body.password, function(err, match) {
             if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
-	        // casting out password
-	        user.password = "This is a Joke, My friend";
+            // casting out password
+            user.password = "This is a Joke, My friend";
 
-	        logger.info("Login Success - " + user.username + "-" + user._id);
-	        logger.debug("User Data:" + JSON.stringify(user));
+            logger.info("Login Success - " + user.username + "-" + user._id);
+            logger.debug("User Data:" + JSON.stringify(user));
 
             if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
                 apiLoginSuccess(req, res, user);
