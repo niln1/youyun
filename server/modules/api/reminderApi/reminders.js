@@ -26,6 +26,8 @@ exports.deleteReminderWithId = function(req, res) {
 //-----------------helpers--------------------//
 
 function createReminderWithMessage(req, res) {
+    logger.info("Reminders - createReminderWithMessage");
+    logger.debug("userId: " + JSON.stringify(req.session.user._id) + " message: " + req.body.message);
     var newReminder = new Reminder({
         userId: req.session.user._id,
         message: req.body.message
@@ -45,6 +47,8 @@ function createReminderWithMessage(req, res) {
 }
 
 function findRemindersByUserId(req, res) {
+    logger.info("Reminders - findReminderByUserId");
+    logger.debug("userId: " + JSON.stringify(req.session.user._id));
     Reminder.find({
         userId: req.session.user._id
     }, function(err, reminders) {
@@ -57,9 +61,11 @@ function findRemindersByUserId(req, res) {
 }
 
 function updateReminderById(req, res) {
+    logger.info("Reminders - updateReminderById");
     // cloning req.body
     var param = JSON.parse(JSON.stringify(req.body));
     delete param["signature"];
+    logger.debug("params: " + JSON.stringify(params) + "id: " + JSON.stringify(req.params._id));
 
     Reminder.findOneAndUpdate({
         _id: req.params.id
@@ -73,9 +79,8 @@ function updateReminderById(req, res) {
 }
 
 function deleteReminderById(req, res) {
-    // cloning req.body
     logger.info("Reminders - deleteReminderById");
-    logger.debug("DeleteReminderParams: " + JSON.stringify(req.params));
+    logger.debug("id: " + JSON.stringify(req.params));
 
     Reminder.remove({
         _id: req.params.id

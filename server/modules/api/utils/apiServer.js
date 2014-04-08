@@ -10,9 +10,58 @@ var nconf = require('nconf');
 var https = require('http');
 var urlparse = require('url');
 var crypto = require('crypto');
+var logger = require('../../../utils/logger');
+
 var apiServer = {};
 
+apiServer.invalidContentType = function(res, desc) {
+    logger.warn("API - invalid Content-Type: " + desc);
+    res.json(400, {
+        'result': false,
+        'message': 'Invalid Content-Type',
+        'description': desc,
+        'source': nconf.get('server-name')
+    });
+}
+
+apiServer.invalidQueryParameters = function(res, desc) {
+    logger.warn("API - invalid required query parameters: " + desc);
+    res.json(400, {
+        'result': false,
+        'message': 'Invalid Query Parameters specified',
+        'description': desc,
+        'source': nconf.get('server-name')
+    });
+}
+
+apiServer.missingRequiredQueryParameters = function(res, desc) {
+    logger.warn("API - missing required query parameters: " + desc);
+    res.json(400, {
+        'result': false,
+        'message': 'Required Query Parameters missing',
+        'description': desc,
+        'source': nconf.get('server-name')
+    });
+}
+
+apiServer.apiNotDefined = function(req, res, e) {
+    logger.warn("API - api not defined: " + e);
+    res.json(401, {
+        'result': false,
+        'message': !e ? 'API requested is not defined' : e,
+        'description': req.url + ' is not defined',
+        'source': nconf.get('server-name')
+    });
+}
+
+apiServer.serveApiSpec = function(res) {
+    logger.info("API - serving api spec");
+    res.json(200, apiSpec);
+}
+
 apiServer.sendResponse = function(req, res, resp, desc) {
+    logger.info("API - sendResponse: " + desc);
+
     res.json(200, {
         result: resp,
         description: desc,
@@ -21,6 +70,8 @@ apiServer.sendResponse = function(req, res, resp, desc) {
 }; // sendResponse //
 
 apiServer.sendError = function(req, res, e) {
+    logger.fatal("API - Internal Server Error: " + e);
+
     res.json(500, {
         result: false,
         message: 'Internal Server Error',
@@ -30,6 +81,8 @@ apiServer.sendError = function(req, res, e) {
 }; // sendError //
 
 apiServer.userNotAuthenticated = function(req, res, e) {
+    logger.warn("API - userNotAuthenticated: " + e);
+
     res.json(401, {
         result: false,
         message: !e ? 'User not authenticated' : e,
@@ -39,6 +92,8 @@ apiServer.userNotAuthenticated = function(req, res, e) {
 }; // userNotAuthenticated //
 
 apiServer.invalidUserSignature = function(req, res) {
+    logger.warn("API - invalidUserSignature");
+
     res.json(401, {
         result: false,
         message: 'Signature Incorrect',
@@ -48,6 +103,8 @@ apiServer.invalidUserSignature = function(req, res) {
 }; // userNotAuthenticated //
 
 apiServer.missingQueryParameters = function(req, res, err) {
+    logger.warn("API - missingQueryParameters: " + err);
+
     res.json(400, {
         result: false,
         message: 'Missing Query Parameters',

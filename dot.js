@@ -7,7 +7,6 @@ var express = require('express');
 var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
-var flash = require('connect-flash');
 var mongoose = require('mongoose');
 
 var app;
@@ -23,6 +22,7 @@ var routes = require('./server/routes');
 var socketRoutes = require('./server/socket-routes');
 var auth = require('./server/middlewares/auth');
 var session = require('./server/middlewares/session');
+var helper = require('./server/middlewares/helper');
 var logger = require('./server/utils/logger');
 
 /*
@@ -39,66 +39,29 @@ app.set('view engine', 'jade');
  * Setup middlewares
  */
 app.use(express.logger('dev'));
-
-app.use(express.json({
-    strict: true
-}));
-
+app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-
-app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    res.send(500, 'Error');
-});
-
 session(app);
-
-app.use(flash());
-
-mongoose.connect(nconf.get('mongodb-url'));
-
-var db = mongoose.connection;
-db.on('error', logger.fatal.bind(logger, 'connection error:'));
 
 // Global authentication middle ware
 app.use(auth.checkUserSession);
 
-// TODO: put this in routes.. too lazy
 // csrf()
 // app.use(require('express').csrf());
-app.use(function(req, res, next) {
-    // res.locals.token = req.csrfToken();
-    res.locals.env = env;
-    next();
-});
+app.use(helper.loadEnvironment);
 
-app.use(logErrors);
-app.use(clientErrorHandler);
-app.use(errorHandler);
+app.use(helper.logErrors);
+app.use(helper.clientErrorHandler);
+app.use(helper.errorHandler);
 
-function logErrors(err, req, res, next) {
-    logger.crit(err.stack);
-    next(err);
-}
+/*
+ * Setup mongoose
+ */
+mongoose.connect(nconf.get('mongodb-url'));
 
-function clientErrorHandler(err, req, res, next) {
-    if (req.xhr) {
-        res.send(500, {
-            error: 'Something blew up!'
-        });
-    } else {
-        next(err);
-    }
-}
-
-function errorHandler(err, req, res, next) {
-    res.status(500);
-    res.render('Error', {
-        error: err
-    });
-}
-
+var db = mongoose.connection;
+db.on('error', logger.error.bind(logger, 'connection error:'));
 
 // Static file server
 if (env == 'development') {
