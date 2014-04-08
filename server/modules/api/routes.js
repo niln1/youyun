@@ -14,23 +14,23 @@ exports.route = function(app) {
      *  D: delete
      */
     app.get('/api/:version/spec', index.getSpec);
-	// Match request with path like '/api/v1/classes' for GET
-	app.get('/api/:version/:object', index.findObject);
+    // Match request with path like '/api/v1/classes' for GET
+    app.get('/api/:version/:object', index.readObject);
 
     // TODO: depreciated
     // Match request with path like '/api/v1/classes/read' for GET
-    app.get('/api/:version/:object/:action', index.findObject);
+    app.get('/api/:version/:object/:action', index.readObject);
     // Match request with path like '/api/v1/classes/students/read' for GET
-    app.get('/api/:version/:object/:subobject/:action', index.findObject);
+    app.get('/api/:version/:object/:subobject/:action', index.readObject);
 
 
-	// Match request with path like '/api/v1/classes' for POST
-	app.post('/api/:version/:object', index.createObject);
-	// TODO: depreciated
-	// Match request with path like '/api/v1/classes/update' for POST
+    // Match request with path like '/api/v1/classes' for POST
+    app.post('/api/:version/:object', index.createObject);
+    // TODO: depreciated
+    // Match request with path like '/api/v1/classes/update' for POST
     app.post('/api/:version/:object/:action', index.createObject);
 
-//	app.put('/api/:version/:object/:id', index.updateObjectWithId);
-	app.patch('/api/:version/:object/:id', index.updateObjectWithId);
-//	app.delete('/api/:version/:object/:id', index.deleteObject);
+    //	app.put('/api/:version/:object/:id', index.updateObjectWithId);
+    app.patch('/api/:version/:object/:id', index.updateObjectWithId);
+    app.delete('/api/:version/:object/:id', index.deleteObjectWithId);
 }

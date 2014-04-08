@@ -5,6 +5,7 @@
 
 var Reminder = require('../../../models/Reminder');
 var apiServer = require('../utils/apiServer');
+var logger = require(process.env.PWD + '/server/utils/logger');
 
 exports.createReminder = function(req, res) {
     apiServer.verifySignature(req, res, createReminderWithMessage)
@@ -73,15 +74,17 @@ function updateReminderById(req, res) {
 
 function deleteReminderById(req, res) {
     // cloning req.body
-    var param = JSON.parse(JSON.stringify(req.body));
-    delete param["signature"];
+    logger.info("Reminders - deleteReminderById");
+    logger.debug("DeleteReminderParams: " + JSON.stringify(req.params));
 
     Reminder.remove({
         _id: req.params.id
     }, function(err) {
         if (!err) {
-            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
+            logger.info("Reminders - Reminder removed successfully");
+            apiServer.sendResponse(req, res, reminder, 'Reminder removed successfully')
         } else {
+            logger.warn("Reminders - Error: " + err);
             apiServer.sendError(req, res, err);
         }
     });

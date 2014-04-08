@@ -57,6 +57,5 @@ module.exports = [{
         'optional': [],
         'description': 'delete the reminder',
         'response': {} // sample data
-    },
-    deleteReminderWithId
+    }
 }];
