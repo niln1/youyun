@@ -12,41 +12,50 @@ module.exports = [{
     'GET': {
         'handler': reminders.readReminders,
         'required': [
-        	parameters.signature 
+            parameters.signature
         ],
         'optional': [],
         'description': 'List all reminder for that user',
         'response': {} // sample data
     },
-	'POST': {
-		'handler': reminders.createReminder,
-		'content-type': 'application/json',
-		'required': [
-			parameters.signature,
-			parameters.message,
-			parameters.dueDate
-		],
-		'optional': [
-			parameters.isDone
-		],
-		'description': 'Create the reminder',
-		'response': {} // sample data
-	}
-},{
-	'url': '/api/v1/reminders/{id}',
-	'PATCH': {
-		'handler': reminders.updateReminderWithId,
-		'content-type': 'application/json',
-		'required': [
-			parameters.signature
-		],
-			'optional': [
-				parameters.message,
-				parameters.dueDate,
-				parameters.isDone
-			],
-				'description': 'update the reminder',
-				'response': {} // sample data
-		}
-	}
-];
+    'POST': {
+        'handler': reminders.createReminder,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature,
+            parameters.message,
+            parameters.dueDate
+        ],
+        'optional': [
+            parameters.isDone
+        ],
+        'description': 'Create the reminder',
+        'response': {} // sample data
+    }
+}, {
+    'url': '/api/v1/reminders/{id}',
+    'PATCH': {
+        'handler': reminders.updateReminderWithId,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature
+        ],
+        'optional': [
+            parameters.message,
+            parameters.dueDate,
+            parameters.isDone
+        ],
+        'description': 'update the reminder',
+        'response': {} // sample data
+    },
+    'DELETE': {
+        'handler': reminders.deleteReminderWithId,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature
+        ],
+        'optional': [],
+        'description': 'delete the reminder',
+        'response': {} // sample data
+    }
+}];

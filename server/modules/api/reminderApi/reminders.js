@@ -5,6 +5,7 @@
 
 var Reminder = require('../../../models/Reminder');
 var apiServer = require('../utils/apiServer');
+var logger = require(process.env.PWD + '/server/utils/logger');
 
 exports.createReminder = function(req, res) {
     apiServer.verifySignature(req, res, createReminderWithMessage)
@@ -16,6 +17,10 @@ exports.readReminders = function(req, res) {
 
 exports.updateReminderWithId = function(req, res) {
     apiServer.verifySignature(req, res, updateReminderById)
+}
+
+exports.deleteReminderWithId = function(req, res) {
+    apiServer.verifySignature(req, res, deleteReminderById)
 }
 
 //-----------------helpers--------------------//
@@ -62,6 +67,24 @@ function updateReminderById(req, res) {
         if (!err && reminder) {
             apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
         } else {
+            apiServer.sendError(req, res, err);
+        }
+    });
+}
+
+function deleteReminderById(req, res) {
+    // cloning req.body
+    logger.info("Reminders - deleteReminderById");
+    logger.debug("DeleteReminderParams: " + JSON.stringify(req.params));
+
+    Reminder.remove({
+        _id: req.params.id
+    }, function(err) {
+        if (!err) {
+            logger.info("Reminders - Reminder removed successfully");
+            apiServer.sendResponse(req, res, reminder, 'Reminder removed successfully')
+        } else {
+            logger.warn("Reminders - Error: " + err);
             apiServer.sendError(req, res, err);
         }
     });

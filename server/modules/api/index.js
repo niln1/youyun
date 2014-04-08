@@ -11,6 +11,7 @@ var logger = require(process.env.PWD + '/server/utils/logger');
 
 // TODO move these to apiServer
 function invalidContentType(res, desc) {
+    logger.warn("API - invalid Content-Type: " + desc);
     res.json(400, {
         'result': false,
         'message': 'Invalid Content-Type',
@@ -20,6 +21,7 @@ function invalidContentType(res, desc) {
 }
 
 function invalidQueryParameters(res, desc) {
+    logger.warn("API - invalid required query parameters: " + desc);
     res.json(400, {
         'result': false,
         'message': 'Invalid Query Parameters specified',
@@ -29,6 +31,7 @@ function invalidQueryParameters(res, desc) {
 }
 
 function missingRequiredQueryParameters(res, desc) {
+    logger.warn("API - missing required query parameters: " + desc);
     res.json(400, {
         'result': false,
         'message': 'Required Query Parameters missing',
@@ -38,6 +41,7 @@ function missingRequiredQueryParameters(res, desc) {
 }
 
 function apiNotDefined(req, res, e) {
+    logger.warn("API - api not defined: " + e);
     res.json(401, {
         'result': false,
         'message': !e ? 'API requested is not defined' : e,
@@ -47,10 +51,14 @@ function apiNotDefined(req, res, e) {
 }
 
 function serveApiSpec(res) {
+    logger.info("API - serving api spec");
     res.json(200, apiSpec);
 }
 
 function isValidQueryParams(path, method, res, queryParams) {
+    logger.info("Checking if Parameter is valid");
+    logger.debug("path: " + path + ", method: " + method + ", queryParams: " + JSON.stringify(queryParams));
+
     var invalidQueryParameterList = [];
     var optionalParams = __.pluck(apiSpec[path][method]
         ['optional'], 'param');
@@ -74,7 +82,8 @@ function isValidQueryParams(path, method, res, queryParams) {
 
 
 function isValidQueryParamsType(path, method, res, query) {
-    logger.trace("isValidQueryParams path: " + path + ", method: " + method + ", query: " + JSON.stringify(query));
+    logger.info("Checking if Parameter Type is valid");
+    logger.debug("path: " + path + ", method: " + method + ", query: " + JSON.stringify(query));
 
     var optionalParamsList = apiSpec[path][method]['optional'];
     var requiredParamsList = apiSpec[path][method]['required'];
@@ -143,6 +152,9 @@ function isValidQueryParamsType(path, method, res, query) {
 }
 
 function isRequiredQueryParams(path, method, res, queryParams) {
+    logger.info("Checking if Parameter Type is required");
+    logger.debug("path: " + path + ", method: " + method + ", queryParams: " + JSON.stringify(queryParams));
+
     var requiredQueryParameterList = [];
     var requiredParams = __.pluck(apiSpec[path][method]
         ['required'], 'param');
@@ -169,7 +181,9 @@ exports.getSpec = function(req, res) {
     }
 };
 
-exports.findObject = function(req, res) {
+exports.readObject = function(req, res) {
+    logger.info("ReadObject");
+
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
 
@@ -185,6 +199,8 @@ exports.findObject = function(req, res) {
 };
 
 exports.createObject = function(req, res) {
+    logger.info("CreateObject");
+
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
             apiSpec[req.path][req.method]['content-type'])) {
@@ -206,6 +222,33 @@ exports.createObject = function(req, res) {
 };
 
 exports.updateObjectWithId = function(req, res) {
+    logger.info("UpdateObject");
+
+    var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
+    var path = pathWithoutId + '/{id}';
+    if (__.has(apiSpec, path)) {
+        if (__.isEqual(req.headers['content-type'].split(';')[0],
+            apiSpec[path][req.method]['content-type'])) {
+            var queryParams = __.keys(req.body);
+
+            // else is handled in isValid function
+            if (isValidQueryParams(path, req.method, res, queryParams) &&
+                isRequiredQueryParams(path, req.method, res, queryParams) &&
+                isValidQueryParamsType(path, req.method, res, req.body)) {
+                apiSpec[path][req.method]['handler'](req, res);
+            }
+        } else {
+            invalidContentType(res, 'Content-Type: ' +
+                req.headers['content-type'].split(';')[0] + ' not supported.');
+        }
+    } else {
+        apiNotDefined(req, res);
+    }
+};
+
+exports.deleteObjectWithId = function(req, res) {
+    logger.info("DeleteObject");
+
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
     if (__.has(apiSpec, path)) {

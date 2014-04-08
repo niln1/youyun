@@ -11,6 +11,7 @@
 
 import BaseItemView = require('../../../config/base-item-view');
 import ReminderModel = require('../../../models/reminder-model');
+import DataManager = require('../../../data-manager');
 
 class ReminderItemView extends BaseItemView {
     public momentConfigFormat : string = 'lll';

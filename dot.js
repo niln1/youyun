@@ -39,7 +39,11 @@ app.set('view engine', 'jade');
  * Setup middlewares
  */
 app.use(express.logger('dev'));
-app.use(express.json());
+
+app.use(express.json({
+    strict: true
+}));
+
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 
