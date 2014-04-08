@@ -7,7 +7,7 @@
 var __ = require('underscore');
 var nconf = require('nconf');
 var apiSpec = require('./utils/apiSpec');
-var logger = require(process.env.PWD + '/server/utils/logger');
+var logger = require('../../utils/logger');
 
 // TODO move these to apiServer
 function invalidContentType(res, desc) {
