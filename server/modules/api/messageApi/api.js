@@ -8,7 +8,7 @@ var parameters = require('./parameters');
 
 // An array containing Alarm API spec objects
 module.exports = [{
-    'url': '/api/v1/messages/read',
+    'url': '/api/v1/messages',
     'GET': {
         'handler': messages.readClasses,
         'required': [parameters.signature, parameters.userId],
@@ -17,7 +17,7 @@ module.exports = [{
         'response': {} // sample data
     }
 }, {
-    'url': '/api/v1/messages/students/read',
+    'url': '/api/v1/messages/students',
     'GET': {
         'handler': messages.readStudentsByClasses,
         'required': [parameters.signature, parameters.classId],
