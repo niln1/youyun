@@ -7,6 +7,7 @@ var async = require('async');
 var nconf = require('nconf');
 var db = require('./databases/db');
 var auth = require('./middlewares/auth');
+var logger = require('./utils/logger');
 
 exports.main = function(req, res) {
     if (!req.session.user) return res.redirect('/login');
@@ -36,6 +37,7 @@ exports.getLogin = function(req, res) {
 }
 
 exports.logout = function(req, res) {
+    logger.info("Logging out");
     req.session.user = null;
     res.redirect('/login');
 }
@@ -47,5 +49,5 @@ exports.populateDB = function(req, res) {
 
 exports.home = function(req, res) {
     if (!req.session.user) return res.redirect('/login');
-	res.render('home', {});
+    res.render('home', {});
 }
