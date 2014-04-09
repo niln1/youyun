@@ -26,6 +26,8 @@ exports.deleteReminderWithId = function(req, res) {
 //-----------------helpers--------------------//
 
 function createReminderWithMessage(req, res) {
+    logger.info("Reminders - createReminderWithMessage");
+    logger.debug("userId: " + JSON.stringify(req.session.user._id) + " message: " + req.body.message);
     var newReminder = new Reminder({
         userId: req.session.user._id,
         message: req.body.message
@@ -37,7 +39,7 @@ function createReminderWithMessage(req, res) {
 
     newReminder.save(function(err, reminder) {
         if (!err && reminder) {
-            apiServer.sendResponse(req, res, reminder, 'Reminder created successfully')
+            apiServer.sendResponse(req, res, reminder, 'Reminder created successfully');
         } else {
             apiServer.sendError(req, res, err);
         }
@@ -45,11 +47,15 @@ function createReminderWithMessage(req, res) {
 }
 
 function findRemindersByUserId(req, res) {
+    logger.info("Reminders - findReminderByUserId");
+    logger.debug("userId: " + JSON.stringify(req.session.user._id));
     Reminder.find({
         userId: req.session.user._id
     }, function(err, reminders) {
         if (!err && reminders) {
-            apiServer.sendResponse(req, res, reminders, 'Reminder retrieved successfully')
+            apiServer.sendResponse(req, res, reminders, 'Reminder retrieved successfully');
+        } else if (!reminders) {
+            apiServer.sendError(req, res, "Reminders not found");
         } else {
             apiServer.sendError(req, res, err);
         }
@@ -57,15 +63,19 @@ function findRemindersByUserId(req, res) {
 }
 
 function updateReminderById(req, res) {
+    logger.info("Reminders - updateReminderById");
     // cloning req.body
     var param = JSON.parse(JSON.stringify(req.body));
     delete param["signature"];
+    logger.debug("params: " + JSON.stringify(param) + "id: " + JSON.stringify(req.params._id));
 
     Reminder.findOneAndUpdate({
         _id: req.params.id
     }, param, function(err, reminder) {
         if (!err && reminder) {
-            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully')
+            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully');
+        } else if (!reminder) {
+            apiServer.sendError(req, res, "Reminder didn't exist");
         } else {
             apiServer.sendError(req, res, err);
         }
@@ -73,18 +83,17 @@ function updateReminderById(req, res) {
 }
 
 function deleteReminderById(req, res) {
-    // cloning req.body
     logger.info("Reminders - deleteReminderById");
-    logger.debug("DeleteReminderParams: " + JSON.stringify(req.params));
+    logger.debug("id: " + JSON.stringify(req.params.id));
 
-    Reminder.remove({
+    Reminder.findOneAndRemove({
         _id: req.params.id
-    }, function(err) {
-        if (!err) {
-            logger.info("Reminders - Reminder removed successfully");
-            apiServer.sendResponse(req, res, reminder, 'Reminder removed successfully')
+    }, function(err, reminder) {
+        if (!err && reminder) {
+            apiServer.sendResponse(req, res, null, 'Reminder removed successfully');
+        } else if (!reminder) {
+            apiServer.sendError(req, res, "Reminder didn't exist");
         } else {
-            logger.warn("Reminders - Error: " + err);
             apiServer.sendError(req, res, err);
         }
     });

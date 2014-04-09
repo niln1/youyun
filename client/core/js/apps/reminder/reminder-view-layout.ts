@@ -61,7 +61,6 @@ class ReminderViewLayout extends BaseLayout {
         var newReminder = new ReminderModel({message:message,dueDate:dueDate,signature:"tempkey"});
         var onSuccess = function(){
           DataManager.I.getReminderListCollection().fetch({reset: true});
-          console.log("success");
         };
         newReminder.save({},{success:onSuccess});
 
