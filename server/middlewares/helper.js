@@ -5,6 +5,7 @@ var helper = {};
 
 helper.logErrors = function(err, req, res, next) {
     logger.error(err.stack);
+    logger.debug("http headers:" + JSON.stringify(req.headers) + "http params:" + JSON.stringify(req.params) + "http body:" + JSON.stringify(req.body));
     next(err);
 }
 

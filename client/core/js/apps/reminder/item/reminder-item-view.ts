@@ -22,7 +22,8 @@ class ReminderItemView extends BaseItemView {
     constructor(options?:Backbone.ViewOptions) {
         super(options);
         this.events = {
-          "click .toggle-reminder": "afterToggle"
+          "click .toggle-reminder": "afterToggle",
+          "click .remove-reminder": "afterRemove"
         };
         this.template = require('./templates/reminder-item-view-tmpl');
         this.model.id = this.model.get('_id');
@@ -41,6 +42,14 @@ class ReminderItemView extends BaseItemView {
         this.model.toggle();
     }
 
+    private afterRemove() {
+        console.log("after Remove");
+        var onSuccess = function(){
+            console.log("destroy successful");
+            DataManager.I.getReminderListCollection().fetch({reset: true});
+        };
+        this.model.clear(onSuccess);
+    }
 }
 
 export = ReminderItemView;

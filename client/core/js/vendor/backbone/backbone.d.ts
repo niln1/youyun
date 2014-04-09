@@ -59,7 +59,9 @@ declare module Backbone {
         patch?: boolean;
     }
 
-    interface ModelDestroyOptions extends Waitable, PersistenceOptions {
+    interface ModelDestroyOptions extends Waitable {
+        data?: any;
+        contentType?: string;
     }
 
     interface CollectionFetchOptions extends PersistenceOptions, Parseable {

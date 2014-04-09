@@ -168,7 +168,7 @@ exports.createObject = function(req, res) {
                 apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {
-            invalidContentType(res, 'Content-Type: ' +
+            apiServer.invalidContentType(res, 'Content-Type: ' +
                 req.headers['content-type'].split(';')[0] + ' not supported.');
         }
     } else {
@@ -193,7 +193,7 @@ exports.updateObjectWithId = function(req, res) {
                 apiSpec[path][req.method]['handler'](req, res);
             }
         } else {
-            invalidContentType(res, 'Content-Type: ' +
+            apiServer.invalidContentType(res, 'Content-Type: ' +
                 req.headers['content-type'].split(';')[0] + ' not supported.');
         }
     } else {
@@ -203,6 +203,7 @@ exports.updateObjectWithId = function(req, res) {
 
 exports.deleteObjectWithId = function(req, res) {
     logger.debug("DeleteObject");
+    logger.debug(req.headers['content-type']);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
@@ -218,7 +219,7 @@ exports.deleteObjectWithId = function(req, res) {
                 apiSpec[path][req.method]['handler'](req, res);
             }
         } else {
-            invalidContentType(res, 'Content-Type: ' +
+            apiServer.invalidContentType(res, 'Content-Type: ' +
                 req.headers['content-type'].split(';')[0] + ' not supported.');
         }
     } else {
