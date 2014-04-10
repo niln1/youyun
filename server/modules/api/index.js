@@ -9,7 +9,6 @@ var nconf = require('nconf');
 var apiSpec = require('./utils/apiSpec');
 var apiServer = require('./utils/apiServer');
 var logger = require('../../utils/logger');
-
 function isValidQueryParams(path, method, res, queryParams) {
     logger.debug("Checking if Parameter is valid");
     logger.debug("path: " + path + ", method: " + method + ", queryParams: " + JSON.stringify(queryParams));

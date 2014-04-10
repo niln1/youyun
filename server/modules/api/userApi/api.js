@@ -15,7 +15,20 @@ module.exports = [{
             parameters.signature
         ],
         'optional': [],
-        'description': 'List all reminder for that user',
+        'description': 'List all users that user is able to view',
+        'response': {} // sample data
+    },
+    'POST': {
+        'handler': users.createUser,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature,
+            parameters.username,
+            parameters.password,
+            parameters.userType
+        ],
+        'optional': [parameters.classList],
+        'description': 'create user',
         'response': {} // sample data
     }
 }];

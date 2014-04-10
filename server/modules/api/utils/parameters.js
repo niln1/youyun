@@ -15,6 +15,12 @@ exports.password = {
     'description': 'A string containing the password of the user.'
 };
 
+exports.userType = {
+    'type': 'number',
+    'param': 'userType',
+    'description': 'A string containing the userType of the user.'
+};
+
 exports.signature = {
     'type': 'string',
     'param': 'signature',

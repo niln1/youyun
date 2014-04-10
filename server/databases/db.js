@@ -44,28 +44,28 @@ exports.populateDB = function() {
             });
         },
         function(newClass, done) {
-            var tempTeacher = new User({
-                username: "teacher",
-                password: "teacherpw",
-                userType: 2,
-            });
-            tempTeacher.save(function(err, teacher) {
-                if (!err && teacher) {
-                    newClass.instructors.push(teacher._id);
-                    newClass.save(function(err, newClass) {
-                        if (!err && newClass) {
-                            teacher.classes.push(newClass._id);
-                            teacher.save(function(err, teacher) {
-                                done(null, newClass);
-                            })
-                        } else {
-                            done(err);
-                        }
-                    });
-                } else {
-                    done(err);
-                }
-            });
+        var tempTeacher = new User({
+            username: "teacher",
+            password: "teacherpw",
+            userType: 2,
+        });
+        tempTeacher.save(function(err, teacher) {
+            if (!err && teacher) {
+                newClass.instructors.push(teacher._id);
+                newClass.save(function(err, newClass) {
+                    if (!err && newClass) {
+                        teacher.classes.push(newClass._id);
+                        teacher.save(function(err, teacher) {
+                            done(null, newClass);
+                        })
+                    } else {
+                        done(err);
+                    }
+                });
+            } else {
+                done(err);
+            }
+        });
         },
         function(newClass, done) {
             var studentArray = [];
