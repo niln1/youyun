@@ -4,7 +4,7 @@
 'use strict';
 
 var reminders = require('./reminders');
-var parameters = require('./parameters');
+var parameters = require('../utils/parameters');
 
 // An array containing Reminder API spec objects
 module.exports = [{
