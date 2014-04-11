@@ -7,6 +7,9 @@ lib-cov
 *.pid
 *.gz
 *.lock
+*.png
+*.jpg
+*.jpeg
 
 pids
 logs
@@ -20,7 +23,6 @@ node_modules
 /.tmp-build
 /development
 /production
-/rethinkdb_data
 /tscommand.tmp.txt
 /.idea
 /.sass-cache
