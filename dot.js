@@ -66,8 +66,10 @@ db.on('error', logger.error.bind(logger, 'connection error:'));
 // Static file server
 if (env == 'development') {
     app.use('/', express.static('development'));
+    app.use('/static', express.static('static'));
 } else if (env == 'production') {
     app.use('/', express.static('production'));
+    app.use('/static', express.static('static'));
 }
 
 // Router

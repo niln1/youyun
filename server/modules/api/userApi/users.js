@@ -33,6 +33,9 @@ exports.createUserImage = function(req, res) {
 function createUserImageHelper(req, res) {
     logger.info("Users - createUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));
+
+    apiServer.sendResponse(req, res, null, 'User Image uploaded');
+
 }
 
 function createUserHelper(req, res) {
