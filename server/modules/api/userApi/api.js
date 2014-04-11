@@ -31,4 +31,16 @@ module.exports = [{
         'description': 'create user',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/users/image',
+    'POST': {
+        'handler': users.createUserImage,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature,
+        ],
+        'optional': [],
+        'description': 'create user image',
+        'response': {} // sample data
+    }
 }];

@@ -9,22 +9,31 @@ var logger = require('../../../utils/logger');
 var __ = require('underscore');
 
 exports.createUser = function(req, res) {
-    apiServer.verifySignature(req, res, createUserHelper)
+    apiServer.verifySignature(req, res, createUserHelper);
 }
 
 exports.readUsers = function(req, res) {
-    apiServer.verifySignature(req, res, findUsersByUserId)
+    apiServer.verifySignature(req, res, findUsersByUserId);
 }
 
 exports.updateUserWithId = function(req, res) {
-    apiServer.verifySignature(req, res, updateUserById)
+    apiServer.verifySignature(req, res, updateUserById);
 }
 
 exports.deleteUserWithId = function(req, res) {
-    apiServer.verifySignature(req, res, deleteUserById)
+    apiServer.verifySignature(req, res, deleteUserById);
+}
+
+exports.createUserImage = function(req, res) {
+    apiServer.verifySignature(req, res, createUserImageHelper);
 }
 
 //-----------------helpers--------------------//
+
+function createUserImageHelper(req, res) {
+    logger.info("Users - createUserImageHelper");
+    logger.debug("user: " + JSON.stringify(req.session.user));
+}
 
 function createUserHelper(req, res) {
     if (req.body.classList) {
