@@ -7,9 +7,6 @@ lib-cov
 *.pid
 *.gz
 *.lock
-*.png
-*.jpg
-*.jpeg
 
 pids
 logs
