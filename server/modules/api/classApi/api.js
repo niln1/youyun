@@ -4,7 +4,7 @@
 'use strict';
 
 var classes = require('./classes');
-var parameters = require('./parameters');
+var parameters = require('../utils/parameters');
 
 // An array containing Alarm API spec objects
 module.exports = [{

@@ -155,6 +155,7 @@ exports.readObject = function(req, res) {
 
 exports.createObject = function(req, res) {
     logger.debug("CreateObject");
+    logger.debug("files" + JSON.stringify(req.files) + "header" + JSON.stringify(req.headers['content-type']));
 
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],

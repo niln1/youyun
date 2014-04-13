@@ -41,6 +41,8 @@ app.set('view engine', 'jade');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+//change this since this is depreciated
+app.use(express.multipart());
 app.use(express.methodOverride());
 session(app);
 
@@ -66,8 +68,10 @@ db.on('error', logger.error.bind(logger, 'connection error:'));
 // Static file server
 if (env == 'development') {
     app.use('/', express.static('development'));
+    app.use('/static', express.static('static'));
 } else if (env == 'production') {
     app.use('/', express.static('production'));
+    app.use('/static', express.static('static'));
 }
 
 // Router

@@ -26,6 +26,7 @@ exports.route = function(app) {
 
     // Create
     app.post('/api/:version/:object', index.createObject);
+    app.post('/api/:version/:object/:subobject', index.createObject);
 
     // Update
     app.patch('/api/:version/:object/:id', index.updateObjectWithId);
