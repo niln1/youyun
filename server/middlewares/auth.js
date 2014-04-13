@@ -106,6 +106,7 @@ exports.checkUserSession = function(req, res, next) {
     ];
 
     if (process.env.NODE_ENV !== 'nginx') {
+        whitelistPatterns.push(/^\/static\/.*/);
         whitelistPatterns.push(/^.*\.map$/);
         whitelistPatterns.push(/^.*\.js$/);
         whitelistPatterns.push(/^.*\.ts$/);
