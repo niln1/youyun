@@ -6,6 +6,8 @@
 var User = require('../../../models/User');
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
+var path = require('path')
+var fs = require('fs');
 var __ = require('underscore');
 
 exports.createUser = function(req, res) {
@@ -33,9 +35,19 @@ exports.createUserImage = function(req, res) {
 function createUserImageHelper(req, res) {
     logger.info("Users - createUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));
+    var filePath = req.files.userImage.path;
+    var extension = path.extname(filePath);
 
-    apiServer.sendResponse(req, res, null, 'User Image uploaded');
-
+    //TODO: convert file to png.
+    fs.readFile(filePath, function(err, data) {
+        logger.info("sasa" + extension);
+        var newPath = "static/img/user_image/a" + extension;
+        fs.writeFile(newPath, data, function(err) {
+            if (err) throw err;
+            console.log('It\'s saved!');
+            apiServer.sendResponse(req, res, null, 'User Image uploaded');
+        });
+    });
 }
 
 function createUserHelper(req, res) {

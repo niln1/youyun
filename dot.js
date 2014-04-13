@@ -41,6 +41,8 @@ app.set('view engine', 'jade');
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
+//change this since this is depreciated
+app.use(express.multipart());
 app.use(express.methodOverride());
 session(app);
 

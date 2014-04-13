@@ -15,6 +15,7 @@ exports.main = function(req, res) {
 };
 
 exports.lost = function(req, res) {
+    logger.warn("Path Not defined");
     res.send(404);
 };
 
