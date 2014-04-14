@@ -5,6 +5,7 @@
 'use strict';
 
 var __ = require('underscore');
+var logger = require('../../../utils/logger');
 
 var apiModules = [
     require('../accountApi/api'),

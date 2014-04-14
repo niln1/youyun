@@ -10,6 +10,7 @@ var nconf = require('nconf');
 var https = require('http');
 var urlparse = require('url');
 var crypto = require('crypto');
+var apiSpec = require('./apiSpec');
 var logger = require('../../../utils/logger');
 
 var apiServer = {};
