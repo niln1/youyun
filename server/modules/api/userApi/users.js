@@ -8,6 +8,7 @@ var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 var path = require('path')
 var fs = require('fs');
+var gm = require('gm');
 var __ = require('underscore');
 
 exports.createUser = function(req, res) {
@@ -36,18 +37,26 @@ function createUserImageHelper(req, res) {
     logger.info("Users - createUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));
     var filePath = req.files.userImage.path;
-    var extension = path.extname(filePath);
+    var savePath = 'static/img/user_image/' + req.session.user._id + "_" + req.session.user.username + '.png';
 
-    //TODO: convert file to png.
-    fs.readFile(filePath, function(err, data) {
-        logger.info("sasa" + extension);
-        var newPath = "static/img/user_image/a" + extension;
-        fs.writeFile(newPath, data, function(err) {
-            if (err) throw err;
-            console.log('It\'s saved!');
-            apiServer.sendResponse(req, res, null, 'User Image uploaded');
+    gm(filePath)
+        .resize(240)
+        .write(savePath, function(err) {
+            if (err) {
+                logger.error("Error saving user image at" + savePath);
+                apiServer.sendError(req, res, err);
+            } else {
+                logger.debug("Successfully saved user image at" + savePath);
+                apiServer.sendResponse(req, res, null, 'user image uploaded');
+            }
+            fs.unlink(filePath, function(err) {
+                if (err) {
+                    logger.error("Error deleting temp user image at" + filePath);
+                    apiServer.sendError(req, res, err);
+                }
+                logger.debug("Successfully deleted temp user image at" + filePath);
+            });
         });
-    });
 }
 
 function createUserHelper(req, res) {
