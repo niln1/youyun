@@ -23,3 +23,5 @@ node_modules
 /tscommand.tmp.txt
 /.idea
 /.sass-cache
+
+static/img/user_image
