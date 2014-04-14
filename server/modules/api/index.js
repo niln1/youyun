@@ -6,8 +6,8 @@
 
 var __ = require('underscore');
 var nconf = require('nconf');
-var apiSpec = require('./utils/apiSpec');
 var apiServer = require('./utils/apiServer');
+var apiSpec = require('./utils/apiSpec');
 var logger = require('../../utils/logger');
 
 function isValidQueryParams(path, method, res, queryParams) {
