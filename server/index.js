@@ -11,7 +11,9 @@ var logger = require('./utils/logger');
 
 exports.main = function(req, res) {
     if (!req.session.user) return res.redirect('/login');
-    res.render('index', {});
+    res.render('index', {
+        user: req.session.user
+    });
 };
 
 exports.lost = function(req, res) {
