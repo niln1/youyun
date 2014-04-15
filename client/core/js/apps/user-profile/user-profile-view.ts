@@ -14,7 +14,7 @@ class UserProfileView extends BaseItemView {
         super(options);
         this.template = require('./templates/user-profile-view-tmpl');
         this.model = DataManager.I.getAccountModel();
-//        this.context = new UserModel().data;
+        this.context = this.model.attributes;
     }
 }
 
