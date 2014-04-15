@@ -10,7 +10,6 @@ var nconf = require('nconf');
 var https = require('http');
 var urlparse = require('url');
 var crypto = require('crypto');
-var apiSpec = require('./apiSpec');
 var logger = require('../../../utils/logger');
 
 var apiServer = {};
@@ -57,6 +56,7 @@ apiServer.apiNotDefined = function(req, res, e) {
 
 apiServer.serveApiSpec = function(res) {
     logger.info("API - serving api spec");
+    var apiSpec = require('./apiSpec');
     res.json(200, apiSpec);
 }
 

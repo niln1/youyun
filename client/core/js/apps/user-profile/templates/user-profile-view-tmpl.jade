@@ -1,12 +1,12 @@
 div.pageboard-shadow.user-profile-container
 	a#user-profile-group(data-toggle="modal" data-target="#user-profile-modal")
 		div.photo
-			i.user-image(style="background-image: url('#{ user.user_image }')")
+			i.user-image(style="background-image: url('')")
 		div.content-divider
-		div.fullname #{ user.full_name }
+		div.fullname
 		div.username
 			s @
-			b #{ user.username }
+			b
 	//Model
 	div#user-profile-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
 		div.modal-dialog.modal-sm

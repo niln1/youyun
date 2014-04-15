@@ -3,6 +3,7 @@
  */
 
 import ReminderListCollection = require('./models/reminder-list-collection');
+import AccountModel = require('./models/account-model');
 
 class DataManager {
     /**
@@ -30,17 +31,23 @@ class DataManager {
 
     public getReminderListCollection():ReminderListCollection {
         if(!this.resources["reminder-list-collection"]){
-            this.addResourceCollection("reminder-list-collection", new ReminderListCollection, true);
+            this.addResource("reminder-list-collection", new ReminderListCollection(), true);
         }
         return this.resources["reminder-list-collection"];
     }
 
-    public addResourceCollection(type:string, resourceCollection:Backbone.Collection, fetch?:boolean):void {
-        if(fetch){
-            resourceCollection.fetch({reset: true});
+    public getAccountModel():AccountModel {
+        if(!this.resources["account-model"]){
+            this.addResource("account-model", new AccountModel(), true);
         }
-        this.resources[type] = resourceCollection;
+        return this.resources["account-model"];
     }
 
+    public addResource(type:string, resource:any, fetch?:boolean):void {
+        if(fetch){
+            resource.fetch({reset: true});
+        }
+        this.resources[type] = resource;
+    }
 }
 export = DataManager;
