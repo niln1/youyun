@@ -5,14 +5,26 @@
 
 var async = require('async');
 var nconf = require('nconf');
+var fs = require('fs');
 var db = require('./databases/db');
 var auth = require('./middlewares/auth');
 var logger = require('./utils/logger');
 
 exports.main = function(req, res) {
     if (!req.session.user) return res.redirect('/login');
-    res.render('index', {
-        user: req.session.user
+    // checking if user image exists
+    var userImageUrl = "static/img/user_image/" + req.session.user._id + "_" + req.session.user.username + ".png";
+    logger.debug(userImageUrl);
+    var defaultImageUrl = "static/img/default_image/default-user.png";
+    fs.exists(userImageUrl, function(exists) {
+        if (exists) {
+            req.session.user.user_image = userImageUrl;
+        } else {
+            req.session.user.user_image = defaultImageUrl;
+        }
+        res.render('index', {
+            user: req.session.user
+        });
     });
 };
 

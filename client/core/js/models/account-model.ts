@@ -10,15 +10,13 @@ class AccountModel extends Backbone.Model{
     public defaults(){
         return {
             "username":current_user.username,
-            "_id":current_user.username,
-            "user_image":"/static/img/user_image/"+current_user._id+"_"+current_user.username+".png"
+            "_id":current_user._id,
+            "user_image":current_user.user_image
         }
     }
 
     public parse(response) {
         console.log("Receive AccountModel:"+response);
-        var raw = response.result;
-        raw.user_image = "/static/img/user_image/"+raw._id+"_"+raw.username+".png";
         return response.result;
     }
 }

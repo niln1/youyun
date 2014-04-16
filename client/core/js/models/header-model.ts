@@ -23,11 +23,6 @@ class HeaderModel extends Backbone.Model{
                 href: '/',
                 name: '我的班级'
             }],
-            user:{
-                username: 'pingheschool',
-                full_name:  '平和学校',
-                user_image: '/core/img/school-logo-pinghe-login.png'
-            },
             school:{
                 school_name: '平和学校',
                 school_logo: '/core/img/school-logo-pinghe-login-white.png'
