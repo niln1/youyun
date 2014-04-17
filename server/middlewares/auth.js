@@ -19,27 +19,18 @@
 var __ = require('underscore');
 var nconf = require('nconf');
 var User = require('../models/User');
+var apiServer = require('../modules/api/utils/apiServer');
 var logger = require('../utils/logger');
 
 function apiLoginSuccess(req, res, user) {
     req.session.user = user;
-    res.json({
-        message: user,
-        result: true,
-        description: 'User authenticated successfully',
-        source: nconf.get('server-name')
-    });
+    apiServer.sendResponse(req, res, user, 'User authenticated successfully');
 }
 
 function userAuthenticationFailed(req, res, e) {
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
-        res.json(401, {
-            result: false,
-            message: !e ? 'User not authenticated' : e,
-            description: e + '. Please login',
-            source: nconf.get('server-name')
-        });
+        apiServer.userNotAuthenticated(req, res, e);
     } else {
         req.flash('error', e); // TODO
         res.redirect('/login');
@@ -49,12 +40,7 @@ function userAuthenticationFailed(req, res, e) {
 function userNotAuthenticated(req, res, e) {
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
-        res.json(401, {
-            result: 'false',
-            message: !e ? 'User not authenticated' : e,
-            description: 'Invalid Cookie. Please login',
-            source: nconf.get('server-name')
-        });
+        apiServer.userNotAuthenticated(req, res, e);
     } else {
         // redirect to login page
         res.redirect('/login');

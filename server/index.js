@@ -5,6 +5,7 @@
 
 var async = require('async');
 var nconf = require('nconf');
+var fs = require('fs');
 var db = require('./databases/db');
 var auth = require('./middlewares/auth');
 var logger = require('./utils/logger');

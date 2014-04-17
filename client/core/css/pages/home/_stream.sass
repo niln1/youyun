@@ -1,10 +1,17 @@
+$feed-center-background: #ffffff
+
 .avatar
 	width: 48px
 	height: 48px
 	border-radius: 5px
 
-.stream-container
+.feed-center-stream-container
 	min-height: 200px
+
+.feed-center-control-box
+	height: 30px
+	background-color: $feed-center-background
+	border-bottom: 1px solid #e1e8ed
 
 .stream, .stream-items
 	position: relative
@@ -26,9 +33,9 @@
 	padding: 9px 12px
 
 .stream-item
-	background-color: #ffffff
-	border-left: 1px solid #e8e8e8
-	border-right: 1px solid #e8e8e8
+	background-color: $feed-center-background
+	border-left: 1px solid $Gray91
+	border-right: 1px solid $Gray91
 	background-clip: padding-box
 
 .message .time
