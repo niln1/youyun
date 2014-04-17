@@ -34,7 +34,17 @@ module.exports = [{
 }, {
     'url': '/api/v1/users/image',
     'POST': {
-        'handler': users.createUserImage,
+        'handler': users.updateUserImage,
+        'content-type': 'multipart/form-data',
+        'required': [
+            parameters.signature,
+        ],
+        'optional': [],
+        'description': 'create user image',
+        'response': {} // sample data
+    },
+    'PUT': {
+        'handler': users.updateUserImage,
         'content-type': 'multipart/form-data',
         'required': [
             parameters.signature,

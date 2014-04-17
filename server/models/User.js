@@ -21,6 +21,10 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
+    userImage: {
+        type: String,
+        required: false
+    },
     userType: {
         type: Number, // 0 - admin 1 - schoolhead 2 - teacher 3 - student 4 - parent 5 - alumini
         required: true
@@ -34,6 +38,9 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save', function(next) {
     var user = this;
+
+    // generate image Path
+    user.userImage = "static/img/user_image/" + user._id + "_" + user.username + ".png";
 
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();

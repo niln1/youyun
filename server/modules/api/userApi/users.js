@@ -27,14 +27,14 @@ exports.deleteUserWithId = function(req, res) {
     apiServer.verifySignature(req, res, deleteUserById);
 }
 
-exports.createUserImage = function(req, res) {
-    apiServer.verifySignature(req, res, createUserImageHelper);
+exports.updateUserImage = function(req, res) {
+    apiServer.verifySignature(req, res, updateUserImageHelper);
 }
 
 //-----------------helpers--------------------//
 
-function createUserImageHelper(req, res) {
-    logger.info("Users - createUserImageHelper");
+function updateUserImageHelper(req, res) {
+    logger.info("Users - updateUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));
     var filePath = req.files.userImage.path;
     var savePath = 'static/img/user_image/' + req.session.user._id + "_" + req.session.user.username + '.png';
@@ -91,7 +91,7 @@ function findUsersByUserId(req, res) {
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
     User.find({}, function(err, users) {
         if (!err && users) {
-            users = castOutPasswords(users);
+            users = formatUsers(users);
             apiServer.sendResponse(req, res, users, 'Users retrieved successfully');
         } else if (!users) {
             apiServer.sendError(req, res, "Users not found");
@@ -101,7 +101,7 @@ function findUsersByUserId(req, res) {
     });
 }
 
-function castOutPasswords(users) {
+function formatUsers(users) {
     __.each(users, function(user) {
         user = castOutPassword(user);
     });
