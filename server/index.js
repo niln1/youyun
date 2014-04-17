@@ -12,19 +12,8 @@ var logger = require('./utils/logger');
 
 exports.main = function(req, res) {
     if (!req.session.user) return res.redirect('/login');
-    // checking if user image exists
-    var userImageUrl = "static/img/user_image/" + req.session.user._id + "_" + req.session.user.username + ".png";
-    logger.debug(userImageUrl);
-    var defaultImageUrl = "static/img/default_image/default-user.png";
-    fs.exists(userImageUrl, function(exists) {
-        if (exists) {
-            req.session.user.user_image = userImageUrl;
-        } else {
-            req.session.user.user_image = defaultImageUrl;
-        }
-        res.render('index', {
-            user: req.session.user
-        });
+    res.render('index', {
+        user: req.session.user
     });
 };
 

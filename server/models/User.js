@@ -59,7 +59,6 @@ UserSchema.pre('save', function(next) {
         });
     });
 
-
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
