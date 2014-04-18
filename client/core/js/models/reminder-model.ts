@@ -24,10 +24,10 @@ class ReminderModel extends Backbone.Model {
     }
 
     clear(onSuccess?) {
+        //TODO: this is a hack
+        this.url = this.urlRoot+"/"+this.attributes[this.idAttribute]+"?signature=tempkey";
         this.destroy({
-            success:onSuccess,
-            data: JSON.stringify({signature:"tempkey"}),
-            contentType: 'application/json'
+            success:onSuccess
         });
     }
 }

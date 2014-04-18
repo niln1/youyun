@@ -138,6 +138,7 @@ exports.getSpec = function(req, res) {
 
 exports.readObject = function(req, res) {
     logger.debug("ReadObject");
+    logger.debug("path: " + req.path + ", method: " + req.method);
 
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
@@ -155,7 +156,7 @@ exports.readObject = function(req, res) {
 
 exports.createObject = function(req, res) {
     logger.debug("CreateObject");
-    logger.debug("files" + JSON.stringify(req.files) + "header" + JSON.stringify(req.headers['content-type']));
+    logger.debug("path: " + req.path + ", method: " + req.method);
 
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
@@ -179,6 +180,7 @@ exports.createObject = function(req, res) {
 
 exports.updateObjectWithId = function(req, res) {
     logger.debug("UpdateObject");
+    logger.debug("path: " + req.path + ", method: " + req.method);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
@@ -204,7 +206,7 @@ exports.updateObjectWithId = function(req, res) {
 
 exports.deleteObjectWithId = function(req, res) {
     logger.debug("DeleteObject");
-    logger.debug(req.headers['content-type']);
+    logger.debug("path: " + req.path + ", method: " + req.method + ",da" + JSON.stringify(req.body));
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
