@@ -1,12 +1,7 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-define(["require", "exports", '../../config/base-layout', './collection/reminder-collection-view', '../../models/reminder-model', '../../message-bus', '../../data-manager', "./templates/reminder-view-layout-tmpl"], function(require, exports, BaseLayout, ReminderCollectionView, ReminderModel, MsgBus, DataManager) {
+define(["require", "exports", '../../config/base-layout', './collection/reminder-collection-view', '../../models/reminder-model', '../../message-bus', '../../data-manager', "./templates/reminder-view-layout-tmpl"], function (require, exports, BaseLayout, ReminderCollectionView, ReminderModel, MsgBus, DataManager) {
     var ReminderViewLayout = (function (_super) {
         __extends(ReminderViewLayout, _super);
+
         function ReminderViewLayout() {
             _super.call(this);
             this.addNewReminderModalId = "#addReminderModal";
@@ -22,13 +17,20 @@ define(["require", "exports", '../../config/base-layout', './collection/reminder
             });
         }
         ReminderViewLayout.prototype.showCollectionView = function () {
-            var reminderCollectionView = new ReminderCollectionView({ tagName: "ol", id: "reminder-items" });
+            var reminderCollectionView = new ReminderCollectionView({
+                tagName: "ol",
+                id: "reminder-items"
+            });
             reminderCollectionView.render();
             this.reminderItemsRegion.show(reminderCollectionView);
         };
 
         ReminderViewLayout.prototype.initDateTimePicker = function () {
-            var datePickerOptions = { language: "zh-CN", todayHighlight: true, autoclose: true };
+            var datePickerOptions = {
+                language: "zh-CN",
+                todayHighlight: true,
+                autoclose: true
+            };
             $(this.newReminderDate).datepicker(datePickerOptions);
             $(this.newReminderTime).timepicker();
         };
@@ -44,11 +46,19 @@ define(["require", "exports", '../../config/base-layout', './collection/reminder
 
             console.log(dueDate);
 
-            var newReminder = new ReminderModel({ message: message, dueDate: dueDate, signature: "tempkey" });
+            var newReminder = new ReminderModel({
+                message: message,
+                dueDate: dueDate,
+                signature: "tempkey"
+            });
             var onSuccess = function () {
-                DataManager.I.getReminderListCollection().fetch({ reset: true });
+                DataManager.I.getReminderListCollection().fetch({
+                    reset: true
+                });
             };
-            newReminder.save({}, { success: onSuccess });
+            newReminder.save({}, {
+                success: onSuccess
+            });
 
             $(this.newReminderMessage).val("");
             $(this.newReminderDate).val("");
@@ -59,6 +69,6 @@ define(["require", "exports", '../../config/base-layout', './collection/reminder
         return ReminderViewLayout;
     })(BaseLayout);
 
-    
+
     return ReminderViewLayout;
 });

@@ -1,12 +1,7 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-define(["require", "exports", '../../../config/base-item-view', '../../../models/reminder-model', '../../../data-manager', "./templates/reminder-item-view-tmpl"], function(require, exports, BaseItemView, ReminderModel, DataManager) {
+define(["require", "exports", '../../../config/base-item-view', '../../../models/reminder-model', '../../../data-manager', "./templates/reminder-item-view-tmpl"], function (require, exports, BaseItemView, ReminderModel, DataManager) {
     var ReminderItemView = (function (_super) {
         __extends(ReminderItemView, _super);
+
         function ReminderItemView(options) {
             _super.call(this, options);
             this.momentConfigFormat = 'lll';
@@ -35,13 +30,15 @@ define(["require", "exports", '../../../config/base-item-view', '../../../models
             console.log("after Remove");
             var onSuccess = function () {
                 console.log("destroy successful");
-                DataManager.I.getReminderListCollection().fetch({ reset: true });
+                DataManager.I.getReminderListCollection().fetch({
+                    reset: true
+                });
             };
             this.model.clear(onSuccess);
         };
         return ReminderItemView;
     })(BaseItemView);
 
-    
+
     return ReminderItemView;
 });

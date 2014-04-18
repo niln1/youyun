@@ -1,12 +1,7 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-define(["require", "exports", '../../config/base-layout', '../feed-center/feed-center-view', '../left-panel/left-panel-view-layout', "./templates/main-view-layout-tmpl"], function(require, exports, BaseLayout, FeedCenterView, LeftPanelViewLayout) {
+define(["require", "exports", '../../config/base-layout', '../feed-center/feed-center-view', '../left-panel/left-panel-view-layout', "./templates/main-view-layout-tmpl"], function (require, exports, BaseLayout, FeedCenterView, LeftPanelViewLayout) {
     var MainViewLayout = (function (_super) {
         __extends(MainViewLayout, _super);
+
         function MainViewLayout() {
             _super.call(this);
             this.template = require('./templates/main-view-layout-tmpl');
@@ -30,6 +25,6 @@ define(["require", "exports", '../../config/base-layout', '../feed-center/feed-c
         return MainViewLayout;
     })(BaseLayout);
 
-    
+
     return MainViewLayout;
 });

@@ -1,4 +1,4 @@
-define(["require", "exports", './models/reminder-list-collection', './models/account-model'], function(require, exports, ReminderListCollection, AccountModel) {
+define(["require", "exports", './models/reminder-list-collection', './models/account-model'], function (require, exports, ReminderListCollection, AccountModel) {
     var DataManager = (function () {
         function DataManager() {
             this.resources = {};
@@ -33,12 +33,14 @@ define(["require", "exports", './models/reminder-list-collection', './models/acc
 
         DataManager.prototype.addResource = function (type, resource, fetch) {
             if (fetch) {
-                resource.fetch({ reset: true });
+                resource.fetch({
+                    reset: true
+                });
             }
             this.resources[type] = resource;
         };
         return DataManager;
     })();
-    
+
     return DataManager;
 });

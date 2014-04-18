@@ -1,12 +1,18 @@
 var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
+    for (var p in b)
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+
+    function __() {
+        this.constructor = d;
+    }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define(["require", "exports", './router', './apps/base/base-view-layout', './message-bus'], function(require, exports, Router, BaseViewLayout, MsgBus) {
+
+define(["require", "exports", './router', './apps/base/base-view-layout', './message-bus'], function (require, exports, Router, BaseViewLayout, MsgBus) {
     var App = (function (_super) {
         __extends(App, _super);
+
         function App() {
             _super.call(this);
             this.router = new Router(this);
@@ -53,6 +59,6 @@ define(["require", "exports", './router', './apps/base/base-view-layout', './mes
         app.start();
     });
 
-    
+
     return App;
 });

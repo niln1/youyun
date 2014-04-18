@@ -1,12 +1,7 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-define(["require", "exports", '../../config/base-layout', '../user-profile/user-profile-view', '../reminder/reminder-view-layout', "./templates/left-panel-view-layout-tmpl"], function(require, exports, BaseLayout, UserProfileView, ReminderViewLayout) {
+define(["require", "exports", '../../config/base-layout', '../user-profile/user-profile-view', '../reminder/reminder-view-layout', "./templates/left-panel-view-layout-tmpl"], function (require, exports, BaseLayout, UserProfileView, ReminderViewLayout) {
     var LeftPanelViewLayout = (function (_super) {
         __extends(LeftPanelViewLayout, _super);
+
         function LeftPanelViewLayout() {
             _super.call(this);
             this.template = require('./templates/left-panel-view-layout-tmpl');
@@ -28,6 +23,6 @@ define(["require", "exports", '../../config/base-layout', '../user-profile/user-
         return LeftPanelViewLayout;
     })(BaseLayout);
 
-    
+
     return LeftPanelViewLayout;
 });

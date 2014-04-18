@@ -1,4 +1,4 @@
-define(["require", "exports"], function(require, exports) {
+define(["require", "exports"], function (require, exports) {
     var MessageBus = (function () {
         function MessageBus() {
             this.reqres = new Backbone.Wreqr.RequestResponse();
@@ -20,6 +20,6 @@ define(["require", "exports"], function(require, exports) {
 
         return MessageBus;
     })();
-    
+
     return MessageBus;
 });

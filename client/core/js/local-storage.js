@@ -1,4 +1,4 @@
-define(["require", "exports"], function(require, exports) {
+define(["require", "exports"], function (require, exports) {
     var LocalStorage = (function () {
         function LocalStorage() {
             this.settings = amplify.store(LocalStorage.kKEY) || {};
@@ -46,6 +46,6 @@ define(["require", "exports"], function(require, exports) {
         return LocalStorage;
     })();
 
-    
+
     return LocalStorage;
 });
