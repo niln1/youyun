@@ -208,20 +208,15 @@ exports.deleteObjectWithId = function(req, res) {
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
-    if (__.has(apiSpec, path)) {
-        if (__.isEqual(req.headers['content-type'].split(';')[0],
-            apiSpec[path][req.method]['content-type'])) {
-            var queryParams = __.keys(req.body);
 
-            // else is handled in isValid function
-            if (isValidQueryParams(path, req.method, res, queryParams) &&
-                isRequiredQueryParams(path, req.method, res, queryParams) &&
-                isValidQueryParamsType(path, req.method, res, req.body)) {
-                apiSpec[path][req.method]['handler'](req, res);
-            }
-        } else {
-            apiServer.invalidContentType(res, 'Content-Type: ' +
-                req.headers['content-type'].split(';')[0] + ' not supported.');
+    if (__.has(apiSpec, path)) {
+        var queryParams = __.keys(req.query);
+
+        // else is handled in isValid function
+        if (isValidQueryParams(path, req.method, res, queryParams) &&
+            isRequiredQueryParams(path, req.method, res, queryParams) &&
+            isValidQueryParamsType(path, req.method, res, req.query)) {
+            apiSpec[path][req.method]['handler'](req, res);
         }
     } else {
         apiServer.apiNotDefined(req, res);

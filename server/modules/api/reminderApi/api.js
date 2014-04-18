@@ -50,7 +50,6 @@ module.exports = [{
     },
     'DELETE': {
         'handler': reminders.deleteReminderWithId,
-        'content-type': 'application/json',
         'required': [
             parameters.signature
         ],

@@ -10,7 +10,7 @@ header.labelheader
 					a(href="#{menuitem.href}") #{menuitem.name}
 	nav.user.unselectable
 		div.user-icon
-			i(style="background-image: url('#{user.userImage}');")
+			i(style="background-image: url('#{ user.userImage }'), url('/static/img/default_image/default-user.png');")
 		ul
 			li
 				a(href="/#/account") 我的账户
