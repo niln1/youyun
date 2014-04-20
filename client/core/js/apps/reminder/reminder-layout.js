@@ -5,7 +5,7 @@ define(["require",
     '../../models/reminder-model',
     '../../message-bus',
     '../../data-manager',
-    "./templates/reminder-view-layout-tmpl"],
+    "./templates/reminder-layout-tmpl"],
     function (require, exports, BaseLayout, ReminderCollectionView, ReminderModel, MsgBus, DataManager) {
         var ReminderViewLayout = (function (_super) {
             __extends(ReminderViewLayout, _super);
@@ -19,7 +19,7 @@ define(["require",
                 this.events = {
                     "click #saveNewReminder": "saveNewReminder"
                 };
-                this.template = require('./templates/reminder-view-layout-tmpl');
+                this.template = require('./templates/reminder-layout-tmpl');
                 this.addRegions({
                     reminderItemsRegion: '#reminder-items-region'
                 });
