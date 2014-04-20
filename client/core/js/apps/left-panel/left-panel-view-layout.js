@@ -1,4 +1,4 @@
-define(["require", "exports", '../../config/base-layout', '../user-profile/user-profile-view', '../reminder/reminder-view-layout', "./templates/left-panel-view-layout-tmpl"], function (require, exports, BaseLayout, UserProfileView, ReminderViewLayout) {
+define(["require", "exports", '../../config/base-layout', '../user-profile/user-profile-view', '../reminder/reminder-layout', "./templates/left-panel-view-layout-tmpl"], function (require, exports, BaseLayout, UserProfileView, ReminderViewLayout) {
     var LeftPanelViewLayout = (function (_super) {
         __extends(LeftPanelViewLayout, _super);
 
