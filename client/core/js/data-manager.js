@@ -55,4 +55,5 @@ define(["require",
         })();
 
         return DataManager;
-    });
+    }
+);
