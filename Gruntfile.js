@@ -27,21 +27,31 @@ module.exports = function(grunt) {
         'module': '*'
     });
 
-    var outDir = nconf.get('out-dir'),
-    outDirDev = nconf.get('out-dir-dev'),
-    cssSrc = nconf.get('module') + '/css/**/*',
-    tsSrc = nconf.get('module') + '/js/**/*.ts',
-    tsTmpDir = nconf.get('tmp-dir-build'),
-    tmplSrc = nconf.get('module') + '/js/**/*.jade',
-    tmplNamespace = 'template',
-    tmplExt = '.tmpl',
-    compiledTmplSrc = nconf.get('module') + '/js/**/*' + tmplExt,
-    viewsSrc = [
-        nconf.get('module') + '/views/**/*.jade',
-        '!' + nconf.get('module') + '/views/**/_*.jade'
-    ],
-    viewsOutDir = nconf.get('out-dir'),
-    viewsOutDirDev = nconf.get('out-dir-dev');
+	var module = '*';
+	if (nconf.get('module') !== '*') {
+		module = '{' + nconf.get('module');
+		if (module.indexOf('core') === -1) {
+			module += ',core';
+		}
+		module += '}';
+	}
+
+    var outDir = nconf.get('out-dir');
+    var outDirDev = nconf.get('out-dir-dev');
+    var cssSrc = module + '/css/**/*';
+    var tsSrc = module + '/js/**/*.ts'
+    var tsTmpDir = nconf.get('tmp-dir-build');
+    var tmplSrc = module + '/js/**/*.jade';
+	var jsSrc = module + '/js/**/*.js';
+    var tmplNamespace = 'template';
+    var tmplExt = '.tmpl';
+    var compiledTmplSrc = module + '/js/**/*' + tmplExt;
+    var viewsSrc = [
+	    module + '/views/**/*.jade',
+        '!' + module + '/views/**/_*.jade'
+    ];
+    var viewsOutDir = nconf.get('out-dir');
+    var viewsOutDirDev = nconf.get('out-dir-dev');
 
      if (nconf.get('out')) {
         outDir = nconf.get('out');
@@ -49,35 +59,38 @@ module.exports = function(grunt) {
     }
 
     // Symlink all folder / files except the ones in js, css & tmpl
-    var others = [
-    nconf.get('module') + '/**/*',
-    '!' + nconf.get('module') + '/js/**',
-    '!' + nconf.get('module') + '/css/**',
-    '!' + nconf.get('module') + '/tmpl/**'
-    ];
-    var cleanOthers = [
-    outDir + '/' + nconf.get('module') + '/**/*',
-    '!' + outDir + '/' + nconf.get('module') + '/js/**',
-    '!' + outDir + '/' + nconf.get('module') + '/css/**',
-    '!' + outDir + '/' + nconf.get('module') + '/tmpl/**',
-    outDirDev + '/' + nconf.get('module') + '/**/*',
-    '!' + outDirDev + '/' + nconf.get('module') + '/js/**',
-    '!' + outDirDev + '/' + nconf.get('module') + '/css/**',
-    '!' + outDirDev + '/' + nconf.get('module') + '/tmpl/**'
-    ];
+	var others = [
+		module + '/**/*',
+		'!' + module + '/js/**',
+		'!' + module + '/css/**',
+		'!' + module + '/tmpl/**'
+	];
+	var cleanOthers = [
+		outDir + '/' + module + '/**/*',
+		'!' + outDir + '/' + module + '/js/**',
+		'!' + outDir + '/' + module + '/css/**',
+		'!' + outDir + '/' + module + '/tmpl/**',
+		outDirDev + '/' + module + '/**/*',
+		'!' + outDirDev + '/' + module + '/js/**',
+		'!' + outDirDev + '/' + module + '/css/**',
+		'!' + outDirDev + '/' + module + '/tmpl/**'
+	];
 
     /************************************************************************************
      * Setting & variables
      ************************************************************************************/
 
      grunt.initConfig({
-        clean: {
-            all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
-            views: [outDir + '/' + nconf.get('module') + '/views', outDirDev + '/' + nconf.get('module') + '/views'],
-            css: [outDir + '/' + nconf.get('module') + '/css', outDirDev + '/' + nconf.get('module') + '/css'],
-            ts: [outDir + '/' + nconf.get('module') + '/js', outDirDev + '/' + nconf.get('module') + '/js', tsTmpDir + '/' + nconf.get('module') + '/ts'],
-            tmpl: [outDir + '/' + nconf.get('module') + '/tmpl', outDirDev + '/' + nconf.get('module') + '/tmpl', tsTmpDir + '/' + nconf.get('module') + '/tmpl'],
-            others: cleanOthers
+	     clean: {
+		     all: [outDir, outDirDev, nconf.get('tmp-dir-build')],
+		     views: [outDir + '/' + module + '/views', outDirDev + '/' + module + '/views'],
+		     css: [outDir + '/' + module + '/css', outDirDev + '/' + module + '/css'],
+		     tmpl: [
+			     outDir + '/' + module + '/tmpl',
+			     outDirDev + '/' + module + '/tmpl',
+			     tsTmpDir + '/' + module + '/tmpl'
+		     ],
+		     others: cleanOthers
         },
         symlink: {
             css: {
@@ -90,13 +103,13 @@ module.exports = function(grunt) {
                 }]
             },
             js: {
-                files: [{
-                    expand: true,
-                    cwd: nconf.get('in-dir'),
-                    src: [tsSrc],
-                    dest: tsTmpDir,
-                    filter: 'isFile'
-                }]
+	            files: [{
+		            expand: true,
+		            cwd: nconf.get('in-dir'),
+		            src: [tsSrc, jsSrc],
+		            dest: tsTmpDir,
+		            filter: 'isFile'
+	            }]
             },
             'js-tmp-others': {
                 files: [{
@@ -108,13 +121,13 @@ module.exports = function(grunt) {
                 }]
             },
             'js-dev': {
-                files: [{
-                    expand: true,
-                    cwd: nconf.get('in-dir'),
-                    src: [tsSrc],
-                    dest: outDirDev,
-                    filter: 'isFile'
-                }]
+	            files: [{
+		            expand: true,
+		            cwd: nconf.get('in-dir'),
+		            src: [tsSrc, jsSrc],
+		            dest: outDirDev,
+		            filter: 'isFile'
+	            }]
             },
             others: {
                 files: [{
@@ -333,14 +346,6 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            ts: {
-                files: [].concat(tsSrc, tmplSrc),
-                tasks: ['clean:ts', 'js-dev'],
-                options: {
-                    cwd: nconf.get('in-dir'),
-                    debounceDelay: 250
-                }
-            },
             css: {
                 files: cssSrc,
                 tasks: ['clean:css', 'css-dev'],
@@ -388,7 +393,7 @@ module.exports = function(grunt) {
                             outputStyle: enableSrcMap ? 'compact' : 'compressed',
                             sassDir: sassDir,
                             cssDir: cssDir,
-                            watch: watch,
+                            watch: watch
                         }
                     }
 
@@ -433,24 +438,20 @@ module.exports = function(grunt) {
         }
     };
 
-    grunt.registerTask('ts-dev', 'Compile typescript files in development', compileTs(outDirDev, true));
-    grunt.registerTask('ts-prod', 'Compile typescript files in production', compileTs(tsTmpDir, false));
-
-    grunt.registerTask('compass-prod', 'Compile typescript files in production', compileSass(nconf.get('in-dir'), outDir, false));
-    grunt.registerTask('compass-dev', 'Compile typescript files in development', compileSass(outDirDev, outDirDev, true));
+	grunt.registerTask('compass-prod', 'Compile sass files in production', compileSass(nconf.get('in-dir'), outDir, false));
+    grunt.registerTask('compass-dev', 'Compile sass files in development', compileSass(outDirDev, outDirDev, true));
 
     grunt.registerTask('install', ['exec:install']);
 
     grunt.registerTask('css', ['compass-prod']);
     grunt.registerTask('css-dev', ['symlink:css', 'compass-dev']);
     grunt.registerTask('js', ['jade:tmpl-prod', 'wrap:prod', 'symlink:js', 'symlink:js-tmp-others', 'ts-prod', 'exec:js']);
-    grunt.registerTask('js-dev', ['jade:tmpl-dev', 'wrap:dev', 'symlink:js-dev', 'ts-dev']);
+    grunt.registerTask('js-dev', ['jade:tmpl-dev', 'wrap:dev', 'symlink:js-dev']);
     grunt.registerTask('views', ['jade:views-prod']);
     grunt.registerTask('views-dev', ['jade:views-dev']);
     grunt.registerTask('others', ['copy:others', 'minjson:others', 'htmlmin:others']);
     grunt.registerTask('others-dev', ['symlink:others']);
 
-    grunt.registerTask('watch-ts', ['watch:ts']);
     grunt.registerTask('watch-css', ['watch:css']);
     grunt.registerTask('watch-views', ['watch:views']);
     grunt.registerTask('watch-others', ['watch:others']);

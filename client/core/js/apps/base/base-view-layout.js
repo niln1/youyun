@@ -1,0 +1,20 @@
+define(["require", "exports", '../../config/base-layout', './base-view-controller', "./templates/base-view-layout-tmpl"], function (require, exports, BaseLayout, BaseViewController) {
+    var BaseViewLayout = (function (_super) {
+        __extends(BaseViewLayout, _super);
+
+        function BaseViewLayout() {
+            _super.call(this);
+            this.template = require('./templates/base-view-layout-tmpl');
+            this.addRegions({
+                headerRegion: '#header-region',
+                headerBackgroundRegion: '#header-background-region',
+                mainRegion: '#main-region'
+            });
+            this.controller = new BaseViewController(this);
+        }
+        return BaseViewLayout;
+    })(BaseLayout);
+
+
+    return BaseViewLayout;
+});
