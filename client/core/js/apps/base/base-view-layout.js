@@ -4,8 +4,9 @@ define(["require",
     '../header/header-view',
     '../header-background/header-background-view',
     '../main/main-view-layout',
+    '../contact/contact-layout',
     "./templates/base-view-layout-tmpl"],
-    function (require, exports, BaseLayout, HeaderView, HeaderBackgroundView, MainViewLayout, BaseViewController) {
+    function (require, exports, BaseLayout, HeaderView, HeaderBackgroundView, MainViewLayout, ContactLayout) {
         var BaseViewLayout = (function (_super) {
             __extends(BaseViewLayout, _super);
 

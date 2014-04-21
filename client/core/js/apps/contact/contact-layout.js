@@ -3,7 +3,7 @@ define(["require",
     '../../config/base-layout',
     '../../message-bus',
     '../../data-manager',
-    "./templates/reminder-view-layout-tmpl"],
+    "./templates/contact-layout-tmpl"],
     function (require, exports, BaseLayout, MsgBus, DataManager) {
         var ContactViewLayout = (function (_super) {
             __extends(ContactViewLayout, _super);
