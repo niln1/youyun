@@ -21,7 +21,6 @@ define(["require",
             return FeedCenterView;
         })(BaseItemView);
 
-
         return FeedCenterView;
     }
 );
