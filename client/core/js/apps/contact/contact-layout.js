@@ -16,12 +16,12 @@ define(["require",
                 });
             }
             ContactViewLayout.prototype.showCollectionView = function () {
-                var reminderCollectionView = new ReminderCollectionView({
+                var contactCollectionView = new ContactCollectionView({
                     tagName: "ol",
-                    id: "reminder-items"
+                    id: "contact-items"
                 });
                 ContactViewLayout.render();
-                this.reminderItemsRegion.show(reminderCollectionView);
+                this.reminderItemsRegion.show(contactCollectionView);
             };
 
             return ContactViewLayout;

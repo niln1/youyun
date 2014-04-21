@@ -16,15 +16,18 @@ define(["require",
                 this.addRegions({
                     headerRegion: '#header-region',
                     headerBackgroundRegion: '#header-background-region',
-                    mainRegion: '#main-region'
+                    mainRegion: '#main-region',
+                    modalRegion: '#modal-region'
                 });
             }
 
-            BaseViewLayout.prototype.initSubViews = function () {
+            BaseViewLayout.prototype.initSubviews = function () {
                 this.showHeaderView();
                 this.showHeaderBackgroundView();
                 this.showMainViewLayout();
+                this.showContactLayout();
             };
+
             BaseViewLayout.prototype.showHeaderView = function () {
                 this.headerRegion.show(new HeaderView());
             };
@@ -33,11 +36,13 @@ define(["require",
                 this.headerBackgroundRegion.show(headerBackgroundView);
                 headerBackgroundView.controller.collapse();
             };
+            BaseViewLayout.prototype.showContactLayout = function () {
+                this.modalRegion.show(new ContactLayout());
+            };
             BaseViewLayout.prototype.showMainViewLayout = function () {
                 var mainViewLayout = new MainViewLayout();
                 this.mainRegion.show(mainViewLayout);
-                mainViewLayout.showFeedCenter();
-                mainViewLayout.showLeftPanel();
+                mainViewLayout.initSubviews();
             };
             return BaseViewLayout;
         })(BaseLayout);
