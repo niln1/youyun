@@ -6,7 +6,7 @@ define(["require", "exports"], function (require, exports) {
             _super.call(this, {
                 controller: controller,
                 appRoutes: {
-                    "": "showMain"
+                    "": "showHomePage"
                 }
             });
             this.controller = controller;

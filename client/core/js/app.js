@@ -51,8 +51,8 @@ define(["require",
                 }
             };
 
-            App.prototype.showMain = function () {
-                this.base.initSubView();
+            App.prototype.showHomePage = function () {
+                this.base.initSubViews();
             };
             return App;
         })(Marionette.Application);

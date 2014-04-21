@@ -3,7 +3,7 @@ define(["require",
     '../../config/base-layout',
     '../header/header-view',
     '../header-background/header-background-view',
-    '../main/main-view-layout'
+    '../main/main-view-layout',
     "./templates/base-view-layout-tmpl"],
     function (require, exports, BaseLayout, HeaderView, HeaderBackgroundView, MainViewLayout, BaseViewController) {
         var BaseViewLayout = (function (_super) {
