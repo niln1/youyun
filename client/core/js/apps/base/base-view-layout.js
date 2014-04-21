@@ -37,7 +37,9 @@ define(["require",
                 headerBackgroundView.controller.collapse();
             };
             BaseViewLayout.prototype.showContactLayout = function () {
-                this.modalRegion.show(new ContactLayout());
+                var contactLayout = new ContactLayout();
+                this.modalRegion.show(contactLayout);
+                contactLayout.initSubviews();
             };
             BaseViewLayout.prototype.showMainViewLayout = function () {
                 var mainViewLayout = new MainViewLayout();

@@ -16,6 +16,10 @@ define(["require",
                 this.listenTo(DataManager.I.getUserListCollection(), "reset", this.render);
             }
 
+            ContactCollectionView.prototype.onBeforeRender = function () {
+                console.log("Contact Before Render: " + JSON.stringify(this.collection));
+            };
+
             return ContactCollectionView;
         })(BaseCollectionView);
 
