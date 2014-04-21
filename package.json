@@ -22,7 +22,8 @@
     "socket.io": "~0.9.16",
     "winston": "~0.7.3",
     "moment": "~2.5.1",
-    "gm": "~1.14.2"
+    "gm": "~1.14.2",
+    "apn": "^1.5.1"
   },
   "devDependencies": {
     "nconf": "~0.6.9",
