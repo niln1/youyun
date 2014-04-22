@@ -10,7 +10,13 @@ define(["require", "exports", '../../config/base-layout', '../feed-center/feed-c
                 rightPanelRegion: '#right-panel-region'
             });
         }
-        MainViewLayout.prototype.showFeedCenter = function () {
+
+        MainViewLayout.prototype.initSubviews = function () {
+            this.showLeftPanel();
+            this.showRightPanel();
+        };
+
+        MainViewLayout.prototype.showRightPanel = function () {
             var feedCenterView = new FeedCenterView();
             this.rightPanelRegion.show(feedCenterView);
             feedCenterView.updateTime();

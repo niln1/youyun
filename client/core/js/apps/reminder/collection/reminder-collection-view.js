@@ -17,7 +17,7 @@ define(["require",
             }
             ReminderCollectionView.prototype.onBeforeRender = function () {
                 this.collection = DataManager.I.getReminderListCollection().dueToday().notDone();
-                console.log("Before: " + JSON.stringify(this.collection));
+                console.log("Reminder Before Render: " + JSON.stringify(this.collection));
             };
             return ReminderCollectionView;
         })(BaseCollectionView);

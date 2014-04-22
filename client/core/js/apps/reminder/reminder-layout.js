@@ -29,7 +29,6 @@ define(["require",
                     tagName: "ol",
                     id: "reminder-items"
                 });
-                reminderCollectionView.render();
                 this.reminderItemsRegion.show(reminderCollectionView);
             };
 

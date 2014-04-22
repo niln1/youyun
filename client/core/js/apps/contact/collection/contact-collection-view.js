@@ -12,9 +12,13 @@ define(["require",
             function ContactCollectionView(options) {
                 _super.call(this, options);
                 this.collection = DataManager.I.getUserListCollection();
-                this.itemView = ReminderItemView;
+                this.itemView = ContactItemView;
                 this.listenTo(DataManager.I.getUserListCollection(), "reset", this.render);
             }
+
+            ContactCollectionView.prototype.onBeforeRender = function () {
+                console.log("Contact Before Render: " + JSON.stringify(this.collection));
+            };
 
             return ContactCollectionView;
         })(BaseCollectionView);

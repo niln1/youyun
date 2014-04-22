@@ -3,8 +3,9 @@ define(["require",
     '../../config/base-layout',
     '../../message-bus',
     '../../data-manager',
+    './collection/contact-collection-view',
     "./templates/contact-layout-tmpl"],
-    function (require, exports, BaseLayout, MsgBus, DataManager) {
+    function (require, exports, BaseLayout, MsgBus, DataManager, ContactCollectionView) {
         var ContactViewLayout = (function (_super) {
             __extends(ContactViewLayout, _super);
 
@@ -15,13 +16,17 @@ define(["require",
                     userItemsRegion: '#contact-modal-items-region'
                 });
             }
+
+            ContactViewLayout.prototype.initSubviews = function () {
+                this.showCollectionView();
+            };
+
             ContactViewLayout.prototype.showCollectionView = function () {
-                var reminderCollectionView = new ReminderCollectionView({
+                var contactCollectionView = new ContactCollectionView({
                     tagName: "ol",
-                    id: "reminder-items"
+                    id: "contact-items"
                 });
-                ContactViewLayout.render();
-                this.reminderItemsRegion.show(reminderCollectionView);
+                this.userItemsRegion.show(contactCollectionView);
             };
 
             return ContactViewLayout;
