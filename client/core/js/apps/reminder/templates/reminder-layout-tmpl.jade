@@ -9,23 +9,23 @@ div.pageboard-shadow.reminder-container
 	div#addReminderModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
 		div.modal-dialog.modal-sm
 			div.modal-content
-				div.model-header.reminder-modal-header
+				div.modal-header.reminder-modal-header
 					button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
 					h4#myModalLabel.modal-title 新的提醒
 				div.content-divider
-				div.reminder-modal-body
+				div.modal-body.reminder-modal-body
 					div.input-group
 						span.input-group-addon.noborderradius
 							i.glyphicon.glyphicon-tasks
 						textarea#newReminderMessage.noborderradius.form-control(style="resize:none;" rows="2" placeholder="提醒内容")
-					div.input-group.reminder-modal-input
+					div.input-group.modal-input.reminder-modal-input
 						span.input-group-addon.notopleftradius.noborderradius
 							i.glyphicon.glyphicon-calendar
 						input#newReminderDatePicker.noborderradius.form-control(data-provide="datepicker" type="text" placeholder="提醒日期")
-					div.input-group.reminder-modal-input
+					div.input-group.modal-input.reminder-modal-input
 						span.input-group-addon.noborderradius
 							i.glyphicon.glyphicon-time
 						input#newReminderTimePicker.noborderradius.form-control(placeholder="提醒时间")
-				div.reminder-modal-footer
+				div.modal-footer.reminder-modal-footer
 					button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") 取消
 					button.btn-sm#saveNewReminder(type="button" class="btn btn-primary") 创建提醒

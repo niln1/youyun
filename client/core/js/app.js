@@ -52,7 +52,7 @@ define(["require",
             };
 
             App.prototype.showHomePage = function () {
-                this.base.initSubViews();
+                this.base.initSubviews();
             };
             return App;
         })(Marionette.Application);
