@@ -11,7 +11,8 @@ div.pageboard-shadow.user-profile-container
 	div#user-profile-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
 		div.modal-dialog.modal-sm
 			div.modal-content
-				form(action="/api/v1/users/image", method="post", enctype="multipart/form-data")
+				form#user-image-form(action="/api/v1/users/image", method="post", enctype="multipart/form-data" target="user-image-upload-target")
 					input(type="file", name="userImage")
 					input(type="hidden", name="signature", value="tempkey")
 					input(type='submit')
+					iframe#user-image-upload-target(src="#" style="width:0;height:0;border:0px solid #fff;")                
