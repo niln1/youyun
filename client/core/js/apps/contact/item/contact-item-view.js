@@ -10,8 +10,10 @@ define(["require",
 
             function ContactItemView(options) {
                 _super.call(this, options);
-
                 this.template = require('./templates/contact-item-view-tmpl');
+                this.model.id = this.model.get('_id');
+                this.context.username = this.model.get('username');
+                this.context.userImage = this.model.get('userImage');
             }
             return ContactItemView;
         })(BaseItemView);
