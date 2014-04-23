@@ -33,7 +33,7 @@ module.exports = [{
     'url': '/api/v1/account',
     'GET': {
         'handler': accounts.getUser,
-        'required': [],
+        'required': [parameters.signature],
         'optional': [],
         'description': 'Get the user using session',
         'response': {} // sample data

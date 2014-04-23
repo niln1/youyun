@@ -4,6 +4,7 @@
  */
 'use strict';
 
+var Q = require('q');
 var __ = require('underscore');
 var util = require('util');
 var nconf = require('nconf');
@@ -81,6 +82,17 @@ apiServer.sendError = function(req, res, e) {
     });
 }; // sendError //
 
+apiServer.sendBadRequest = function(req, res, e) {
+    logger.warn("API - Bad Request: " + e);
+
+    res.json(400, {
+        result: false,
+        message: 'Bad Request',
+        description: !e ? 'Unable to get data at this point of time.' : e,
+        source: nconf.get('server-name')
+    });
+}
+
 apiServer.userNotAuthenticated = function(req, res, e) {
     logger.warn("API - userNotAuthenticated: " + e);
 
@@ -151,6 +163,26 @@ apiServer.verifySignature = function(req, res, next) {
         apiServer.invalidUserSignature(req, res);
     }
 }; //verifySignature//
+
+apiServer.validateSignature = function(req, res) {
+    var deferred = Q.defer();
+    var apiKey = "tempkey";
+    var user_signature = req.query.signature;
+
+    if (user_signature == apiKey) deferred.resolve(true);
+    else deferred.reject(new Error('Request signature invalid.'));
+
+    return deferred.promise;
+} //validateSignature//
+
+apiServer.validateUserSession = function(req, res) {
+    var deferred = Q.defer();
+
+    if (req.session.user) deferred.resolve(req.session.user);
+    else deferred.reject(new Error('User session invalid.'));
+
+    return deferred.promise;
+} //validateUserSession//
 
 //TODO
 function getStartOfTheDay() {
