@@ -32,6 +32,10 @@ var UserSchema = new Schema({
     classes: [{
         type: Schema.Types.ObjectId,
         ref: 'Class'
+    }],
+    devices: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Device'
     }]
     // need a json to store enterdate and graduate date
 });

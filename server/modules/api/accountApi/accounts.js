@@ -4,6 +4,7 @@
  */
 'use strict';
 
+var Q = require('q');
 var nconf = require('nconf');
 var auth = require('../../../middlewares/auth');
 var apiServer = require('../utils/apiServer');
@@ -22,11 +23,13 @@ exports.logout = function (req, res) {
 
 exports.getUser = function (req, res) {
     logger.info("AccountApi - getUser");
-    if (req.session.user) {
-        apiServer.sendResponse(req, res, req.session.user, 'User Information in Session');
-    } else {
-        var e = "invalid user session";
-        logger.warn("Error:" + e);
-        apiServer.sendError(e);
-    }
-};
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+    ]).then(function(result) {
+        apiServer.sendResponse(req, res, result[0], 'User Information in Session');
+    }).fail(function(err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
