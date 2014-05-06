@@ -14,8 +14,16 @@ exports.route = function (io, sessionStore, cookieParser) {
 	if (env == 'test' || env == 'coverage') {
 		// Defaults to MemoryStore
 	} else {
-		io.set('store', new MongoStore({
-			url: nconf.get('mongodb-url') + '/' + nconf.get('mongodb-socket-collection')
+		var RedisStore = require('socket.io/lib/stores/redis');
+		var redis = require('socket.io/node_modules/redis');
+		var pub = redis.createClient();
+		var sub = redis.createClient();
+		var client = redis.createClient();
+
+		io.set('store', new RedisStore({
+			redisPub: pub,
+			redisSub: sub,
+			redisClient: client
 		}));
 	}
 
