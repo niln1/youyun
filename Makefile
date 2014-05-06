@@ -39,7 +39,7 @@ endef
 # Install
 #############################################################################################
 
-install: install-nodejs install-npm install-rvm install-sass install-mongodb
+install: install-nodejs install-npm install-rvm install-sass install-mongodb install-redis
 
 install-nodejs:
 	$(HIDE)echo Installing Node.js
@@ -77,6 +77,15 @@ install-rvm:
 	@rvm install 2.0.0
 	@rvm default use 2.0.0
 	@gem install bundler
+
+install-redis:
+		$(HIDE)echo Installing Redis
+ifeq ($(UNAME),Linux)
+	$(HIDE)sudo apt-get install redis-server
+endif
+ifeq ($(UNAME),Darwin)
+	$(call BREW,"redis")
+endif	
 
 install-sass:
 	@echo Installing sass
