@@ -60,11 +60,30 @@ exports.isDone = {
 exports.classId = {
     'type': 'string',
     'param': 'classId',
-    'description': 'classId',
+    'description': 'classId'
 };
 
 exports.classList = {
     'type': 'list',
     'param': 'classList',
-    'description': 'List of classes',
+    'description': 'List of classes'
 };
+
+exports.deviceType = {
+    'type': 'number',
+    'param': 'type',
+    'description': 'Mobile device type'
+}
+
+exports.deviceUUID = {
+    'type': 'string',
+    'param': 'uuid',
+    'description': 'Mobile device unique identifier'
+}
+
+exports.pushToken = {
+    'type': 'string',
+    'param': 'token',
+    'description': 'Mobile device push notification token'
+}
+
