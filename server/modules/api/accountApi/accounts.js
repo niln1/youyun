@@ -11,37 +11,39 @@ var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 var Device = require('../../../../server/models/Device');
 
-exports.login = function(req, res) {
+exports.login = function (req, res) {
     logger.info("AccountApi - Login");
     auth.doLogin(req, res);
 };
 
-exports.logout = function(req, res) {
+exports.logout = function (req, res) {
     logger.info("AccountApi - Logout");
     req.session.user = null;
     apiServer.sendResponse(req, res, req.session.user, 'User successfully logged out');
 };
 
-exports.getUser = function(req, res) {
+exports.getUser = function (req, res) {
     logger.info("AccountApi - getUser");
     Q.all([
         apiServer.validateUserSession(req, res),
         apiServer.validateSignature(req, res)
-    ]).then(function(result) {
+    ]).then(function (result) {
         apiServer.sendResponse(req, res, result[0], 'User Information in Session');
-    }).fail(function(err) {
+    }).fail(function (err) {
         logger.warn(err);
         apiServer.sendBadRequest(req, res, err.toString());
     });
-}
+};
 
-exports.addUserDevice = function(req, res) {
+exports.addUserDevice = function (req, res) {
     Q.all([
         apiServer.validateUserSession(req, res),
         apiServer.validateSignature(req, res)
     ]).spread(function (user, signatureIsValid) {
         var defer = Q.defer();
-        Device.findOne({deviceUUID: req.body.uuid}, function (err, device) {
+        Device.findOne({
+            deviceUUID: req.body.uuid
+        }, function (err, device) {
             if (err) defer.reject(err);
             else if (device) defer.resolve([user, device]);
             else {
@@ -73,8 +75,8 @@ exports.addUserDevice = function(req, res) {
         logger.warn(err);
         apiServer.sendBadRequest(req, res, err.toString());
     });
-}
+};
 
-exports.updateUserDevice = function(req, res) {
+exports.updateUserDevice = function (req, res) {
 
-}
+};

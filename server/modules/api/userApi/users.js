@@ -11,23 +11,23 @@ var fs = require('fs');
 var gm = require('gm');
 var __ = require('underscore');
 
-exports.createUser = function(req, res) {
+exports.createUser = function (req, res) {
     apiServer.verifySignature(req, res, createUserHelper);
 }
 
-exports.readUsers = function(req, res) {
+exports.readUsers = function (req, res) {
     apiServer.verifySignature(req, res, findUsersByUserId);
 }
 
-exports.updateUserWithId = function(req, res) {
+exports.updateUserWithId = function (req, res) {
     apiServer.verifySignature(req, res, updateUserById);
 }
 
-exports.deleteUserWithId = function(req, res) {
+exports.deleteUserWithId = function (req, res) {
     apiServer.verifySignature(req, res, deleteUserById);
 }
 
-exports.updateUserImage = function(req, res) {
+exports.updateUserImage = function (req, res) {
     apiServer.verifySignature(req, res, updateUserImageHelper);
 }
 
@@ -41,15 +41,28 @@ function updateUserImageHelper(req, res) {
 
     gm(filePath)
         .resize(240)
-        .write(savePath, function(err) {
+        .write(savePath, function (err) {
             if (err) {
                 logger.error("Error saving user image at" + savePath);
                 apiServer.sendError(req, res, err);
             } else {
                 logger.debug("Successfully saved user image at" + savePath);
-                apiServer.sendResponse(req, res, null, 'user image uploaded');
+
+                User.findOneAndUpdate({
+                    _id: req.session.user._id
+                }, {
+                    userImage: savePath
+                }, function (err, user) {
+                    if (!err && user) {
+                        apiServer.sendResponse(req, res, castOutPassword(user), 'User Image updated successfully');
+                    } else if (!user) {
+                        apiServer.sendError(req, res, "User didn't exist");
+                    } else {
+                        apiServer.sendError(req, res, err);
+                    }
+                });
             }
-            fs.unlink(filePath, function(err) {
+            fs.unlink(filePath, function (err) {
                 if (err) {
                     logger.error("Error deleting temp user image at" + filePath);
                     apiServer.sendError(req, res, err);
@@ -57,6 +70,7 @@ function updateUserImageHelper(req, res) {
                 logger.debug("Successfully deleted temp user image at" + filePath);
             });
         });
+
 }
 
 function createUserHelper(req, res) {
@@ -75,7 +89,7 @@ function createUserWithoutClasses(req, res) {
         password: req.body.password,
         userType: req.body.userType,
     });
-    newUser.save(function(err, user) {
+    newUser.save(function (err, user) {
         if (!err && user) {
             user = castOutPassword(user);
             apiServer.sendResponse(req, res, user, 'User created successfully');
@@ -89,7 +103,7 @@ function createUserWithoutClasses(req, res) {
 function findUsersByUserId(req, res) {
     logger.info("Users - findUsersByUserId");
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
-    User.find({}, function(err, users) {
+    User.find({}, function (err, users) {
         if (!err && users) {
             users = formatUsers(users);
             apiServer.sendResponse(req, res, users, 'Users retrieved successfully');
@@ -102,7 +116,7 @@ function findUsersByUserId(req, res) {
 }
 
 function formatUsers(users) {
-    __.each(users, function(user) {
+    __.each(users, function (user) {
         user = castOutPassword(user);
     });
     return users;

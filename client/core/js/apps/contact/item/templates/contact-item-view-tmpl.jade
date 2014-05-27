@@ -1,1 +1,6 @@
-li.contact-item hello
+li.contact-item
+	div.contact
+		div.contact-content
+			img(src="#{userImage}").avatar
+			div.username #{username}
+		input.toggle-contact.toggle(type="checkbox")
