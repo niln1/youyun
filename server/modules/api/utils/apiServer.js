@@ -14,7 +14,34 @@ var crypto = require('crypto');
 var logger = require('../../../utils/logger');
 var User = require('../../../models/User');
 
+/* Apple push notification */
+var apn = require('apn');
+var apnOptions = {};
+var apnConnection = new apn.Connection(apnOptions);
+
 var apiServer = {};
+
+apiServer.sendPushNotification = function (deviceType, token, message, options) {
+    if (deviceType == 0) {
+        logger.info('Pushing to an iOS device with message "' + message + '" and token "' + token + '".');
+
+        var device = new apn.Device(token);
+        var note = new apn.Notification();
+
+        note.expiry = options.expiry || Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+        note.badge = options.badge || 3;
+        note.sound = options.sound || "ping.aiff";
+        note.alert = message || '';
+        note.payload = options.payload || {};
+
+        apnConnection.pushNotification(note, device);
+
+    } else if (deviceType == 1) {
+        logger.info('Pushing to an Android device with message "' + deviceType + '" and token "' + token + '".');
+    } else {
+        logger.warn('Trying to push to an unknown device with type "' + deviceType + '" and token "' + token + '".');
+    }
+}
 
 apiServer.invalidContentType = function(res, desc) {
     logger.warn("API - invalid Content-Type: " + desc);
