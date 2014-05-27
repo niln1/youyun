@@ -38,4 +38,19 @@ module.exports = [{
         'description': 'Get the user using session',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/account/device',
+    'POST': {
+        'content-type': 'application/json',
+        'handler': accounts.addUserDevice,
+        'required': [
+            parameters.signature, 
+            parameters.deviceType, 
+            parameters.deviceUUID,
+            parameters.pushToken
+        ],
+        'optional': [],
+        'description': 'Get the user using session',
+        'response': {} // sample data
+    }
 }];

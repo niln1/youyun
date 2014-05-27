@@ -12,6 +12,7 @@ var https = require('http');
 var urlparse = require('url');
 var crypto = require('crypto');
 var logger = require('../../../utils/logger');
+var User = require('../../../models/User');
 
 var apiServer = {};
 
@@ -167,7 +168,7 @@ apiServer.verifySignature = function(req, res, next) {
 apiServer.validateSignature = function(req, res) {
     var deferred = Q.defer();
     var apiKey = "tempkey";
-    var user_signature = req.query.signature;
+    var user_signature = req.query.signature || req.body.signature;
 
     if (user_signature == apiKey) deferred.resolve(true);
     else deferred.reject(new Error('Request signature invalid.'));
@@ -178,7 +179,13 @@ apiServer.validateSignature = function(req, res) {
 apiServer.validateUserSession = function(req, res) {
     var deferred = Q.defer();
 
-    if (req.session.user) deferred.resolve(req.session.user);
+    if (req.session.user) {
+        User.findOne({username: req.session.user.username}, function (err, user) {
+            if (err) deferred.reject(err);
+            else if (!user) deferred.reject(new Error('User session invalid.'));
+            else deferred.resolve(user);
+        });
+    }
     else deferred.reject(new Error('User session invalid.'));
 
     return deferred.promise;
