@@ -28,8 +28,8 @@ define(["require",
                 this.showContactLayout();
             };
 
-            BaseViewLayout.prototype.showHeaderView = function () {
-                this.headerRegion.show(new HeaderView());
+            BaseViewLayout.prototype.showHeaderView = function (view) {
+                this.headerRegion.show(new HeaderView(view));
             };
 
             BaseViewLayout.prototype.showHeaderBackgroundView = function () {
@@ -44,8 +44,8 @@ define(["require",
                 contactLayout.initSubviews();
             };
 
-            BaseViewLayout.prototype.showMainViewLayout = function () {
-                var mainViewLayout = new MainViewLayout();
+            BaseViewLayout.prototype.showMainViewLayout = function (view) {
+                var mainViewLayout = new MainViewLayout(view);
                 this.mainRegion.show(mainViewLayout);
                 mainViewLayout.initSubviews();
             };

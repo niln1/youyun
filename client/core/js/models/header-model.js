@@ -8,15 +8,11 @@ define(["require", "exports"], function (require, exports) {
                 menuitems: [
                     {
                         class_name: 'home-link',
-                        href: '/',
+                        href: '#',
                         name: '个人主页'
                     }, {
-                        class_name: 'message-link',
-                        href: '/',
-                        name: '消息中心'
-                    }, {
                         class_name: 'class-link',
-                        href: '/',
+                        href: '#myclasses',
                         name: '我的班级'
                     }],
                 school: {

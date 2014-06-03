@@ -52,12 +52,13 @@ define(["require",
             };
 
             App.prototype.showHomePage = function () {
-                this.base.initSubviews();
+                this.base.initSubviews("feed");
             };
 
             App.prototype.showClassPage = function () {
+                this.base.initSubviews("my-class");
+            };
 
-            }
             return App;
         })(Marionette.Application);
 
