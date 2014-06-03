@@ -45,9 +45,9 @@ define(["require",
             };
 
             BaseViewLayout.prototype.showMainViewLayout = function (view) {
-                var mainViewLayout = new MainViewLayout(view);
+                var mainViewLayout = new MainViewLayout();
                 this.mainRegion.show(mainViewLayout);
-                mainViewLayout.initSubviews();
+                mainViewLayout.initSubviews(view);
             };
 
             return BaseViewLayout;

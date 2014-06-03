@@ -2,15 +2,15 @@ define(["require",
     "exports",
     '../../config/base-layout',
     '../feed-center/feed-center-view',
+    '../my-class/my-class-view',
     '../left-panel/left-panel-view-layout',
     "./templates/main-view-layout-tmpl"],
-    function (require, exports, BaseLayout, FeedCenterView, LeftPanelViewLayout) {
+    function (require, exports, BaseLayout, FeedCenterView, MyClassView, LeftPanelViewLayout) {
         var MainViewLayout = (function (_super) {
             __extends(MainViewLayout, _super);
 
             function MainViewLayout(view) {
                 _super.call(this);
-                this._view = view;
                 this.template = require('./templates/main-view-layout-tmpl');
                 this.addRegions({
                     leftPanelRegion: '#left-panel-region',
@@ -18,9 +18,9 @@ define(["require",
                 });
             }
 
-            MainViewLayout.prototype.initSubviews = function () {
+            MainViewLayout.prototype.initSubviews = function (rightView) {
                 this.showLeftPanel();
-                this.showRightPanel(this._view);
+                this.showRightPanel(rightView);
             };
 
             MainViewLayout.prototype.showRightPanel = function (view) {
@@ -28,7 +28,7 @@ define(["require",
                     var feedCenterView = new FeedCenterView();
                     this.rightPanelRegion.show(feedCenterView);
                     feedCenterView.updateTime();
-                } else if (view === "classes") {
+                } else if (view === "my-class") {
                     var myClassView = new MyClassView();
                     this.rightPanelRegion.show(myClassView);
                 }
