@@ -9,11 +9,11 @@ var Schema = mongoose.Schema;
 
 var StudentParentSchema = new Schema({
     studentId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
-    }
+    },
     parentId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true
     }
 });
