@@ -17,7 +17,7 @@ define(["require",
             }
 
             ContactCollectionView.prototype.onBeforeRender = function () {
-                console.log("Contact Before Render: " + JSON.stringify(this.collection));
+                // console.log("Contact Before Render: " + JSON.stringify(this.collection));
             };
 
             return ContactCollectionView;

@@ -10,16 +10,17 @@ var __ = require('underscore');
 var apiServer = require('../utils/apiServer');
 var Class = require('../../../models/Class');
 var User = require('../../../models/User');
+var logger = require('../../../utils/logger');
 
-exports.readClasses = function(req, res) {
+exports.readClasses = function (req, res) {
     apiServer.verifySignature(req, res, findClassesByUserId);
 };
 
-exports.readStudentsByClasses = function(req, res) {
+exports.readStudentsByClasses = function (req, res) {
     apiServer.verifySignature(req, res, findStudentsByUserIdClassId);
 }
 
-exports.readInstructorsByClasses = function(req, res) {
+exports.readInstructorsByClasses = function (req, res) {
     apiServer.verifySignature(req, res, findInstructorsByUserIdClassId); // todo change
 }
 
@@ -33,13 +34,13 @@ function findClassesByUserId(req, res) {
         findClassesByTeacherId(req, res);
     } else {
         var err = "Cannot find classes using student / parent id";
-        console.log("[ClassAPI]Error: " + err);
+        logger.error("[ClassAPI]Error: " + err);
         apiServer.sendError(req, res, err);
     }
 }
 
 function findStudentsByUserIdClassId(req, res) {
-    console.log("finding students in a class");
+    logger.info("finding students in a class");
     var classId = req.query.classId;
     var userId = req.session.user._id;
     var userType = req.session.user.userType;
@@ -47,21 +48,21 @@ function findStudentsByUserIdClassId(req, res) {
     var desc = "List all " + classUserType + " in that class";
     Class.findOne({
         _id: classId
-    }).populate(classUserType).exec(function(err, classes) {
+    }).populate(classUserType).exec(function (err, classes) {
         if (err) {
-            console.log("[ClassAPI]Error: " + err);
+            logger.error("[ClassAPI]Error: " + err);
             apiServer.sendError(req, res, err);
         } else if (userType == 2) {
             if (__.contains(classes.instructors, userId)) {
                 apiServer.sendResponse(req, res, classes[classUserType], desc);
             } else {
                 var err = "User " + userId + " dont manage that class";
-                console.log("[ClassAPI]Error: " + err);
+                logger.error("[ClassAPI]Error: " + err);
                 apiServer.sendError(req, res, err);
             }
         } else if (userType > 2) {
             var err = "Student / Parent dont manage classes";
-            console.log("[ClassAPI]Error: " + err);
+            logger.error("[ClassAPI]Error: " + err);
             apiServer.sendError(req, res, err);
         } else {
             apiServer.sendResponse(req, res, classes[classUserType], desc);
@@ -70,7 +71,7 @@ function findStudentsByUserIdClassId(req, res) {
 }
 
 function findInstructorsByUserIdClassId(req, res) {
-    console.log("finding instructors in a class");
+    logger.info("finding instructors in a class");
     var classId = req.query.classId;
     var userId = req.session.user._id;
     var userType = req.session.user.userType;
@@ -78,27 +79,24 @@ function findInstructorsByUserIdClassId(req, res) {
     var desc = "List all " + classUserType + " in that class";
     Class.findOne({
         _id: classId
-    }).populate(classUserType).exec(function(err, classes) {
+    }).populate(classUserType).exec(function (err, classes) {
         if (err) {
-            console.log("[ClassAPI]Error: " + err);
+            logger.error("[ClassAPI]Error: " + err);
             apiServer.sendError(req, res, err);
         } else if (userType == 2) {
-            var instructorsKeys = __.map(classes.instructors, function(data) {
+            var instructorsKeys = __.map(classes.instructors, function (data) {
                 return data._id.toString();
             });
-            console.log(instructorsKeys);
-            console.log(typeof instructorsKeys[0]);
-            console.log(__.contains(instructorsKeys, userId));
             if (__.contains(instructorsKeys, userId)) {
                 apiServer.sendResponse(req, res, classes[classUserType], desc);
             } else {
                 var err = "User " + userId + " dont manage that class";
-                console.log("[ClassAPI]Error: " + err);
+                logger.error("[ClassAPI]Error: " + err);
                 apiServer.sendError(req, res, err);
             }
         } else if (userType > 2) {
             var err = "Student / Parent dont manage classes";
-            console.log("[ClassAPI]Error: " + err);
+            logger.error("[ClassAPI]Error: " + err);
             apiServer.sendError(req, res, err);
         } else {
             apiServer.sendResponse(req, res, classes[classUserType], desc);
@@ -109,15 +107,15 @@ function findInstructorsByUserIdClassId(req, res) {
 
 //======================================================================
 function findClassesByTeacherId(req, res) {
-    console.log("finding from teacher");
+    logger.info("finding from teacher");
     var teacherId = req.session.user._id;
     var desc = "List all classes managed by the user";
     User.findOne({
         _id: teacherId
-    }).populate('classes').exec(function(err, user) {
+    }).populate('classes').exec(function (err, user) {
         if (err) {
             apiServer.sendError(req, res, err);
-            console.log("[ClassAPI]Error: " + err);
+            logger.error("[ClassAPI]Error: " + err);
         } else {
             apiServer.sendResponse(req, res, user.classes, desc);
         }
@@ -125,15 +123,16 @@ function findClassesByTeacherId(req, res) {
 }
 
 function findClassesByAdminId(req, res) {
-    console.log("finding from admin");
+    logger.info("finding from admin");
     var adminId = req.session.user._id;
     var desc = "List all classes ";
-    Class.find().exec(function(err, classes) {
-        if (err) {
-            apiServer.sendError(req, res, err);
-            console.log("[ClassAPI]Error: " + err);
-        } else {
-            apiServer.sendResponse(req, res, classes, desc);
-        }
-    });
+    Class.find()
+        .exec(function (err, classes) {
+            if (err) {
+                apiServer.sendError(req, res, err);
+                logger.error("[ClassAPI]Error: " + err);
+            } else {
+                apiServer.sendResponse(req, res, classes, desc);
+            }
+        });
 }
