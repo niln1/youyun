@@ -21,31 +21,35 @@ define(["require",
                 });
             }
 
-            BaseViewLayout.prototype.initSubviews = function () {
-                this.showHeaderView();
+            BaseViewLayout.prototype.initSubviews = function (view) {
+                this.showHeaderView(view);
                 this.showHeaderBackgroundView();
-                this.showMainViewLayout();
+                this.showMainViewLayout(view);
                 this.showContactLayout();
             };
 
             BaseViewLayout.prototype.showHeaderView = function () {
                 this.headerRegion.show(new HeaderView());
             };
+
             BaseViewLayout.prototype.showHeaderBackgroundView = function () {
                 var headerBackgroundView = new HeaderBackgroundView();
                 this.headerBackgroundRegion.show(headerBackgroundView);
                 headerBackgroundView.controller.collapse();
             };
+
             BaseViewLayout.prototype.showContactLayout = function () {
                 var contactLayout = new ContactLayout();
                 this.modalRegion.show(contactLayout);
                 contactLayout.initSubviews();
             };
+
             BaseViewLayout.prototype.showMainViewLayout = function () {
                 var mainViewLayout = new MainViewLayout();
                 this.mainRegion.show(mainViewLayout);
                 mainViewLayout.initSubviews();
             };
+
             return BaseViewLayout;
         })(BaseLayout);
 

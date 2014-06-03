@@ -54,6 +54,10 @@ define(["require",
             App.prototype.showHomePage = function () {
                 this.base.initSubviews();
             };
+
+            App.prototype.showClassPage = function () {
+
+            }
             return App;
         })(Marionette.Application);
 
