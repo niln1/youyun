@@ -14,6 +14,8 @@ define(["require", "exports", "./class-model"],
                 return response.result;
             };
 
+            return ClassListCollection;
+
         })(Backbone.Collection);
 
         return ClassListCollection;

@@ -4,7 +4,7 @@ define(["require",
     './models/account-model',
     './models/user-list-collection',
     "./models/class-list-collection"],
-    function (require, exports, ReminderListCollection, AccountModel, UserListColection, ClassListColection) {
+    function (require, exports, ReminderListCollection, AccountModel, UserListCollection, ClassListCollection) {
         var DataManager = (function () {
             function DataManager() {
                 this.resources = {};
@@ -39,17 +39,17 @@ define(["require",
 
             DataManager.prototype.getUserListCollection = function () {
                 if (!this.resources["user-list-collection"]) {
-                    this.addResource("user-list-collection", new UserListColection(), true);
+                    this.addResource("user-list-collection", new UserListCollection(), true);
                 }
                 return this.resources["user-list-collection"];
             };
 
             DataManager.prototype.getClassListCollection = function () {
                 if (!this.resources["class-list-collection"]) {
-                    this.addResource("class-list-collection", new ClassListColection(), true);
+                    this.addResource("class-list-collection", new ClassListCollection(), true);
                 }
                 return this.resources["class-list-collection"];
-            }
+            };
 
             DataManager.prototype.addResource = function (type, resource, fetch) {
                 if (fetch) {
