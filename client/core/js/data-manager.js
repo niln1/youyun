@@ -2,10 +2,9 @@ define(["require",
     "exports",
     './models/reminder-list-collection',
     './models/account-model',
-    './models/user-list-collection'],
-    function (require, exports, ReminderListCollection, AccountModel, UserListColection) {
-        var ClassListColection = require("./models/class-list-collection");
-
+    './models/user-list-collection',
+    "./models/class-list-collection"],
+    function (require, exports, ReminderListCollection, AccountModel, UserListColection, ClassListColection) {
         var DataManager = (function () {
             function DataManager() {
                 this.resources = {};

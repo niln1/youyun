@@ -1,7 +1,6 @@
-define(["require", "exports"],
-    function (require, exports) {
+define(["require", "exports", "./class-model"],
+    function (require, exports, ClassModel) {
         var ClassListCollection = (function (_super) {
-            var ClassModel = require("./class-model");
             __extends(ClassListCollection, _super);
 
             function ClassListCollection(models, options) {
@@ -17,5 +16,5 @@ define(["require", "exports"],
 
         })(Backbone.Collection);
 
-        return ReminderListCollection;
+        return ClassListCollection;
     });
