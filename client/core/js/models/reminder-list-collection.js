@@ -9,7 +9,6 @@ define(["require", "exports", './reminder-model'], function (require, exports, R
             });
         }
         ReminderListCollection.prototype.parse = function (response) {
-            console.log(response);
             return response.result;
         };
 

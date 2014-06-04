@@ -17,7 +17,7 @@ define(["require",
             }
             MyClassCollectionView.prototype.onBeforeRender = function () {
                 this.collection = DataManager.I.getClassListCollection();
-                console.log("Reminder Before Render: " + JSON.stringify(this.collection));
+                console.log("class Before Render: " + JSON.stringify(this.collection));
             };
             return MyClassCollectionView;
         })(BaseCollectionView);

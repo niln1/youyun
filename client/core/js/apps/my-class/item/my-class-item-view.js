@@ -13,6 +13,11 @@ define(["require",
                 this.template = require('./templates/my-class-item-view-tmpl');
                 this.model.id = this.model.get('_id');
             }
+
+            MyClassItemView.prototype.onBeforeRender = function () {
+                console.log("class item Before Render: " + JSON.stringify(this.model));
+            };
+
             return MyClassItemView;
         })(BaseItemView);
 

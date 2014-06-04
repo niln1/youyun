@@ -31,6 +31,7 @@ define(["require",
                 } else if (view === "my-class") {
                     var myClassLayout = new MyClassLayout();
                     this.rightPanelRegion.show(myClassLayout);
+                    myClassLayout.showCollectionView();
                 }
             };
 

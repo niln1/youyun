@@ -16,7 +16,6 @@ define(["require", "exports"], function (require, exports) {
         };
 
         AccountModel.prototype.parse = function (response) {
-            console.log("Receive AccountModel:" + JSON.stringify(response));
             return response.result;
         };
         return AccountModel;

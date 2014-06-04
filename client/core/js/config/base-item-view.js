@@ -9,10 +9,6 @@ define(["require", "exports"], function (require, exports) {
             this.template = {};
             this.context = {};
         }
-        BaseItemView.prototype.render = function () {
-            this.setElement(this.template(this.context));
-            return this.el;
-        };
         return BaseItemView;
     })(Marionette.ItemView);
 

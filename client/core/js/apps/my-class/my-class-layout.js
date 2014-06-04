@@ -17,7 +17,7 @@ define(["require",
 
             MyClassLayout.prototype.showCollectionView = function () {
                 var myClassCollectionView = new MyClassCollectionView({
-                    tagName: "div",
+                    tagName: "ol",
                     id: "my-class-items"
                 });
                 this.myClassItemsRegion.show(MyClassCollectionView);
