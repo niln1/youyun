@@ -53,4 +53,16 @@ module.exports = [{
         'description': 'create user image',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/users/child',
+    'GET': {
+        'handler': users.getChild,
+        'required': [
+            parameters.signature,
+            parameters.userId
+        ],
+        'optional': [],
+        'description': 'return child user of user with userId',
+        'response': {} // sample data
+    }
 }];
