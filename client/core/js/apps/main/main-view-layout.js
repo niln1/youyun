@@ -2,10 +2,10 @@ define(["require",
     "exports",
     '../../config/base-layout',
     '../feed-center/feed-center-view',
-    '../my-class/my-class-view',
+    '../my-class/my-class-layout',
     '../left-panel/left-panel-view-layout',
     "./templates/main-view-layout-tmpl"],
-    function (require, exports, BaseLayout, FeedCenterView, MyClassView, LeftPanelViewLayout) {
+    function (require, exports, BaseLayout, FeedCenterView, MyClassLayout, LeftPanelViewLayout) {
         var MainViewLayout = (function (_super) {
             __extends(MainViewLayout, _super);
 
@@ -29,8 +29,8 @@ define(["require",
                     this.rightPanelRegion.show(feedCenterView);
                     feedCenterView.updateTime();
                 } else if (view === "my-class") {
-                    var myClassView = new MyClassView();
-                    this.rightPanelRegion.show(myClassView);
+                    var myClassLayout = new MyClassLayout();
+                    this.rightPanelRegion.show(myClassLayout);
                 }
             };
 
@@ -43,6 +43,6 @@ define(["require",
             return MainViewLayout;
         })(BaseLayout);
 
-
         return MainViewLayout;
-    });
+    }
+);
