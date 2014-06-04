@@ -22,6 +22,9 @@ exports.populateDB = function() {
     Class.remove({}, function(err) {
         logger.info('Class removed')
     });
+    StudentParent.remove({}, function(err) {
+        logger.info('StudentParent removed')
+    });
 
     //testuser
 
@@ -113,8 +116,8 @@ exports.populateDB = function() {
                 tempParent.save(function (err, parent) {
                     if (!err && parent) {
                         var studentParent = new StudentParent({
-                            studentId: student._id,
-                            parentId: parent._id
+                            student: student._id,
+                            parent: parent._id
                         });
 
                         studentParent.save(function (err, studentParent) {
