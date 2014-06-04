@@ -1,10 +1,11 @@
 define(["require",
     "exports",
-    '../../config/base-item-view',
+    '../../config/base-layout',
+    "./collection/my-class-collection-view",
     "./templates/my-class-view-tmpl"],
-    function (require, exports, BaseItemView) {
-        var MyClassView = (function (_super) {
-            __extends(MyClassView, _super);
+    function (require, exports, BaseLayout, MyClassCollectionView) {
+        var MyClassLayout = (function (_super) {
+            __extends(MyClassLayout, _super);
 
             function MyClassLayout(options) {
                 _super.call(this, options);
@@ -22,7 +23,7 @@ define(["require",
                 this.myClassItemsRegion.show(MyClassCollectionView);
             };
             return MyClassLayout;
-        })(BaseItemView);
+        })(BaseLayout);
 
         return MyClassLayout;
     }
