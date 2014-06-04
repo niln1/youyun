@@ -4,6 +4,8 @@ define(["require",
     './models/account-model',
     './models/user-list-collection'],
     function (require, exports, ReminderListCollection, AccountModel, UserListColection) {
+        var ClassListColection = require("./models/class-list-collection");
+
         var DataManager = (function () {
             function DataManager() {
                 this.resources = {};
@@ -42,6 +44,13 @@ define(["require",
                 }
                 return this.resources["user-list-collection"];
             };
+
+            DataManager.prototype.getClassListCollection = function () {
+                if (!this.resources["class-list-collection"]) {
+                    this.addResource("class-list-collection", new ClassListColection(), true);
+                }
+                return this.resources["class-list-collection"];
+            }
 
             DataManager.prototype.addResource = function (type, resource, fetch) {
                 if (fetch) {
