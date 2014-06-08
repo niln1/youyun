@@ -20,7 +20,7 @@ define(["require",
                     tagName: "ol",
                     id: "my-class-items"
                 });
-                this.myClassItemsRegion.show(MyClassCollectionView);
+                this.myClassItemsRegion.show(myClassCollectionView);
             };
             return MyClassLayout;
         })(BaseLayout);

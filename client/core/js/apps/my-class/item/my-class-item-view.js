@@ -14,9 +14,7 @@ define(["require",
                 this.model.id = this.model.get('_id');
             }
 
-            MyClassItemView.prototype.onBeforeRender = function () {
-                console.log("class item Before Render: " + JSON.stringify(this.model));
-            };
+            MyClassItemView.prototype.onBeforeRender = function () {};
 
             return MyClassItemView;
         })(BaseItemView);
