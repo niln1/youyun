@@ -1,4 +1,7 @@
 extends app-header
+block head-extra
+	script.
+		var current_user = !{JSON.stringify(user)};
 block main-content
 	div#main-content.container-fluid
 		div.page-board
