@@ -14,7 +14,10 @@ var userManageApp = (function () {
         this._getUserList();
     };
     View.prototype.renderTable = function () {
-        var template = _.template("<tr><td>hello</td><td> hello</td><td> hello</td><td> hello</td><td> hello</td><td> hello</td></tr>");
+        _.each(students, function () {
+            var templatestring = "<tr><td> <%= lastname %> </td><td> <%= firstname %></td><td> hello</td><td> hello</td><td> hello</td><td> hello</td></tr>"
+            var template = _.template("");
+        });
         $("tbody", "#student-table").append(template);
     };
     View.prototype._getUserList = function () {

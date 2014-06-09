@@ -17,9 +17,21 @@ var UserSchema = new Schema({
             unique: true
         }
     },
+    lastname: {
+        type: String,
+        required: true,
+    },
+    firstname: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true
+    },
+    pickupLocation: {
+        type: String,
+        required: false,
     },
     userImage: {
         type: String,
