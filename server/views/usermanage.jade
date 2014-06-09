@@ -2,7 +2,9 @@ extends app-header
 block head-extra
 	script.
 		var current_user = !{JSON.stringify(user)};
+		var current_user_list = !{JSON.stringify(userList)};
 block main-content
 	div#main-content.container-fluid
 		div.page-board
+			div
 	script(src='/core/staticjs/usermanage.js')

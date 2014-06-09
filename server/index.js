@@ -57,7 +57,7 @@ exports.home = function (req, res) {
 }
 
 exports.usermanage = function (req, res) {
-    if (!req.session.user) return res.send(404);
+    if (!req.session.user.userType < 2) return res.send(404);
     res.render('usermanage', {
         user: req.session.user
     });
