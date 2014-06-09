@@ -29,10 +29,6 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    pickupLocation: {
-        type: String,
-        required: false,
-    },
     userImage: {
         type: String,
         required: false
@@ -48,7 +44,12 @@ var UserSchema = new Schema({
     devices: [{
         type: Schema.Types.ObjectId,
         ref: 'Device'
-    }]
+    }],
+    // only for student
+    pickupLocation: {
+        type: String,
+        required: false,
+    }
     // need a json to store enterdate and graduate date
 });
 

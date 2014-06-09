@@ -14,11 +14,18 @@ var userManageApp = (function () {
         this._getUserList();
     };
     View.prototype.renderTable = function () {
-        _.each(students, function () {
-            var templatestring = "<tr><td> <%= lastname %> </td><td> <%= firstname %></td><td> hello</td><td> hello</td><td> hello</td><td> hello</td></tr>"
-            var template = _.template("");
+        var orderedStudents = _.sortBy(this.students, function (student) {
+            return student.firstname;
         });
-        $("tbody", "#student-table").append(template);
+        _.each(orderedStudents, function (student) {
+            var templateString = "<tr><td><% if(firstname) return firstname %></td>\
+            <td><% if(lastname) return lastname %></td>\
+            <td><% if(pickupLocation) return pickupLocation %></td>\
+            <td><%= username %></td>\
+            <td>hello</td></tr>";
+            var template = _.template(templateString);
+            $("tbody", "#student-table").append(template(student));
+        });
     };
     View.prototype._getUserList = function () {
         var url = "/api/v1/users";
