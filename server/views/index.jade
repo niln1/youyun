@@ -2,6 +2,10 @@ extends _master
 
 block head-extra
 	script.
+		requirejs.config({
+			baseUrl: '/'
+		});
+	script.
 		var current_user = !{JSON.stringify(user)};
 
 block head-requirejs
