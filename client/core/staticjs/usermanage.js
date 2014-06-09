@@ -13,6 +13,10 @@ var userManageApp = (function () {
         this.users = [];
         this._getUserList();
     };
+    View.prototype.renderTable = function () {
+        var template = _.template("<tr><td>hello</td><td> hello</td><td> hello</td><td> hello</td><td> hello</td><td> hello</td></tr>");
+        $("tbody", "#student-table").append(template);
+    };
     View.prototype._getUserList = function () {
         var url = "/api/v1/users";
         var data = {
