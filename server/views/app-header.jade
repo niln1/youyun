@@ -1,4 +1,4 @@
-extends index
+extends _master
 
 block body-content
 	header.labelheader
@@ -9,15 +9,9 @@ block body-content
 		nav.main.unselectable
 			ul
 				li.home
-					a(href="/") 个人主页
-				li.messagebox
-					a(href="/") 消息中心
-				li.myclasses
-					a(href="/") 我的班级
-				li.mystudents
-					a(href="/") 我的学生
-				li.account
-					a(href="/") 账户管理
+					a(href="/") 主页
+				li.usermanage-link
+					a(href="/usermanage") 管理
 		nav.user.unselectable
 			div.user-icon
 				i

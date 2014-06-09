@@ -8,7 +8,7 @@ var fs = require('fs');
 var async = require('async');
 var index = require('./index');
 
-exports.route = function(app) {
+exports.route = function (app) {
     app.get('/', index.main);
 
     app.post('/login', index.postLogin);
@@ -16,7 +16,8 @@ exports.route = function(app) {
     app.get('/logout', index.logout);
 
     app.get('/static/populateDB', index.populateDB);
-	app.get('/static/home', index.home);
+    app.get('/static/home', index.home);
+    app.get('/usermanage', index.usermanage);
 
     /*
      * Helper method to load module
@@ -29,10 +30,10 @@ exports.route = function(app) {
 
         async.waterfall([
 
-            function(callback) {
+            function (callback) {
                 // Detect if the file is a directory
                 // (a module is a directory in '/app/modules' folder)
-                return fs.lstat(moduleDir, function(err, stats) {
+                return fs.lstat(moduleDir, function (err, stats) {
                     if (err) {
                         return callback(err);
                     }
@@ -40,7 +41,7 @@ exports.route = function(app) {
                     callback(null, stats.isDirectory());
                 });
             },
-            function(isDir, callback) {
+            function (isDir, callback) {
                 // Read 'routes.js' if it's found in the module
                 var routesFile;
                 if (!isDir) {
@@ -48,7 +49,7 @@ exports.route = function(app) {
                 }
 
                 routesFile = moduleDir + '/routes.js';
-                fs.exists(routesFile, function(exists) {
+                fs.exists(routesFile, function (exists) {
                     if (!exists) {
                         return callback();
                     }
@@ -56,7 +57,7 @@ exports.route = function(app) {
                     callback();
                 });
             }
-        ], function() {
+        ], function () {
             callback(null);
         });
     } // readModule //
@@ -68,9 +69,9 @@ exports.route = function(app) {
     var modulesDir = cwd + '/server/modules';
     async.waterfall([
 
-        function(callback) {
+        function (callback) {
             // Read all of the files in '/app/modules', the submodules folder
-            return fs.readdir(modulesDir, function(err, files) {
+            return fs.readdir(modulesDir, function (err, files) {
                 if (err) {
                     callback(err);
                 } else {
@@ -78,11 +79,11 @@ exports.route = function(app) {
                 }
             });
         },
-        function(files, callback) {
+        function (files, callback) {
             // For each module, load the module if 'routes.js' is found in the folder
             async.each(files, readModule, callback);
         }
-    ], function() {
+    ], function () {
         // Everything else should go to a 404 page.
         app.all('*', index.lost);
     });
