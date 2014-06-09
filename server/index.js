@@ -9,6 +9,7 @@ var fs = require('fs');
 var db = require('./databases/db');
 var auth = require('./middlewares/auth');
 var logger = require('./utils/logger');
+var userApiHelper = require('./modules/api/userApi/users.js').helpers;
 
 exports.main = function (req, res) {
     if (!req.session.user) return res.redirect('/login');

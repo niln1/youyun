@@ -12,30 +12,28 @@ var gm = require('gm');
 var __ = require('underscore');
 
 exports.createUser = function (req, res) {
-    apiServer.verifySignature(req, res, helpers.createUserHelper);
+    apiServer.verifySignature(req, res, createUserHelper);
 }
 
 exports.readUsers = function (req, res) {
-    apiServer.verifySignature(req, res, helpers.findUsersByUserId);
+    apiServer.verifySignature(req, res, findUsersByUserId);
 }
 
 exports.updateUserWithId = function (req, res) {
-    apiServer.verifySignature(req, res, helpers.updateUserById);
+    apiServer.verifySignature(req, res, updateUserById);
 }
 
 exports.deleteUserWithId = function (req, res) {
-    apiServer.verifySignature(req, res, helpers.deleteUserById);
+    apiServer.verifySignature(req, res, deleteUserById);
 }
 
 exports.updateUserImage = function (req, res) {
-    apiServer.verifySignature(req, res, helpers.updateUserImageHelper);
+    apiServer.verifySignature(req, res, updateUserImageHelper);
 }
 
 //-----------------helpers--------------------//
 
-var helpers = {};
-
-helpers.updateUserImageHelper = function (req, res) {
+function updateUserImageHelper(req, res) {
     logger.info("Users - updateUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));
     var filePath = req.files.userImage.path;
@@ -75,7 +73,7 @@ helpers.updateUserImageHelper = function (req, res) {
 
 }
 
-helpers.createUserHelper = function (req, res) {
+function createUserHelper(req, res) {
     if (req.body.classList) {
         logger.debug("not implemented");
     } else {
@@ -83,7 +81,7 @@ helpers.createUserHelper = function (req, res) {
     }
 }
 
-helpers.createUserWithoutClasses = function (req, res) {
+function createUserWithoutClasses(req, res) {
     logger.info("Users - createUserWithoutClasses");
     logger.debug("username: " + JSON.stringify(req.body.username) + ", usertype: " + JSON.stringify(req.body.userType));
     var newUser = new User({
@@ -102,7 +100,7 @@ helpers.createUserWithoutClasses = function (req, res) {
 }
 
 
-helpers.findUsersByUserId = function (req, res) {
+function findUsersByUserId(req, res) {
     logger.info("Users - findUsersByUserId");
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
     User.find({}, function (err, users) {
@@ -128,5 +126,3 @@ function castOutPassword(user) {
     user.password = "Black Sheep Wall";
     return user;
 }
-
-exports.helpers = helpers;
