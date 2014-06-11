@@ -22,8 +22,7 @@ var userManageApp = (function () {
         });
         _.each(orderedStudents, function (student) {
             if (!student.pickupLocation) student.pickupLocation = "";
-            var templateString = "<tr><td><%= firstname %></td>\
-            <td><%= lastname %></td>\
+            var templateString = "<tr><td><%= firstname %> <%= lastname %></td>\
             <td><%= pickupLocation %></td>\
             <td><%= username %></td>\
             </tr>";
