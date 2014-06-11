@@ -5,7 +5,34 @@ block head-extra
 block main-content
     div#main-region.container-fluid
         div.page-board.pageboard-shadow(style="background:white; margin-top:1em;")
-            div 需要接 不用接 接到
-            div 今天请假的人
-            div 实时接送记录
+            h2(style="padding: 0.5em") 接车报告
+            div.content-divider
+            div(style="padding: 1em")
+                ul.nav.nav-tabs
+                    li.active
+                        a(href="#currentreport" data-toggle="tab") 现在的报告
+                    li
+                        a(href="#pastreport" data-toggle="tab") 过去的报告
+                div.tab-content
+                    div#currentreport.tab-pane.active
+                        div
+                            p 正在统计今天不需要接车的人数...
+                            p 需要接：12
+                                span 不用接：2
+                                span 一共： 14
+                            h4(style="padding: 0.5em") 不用接的人统计
+                            div.content-divider
+                            table#notneedtopickup-table.table
+                                thead
+                                    tr
+                                        th 用户名
+                                        th 姓名
+                                        th 接车地点
+                                tbody
+                            button(type="button").btn.btn-primary 结束统计开始接车！
+                        div.hidden
+                            div 需要接 不用接 接到
+                            div 今天请假的人
+                            div 实时接送记录
+                    div#pastreport.tab-pane ...
     script(src='/core/staticjs/pickupreport.js')
