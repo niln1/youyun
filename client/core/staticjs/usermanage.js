@@ -30,27 +30,27 @@ var userManageApp = (function () {
             var template = _.template(templateString, student);
             // i18n
             var result = $(template).click($.proxy(function () {
-                console.log(student);
+                $('#student-manage-modal').modal('show')
             }), this);
             $("tbody", "#student-table").append(result);
         });
+    };
+    View.prototype.parseUserList = function (data) {
+        this.users = data.result;
+        this.students = _.filter(this.users, function (user) {
+            return user.userType === 3;
+        });
+        this.teachers = _.filter(this.users, function (user) {
+            return user.userType === 2;
+        });
+        this._renderTable();
     };
     View.prototype._getUserList = function () {
         var url = "/api/v1/users";
         var data = {
             signature: "tempkey"
         };
-        var callback = function (data) {
-            this.users = data.result;
-            this.students = _.filter(this.users, function (user) {
-                return user.userType === 3;
-            });
-            this.teachers = _.filter(this.users, function (user) {
-                return user.userType === 2;
-            });
-            this._renderTable();
-        };
-        $.get(url, data, $.proxy(callback, this));
+        $.get(url, data, $.proxy(this.parseUserList, this));
     };
     View.prototype._updateUser = function () {
         var url = "/api/v1/users";
