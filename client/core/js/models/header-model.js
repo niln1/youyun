@@ -15,7 +15,11 @@ define(["require", "exports"], function (require, exports) {
                         href: '#myclasses',
                         name: '我的班级'
                     }, {
-                        class_name: 'manage-link',
+                        class_name: 'pickupreport-link',
+                        href: '/pickupreport',
+                        name: '接车报告'
+                    }, {
+                        class_name: 'usermanage-link',
                         href: '/usermanage',
                         name: '管理'
                     }],
