@@ -12,7 +12,6 @@ define(["require",
                 });
             }
             UserListCollection.prototype.parse = function (response) {
-                console.log(response);
                 return response.result;
             };
 

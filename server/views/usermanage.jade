@@ -1,0 +1,29 @@
+extends app-header
+block head-extra
+    script.
+        var current_user = !{JSON.stringify(user)};
+block main-content
+    div#main-region.container-fluid
+        div.page-board.pageboard-shadow(style="background:white; margin-top:1em;")
+            h2(style="padding: 0.5em") 学生信息管理 (点击编辑)
+            div.content-divider
+            div(style="padding: 1em")
+                table#student-table.table.table-hover
+                    thead
+                        tr
+                            th 用户名
+                            th 姓名
+                            th 接车地点
+                    tbody
+    div#student-manage-modal.modal.fade
+      div.modal-dialog
+        div.modal-content
+          div.modal-header
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true")&times;
+            h4.modal-title Modal title
+          div.modal-body
+            p One fine body&hellip;
+          div.modal-footer
+            button(type="button" class="btn btn-default" data-dismiss="modal") Close
+            button(type="button" class="btn btn-primary") Save changes
+    script(src='/core/staticjs/usermanage.js')

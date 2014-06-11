@@ -16,7 +16,10 @@ define(["require",
                 var rawData = this.model.data;
                 rawData.user = accountModel.attributes;
                 this.context = this.model.data;
-            }
+                this.model.toJSON = function () {
+                    return this.data;
+                };
+            };
             return HeaderView;
         })(BaseItemView);
 

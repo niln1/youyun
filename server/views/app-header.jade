@@ -1,4 +1,4 @@
-extends index
+extends _master
 
 block body-content
 	header.labelheader
@@ -9,29 +9,25 @@ block body-content
 		nav.main.unselectable
 			ul
 				li.home
-					a(href="/") 个人主页
-				li.messagebox
-					a(href="/") 消息中心
-				li.myclasses
-					a(href="/") 我的班级
-				li.mystudents
-					a(href="/") 我的学生
-				li.account
-					a(href="/") 账户管理
+					a(href="/") 主页
+				li.usermanage-link
+					a(href="/usermanage") 管理
 		nav.user.unselectable
 			div.user-icon
-				i
+				i(style="background-image: url('#{ user.userImage }'), url('/static/img/default_image/default-user.png');")
 			ul
 				li
-					a(href="/#/account") 我的账户
+					a(href="/account") 我的账户
 				li
-					a(href="/#/logout") 登出
+					a(href="/logout") 登出
 	div#content
-		header#header-background.opened.closed.fixed
-			hgroup(style="opacity: 1;")
-				p.user-photo
-					i.photo
-						i
-					i.saving 保存中...
+		div#header-background-region.fixed
+			div.closed
+				header#header-background.closed
+					hgroup(style="opacity: 1;")
+						p.user-photo
+							i.photo
+								i
+							i.saving 保存中...
 		block main-content
 

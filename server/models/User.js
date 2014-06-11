@@ -17,6 +17,14 @@ var UserSchema = new Schema({
             unique: true
         }
     },
+    lastname: {
+        type: String,
+        required: true,
+    },
+    firstname: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true
@@ -36,7 +44,12 @@ var UserSchema = new Schema({
     devices: [{
         type: Schema.Types.ObjectId,
         ref: 'Device'
-    }]
+    }],
+    // only for student
+    pickupLocation: {
+        type: String,
+        required: false,
+    }
     // need a json to store enterdate and graduate date
 });
 

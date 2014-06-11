@@ -25,7 +25,7 @@ define(["require",
                 this.showHeaderView(view);
                 this.showHeaderBackgroundView();
                 this.showMainViewLayout(view);
-                this.showContactLayout();
+                // this.showContactLayout();
             };
 
             BaseViewLayout.prototype.showHeaderView = function (view) {

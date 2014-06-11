@@ -5,7 +5,7 @@ define(["require", "exports"], function (require, exports) {
 
         function AccountModel(attrs, options) {
             _super.call(this, attrs, options);
-            this.url = '/api/v1/account';
+            this.url = '/api/v1/account?signature=tempkey';
         }
         AccountModel.prototype.defaults = function () {
             return {
@@ -16,7 +16,6 @@ define(["require", "exports"], function (require, exports) {
         };
 
         AccountModel.prototype.parse = function (response) {
-            console.log("Receive AccountModel:" + JSON.stringify(response));
             return response.result;
         };
         return AccountModel;

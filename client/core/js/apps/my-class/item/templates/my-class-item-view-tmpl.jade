@@ -1,0 +1,9 @@
+div.stream-item
+	div.panel.panel-default
+		div.panel-heading
+			div(data-toggle="collapse" data-parent="#class-group" href="#collapse#{className}")
+				h4.panel-title #{className}
+				p instructors:
+					a #{instructors}
+	div.panel-collapse.collapse.in.stream-item(id="collapse#{className}")
+		div.panel-body instructors#{instructors}

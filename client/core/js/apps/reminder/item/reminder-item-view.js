@@ -42,6 +42,8 @@ define(["require",
                 };
                 this.model.clear(onSuccess);
             };
+
+            ReminderItemView.prototype.onBeforeRender = function () {};
             return ReminderItemView;
         })(BaseItemView);
 

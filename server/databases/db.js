@@ -12,14 +12,14 @@ var StudentParent = require('../models/StudentParent');
 var logger = require('../utils/logger');
 var __ = require('underscore');
 
-exports.populateDB = function() {
+exports.populateDB = function () {
     // populate db with test data
     // cleaning the db
 
-    User.remove({}, function(err) {
+    User.remove({}, function (err) {
         logger.info('User removed')
     });
-    Class.remove({}, function(err) {
+    Class.remove({}, function (err) {
         logger.info('Class removed')
     });
     StudentParent.remove({}, function(err) {
@@ -30,37 +30,41 @@ exports.populateDB = function() {
 
     async.waterfall([
 
-        function(done) {
+        function (done) {
             var tempAdmin = new User({
+                firstname: "admin",
+                lastname: "admin",
                 username: "admin",
                 password: "adminpw",
                 userType: 0,
             });
-            tempAdmin.save(function(err, admin) {
+            tempAdmin.save(function (err, admin) {
                 done(err);
             });
         },
-        function(done) {
+        function (done) {
             var tempClass = new Class({
                 className: "初一1班"
             });
-            tempClass.save(function(err, newClass) {
+            tempClass.save(function (err, newClass) {
                 done(err, newClass);
             });
         },
-        function(newClass, done) {
+        function (newClass, done) {
             var tempTeacher = new User({
+                firstname: "teacher",
+                lastname: "teacher",
                 username: "teacher",
                 password: "teacherpw",
                 userType: 2,
             });
-            tempTeacher.save(function(err, teacher) {
+            tempTeacher.save(function (err, teacher) {
                 if (!err && teacher) {
                     newClass.instructors.push(teacher._id);
-                    newClass.save(function(err, newClass) {
+                    newClass.save(function (err, newClass) {
                         if (!err && newClass) {
                             teacher.classes.push(newClass._id);
-                            teacher.save(function(err, teacher) {
+                            teacher.save(function (err, teacher) {
                                 done(null, newClass);
                             })
                         } else {
@@ -72,24 +76,26 @@ exports.populateDB = function() {
                 }
             });
         },
-        function(newClass, done) {
+        function (newClass, done) {
             var studentsArray = [];
             logger.info("classid:" + newClass._id);
 
             for (var i = 0; i < 100; i++) {
                 var tempStudent = new User({
+                    firstname: "student" + i,
+                    lastname: "student" + i,
                     username: "student" + i,
                     password: "student" + i + "pw",
                     userType: 3
                 });
 
-                tempStudent.save(function(err, student) {
+                tempStudent.save(function (err, student) {
                     if (!err && student) {
                         newClass.students.push(student._id);
-                        newClass.save(function(err, newClass) {
+                        newClass.save(function (err, newClass) {
                             if (!err && newClass) {
                                 student.classes.push(newClass._id);
-                                student.save(function(err, student) {
+                                student.save(function (err, student) {
                                     if (!err && student) {
                                         studentsArray.push(student);
                                         if (studentsArray.length == 100) done(null, studentsArray);
@@ -105,9 +111,11 @@ exports.populateDB = function() {
                 });
             }
         },
-        function(students, done) {
+        function (students, done) {
             __.each(students, function (student, i, list) {
                 var tempParent = new User({
+                    firstname: "parent" + i,
+                    lastname: "parent" + i,
                     username: "parent" + i,
                     password: "parent" + i + "pw",
                     userType: 4
