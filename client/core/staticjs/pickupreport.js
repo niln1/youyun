@@ -7,7 +7,7 @@
 
 "use strict";
 var app;
-var userManageApp = (function () {
+var pickupReportApp = (function () {
     function View() {
         this.$studentTable = $("#student-table");
     }
@@ -16,7 +16,7 @@ var userManageApp = (function () {
         this._getUserList();
     };
     // super bad rework when feeling like it
-    View.prototype._renderTable = function () {
+    View.prototype.renderTable = function () {
         var orderedStudents = _.sortBy(this.students, function (student) {
             return student.firstname;
         });
@@ -50,7 +50,6 @@ var userManageApp = (function () {
             this.teachers = _.filter(this.users, function (user) {
                 return user.userType === 2;
             });
-            this._renderTable();
         };
         $.get(url, data, $.proxy(callback, this));
     };
@@ -66,6 +65,6 @@ var userManageApp = (function () {
 })();
 
 $(function () {
-    app = new userManageApp();
+    app = new pickupReportApp();
     app.start();
 });
