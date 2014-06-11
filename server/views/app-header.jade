@@ -21,11 +21,13 @@ block body-content
 				li
 					a(href="/logout") 登出
 	div#content
-		header#header-background.opened.closed.fixed
-			hgroup(style="opacity: 1;")
-				p.user-photo
-					i.photo
-						i
-					i.saving 保存中...
+		div#header-background-region.fixed
+			div.closed
+				header#header-background.closed
+					hgroup(style="opacity: 1;")
+						p.user-photo
+							i.photo
+								i
+							i.saving 保存中...
 		block main-content
 

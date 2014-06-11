@@ -22,17 +22,16 @@ var userManageApp = (function () {
         });
         _.each(orderedStudents, function (student) {
             if (!student.pickupLocation) student.pickupLocation = "";
-            var templateString = "<tr><td><%= firstname %> <%= lastname %></td>\
-            <td><%= pickupLocation %></td>\
+            var templateString = "<tr>\
             <td><%= username %></td>\
+            <td><%= firstname %> <%= lastname %></td>\
+            <td><%= pickupLocation %></td>\
             </tr>";
             var template = _.template(templateString, student);
             // i18n
-            var buttonDiv = $('<button type="button" class="btn btn-default btn-xs">编辑</button>');
-            buttonDiv.click($.proxy(function () {
+            var result = $(template).click($.proxy(function () {
                 console.log(student);
             }), this);
-            var result = $(template).append($("<td>").append(buttonDiv));
             $("tbody", "#student-table").append(result);
         });
     };
