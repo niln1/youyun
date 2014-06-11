@@ -64,3 +64,11 @@ exports.usermanage = function (req, res) {
         user: req.session.user
     });
 }
+
+exports.pickupreport = function (req, res) {
+    if (!req.session.user) return res.send(404);
+    if (req.session.user.userType > 1) return res.send(401);
+    res.render('pickupreport', {
+        user: req.session.user
+    });
+}

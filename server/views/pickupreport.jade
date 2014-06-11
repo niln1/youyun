@@ -1,0 +1,11 @@
+extends app-header
+block head-extra
+    script.
+        var current_user = !{JSON.stringify(user)};
+block main-content
+    div#main-region.container-fluid
+        div.page-board.pageboard-shadow(style="background:white; margin-top:1em;")
+            div 需要接 不用接 接到
+            div 今天请假的人
+            div 实时接送记录
+    script(src='/core/staticjs/pickupreport.js')
