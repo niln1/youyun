@@ -3,6 +3,8 @@
  * Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
  */
 
+// quick code
+
 "use strict";
 var app;
 var userManageApp = (function () {
@@ -13,18 +15,26 @@ var userManageApp = (function () {
         this.users = [];
         this._getUserList();
     };
+    // super bad rework when feeling like it
     View.prototype.renderTable = function () {
         var orderedStudents = _.sortBy(this.students, function (student) {
             return student.firstname;
         });
         _.each(orderedStudents, function (student) {
-            var templateString = "<tr><td><% if(firstname) return firstname %></td>\
-            <td><% if(lastname) return lastname %></td>\
-            <td><% if(pickupLocation) return pickupLocation %></td>\
+            if (!student.pickupLocation) student.pickupLocation = "";
+            var templateString = "<tr><td><%= firstname %></td>\
+            <td><%= lastname %></td>\
+            <td><%= pickupLocation %></td>\
             <td><%= username %></td>\
-            <td>hello</td></tr>";
-            var template = _.template(templateString);
-            $("tbody", "#student-table").append(template(student));
+            </tr>";
+            var template = _.template(templateString, student);
+            // i18n
+            var buttonDiv = $('<button type="button" class="btn btn-default btn-xs">编辑</button>');
+            buttonDiv.click($.proxy(function () {
+                console.log(student);
+            }), this);
+            var result = $(template).append($("<td>").append(buttonDiv));
+            $("tbody", "#student-table").append(result);
         });
     };
     View.prototype._getUserList = function () {
