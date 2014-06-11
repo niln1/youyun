@@ -10,6 +10,7 @@ var app;
 var userManageApp = (function () {
     function View() {
         this.$studentTable = $("#student-table");
+        this.$studentManageModal = $('#student-manage-modal');
     }
     View.prototype.start = function () {
         this.users = [];
@@ -17,6 +18,7 @@ var userManageApp = (function () {
     };
     // super bad rework when feeling like it
     View.prototype._renderTable = function () {
+        var self = this;
         var orderedStudents = _.sortBy(this.students, function (student) {
             return student.firstname;
         });
@@ -29,11 +31,21 @@ var userManageApp = (function () {
             </tr>";
             var template = _.template(templateString, student);
             // i18n
-            var result = $(template).click($.proxy(function () {
-                $('#student-manage-modal').modal('show')
-            }), this);
-            $("tbody", "#student-table").append(result);
+            var result = $(template).click(function () {
+                // should extract it somewhere else
+                self.$studentManageModal.find(".modal-title").html("编辑学生");
+
+                self.$studentManageModal.find(".lastname-input").val(student.lastname);
+                self.$studentManageModal.find(".firstname-input").val(student.firstname);
+                self.$studentManageModal.find(".pickupLocation-input").val(student.pickupLocation);
+
+                self.$studentManageModal.modal('show');
+            });
+            self.$studentTable.find("tbody").append(result);
         });
+    };
+    View.prototype.submitStudentEdit = function () {
+
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;

@@ -4,8 +4,10 @@ block head-extra
         var current_user = !{JSON.stringify(user)};
 block main-content
     div#main-region.container-fluid
-        div.page-board.pageboard-shadow(style="background:white; margin-top:1em;")
-            h2(style="padding: 0.5em") 接车报告
+        div.page-board.pageboard-shadow(style="background:white;")
+            div.content-header
+                div.header-inner
+                    h2.text-left 接车报告
             div.content-divider
             div(style="padding: 1em")
                 ul.nav.nav-tabs
