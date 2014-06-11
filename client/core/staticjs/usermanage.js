@@ -39,13 +39,17 @@ var userManageApp = (function () {
                 self.$studentManageModal.find(".firstname-input").val(student.firstname);
                 self.$studentManageModal.find(".pickupLocation-input").val(student.pickupLocation);
 
+                self.$studentManageModal.find(".submit-button").click({
+                    student: student
+                }, self.submitStudentEdit);
+
                 self.$studentManageModal.modal('show');
             });
             self.$studentTable.find("tbody").append(result);
         });
     };
-    View.prototype.submitStudentEdit = function () {
-
+    View.prototype.submitStudentEdit = function (event) {
+        console.log(event.data.student);
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
