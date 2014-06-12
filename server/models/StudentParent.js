@@ -8,12 +8,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var StudentParentSchema = new Schema({
-    studentId: {
+    student: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
-    parentId: {
+    parent: {
         type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     }
 });

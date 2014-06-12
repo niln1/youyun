@@ -4,12 +4,16 @@
 'use strict';
 
 var User = require('../../../models/User');
+var StudentParent = require('../../../models/StudentParent');
+var mongoose = require('mongoose');
+
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 var path = require('path')
 var fs = require('fs');
 var gm = require('gm');
 var __ = require('underscore');
+var Q = require('q');
 
 exports.createUser = function (req, res) {
     apiServer.verifySignature(req, res, createUserHelper);
@@ -29,6 +33,50 @@ exports.deleteUserWithId = function (req, res) {
 
 exports.updateUserImage = function (req, res) {
     apiServer.verifySignature(req, res, updateUserImageHelper);
+}
+
+exports.getChild = function (req, res) {
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+    ])
+    .spread(function (user, signatureIsValid) {
+        if (user.userType < 3 || user._id === req.query.userId) {
+            if (req.query.userId) return true;
+            else return new Error('userId must be specified.');
+        } else {
+            console.log('false');
+            return new Error("You don't have permission to read child information for this user.");
+        }
+    })
+    .then(function (hasPermissionToRead) {
+        var parentId = mongoose.Types.ObjectId(req.query.userId);
+        var defer = Q.defer();
+
+        StudentParent.find({
+            parent: parentId
+        })
+        .populate('student')
+        .exec(function (err, childRelations) {
+            if (err) defer.reject(err);
+            else if (childRelations.length == 0) defer.reject(new Error('Can\' find children for parent with id ' + req.query.userId + '.'));
+            else {
+                childRelations = __.map(childRelations, function (relation) {
+                    return castOutPassword(relation.student);
+                });
+                defer.resolve(childRelations);
+            }
+        })
+
+        return defer.promise;
+    })
+    .then(function (students) {
+        apiServer.sendResponse(req, res, students, 'Children info successfully retrieved')
+    })
+    .fail(function (err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
 }
 
 //-----------------helpers--------------------//
@@ -117,7 +165,6 @@ function createUserWithoutClasses(req, res) {
         }
     });
 }
-
 
 function findUsersByUserId(req, res) {
     logger.info("Users - findUsersByUserId");
