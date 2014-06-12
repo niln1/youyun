@@ -7,19 +7,19 @@ var Reminder = require('../../../models/Reminder');
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 
-exports.createReminder = function(req, res) {
+exports.createReminder = function (req, res) {
     apiServer.verifySignature(req, res, createReminderWithMessage)
 }
 
-exports.readReminders = function(req, res) {
+exports.readReminders = function (req, res) {
     apiServer.verifySignature(req, res, findRemindersByUserId)
 }
 
-exports.updateReminderWithId = function(req, res) {
+exports.updateReminderWithId = function (req, res) {
     apiServer.verifySignature(req, res, updateReminderById)
 }
 
-exports.deleteReminderWithId = function(req, res) {
+exports.deleteReminderWithId = function (req, res) {
     apiServer.verifySignature(req, res, deleteReminderById)
 }
 
@@ -37,7 +37,7 @@ function createReminderWithMessage(req, res) {
         newReminder.dueDate = new Date(req.body.dueDate);
     }
 
-    newReminder.save(function(err, reminder) {
+    newReminder.save(function (err, reminder) {
         if (!err && reminder) {
             apiServer.sendResponse(req, res, reminder, 'Reminder created successfully');
         } else {
@@ -51,7 +51,7 @@ function findRemindersByUserId(req, res) {
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
     Reminder.find({
         userId: req.session.user._id
-    }, function(err, reminders) {
+    }, function (err, reminders) {
         if (!err && reminders) {
             apiServer.sendResponse(req, res, reminders, 'Reminder retrieved successfully');
         } else if (!reminders) {
@@ -71,9 +71,9 @@ function updateReminderById(req, res) {
 
     Reminder.findOneAndUpdate({
         _id: req.params.id
-    }, param, function(err, reminder) {
+    }, param, function (err, reminder) {
         if (!err && reminder) {
-            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully');
+            apiServer.sendResponse(req, res, "success", 'Reminder updated successfully');
         } else if (!reminder) {
             apiServer.sendError(req, res, "Reminder didn't exist");
         } else {
@@ -88,7 +88,7 @@ function deleteReminderById(req, res) {
 
     Reminder.findOneAndRemove({
         _id: req.params.id
-    }, function(err, reminder) {
+    }, function (err, reminder) {
         if (!err && reminder) {
             apiServer.sendResponse(req, res, null, 'Reminder removed successfully');
         } else if (!reminder) {

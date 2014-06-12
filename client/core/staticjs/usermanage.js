@@ -10,6 +10,7 @@ var app;
 var userManageApp = (function () {
     function View() {
         this.$studentTable = $("#student-table");
+        this.$studentManageModal = $('#student-manage-modal');
     }
     View.prototype.start = function () {
         this.users = [];
@@ -17,9 +18,11 @@ var userManageApp = (function () {
     };
     // super bad rework when feeling like it
     View.prototype._renderTable = function () {
+        var self = this;
         var orderedStudents = _.sortBy(this.students, function (student) {
             return student.firstname;
         });
+        self.$studentTable.find("tbody").empty();
         _.each(orderedStudents, function (student) {
             if (!student.pickupLocation) student.pickupLocation = "";
             var templateString = "<tr>\
@@ -29,11 +32,31 @@ var userManageApp = (function () {
             </tr>";
             var template = _.template(templateString, student);
             // i18n
-            var result = $(template).click($.proxy(function () {
-                $('#student-manage-modal').modal('show')
-            }), this);
-            $("tbody", "#student-table").append(result);
+            var result = $(template).click(function () {
+                // should extract it somewhere else
+                self.$studentManageModal.find(".modal-title").html("编辑学生");
+
+                self.$studentManageModal.find(".lastname-input").val(student.lastname);
+                self.$studentManageModal.find(".firstname-input").val(student.firstname);
+                self.$studentManageModal.find(".pickupLocation-input").val(student.pickupLocation);
+
+                self.$studentManageModal.find(".submit-button").click({
+                    student: student
+                }, $.proxy(self._submitStudentEdit, self));
+
+                self.$studentManageModal.modal('show');
+            });
+            self.$studentTable.find("tbody").append(result);
         });
+    };
+    View.prototype._submitStudentEdit = function (event) {
+        var submitData = {
+            firstname: this.$studentManageModal.find(".firstname-input").val(),
+            lastname: this.$studentManageModal.find(".lastname-input").val(),
+            pickupLocation: this.$studentManageModal.find(".pickupLocation-input").val()
+        };
+        this._updateUser(event.data.student, submitData);
+        this.$studentManageModal.modal('hide');
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
@@ -52,13 +75,21 @@ var userManageApp = (function () {
         };
         $.get(url, data, $.proxy(this.parseUserList, this));
     };
-    View.prototype._updateUser = function () {
-        var url = "/api/v1/users";
-        var data = {
-            signature: "tempkey"
+    View.prototype._updateUser = function (user, data) {
+        var url = "/api/v1/users/" + user._id;
+        data.signature = "tempkey";
+        var callback = function (data) {
+            this._getUserList();
         };
-        var callback = function (data) {};
-        $.put(url, data, $.proxy(callback, this));
+        $.ajax({
+            url: url,
+            data: JSON.stringify(data),
+            type: 'PATCH',
+            contentType: "application/json",
+            dataType: "json",
+            success: $.proxy(callback, this),
+            error: common.showError
+        });
     };
     return View;
 })();

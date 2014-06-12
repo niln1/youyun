@@ -12,9 +12,12 @@ module.exports = [{
     'GET': {
         'handler': users.readUsers,
         'required': [
-            parameters.signature
+        parameters.signature
         ],
-        'optional': [],
+        'optional': [
+        parameters.userType,
+        parameters.isPickUp
+        ],
         'description': 'List all users that user is able to view',
         'response': {} // sample data
     },
@@ -22,10 +25,10 @@ module.exports = [{
         'handler': users.createUser,
         'content-type': 'application/json',
         'required': [
-            parameters.signature,
-            parameters.username,
-            parameters.password,
-            parameters.userType
+        parameters.signature,
+        parameters.username,
+        parameters.password,
+        parameters.userType
         ],
         'optional': [parameters.classList],
         'description': 'create user',
@@ -37,7 +40,7 @@ module.exports = [{
         'handler': users.updateUserImage,
         'content-type': 'multipart/form-data',
         'required': [
-            parameters.signature,
+        parameters.signature,
         ],
         'optional': [],
         'description': 'create user image',
@@ -47,10 +50,35 @@ module.exports = [{
         'handler': users.updateUserImage,
         'content-type': 'multipart/form-data',
         'required': [
-            parameters.signature,
+        parameters.signature,
         ],
         'optional': [],
         'description': 'create user image',
+        'response': {} // sample data
+    }
+}, {
+    'url': '/api/v1/users/{id}',
+    'PATCH': {
+        'handler': users.updateUserWithId,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        ],
+        'optional': [
+        parameters.firstname,
+        parameters.lastname,
+        parameters.pickupLocation
+        ],
+        'description': 'update user',
+        'response': {} // sample data
+    },
+    'DELETE': {
+        'handler': users.deleteUserWithId,
+        'required': [
+        parameters.signature
+        ],
+        'optional': [],
+        'description': 'delete the user',
         'response': {} // sample data
     }
 }, {
@@ -58,8 +86,8 @@ module.exports = [{
     'GET': {
         'handler': users.getChild,
         'required': [
-            parameters.signature,
-            parameters.userId
+        parameters.signature,
+        parameters.userId
         ],
         'optional': [],
         'description': 'return child user of user with userId',
