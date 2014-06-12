@@ -53,4 +53,29 @@ module.exports = [{
         'description': 'create user image',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/users/{id}',
+    'PATCH': {
+        'handler': users.updateUserWithId,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature,
+        ],
+        'optional': [
+            parameters.firstname,
+            parameters.lastname,
+            parameters.pickupLocation
+        ],
+        'description': 'update user',
+        'response': {} // sample data
+    },
+    'DELETE': {
+        'handler': users.deleteUserWithId,
+        'required': [
+            parameters.signature
+        ],
+        'optional': [],
+        'description': 'delete the user',
+        'response': {} // sample data
+    }
 }];

@@ -33,6 +33,16 @@ exports.updateUserImage = function (req, res) {
 
 //-----------------helpers--------------------//
 
+function updateUserById(req, res) {
+    logger.info("Users - updateUserById");
+    logger.debug("firstname: " + JSON.stringify(req.body.firstname) +
+        ", lastname: " + JSON.stringify(req.body.lastname));
+
+    apiServer.sendResponse(req, res, {
+        data: "da"
+    }, 'User updated successfully');
+}
+
 function updateUserImageHelper(req, res) {
     logger.info("Users - updateUserImageHelper");
     logger.debug("user: " + JSON.stringify(req.session.user));

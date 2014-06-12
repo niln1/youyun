@@ -9,6 +9,24 @@ exports.username = {
     'description': 'A string containing the username of the user.'
 };
 
+exports.firstname = {
+    'type': 'string',
+    'param': 'firstname',
+    'description': 'A string containing the firstname of the user.'
+};
+
+exports.lastname = {
+    'type': 'string',
+    'param': 'lastname',
+    'description': 'A string containing the lastname of the user.'
+};
+
+exports.pickupLocation = {
+    'type': 'string',
+    'param': 'pickupLocation',
+    'description': 'A string containing the pickupLocation of the student.'
+};
+
 exports.password = {
     'type': 'string',
     'param': 'password',
@@ -86,4 +104,3 @@ exports.pushToken = {
     'param': 'token',
     'description': 'Mobile device push notification token'
 }
-

@@ -82,8 +82,10 @@ var userManageApp = (function () {
         };
         $.ajax({
             url: url,
-            data: data,
-            type: 'PUT',
+            data: JSON.stringify(data),
+            type: 'PATCH',
+            contentType: "application/json",
+            dataType: "json",
             success: $.proxy(callback, this)
         });
     };
