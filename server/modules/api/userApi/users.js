@@ -142,9 +142,7 @@ function findUsersByUserId(req, res) {
             '$exists': Boolean(JSON.parse(param.isPickUp))
         };
     }
-    console.log(query);
     User.find(query, callback);
-
 }
 
 function formatUsers(users) {
