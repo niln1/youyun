@@ -35,12 +35,21 @@ exports.updateUserImage = function (req, res) {
 
 function updateUserById(req, res) {
     logger.info("Users - updateUserById");
-    logger.debug("firstname: " + JSON.stringify(req.body.firstname) +
-        ", lastname: " + JSON.stringify(req.body.lastname));
+    var param = JSON.parse(JSON.stringify(req.body));
+    delete param["signature"];
+    logger.debug("params: " + JSON.stringify(param) + "id: " + JSON.stringify(req.params._id));
 
-    apiServer.sendResponse(req, res, {
-        data: "da"
-    }, 'User updated successfully');
+    User.findOneAndUpdate({
+        _id: req.params.id
+    }, param, function (err, user) {
+        if (!err && user) {
+            apiServer.sendResponse(req, res, "success", 'user updated successfully');
+        } else if (!user) {
+            apiServer.sendError(req, res, "user didn't exist");
+        } else {
+            apiServer.sendError(req, res, err);
+        }
+    });
 }
 
 function updateUserImageHelper(req, res) {

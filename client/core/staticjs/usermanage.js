@@ -22,6 +22,7 @@ var userManageApp = (function () {
         var orderedStudents = _.sortBy(this.students, function (student) {
             return student.firstname;
         });
+        self.$studentTable.find("tbody").empty();
         _.each(orderedStudents, function (student) {
             if (!student.pickupLocation) student.pickupLocation = "";
             var templateString = "<tr>\
@@ -40,12 +41,7 @@ var userManageApp = (function () {
                 self.$studentManageModal.find(".pickupLocation-input").val(student.pickupLocation);
 
                 self.$studentManageModal.find(".submit-button").click({
-                    student: student,
-                    submitData: {
-                        firstname: self.$studentManageModal.find(".firstname-input").val(),
-                        lastname: self.$studentManageModal.find(".lastname-input").val(),
-                        pickupLocation: self.$studentManageModal.find(".pickupLocation-input").val()
-                    }
+                    student: student
                 }, $.proxy(self._submitStudentEdit, self));
 
                 self.$studentManageModal.modal('show');
@@ -54,8 +50,13 @@ var userManageApp = (function () {
         });
     };
     View.prototype._submitStudentEdit = function (event) {
-        console.log(event.data.submitData);
-        this._updateUser(event.data.student, event.data.submitData);
+        var submitData = {
+            firstname: this.$studentManageModal.find(".firstname-input").val(),
+            lastname: this.$studentManageModal.find(".lastname-input").val(),
+            pickupLocation: this.$studentManageModal.find(".pickupLocation-input").val()
+        };
+        this._updateUser(event.data.student, submitData);
+        this.$studentManageModal.modal('hide');
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
@@ -78,7 +79,7 @@ var userManageApp = (function () {
         var url = "/api/v1/users/" + user._id;
         data.signature = "tempkey";
         var callback = function (data) {
-            console.log(data);
+            this._getUserList();
         };
         $.ajax({
             url: url,
@@ -86,7 +87,8 @@ var userManageApp = (function () {
             type: 'PATCH',
             contentType: "application/json",
             dataType: "json",
-            success: $.proxy(callback, this)
+            success: $.proxy(callback, this),
+            error: common.showError
         });
     };
     return View;
