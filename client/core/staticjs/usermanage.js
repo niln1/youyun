@@ -40,16 +40,22 @@ var userManageApp = (function () {
                 self.$studentManageModal.find(".pickupLocation-input").val(student.pickupLocation);
 
                 self.$studentManageModal.find(".submit-button").click({
-                    student: student
-                }, self.submitStudentEdit);
+                    student: student,
+                    submitData: {
+                        firstname: self.$studentManageModal.find(".firstname-input").val(),
+                        lastname: self.$studentManageModal.find(".lastname-input").val(),
+                        pickupLocation: self.$studentManageModal.find(".pickupLocation-input").val()
+                    }
+                }, $.proxy(self._submitStudentEdit, self));
 
                 self.$studentManageModal.modal('show');
             });
             self.$studentTable.find("tbody").append(result);
         });
     };
-    View.prototype.submitStudentEdit = function (event) {
-        console.log(event.data.student);
+    View.prototype._submitStudentEdit = function (event) {
+        console.log(event.data.submitData);
+        this._updateUser(event.data.student, event.data.submitData);
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
@@ -68,13 +74,18 @@ var userManageApp = (function () {
         };
         $.get(url, data, $.proxy(this.parseUserList, this));
     };
-    View.prototype._updateUser = function () {
-        var url = "/api/v1/users";
-        var data = {
-            signature: "tempkey"
+    View.prototype._updateUser = function (user, data) {
+        var url = "/api/v1/users/" + user._id;
+        data.signature = "tempkey";
+        var callback = function (data) {
+            console.log(data);
         };
-        var callback = function (data) {};
-        $.put(url, data, $.proxy(callback, this));
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'PUT',
+            success: $.proxy(callback, this)
+        });
     };
     return View;
 })();
