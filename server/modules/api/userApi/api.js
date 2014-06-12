@@ -14,7 +14,10 @@ module.exports = [{
         'required': [
             parameters.signature
         ],
-        'optional': [],
+        'optional': [
+            parameters.userType,
+            parameters.isPickUp
+        ],
         'description': 'List all users that user is able to view',
         'response': {} // sample data
     },

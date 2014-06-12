@@ -121,8 +121,11 @@ function createUserWithoutClasses(req, res) {
 
 function findUsersByUserId(req, res) {
     logger.info("Users - findUsersByUserId");
+    var param = JSON.parse(JSON.stringify(req.query));
+    delete param["signature"];
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
-    User.find({}, function (err, users) {
+    logger.debug("param: " + JSON.stringify(param));
+    var callback = function (err, users) {
         if (!err && users) {
             users = formatUsers(users);
             apiServer.sendResponse(req, res, users, 'Users retrieved successfully');
@@ -131,7 +134,17 @@ function findUsersByUserId(req, res) {
         } else {
             apiServer.sendError(req, res, err);
         }
-    });
+    };
+    var query = {};
+    if (param.userType) query.userType = param.userType;
+    if (param.isPickUp) {
+        query.pickupLocation = {
+            '$exists': Boolean(JSON.parse(param.isPickUp))
+        };
+    }
+    console.log(query);
+    User.find(query, callback);
+
 }
 
 function formatUsers(users) {

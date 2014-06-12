@@ -8,8 +8,12 @@
 "use strict";
 var app;
 var pickupReportApp = (function () {
-    function View() {}
+    function View() {
+        this.$prepickupList = $("#prepickup-list");
+    }
     View.prototype.start = function () {};
+    View.prototype.loadData = function () {};
+    View.prototype.getTotalStudentNeedPickup = function () {};
     return View;
 })();
 
