@@ -8,17 +8,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var StudentPickupReportSchema = new Schema({
-    needToPickup: [{
+    needToPickupList: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    pickedUp: [{
+    absenceList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    pickedUpList: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
     timeGenerated: {
         type: Date,
         require: true
+    },
+    lock: {
+        type: Boolean
     }
 });
 
