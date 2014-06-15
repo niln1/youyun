@@ -16,6 +16,7 @@ html
 
 		if (env == 'development')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
+			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
 			link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.css')
 			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
 			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
@@ -30,6 +31,7 @@ html
 			script(src='/core/lib/jade/js/jade.js')
 			script(src='/core/lib/moment/js/moment.js')
 			script(src='/core/lib/bootstrap3/js/bootstrap.js')
+			script(src='/core/lib/kendo/js/kendo.all.min.js')
 			script(src='/core/lib/timepicker/js/timepicker.js')
 			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
 			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
@@ -37,6 +39,7 @@ html
 
 		else if (env == 'production')
 			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
+			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
 			link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.min.css')
 			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
 			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
@@ -51,6 +54,7 @@ html
 			script(src='/core/lib/jade/js/jade.min.js')
 			script(src='/core/lib/moment/js/moment.min.js')
 			script(src='/core/lib/bootstrap3/js/bootstrap.min.js')
+			script(src='/core/lib/kendo/js/kendo.all.min.js')
 			script(src='/core/lib/timepicker/js/timepicker.min.js')
 			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
 			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
