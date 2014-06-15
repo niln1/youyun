@@ -43,10 +43,9 @@ exports.getChild = function (req, res) {
     .spread(function (user, signatureIsValid) {
         if (user.userType < 3 || user._id === req.query.userId) {
             if (req.query.userId) return true;
-            else return new Error('userId must be specified.');
+            else throw new Error('userId must be specified.');
         } else {
-            console.log('false');
-            return new Error("You don't have permission to read child information for this user.");
+            throw new Error("You don't have permission to read child information for this user.");
         }
     })
     .then(function (hasPermissionToRead) {

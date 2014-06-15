@@ -11,7 +11,8 @@ var apiModules = [
     require('../accountApi/api'),
     require('../classApi/api'),
     require('../reminderApi/api'),
-    require('../userApi/api')
+    require('../userApi/api'),
+    require('../studentPickupReportApi/api')
 ];
 
 // creating the global apiSpec object
