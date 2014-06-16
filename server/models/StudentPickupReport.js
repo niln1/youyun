@@ -20,14 +20,14 @@ var StudentPickupReportSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    timeGenerated: {
-        type: Date,
-        require: true
-    },
     lock: {
         type: Boolean,
-        require: true
+        default: false
     }
 });
+
+StudentPickupReportSchema.statics.findByLock = function (lock, cb) {
+    this.find({lock: lock}).exec(cb);
+}
 
 module.exports = mongoose.model('StudentPickupReport', StudentPickupReportSchema);

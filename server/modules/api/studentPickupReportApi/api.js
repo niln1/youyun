@@ -9,7 +9,7 @@ var parameters = require('../utils/parameters');
 module.exports = [{
     'url': '/api/v1/studentpickupreports',
     'GET': {
-        'handler': studentPickupReports.read,
+        'handler': studentPickupReports.readLocked,
         'required': [parameters.signature],
         'optional': [],
         'description': 'List all old reports',
