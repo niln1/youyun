@@ -26,6 +26,11 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
+StudentPickupReportSchema.methods.addAbsence = function (studentId, cb) {}
+StudentPickupReportSchema.methods.removeAbsence = function (studentId, cb) {}
+StudentPickupReportSchema.methods.addPickedUp = function (studentId, cb) {}
+StudentPickupReportSchema.methods.removePickedUp = function (studentId, cb) {}
+
 StudentPickupReportSchema.statics.findByLock = function (lock, cb) {
     this.find({lock: lock}).exec(cb);
 }
