@@ -58,7 +58,7 @@ exports.getChild = function (req, res) {
         .populate('student')
         .exec(function (err, childRelations) {
             if (err) defer.reject(err);
-            else if (childRelations.length == 0) defer.reject(new Error('Can\' find children for parent with id ' + req.query.userId + '.'));
+            else if (childRelations.length === 0) defer.reject(new Error('Can\' find children for parent with id ' + req.query.userId + '.'));
             else {
                 childRelations = __.map(childRelations, function (relation) {
                     return castOutPassword(relation.student);

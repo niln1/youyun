@@ -26,10 +26,33 @@ exports.init = function (req, res) {
     })
     .then(function (hasPermissionToRead) {
         var defer = Q.defer();
-        deferred.reject(new Error("Can't do it"));
+        StudentPickupReport.find()
+        .exec(function (err, reports){
+            if (err) defer.reject(err);
+            else if (reports.length === 0) {
+                User.findByOptions({ userType: 3, isPickUp: true},
+                    function (err, students) {
+                        if (err) defer.reject(err);
+                        else if (students.length === 0) defer.reject(new Error("No Student Needs pickUp"));
+                        else {
+                            var needToPickupList = __.pluck(students, "_id");
+                            var newStudentPickupReport = new StudentPickupReport({
+                                needToPickupList: needToPickupList,
+                                timeGenerated: new Date(),
+                                lock: false
+                            });
+                            newStudentPickupReport.save(function(err, data){   
+                                if (err) defer.reject(err);
+                                defer.resolve(data);
+                            });
+                        }
+                    });
+            } else defer.reject(new Error("Report Already initialized"));
+        });
+        return defer.promise;
     })
-    .then(function (students) {
-        apiServer.sendResponse(req, res, students, 'StudentPickupReport info successfully retrieved')
+    .then(function (report) {
+        apiServer.sendResponse(req, res, report, 'StudentPickupReport successfully inited')
     })
     .fail(function (err) {
         logger.warn(err);

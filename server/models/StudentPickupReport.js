@@ -25,7 +25,8 @@ var StudentPickupReportSchema = new Schema({
         require: true
     },
     lock: {
-        type: Boolean
+        type: Boolean,
+        require: true
     }
 });
 
