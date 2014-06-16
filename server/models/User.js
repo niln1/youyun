@@ -85,4 +85,14 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
+UserSchema.statics.findByOptions = function (options, cb) {
+    var query = {};
+    console.log(options);
+    if (options.userType) query.userType = options.userType;
+    if (options.isPickUp) query.pickupLocation = {
+        '$exists': Boolean(JSON.parse(options.isPickUp))
+    };
+    this.find(query, cb);
+}
+
 module.exports = mongoose.model('User', UserSchema);

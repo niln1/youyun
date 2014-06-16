@@ -7,8 +7,6 @@ var User = require('../../../models/User');
 var StudentPickupReport = require('../../../models/StudentPickupReport');
 var mongoose = require('mongoose');
 
-var querys = require('../utils/querys');
-
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 var __ = require('underscore');
@@ -26,7 +24,10 @@ exports.init = function (req, res) {
             throw new Error("You don't have permission");
         }
     })
-    .then(querys.initStudentPickupReport)
+    .then(function (hasPermissionToRead) {
+        var defer = Q.defer();
+        deferred.reject(new Error("Can't do it"));
+    })
     .then(function (students) {
         apiServer.sendResponse(req, res, students, 'StudentPickupReport info successfully retrieved')
     })

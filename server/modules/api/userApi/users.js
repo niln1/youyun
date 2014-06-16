@@ -181,14 +181,7 @@ function findUsersByUserId(req, res) {
             apiServer.sendError(req, res, err);
         }
     };
-    var query = {};
-    if (param.userType) query.userType = param.userType;
-    if (param.isPickUp) {
-        query.pickupLocation = {
-            '$exists': Boolean(JSON.parse(param.isPickUp))
-        };
-    }
-    User.find(query, callback);
+    User.findByOptions({ userType: param.userType, isPickUp: param.isPickUp}, callback);
 }
 
 function formatUsers(users) {
