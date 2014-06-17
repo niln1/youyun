@@ -73,7 +73,7 @@ function updateReminderById(req, res) {
         _id: req.params.id
     }, param, function (err, reminder) {
         if (!err && reminder) {
-            apiServer.sendResponse(req, res, "success", 'Reminder updated successfully');
+            apiServer.sendResponse(req, res, reminder, 'Reminder updated successfully');
         } else if (!reminder) {
             apiServer.sendError(req, res, "Reminder didn't exist");
         } else {
