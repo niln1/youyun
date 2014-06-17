@@ -158,5 +158,3 @@ exports.absence = function (req, res) {
         apiServer.sendBadRequest(req, res, err.toString());
     });
 }
-
-exports.remove
