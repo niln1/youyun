@@ -124,4 +124,39 @@ exports.readCurrent = function (req, res) {
     });
 }
 
-exports.addAbsence = function (req, res) {}
+exports.absence = function (req, res) {
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+        ])
+    .spread(function (user, signatureIsValid) {
+        if (user.userType < 3) {
+            return true;
+        } else {
+            throw new Error("You don't have permission");
+        }
+    })
+    .then(function (hasPermissionToRead) {
+        var defer = Q.defer();
+        StudentPickupReport.findByLock(false,
+            function (err, reports) {
+                if (err) defer.reject(err);
+                else if (reports.length === 0) 
+                    defer.reject(new Error("report havned been initialized"));
+                else if (reports.length > 1) 
+                    defer.reject(new Error("Internal Error - current pk report"));
+                else
+                    defer.resolve(reports[0]);
+            });
+        return defer.promise;
+    })
+    .then(function (report) {
+        apiServer.sendResponse(req, res, report, 'StudentPickupReport Current Report')
+    })
+    .fail(function (err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
+
+exports.remove

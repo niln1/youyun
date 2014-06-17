@@ -16,10 +16,14 @@ module.exports = [{
         'response': {} // sample data
     }
 }, {
-    'url': '/api/v1/studentpickupreports/addabsence',
+    'url': '/api/v1/studentpickupreports/absence',
     'POST': {
-        'handler': studentPickupReports.addAbsence,
-        'required': [parameters.signature, parameters.userId],
+        'handler': studentPickupReports.absence,
+        'required': [
+        parameters.signature,
+        parameters.userId,
+        parameters.isAdd
+        ],
         'optional': [],
         'description': 'addAbsence student to current report',
         'response': {} // sample data

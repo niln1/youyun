@@ -26,10 +26,18 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
-StudentPickupReportSchema.methods.addAbsence = function (studentId, cb) {}
-StudentPickupReportSchema.methods.removeAbsence = function (studentId, cb) {}
-StudentPickupReportSchema.methods.addPickedUp = function (studentId, cb) {}
-StudentPickupReportSchema.methods.removePickedUp = function (studentId, cb) {}
+StudentPickupReportSchema.methods.addAbsence = function (studentId) {
+    this.absenceList.addToSet(studentId);
+}
+StudentPickupReportSchema.methods.removeAbsence = function (studentId) {
+    this.absenceList.pull(studentId);
+}
+StudentPickupReportSchema.methods.addPickedUp = function (studentId) {
+    this.pickedUpList.addToSet(studentId);
+}
+StudentPickupReportSchema.methods.removePickedUp = function (studentId) {
+    this.pickedUpList.pull(studentId);
+}
 
 StudentPickupReportSchema.statics.findByLock = function (lock, cb) {
     this.find({lock: lock}).exec(cb);
