@@ -8,6 +8,7 @@ var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 var app;
 module.exports.app = app = express();
@@ -38,12 +39,24 @@ app.set('view engine', 'jade');
 /*
  * Setup middlewares
  */
+
+// app.use(require('serve-favicon'));
+app.use(require('morgan')('dev'));
+app.use(require('connect-multiparty')());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+// app.use(require('method-override'));
+
+
+// OLD STUFF
+/*
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 //change this since this is depreciated
 app.use(express.multipart());
 app.use(express.methodOverride());
+*/
 session(app);
 
 // Global authentication middle ware
@@ -65,27 +78,28 @@ mongoose.connect(nconf.get('mongodb-url'));
 var db = mongoose.connection;
 db.on('error', logger.error.bind(logger, 'connection error:'));
 
+routes.route(app);
+
 // Static file server
 if (env == 'development') {
-    app.use('/', express.static('development'));
-    app.use('/static', express.static('static'));
+	app.use(express.static(path.join(__dirname, 'development')));
+    // app.use('/', express.static('development'));
+    // app.use('/static', express.static('static'));
 } else if (env == 'production') {
-    app.use('/', express.static('production'));
-    app.use('/static', express.static('static'));
+	app.use(express.static(path.join(__dirname, 'production')));
+    // app.use('/', express.static('production'));
+    // app.use('/static', express.static('static'));
 }
-
-// Router
-app.use(app.router);
-routes.route(app);
 
 // development only
 if ('development' == env) {
-    app.use(express.errorHandler());
+    app.use(require('errorhandler'));
 }
 
 var server = app.listen(app.get('port'), function() {
     logger.info("LogLevel - " + nconf.get('log-level'));
     logger.info('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
-var io = require('socket.io').listen(server);
-socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
+
+// var io = require('socket.io').listen(server);
+// socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));

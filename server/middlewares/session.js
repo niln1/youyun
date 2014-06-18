@@ -6,7 +6,9 @@ module.exports = function(app) {
     var env = app.get('env');
 
     // Setup session
-    var cookieParser = express.cookieParser(nconf.get('cookie-secret'));
+    // var cookieParser = express.cookieParser(nconf.get('cookie-secret'));
+    var cookieParser = require('cookie-parser')(nconf.get('cookie-secret'));
+    var session = require('express-session');
     app.use(cookieParser);
 
     var store;
@@ -14,10 +16,11 @@ module.exports = function(app) {
         var MemoryStore = express.session.MemoryStore;
         store = new MemoryStore();
     } else {
-        var MongoStore = require('connect-mongo')(express);
+        var MongoStore = require('connect-mongostore')(session);
         var options = {
             url: nconf.get('mongodb-url') + '/' + nconf.get('mongodb-session-collection'),
-            maxAge: nconf.get('cookie-maxage')
+            maxAge: nconf.get('cookie-maxage'),
+            db: 'sessions'
         };
         store = new MongoStore(options);
     }
@@ -26,7 +29,7 @@ module.exports = function(app) {
     app.set('session-store', store);
     app.set('cookie-parser', cookieParser);
 
-    app.use(express.session({
+    app.use(session({
         secret: nconf.get('cookie-secret'),
         key: nconf.get('cookie-key'),
         store: store,
