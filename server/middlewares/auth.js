@@ -28,6 +28,7 @@ function apiLoginSuccess(req, res, user) {
 }
 
 function userAuthenticationFailed(req, res, e) {
+    logger.error("userAuthenticationFailed");
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
         apiServer.userNotAuthenticated(req, res, e);
@@ -38,6 +39,7 @@ function userAuthenticationFailed(req, res, e) {
 }
 
 function userNotAuthenticated(req, res, e) {
+    logger.error("userNotAuthenticated");
     req.session.user = null;
     if (req.url.search(/^\/api\/v\d*\/[a-zA-Z0-9\/\-%]*/) !== -1) {
         apiServer.userNotAuthenticated(req, res, e);
@@ -66,7 +68,9 @@ exports.doLogin = function(req, res) {
         if (err || !user) return userAuthenticationFailed(req, res, '用户名或者密码错误');
 
         user.comparePassword(req.body.password, function(err, match) {
-            if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
+            if (err || !match) {
+                return userAuthenticationFailed(req, res, '用户名或者密码错误');
+            }
             // casting out password
             user.password = "This is a Joke, My friend";
 
@@ -77,13 +81,16 @@ exports.doLogin = function(req, res) {
                 apiLoginSuccess(req, res, user);
             } else {
                 req.session.user = user;
-                res.redirect('/login');
+                req.session.fk = "hello";
+                logger.info("session:" + JSON.stringify(req.session));
+                res.redirect('/');
             }
         });
     });
 }
 
 exports.checkUserSession = function(req, res, next) {
+    logger.info("session check:" + JSON.stringify(req.session));
     var path = req.url;
     var isInWhitelist = false;
     var whitelistPatterns = [

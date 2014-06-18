@@ -78,7 +78,6 @@ mongoose.connect(nconf.get('mongodb-url'));
 var db = mongoose.connection;
 db.on('error', logger.error.bind(logger, 'connection error:'));
 
-routes.route(app);
 
 // Static file server
 if (env == 'development') {
@@ -90,6 +89,8 @@ if (env == 'development') {
     // app.use('/', express.static('production'));
     // app.use('/static', express.static('static'));
 }
+
+routes.route(app);
 
 // development only
 if ('development' == env) {

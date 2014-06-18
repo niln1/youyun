@@ -13,16 +13,20 @@ module.exports = function(app) {
 
     var store;
     if (env == 'test' || env == 'coverage') {
-        var MemoryStore = express.session.MemoryStore;
+        var MemoryStore = session.MemoryStore;
         store = new MemoryStore();
     } else {
-        var MongoStore = require('connect-mongostore')(session);
+        console.log(session);
+        RedisStore = require('connect-redis')(session);
+        client = require('redis').createClient();
+
         var options = {
-            url: nconf.get('mongodb-url') + '/' + nconf.get('mongodb-session-collection'),
-            maxAge: nconf.get('cookie-maxage'),
-            db: 'sessions'
+            client: client,
+            db: "session",
+            host: nconf.get('redis-host'),
+            port: nconf.get('redis-port')
         };
-        store = new MongoStore(options);
+        store = new RedisStore(options);
     }
 
     // These session setting will be used by socket.io module
@@ -34,7 +38,7 @@ module.exports = function(app) {
         key: nconf.get('cookie-key'),
         store: store,
         cookie: {
-            secure: false,
+            secure: false, //TODO
             maxAge: nconf.get('cookie-maxage')
         }
     }));

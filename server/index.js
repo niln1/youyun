@@ -12,6 +12,9 @@ var logger = require('./utils/logger');
 var userApiHelper = require('./modules/api/userApi/users.js').helpers;
 
 exports.main = function (req, res) {
+
+    logger.trace('--------------------------------------');
+
     if (!req.session.user) return res.redirect('/login');
     res.render('index', {
         user: req.session.user
