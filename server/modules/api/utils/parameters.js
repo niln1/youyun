@@ -81,6 +81,12 @@ exports.isPickUp = {
     'description': 'isPickUp'
 }
 
+exports.isAdd = {
+    'type': 'boolean',
+    'param': 'isAdd',
+    'description': 'isAdd'
+}
+
 exports.classId = {
     'type': 'string',
     'param': 'classId',

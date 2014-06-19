@@ -1,14 +1,12 @@
 
 exports.route = function (socket) {
-	socket.on('update-student-pickup-info', function (data) {
-		/*
+	socket.on('pickup::parents::add-absence', function (data) {
 		console.log(data);
-		User.find({}, function (user) {
-			user.needPickup = false;
-			user.save(function (done) {
-				socket.emit('success')
-			})
-		})
-		*/
+		// User.find({}, function (user) {
+		// 	user.needPickup = false;
+		// 	user.save(function (done) {
+		// 		socket.emit('success')
+		// 	})
+		// })
 	});
 }
