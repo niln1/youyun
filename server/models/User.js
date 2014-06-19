@@ -4,8 +4,11 @@
 
 'use strict';
 
+var StudentParent = require('./StudentParent');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
+var __ = require('underscore');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
@@ -83,6 +86,25 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
+};
+
+UserSchema.methods.hasChild = function (childId, defer) {
+    if (this.userType === 4) {
+        StudentParent.find({parent: this._id},
+            function (err, data) {
+                if (err) throw err;
+                var studentIds = __.pluck(data, "student");
+                var isMyChild = __.reduce(studentIds, function(memo, id){ 
+                    if (id.equals(childId)) return memo + 1;
+                    else return memo + 0; 
+                }, 0);
+                if (studentIds.length === 0) defer.reject(new Error("U have no child"));
+                else if (isMyChild === 1) defer.resolve();
+                else defer.reject(new Error("That child is not yours"));
+        })
+    } else {
+        defer.reject(new Error("U cannot have child if not parent"));
+    }
 };
 
 UserSchema.statics.findByOptions = function (options, cb) {

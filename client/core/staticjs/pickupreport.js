@@ -14,9 +14,13 @@ var pickupReportApp = (function () {
     View.prototype.start = function () {
         this.dontPickupList = [];
         this.totalPickupList = [];
+        this.initSocket();
         this.getTotalStudentNeedPickup();
     };
     View.prototype.loadData = function () {};
+    View.prototype.initSocket = function () {
+        this.socket = io.connect();
+    };
     View.prototype.reRender = function () {
         this.$prepickupList.find(".need-pickup").html(this.totalPickupList.length - this.dontPickupList.length);
         this.$prepickupList.find(".dont-pickup").html(this.dontPickupList.length);
