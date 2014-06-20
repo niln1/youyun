@@ -46,6 +46,7 @@ exports.route = function (socket) {
 		})
 		.then(function (report) {
 			logger.info("done");
+			socket.broadcast.emit('pickup::all:update-current-report', report);
 		})
 		.fail(function (err) {
 			logger.warn(err);
