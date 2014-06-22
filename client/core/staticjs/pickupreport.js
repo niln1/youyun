@@ -12,23 +12,31 @@ var pickupReportApp = (function () {
         this.$prepickupList = $("#prepickup-list");
     }
     View.prototype.start = function () {
-        this.dontPickupList = [];
-        this.totalPickupList = [];
+        this.currentReport = {};
+        this.users = [];
         this.initSocket();
-        this.getTotalStudentNeedPickup();
+        this.loadData();
     };
-    View.prototype.loadData = function () {};
+    View.prototype.loadData = function () {
+        this._getUserList();
+    };
     View.prototype.initSocket = function () {
         this.socket = io.connect();
+        this.socket.emit("pickup::all::get-current-report");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
     };
     View.prototype.parseCurrentReport = function (data) {
         console.log(data);
+        this.currentReport = data;
+        this.reRender();
     };
     View.prototype.reRender = function () {
-        this.$prepickupList.find(".need-pickup").html(this.totalPickupList.length - this.dontPickupList.length);
-        this.$prepickupList.find(".dont-pickup").html(this.dontPickupList.length);
-        this.$prepickupList.find(".total").html(this.totalPickupList.length);
+        if (!$.isEmptyObject(this.currentReport)) {
+            this.$prepickupList.find(".need-pickup").html(this.currentReport.needToPickupList.length
+                - this.currentReport.absenceList.length);
+            this.$prepickupList.find(".absence").html(this.currentReport.absenceList.length);
+            this.$prepickupList.find(".total").html(this.currentReport.needToPickupList.length);
+        }
 
         $("#grid").kendoGrid({
             dataSource: {
@@ -59,35 +67,35 @@ var pickupReportApp = (function () {
                 input: true,
                 numeric: false
             },
-            columns: ["ProductName",
-                {
-                    field: "UnitPrice",
-                    title: "Unit Price",
-                    format: "{0:c}",
-                    width: "130px"
+            columns: [{
+                    field: "firstname",
+                    title: "First Name",
                 }, {
-                    field: "UnitsInStock",
-                    title: "Units In Stock",
-                    width: "130px"
+                    field: "lastname",
+                    title: "Last Name",
                 }, {
-                    field: "Discontinued",
-                    width: "130px"
+                    field: "pickupLocation",
+                    title: "Pick Up Location",
                 }]
         });
 
     };
-    View.prototype.parsePickupStudentList = function (data) {
-        this.totalPickupList = data.result;
+    View.prototype.parseUserList = function (data) {
+        this.users = data.result;
+        this.students = _.filter(this.users, function (user) {
+            return user.userType === 3;
+        });
+        this.teachers = _.filter(this.users, function (user) {
+            return user.userType === 2;
+        });
         this.reRender();
     };
-    View.prototype.getTotalStudentNeedPickup = function () {
+    View.prototype._getUserList = function () {
         var url = "/api/v1/users";
         var data = {
-            signature: "tempkey",
-            userType: 3,
-            isPickUp: 1
+            signature: "tempkey"
         };
-        $.get(url, data, $.proxy(this.parsePickupStudentList, this));
+        $.get(url, data, $.proxy(this.parseUserList, this));
     };
     return View;
 })();
@@ -99,12 +107,12 @@ $(function () {
 
 var products = [{
     ProductID: 1,
-    ProductName: "Chai",
+    firstname: "Chai",
     SupplierID: 1,
     CategoryID: 1,
-    QuantityPerUnit: "10 boxes x 20 bags",
+    lastname: "10 boxes x 20 bags",
     UnitPrice: 18.0000,
-    UnitsInStock: 39,
+    pickupLocation: 39,
     UnitsOnOrder: 0,
     ReorderLevel: 10,
     Discontinued: false,

@@ -14,6 +14,37 @@ var __ = require('underscore');
 var Q = require('q');
 
 exports.route = function (socket) {
+	// need to change
+	socket.on('pickup::all::get-current-report', function (data) {
+		Q.fcall(function () {
+			if (socket.session.user.userType < 3) {
+				return true;
+			} else {
+				throw new Error("You don't have permission");
+			}
+		})
+		.then(function (havePermission) {
+			var defer = Q.defer();
+			StudentPickupReport.findByLock(false,
+				function (err, reports) {
+					if (err) defer.reject(err);
+					else if (reports.length === 0) 
+						defer.reject(new Error("report havned been initialized"));
+					else
+						defer.resolve(reports[0]);
+				});
+			return defer.promise;
+		})
+		.then(function (report) {
+			logger.info("done");
+			socket.emit('pickup::all:update-current-report', report);
+		})
+		.fail(function (err) {
+			logger.warn(err);
+			socket.emit('pickup::all:error', err);
+		});
+	});
+
 	socket.on('pickup::parents::add-absence', function (data) {
 		var childId = mongoose.Types.ObjectId(data);
 
@@ -50,6 +81,7 @@ exports.route = function (socket) {
 		})
 		.fail(function (err) {
 			logger.warn(err);
+			socket.emit('pickup::all:error', err);
 		});
 	});
 }
