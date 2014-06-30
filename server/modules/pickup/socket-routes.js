@@ -52,7 +52,7 @@ exports.route = function (socket) {
 
 			return defer.promise;
 		}).then(function (report) {
-			socket.emit('pickup::crete::success', report);
+			socket.emit('pickup::create::success', report);
 			// TODO broadcast this message;
 		}).fail(function (err) {
 			socket.emit('pickup::create::error', err.toString());
