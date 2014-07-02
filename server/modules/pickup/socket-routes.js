@@ -9,11 +9,57 @@ var StudentPickupReport = require('../../models/StudentPickupReport');
 var StudentParent = require('../../models/StudentParent');
 var mongoose = require('mongoose');
 
+var moment = require('moment-timezone');
+
 var logger = require('../../utils/logger');
 var __ = require('underscore');
 var Q = require('q');
 
 exports.route = function (socket) {
+	socket.on('pickup::create', function (data) {
+		Q.fcall(function () {
+			if (socket.session.user.userType <= 3) {
+				return true;
+			} else {
+				throw new Error("You don't have permission to create pickup report");
+			}
+		}).then(function (hasPermission) {
+			if (data && data.date && data.users) {
+				var dateToValidate = moment(data.date).tz('UTC').startOf('day');
+				var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+				if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+					return true;
+				} else {
+					throw new Error("Cannot create a pickup report for the past.");
+				}
+			} else {
+				throw new Error("Please specify date and users to pickup.");
+			}
+		}).then(function () {
+			var defer = Q.defer();
+
+			var newReport = new StudentPickupReport({
+				needToPickupList: data.users,
+				absenceList: [],
+				pickedUpList: [],
+				date: data.date
+			});
+
+			newReport.save(function (err) {
+				if (err) defer.reject(err);
+				else defer.resolve(newReport);
+			});
+
+			return defer.promise;
+		}).then(function (report) {
+			socket.emit('pickup::create::success', report);
+			
+			// TODO broadcast this message;
+		}).fail(function (err) {
+			socket.emit('pickup::create::error', err.toString());
+		});
+	});
+
 	socket.on('pickup::parents::add-absence', function (data) {
 		var childId = mongoose.Types.ObjectId(data);
 

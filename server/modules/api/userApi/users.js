@@ -41,10 +41,15 @@ exports.getChild = function (req, res) {
         apiServer.validateSignature(req, res)
     ])
     .spread(function (user, signatureIsValid) {
-        if (user.userType < 3 || user._id === req.query.userId) {
+
+        console.log(user)
+        console.log(user._id);
+        console.log(req.query.userId);
+        if (user.userType < 3 || user._id.toString() === req.query.userId) {
             if (req.query.userId) return true;
             else throw new Error('userId must be specified.');
         } else {
+            console.log('no permission')
             throw new Error("You don't have permission to read child information for this user.");
         }
     })
