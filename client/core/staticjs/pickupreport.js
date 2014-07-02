@@ -20,6 +20,10 @@ var pickupReportApp = (function () {
     View.prototype.loadData = function () {};
     View.prototype.initSocket = function () {
         this.socket = io.connect();
+        this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
+    };
+    View.prototype.parseCurrentReport = function (data) {
+        console.log(data);
     };
     View.prototype.reRender = function () {
         this.$prepickupList.find(".need-pickup").html(this.totalPickupList.length - this.dontPickupList.length);

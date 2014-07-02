@@ -28,7 +28,10 @@ var StudentPickupReportSchema = new Schema({
 
 StudentPickupReportSchema.methods.addAbsence = function (studentId, defer) {
     this.absenceList.addToSet(studentId);
-    this.save(defer.resolve());
+    this.save(function(err, report){
+        if (err) defer.fail(err);
+        else defer.resolve(report);
+    });
 }
 StudentPickupReportSchema.methods.removeAbsence = function (studentId, defer) {
     this.absenceList.pull(studentId);
