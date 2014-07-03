@@ -10,6 +10,7 @@ var app;
 var pickupReportApp = (function () {
     function View() {
         this.$prepickupList = $("#prepickup-list");
+        this.$absenceTable = $("#absence-table");
     }
     View.prototype.start = function () {
         this.currentReport = {};
@@ -32,42 +33,23 @@ var pickupReportApp = (function () {
     };
     View.prototype.reRender = function () {
         if (!$.isEmptyObject(this.currentReport)) {
+            // put into listview
             this.$prepickupList.find(".need-pickup").html(this.currentReport.needToPickupList.length
                 - this.currentReport.absenceList.length);
             this.$prepickupList.find(".absence").html(this.currentReport.absenceList.length);
             this.$prepickupList.find(".total").html(this.currentReport.needToPickupList.length);
-        }
 
-        $("#grid").kendoGrid({
-            dataSource: {
-                data: products,
-                schema: {
-                    model: {
-                        fields: {
-                            ProductName: {
-                                type: "string"
-                            },
-                            UnitPrice: {
-                                type: "number"
-                            },
-                            UnitsInStock: {
-                                type: "number"
-                            },
-                            Discontinued: {
-                                type: "boolean"
-                            }
-                        }
-                    }
+            var tableData = _.filter(this.users, $.proxy(function(student){ 
+                return _.contains(this.currentReport.absenceList, student._id) 
+            }, this));
+
+            $(this.$absenceTable).kendoGrid({
+                dataSource: {
+                    data: tableData,
                 },
-                pageSize: 20
-            },
-            scrollable: true,
-            sortable: true,
-            pageable: {
-                input: true,
-                numeric: false
-            },
-            columns: [{
+                scrollable: true,
+                sortable: true,
+                columns: [{
                     field: "firstname",
                     title: "First Name",
                 }, {
@@ -77,7 +59,8 @@ var pickupReportApp = (function () {
                     field: "pickupLocation",
                     title: "Pick Up Location",
                 }]
-        });
+            });
+        }
 
     };
     View.prototype.parseUserList = function (data) {

@@ -14,6 +14,8 @@ block main-content
                     li.active
                         a(href="#currentreport" data-toggle="tab") 现在的报告
                     li
+                        a(href="#futurereport" data-toggle="tab") 未来的报告
+                    li
                         a(href="#pastreport" data-toggle="tab") 过去的报告
                 div.tab-content
                     div#currentreport.tab-pane.active
@@ -31,21 +33,17 @@ block main-content
                                         span.badge.total
                                         总计
                             div
-                                h4(style="padding: 0.5em") 不用接的人统计
+                                h4(style="padding: 0.5em") 请假统计
                                 div.content-divider
-                                div#grid
-                                table#notneedtopickup-table.table
-                                    thead
-                                        tr
-                                            th 用户名
-                                            th 姓名
-                                            th 接车地点
-                                    tbody
+                                div#absence-table
+                                br
                                 button(type="button").btn.btn-primary 结束统计开始接车！
                         div.hidden
                             div 需要接 不用接 接到
                             div 今天请假的人
                             div 实时接送记录
+                    div#futurereport.tab-pane
+                        
                     div#pastreport.tab-pane ...
     script(src='/core/staticjs/common.js')
     script(src='/core/staticjs/pickupreport.js')
