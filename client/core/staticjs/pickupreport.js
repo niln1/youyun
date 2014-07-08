@@ -11,6 +11,8 @@ var pickupReportApp = (function () {
     function View() {
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
+        this.$calender = $("#calender").kendoCalendar();
+        this.$addReportButton = $("#add-report-button").click($.proxy(this.addReport, this));
     }
     View.prototype.start = function () {
         this.currentReport = {};
@@ -27,7 +29,10 @@ var pickupReportApp = (function () {
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
     };
     View.prototype.parseCurrentReport = function (data) {
-        console.log(data);
+        this.currentReport = data;
+        this.reRender();
+    };
+    View.prototype.addReportSubmit = function (data) {
         this.currentReport = data;
         this.reRender();
     };
@@ -87,21 +92,3 @@ $(function () {
     app = new pickupReportApp();
     app.start();
 });
-
-var products = [{
-    ProductID: 1,
-    firstname: "Chai",
-    SupplierID: 1,
-    CategoryID: 1,
-    lastname: "10 boxes x 20 bags",
-    UnitPrice: 18.0000,
-    pickupLocation: 39,
-    UnitsOnOrder: 0,
-    ReorderLevel: 10,
-    Discontinued: false,
-    Category: {
-        CategoryID: 1,
-        CategoryName: "Beverages",
-        Description: "Soft drinks, coffees, teas, beers, and ales"
-    }
-}];

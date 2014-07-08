@@ -16,6 +16,43 @@
  var Q = require('q');
 
  exports.route = function (socket) {
+ 	socket.on('pickup::all::get-monthly-reports-by-date', function (data) {
+		Q.fcall(function () {
+			if (socket.session.user.userType < 3) {
+				return true;
+			} else {
+				throw new Error("You don't have permission");
+			}
+		})
+		.then(function (hasPermission) {
+			if (data && data.date) {
+				return true;
+			} else {
+				throw new Error("Please specify date for report.");
+			}
+		})
+		.then(function () {
+			var defer = Q.defer();
+			StudentPickupReport.findMonthByDate(data.date,
+				function (err, reports) {
+					if (err) defer.reject(err);
+					else if (reports.length === 0) 
+						defer.reject(new Error("no report found"));
+					else
+						defer.resolve(reports);
+				});
+			return defer.promise;
+		})
+		.then(function (reports) {
+			logger.info("Found", reports);
+			socket.emit('pickup::all:update-monthy-reports', report);
+		})
+		.fail(function (err) {
+			logger.warn(err);
+			socket.emit('pickup::all:error', err);
+		});
+	});
+
 	// need to change
 	socket.on('pickup::all::get-current-report', function (data) {
 		Q.fcall(function () {

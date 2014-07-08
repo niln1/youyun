@@ -7,6 +7,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var moment = require('moment-timezone');
+
 var StudentPickupReportSchema = new Schema({
     needToPickupList: [{
         type: Schema.Types.ObjectId,
@@ -48,6 +50,13 @@ StudentPickupReportSchema.methods.removePickedUp = function (studentId, defer) {
 
 StudentPickupReportSchema.statics.findByLock = function (lock, cb) {
     this.find({lock: lock}).exec(cb);
+}
+
+StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
+    var start = moment(date).tz('UTC').startOf('month').format();
+    var end = moment(date).tz('UTC').endOf('month').format();
+    console.log(start, end);
+    this.find({date: {$gte: start, $lt: end}}).exec(cb);
 }
 
 module.exports = mongoose.model('StudentPickupReport', StudentPickupReportSchema);
