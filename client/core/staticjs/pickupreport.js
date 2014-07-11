@@ -12,7 +12,8 @@ var pickupReportApp = (function () {
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
         this.$calender = $("#calender").kendoCalendar();
-        this.$addReportButton = $("#add-report-button").click($.proxy(this.addReport, this));
+        this.$addReportModal = $("#add-report-modal");
+        this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
     }
     View.prototype.start = function () {
         this.currentReport = {};
@@ -27,14 +28,28 @@ var pickupReportApp = (function () {
         this.socket = io.connect();
         this.socket.emit("pickup::all::get-current-report");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
+        this.socket.on("pickup::create::success", function (data) {
+            console.log(data);
+        });
     };
     View.prototype.parseCurrentReport = function (data) {
         this.currentReport = data;
         this.reRender();
     };
-    View.prototype.addReportSubmit = function (data) {
-        this.currentReport = data;
-        this.reRender();
+    View.prototype.addReportHandler = function (event) {
+        if (event.target.type === "button"){
+            var dateInput = this.$addReportModal.find("#new-report-datepicker");
+            if (event.target.id === "save-new-report") {
+                var date = moment(new Date(dateInput.val())).utc();
+                var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
+                var userIds = _.pluck(users, '_id');
+                if (date.isValid()) {
+                    this.socket.emit("pickup::create-report",{ date: date.format(), userIds: userIds })
+                } else {
+                    throw Error("invalid date");
+                }
+            }
+        }
     };
     View.prototype.reRender = function () {
         if (!$.isEmptyObject(this.currentReport)) {

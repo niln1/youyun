@@ -83,7 +83,7 @@
 			socket.emit('pickup::all:error', err);
 		});
 	});
-	socket.on('pickup::create', function (data) {
+	socket.on('pickup::create-report', function (data) {
 		Q.fcall(function () {
 			if (socket.session.user.userType <= 3) {
 				return true;
@@ -91,10 +91,13 @@
 				throw new Error("You don't have permission to create pickup report");
 			}
 		}).then(function (hasPermission) {
-			if (data && data.date && data.users) {
+			if (data && data.date && data.userIds) {
 				var dateToValidate = moment(data.date).tz('UTC').startOf('day');
 				var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
 				if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+					if (data.userIds.length <= 0) {
+						throw new Error("No student needs pickup");
+					}
 					return true;
 				} else {
 					throw new Error("Cannot create a pickup report for the past.");
@@ -103,10 +106,19 @@
 				throw new Error("Please specify date and users to pickup.");
 			}
 		}).then(function () {
+			// check if there is one report with same date.
+			var defer = Q.defer();
+			StudentPickupReport.find({date: data.date}).exec(function(err, reports){
+				if (err) defer.reject(err);
+				else if (reports.length === 0) defer.resolve();
+				else throw new Error("Report Already Exists");
+			});
+			return defer.promise;
+		}).then(function () {
 			var defer = Q.defer();
 
 			var newReport = new StudentPickupReport({
-				needToPickupList: data.users,
+				needToPickupList: data.userIds,
 				absenceList: [],
 				pickedUpList: [],
 				date: data.date
@@ -119,10 +131,12 @@
 
 			return defer.promise;
 		}).then(function (report) {
+			logger.info("report Created");
 			socket.emit('pickup::create::success', report);
 			
 			// TODO broadcast this message;
 		}).fail(function (err) {
+			logger.warn(err);
 			socket.emit('pickup::create::error', err.toString());
 		});
 	});
@@ -158,7 +172,7 @@
 			return defer.promise;
 		})
 		.then(function (report) {
-			logger.info("done");
+			logger.info("add-absense Done");
 			socket.broadcast.emit('pickup::all:update-current-report', report);
 		})
 		.fail(function (err) {

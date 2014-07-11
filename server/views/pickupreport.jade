@@ -61,17 +61,17 @@ block main-content
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm
             div.modal-content
-                div.modal-header.reminder-modal-header
+                div.modal-header
                     button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
                     h4#add-report-modal-label.modal-title Create Report
                 div.content-divider
-                div.modal-body.reminder-modal-body
+                div.modal-body
                     //- add new input later
-                    div.input-group.modal-input.reminder-modal-input
+                    div.input-group.modal-input
                         span.input-group-addon.notopleftradius.noborderradius
                             i.glyphicon.glyphicon-calendar
                         input#new-report-datepicker.noborderradius.form-control(data-provide="datepicker" type="text" placeholder="日期")
-                div.modal-footer.reminder-modal-footer
+                div.modal-footer
                     button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") Cancel
                     button.btn-sm#save-new-report(type="button" class="btn btn-primary") Create
 
