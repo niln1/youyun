@@ -10,84 +10,95 @@ var app;
 var pickupReportApp = (function () {
     function View() {
         this.$prepickupList = $("#prepickup-list");
+        this.$absenceTable = $("#absence-table");
+        this.$calender = $("#calender").kendoCalendar();
+        this.$addReportModal = $("#add-report-modal");
+        this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
     }
     View.prototype.start = function () {
-        this.dontPickupList = [];
-        this.totalPickupList = [];
+        this.currentReport = {};
+        this.users = [];
         this.initSocket();
-        this.getTotalStudentNeedPickup();
+        this.loadData();
     };
-    View.prototype.loadData = function () {};
+    View.prototype.loadData = function () {
+        this._getUserList();
+    };
     View.prototype.initSocket = function () {
         this.socket = io.connect();
+        this.socket.emit("pickup::all::get-current-report");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
+        this.socket.on("pickup::create::success", function (data) {
+            console.log(data);
+        });
     };
     View.prototype.parseCurrentReport = function (data) {
-        console.log(data);
-    };
-    View.prototype.reRender = function () {
-        this.$prepickupList.find(".need-pickup").html(this.totalPickupList.length - this.dontPickupList.length);
-        this.$prepickupList.find(".dont-pickup").html(this.dontPickupList.length);
-        this.$prepickupList.find(".total").html(this.totalPickupList.length);
-
-        $("#grid").kendoGrid({
-            dataSource: {
-                data: products,
-                schema: {
-                    model: {
-                        fields: {
-                            ProductName: {
-                                type: "string"
-                            },
-                            UnitPrice: {
-                                type: "number"
-                            },
-                            UnitsInStock: {
-                                type: "number"
-                            },
-                            Discontinued: {
-                                type: "boolean"
-                            }
-                        }
-                    }
-                },
-                pageSize: 20
-            },
-            scrollable: true,
-            sortable: true,
-            pageable: {
-                input: true,
-                numeric: false
-            },
-            columns: ["ProductName",
-                {
-                    field: "UnitPrice",
-                    title: "Unit Price",
-                    format: "{0:c}",
-                    width: "130px"
-                }, {
-                    field: "UnitsInStock",
-                    title: "Units In Stock",
-                    width: "130px"
-                }, {
-                    field: "Discontinued",
-                    width: "130px"
-                }]
-        });
-
-    };
-    View.prototype.parsePickupStudentList = function (data) {
-        this.totalPickupList = data.result;
+        this.currentReport = data;
         this.reRender();
     };
-    View.prototype.getTotalStudentNeedPickup = function () {
+    View.prototype.addReportHandler = function (event) {
+        if (event.target.type === "button"){
+            var dateInput = this.$addReportModal.find("#new-report-datepicker");
+            if (event.target.id === "save-new-report") {
+                var date = moment(new Date(dateInput.val())).utc();
+                var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
+                var userIds = _.pluck(users, '_id');
+                if (date.isValid()) {
+                    this.socket.emit("pickup::create-report",{ date: date.format(), userIds: userIds })
+                } else {
+                    throw Error("invalid date");
+                }
+            }
+        }
+    };
+    View.prototype.reRender = function () {
+        if (!$.isEmptyObject(this.currentReport)) {
+            // put into listview
+            this.$prepickupList.find(".need-pickup").html(this.currentReport.needToPickupList.length
+                - this.currentReport.absenceList.length);
+            this.$prepickupList.find(".absence").html(this.currentReport.absenceList.length);
+            this.$prepickupList.find(".total").html(this.currentReport.needToPickupList.length);
+
+            var tableData = _.filter(this.users, $.proxy(function(student){ 
+                return _.contains(this.currentReport.absenceList, student._id) 
+            }, this));
+
+            $(this.$absenceTable).kendoGrid({
+                dataSource: {
+                    data: tableData,
+                },
+                scrollable: true,
+                sortable: true,
+                columns: [{
+                    field: "firstname",
+                    title: "First Name",
+                }, {
+                    field: "lastname",
+                    title: "Last Name",
+                }, {
+                    field: "pickupLocation",
+                    title: "Pick Up Location",
+                }]
+            });
+        }
+
+    };
+    View.prototype.parseUserList = function (data) {
+        this.users = data.result;
+        this.students = _.filter(this.users, function (user) {
+            return user.userType === 3;
+        });
+        this.teachers = _.filter(this.users, function (user) {
+            return user.userType === 2;
+        });
+        this.reRender();
+    };
+    View.prototype._getUserList = function () {
         var url = "/api/v1/users";
         var data = {
-            signature: "tempkey",
-            userType: 3,
-            isPickUp: 1
+            signature: "tempkey"
         };
-        $.get(url, data, $.proxy(this.parsePickupStudentList, this));
+        $.get(url, data, $.proxy(this.parseUserList, this));
     };
     return View;
 })();
@@ -96,21 +107,3 @@ $(function () {
     app = new pickupReportApp();
     app.start();
 });
-
-var products = [{
-    ProductID: 1,
-    ProductName: "Chai",
-    SupplierID: 1,
-    CategoryID: 1,
-    QuantityPerUnit: "10 boxes x 20 bags",
-    UnitPrice: 18.0000,
-    UnitsInStock: 39,
-    UnitsOnOrder: 0,
-    ReorderLevel: 10,
-    Discontinued: false,
-    Category: {
-        CategoryID: 1,
-        CategoryName: "Beverages",
-        Description: "Soft drinks, coffees, teas, beers, and ales"
-    }
-}];
