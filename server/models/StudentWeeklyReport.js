@@ -23,7 +23,6 @@ var StudentWeeklyReportSchema = new Schema({
     }
 });
 
-
 function getWeekNumber(d) {
     // Copy date so don't modify original
     d = new Date(+d);

@@ -5,6 +5,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var Q = require('q');
+var _ = require('underscore');
 var Schema = mongoose.Schema;
 
 var StudentParentSchema = new Schema({
@@ -19,5 +21,22 @@ var StudentParentSchema = new Schema({
         required: true
     }
 });
+
+
+StudentParentSchema.statics.findChildrenByParent = function (parent) {
+    var defer = Q.defer();
+
+    this.find({
+        parent: parent._id.toString()
+    }, function (err, studentParentPairs) {
+        if (err) {
+            defer.reject(err);
+        } else {
+            defer.resolve(_.pluck(studentParentPairs, 'student'));
+        }
+    });
+
+    return defer.promise;
+};
 
 module.exports = mongoose.model('StudentParent', StudentParentSchema);
