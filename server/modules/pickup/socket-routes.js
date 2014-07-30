@@ -46,7 +46,7 @@
 		})
 		.then(function (reports) {
 			logger.info("Found", reports);
-			socket.emit('pickup::all:update-monthy-reports', report);
+			socket.emit('pickup::all:update-monthy-reports', reports);
 		})
 		.fail(function (err) {
 			logger.warn(err);

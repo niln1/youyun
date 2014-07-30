@@ -9,15 +9,17 @@
 var app;
 var pickupReportApp = (function () {
     function View() {
+        this.currentReport = {};
+        this.reports = [];
+        this.users = [];
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
-        this.$calender = $("#calender").kendoCalendar();
+        this.$calender = this.reRenderCalendar();
+
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
     }
     View.prototype.start = function () {
-        this.currentReport = {};
-        this.users = [];
         this.initSocket();
         this.loadData();
     };
@@ -25,11 +27,21 @@ var pickupReportApp = (function () {
         this._getUserList();
     };
     View.prototype.initSocket = function () {
+        var self = this;
         this.socket = io.connect();
         this.socket.emit("pickup::all::get-current-report");
+        this.socket.emit("pickup::all::get-monthly-reports-by-date", {date: new Date()});
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
         this.socket.on("pickup::create::success", function (data) {
             console.log(data);
+            this.$addReportModal.hide();
+        });
+        this.socket.on("pickup::all:update-monthy-reports",function (data) {
+            self.reports = data;
+            self.reRenderCalendar();
+        });
+        this.socket.on("pickup::all:error",function (data) {
+            console.log("ERROR", data);
         });
     };
     View.prototype.parseCurrentReport = function (data) {
@@ -51,6 +63,35 @@ var pickupReportApp = (function () {
             }
         }
     };
+
+    View.prototype.reRenderCalendar = function () {
+        $("#calender").empty();
+        return $("#calender").kendoCalendar({
+            // get the date array with date value
+            dates: _.map(this.reports, function(data) { return new Date(data.date).getTime(); }),
+            month:{
+                content: 
+                    '# if ($.inArray(data.date.getTime(), data.dates)!=-1) { #' +
+                        '<div class="pickup_date">#= data.value #</div>' +
+                    '# } else { #' +
+                        '#= data.value #' +
+                    '# } #',
+            },
+            footer: false,
+            navigate: function() {
+                var view = this.view();
+                console.log(view.name); //name of the current view
+
+                var current = this.current();
+                console.log(current); //currently focused date
+            },
+            change: function() {
+                var value = this.value();
+                console.log(value); //value is the selected date in the calendar
+            }
+        });
+    };
+
     View.prototype.reRender = function () {
         if (!$.isEmptyObject(this.currentReport)) {
             // put into listview
