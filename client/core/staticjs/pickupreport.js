@@ -12,6 +12,7 @@ var pickupReportApp = (function () {
         this.currentReport = {};
         this.reports = [];
         this.users = [];
+        this.dateArray = [];
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
         this.$calender = $("#calender")
@@ -66,11 +67,13 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.reRenderCalendar = function () {
+        var self = this;
         this.$calender.empty();
+        this.dateArray = _.map(this.reports, function(data) { return new Date(data.date).getTime(); });
         return $("#calender").kendoCalendar({
             value: new Date(),
             // get the date array with date value
-            dates: _.map(this.reports, function(data) { return new Date(data.date).getTime(); }),
+            dates: self.dateArray,
             month:{
                 content: 
                     '# if ($.inArray(data.date.getTime(), data.dates)!=-1) { #' +
@@ -88,11 +91,18 @@ var pickupReportApp = (function () {
                 console.log(current); //currently focused date
             },
             change: function() {
-                var value = this.value();
-                console.log(value); //value is the selected date in the calendar
+                self.reRenderReport(this.value());
             }
         });
     };
+
+    View.prototype.reRenderReport = function (date) {
+        console.log(date, "++++++++++++++++");
+        date.setHours(0,0,0,0);
+        if ($.inArray(date.getTime(), this.dateArray)!=-1) {
+            console.log("in");
+        }
+    }
 
     View.prototype.reRender = function () {
         if (!$.isEmptyObject(this.currentReport)) {
