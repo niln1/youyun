@@ -59,11 +59,6 @@ block main-content
                         //-         div#future-report-table
                         //-     div#pastreport.tab-pane ...
 
-    //- script#report-template
-    //-     div#need-pickup-table
-    //-     div#absence-table
-    //-     div#pickedup-table
-
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm
             div.modal-content
@@ -81,5 +76,14 @@ block main-content
                     button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") Cancel
                     button.btn-sm#save-new-report(type="button" class="btn btn-primary") Create
 
+    script#report-template(type="text/x-kendo-template")
+        div.need-pickup-table
+        div.absence-table
+        div.pickedup-table
+
+    script#no-report-template(type="text/x-kendo-template")
+        div(style="padding: 0.5em; text-align: right")
+            button#add-report-button(type=button data-toggle="modal" data-target="#add-report-modal")
+                .btn.btn-primary New Report
     script(src='/core/staticjs/common.js')
     script(src='/core/staticjs/pickupreport.js')
