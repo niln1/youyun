@@ -20,20 +20,12 @@
  	socket.on('pickup::teacher::get-reports', function (data) {
  		socketServer.validateUserSession(socket)
 		.then(function (user) {
-			if (User.isParent(user)) {
-				return [user, StudentParent.findChildrenByParent(user)];
+			if (user.isTeacher() || user.isAdmin() || user.isSchool()) {
+				return StudentPickupReport.findAllReports();
 			} else {
-				throw new Error('You do not have access to this socket route');
+				throw new Error("You don't have permission");;
 			}
 		})
- 		Q.fcall(function () {
- 			if (socket.session.user.userType < 3) {   // is school or teacher or admin
- 				return true;
- 			} else {
- 				throw new Error("You don't have permission");
- 			}
- 		})
- 		.then()
  		.then(function (reports) {
 			logger.info("Found", reports);
 			socket.emit('pickup::teacher:update-reports', reports);
@@ -42,7 +34,7 @@
 			logger.warn(err);
 			socket.emit('pickup::all:error', err);
 		});
- 	}
+ 	});
 
  	socket.on('pickup::all::get-monthly-reports-by-date', function (data) {
 		Q.fcall(function () {
@@ -85,7 +77,7 @@
 
 		socketServer.validateUserSession(socket)
 		.then(function (user) {
-			if (User.isParent(user)) {
+			if (user.isParent()) {
 				return [user, StudentParent.findChildrenByParent(user)];
 			} else {
 				throw new Error('You do not have access to this socket route');

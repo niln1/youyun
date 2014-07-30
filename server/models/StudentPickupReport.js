@@ -60,19 +60,23 @@ StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
     this.find({date: {$gte: start, $lt: end}}).exec(cb);
 }
 
-StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
+StudentPickupReportSchema.statics.findByOptions = function (options) {
     var defer = Q.defer();
 
-    this.find({
-        'needToPickupList': {
-            '$in': users
-        }
-    }, function (err, reports) {
+    this.find(options, function (err, reports) {
         if (err) defer.reject(err);
         else defer.resolve(reports);
     })
 
     return defer.promise;
+}
+
+StudentPickupReportSchema.statics.findAllReports = function () {
+    return this.findByOptions({});
+};
+
+StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
+    return this.findByOptions({'needToPickupList': { '$in': users }});
 };
 
 module.exports = mongoose.model('StudentPickupReport', StudentPickupReportSchema);
