@@ -18,6 +18,14 @@
 
  exports.route = function (socket) {
  	socket.on('pickup::teacher::get-reports', function (data) {
+ 		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			if (User.isParent(user)) {
+				return [user, StudentParent.findChildrenByParent(user)];
+			} else {
+				throw new Error('You do not have access to this socket route');
+			}
+		})
  		Q.fcall(function () {
  			if (socket.session.user.userType < 3) {   // is school or teacher or admin
  				return true;
