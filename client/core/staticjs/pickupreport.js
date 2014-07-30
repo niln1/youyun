@@ -30,13 +30,14 @@ var pickupReportApp = (function () {
         var self = this;
         this.socket = io.connect();
         this.socket.emit("pickup::all::get-current-report");
-        this.socket.emit("pickup::all::get-monthly-reports-by-date", {date: new Date()});
+        this.socket.emit("pickup::teacher::get-reports");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
         this.socket.on("pickup::create::success", function (data) {
             console.log(data);
             this.$addReportModal.hide();
         });
-        this.socket.on("pickup::all:update-monthy-reports",function (data) {
+        this.socket.on("pickup::teacher:update-reports",function (data) {
+            console.log(data);
             self.reports = data;
             self.reRenderCalendar();
         });

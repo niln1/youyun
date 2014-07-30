@@ -36,43 +36,6 @@
 		});
  	});
 
- 	socket.on('pickup::all::get-monthly-reports-by-date', function (data) {
-		Q.fcall(function () {
-			if (socket.session.user.userType < 3) {
-				return true;
-			} else {
-				throw new Error("You don't have permission");
-			}
-		})
-		.then(function (hasPermission) {
-			if (data && data.date) {
-				return true;
-			} else {
-				throw new Error("Please specify date for report.");
-			}
-		})
-		.then(function () {
-			var defer = Q.defer();
-			StudentPickupReport.findMonthByDate(data.date,
-				function (err, reports) {
-					if (err) defer.reject(err);
-					else if (reports.length === 0) 
-						defer.reject(new Error("no report found"));
-					else
-						defer.resolve(reports);
-				});
-			return defer.promise;
-		})
-		.then(function (reports) {
-			logger.info("Found", reports);
-			socket.emit('pickup::all:update-monthy-reports', reports);
-		})
-		.fail(function (err) {
-			logger.warn(err);
-			socket.emit('pickup::all:error', err);
-		});
-	});
-
 	socket.on('pickup::parent::get-child-report', function (data) {
 
 		socketServer.validateUserSession(socket)

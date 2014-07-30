@@ -60,6 +60,10 @@ StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
     this.find({date: {$gte: start, $lt: end}}).exec(cb);
 }
 
+/**
+ * helper function
+ * @return {defer.promise}
+ */
 StudentPickupReportSchema.statics.findByOptions = function (options) {
     var defer = Q.defer();
 
