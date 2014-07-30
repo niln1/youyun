@@ -14,10 +14,11 @@ var pickupReportApp = (function () {
         this.users = [];
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
-        this.$calender = this.reRenderCalendar();
-
+        this.$calender = $("#calender")
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
+        // this.reRenderCalendar();
+
     }
     View.prototype.start = function () {
         this.initSocket();
@@ -37,7 +38,6 @@ var pickupReportApp = (function () {
             this.$addReportModal.hide();
         });
         this.socket.on("pickup::teacher:update-reports",function (data) {
-            console.log(data);
             self.reports = data;
             self.reRenderCalendar();
         });
@@ -66,8 +66,9 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.reRenderCalendar = function () {
-        $("#calender").empty();
+        this.$calender.empty();
         return $("#calender").kendoCalendar({
+            value: new Date(),
             // get the date array with date value
             dates: _.map(this.reports, function(data) { return new Date(data.date).getTime(); }),
             month:{

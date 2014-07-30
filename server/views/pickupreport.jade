@@ -19,9 +19,6 @@ block main-content
                             h2.text-left 接车报告
                     div.content-divider
                     div(style="padding: 1em")
-                        div#need-pickup-table
-                        div#absence-table
-                        div#pickedup-table
 
                         //- ul.nav.nav-tabs
                         //-     li.active
@@ -61,6 +58,11 @@ block main-content
                         //-                 .btn.btn-primary New Report
                         //-         div#future-report-table
                         //-     div#pastreport.tab-pane ...
+
+    //- script#report-template
+    //-     div#need-pickup-table
+    //-     div#absence-table
+    //-     div#pickedup-table
 
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm
