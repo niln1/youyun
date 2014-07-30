@@ -19,44 +19,48 @@ block main-content
                             h2.text-left 接车报告
                     div.content-divider
                     div(style="padding: 1em")
-                        ul.nav.nav-tabs
-                            li.active
-                                a(href="#currentreport" data-toggle="tab") 现在的报告
-                            li
-                                a(href="#futurereport" data-toggle="tab") 未来的报告
-                            li
-                                a(href="#pastreport" data-toggle="tab") 过去的报告
-                        div.tab-content
-                            div#currentreport.tab-pane.active
-                                div
-                                    div
-                                        p(style="padding: 0.5em") 正在统计今天接车的人数...
-                                        ol#prepickup-list.list-group
-                                            li.list-group-item
-                                                span.badge.need-pickup
-                                                需要接车的人数
-                                            li.list-group-item
-                                                span.badge.absence
-                                                请假的人数
-                                            li.list-group-item
-                                                span.badge.total
-                                                总计
-                                    div
-                                        h4(style="padding: 0.5em") 请假统计
-                                        div.content-divider
-                                        div#absence-table
-                                        br
-                                        button(type="button").btn.btn-primary 结束统计开始接车！
-                                div.hidden
-                                    div 需要接 不用接 接到
-                                    div 今天请假的人
-                                    div 实时接送记录
-                            div#futurereport.tab-pane
-                                div(style="padding: 0.5em; text-align: right")
-                                    button#add-report-button(type=button data-toggle="modal" data-target="#add-report-modal")
-                                        .btn.btn-primary New Report
-                                div#future-report-table
-                            div#pastreport.tab-pane ...
+                        div#need-pickup-table
+                        div#absence-table
+                        div#pickedup-table
+
+                        //- ul.nav.nav-tabs
+                        //-     li.active
+                        //-         a(href="#currentreport" data-toggle="tab") 现在的报告
+                        //-     li
+                        //-         a(href="#futurereport" data-toggle="tab") 未来的报告
+                        //-     li
+                        //-         a(href="#pastreport" data-toggle="tab") 过去的报告
+                        //- div.tab-content
+                        //-     div#currentreport.tab-pane.active
+                        //-         div
+                        //-             div
+                        //-                 p(style="padding: 0.5em") 正在统计今天接车的人数...
+                        //-                 ol#prepickup-list.list-group
+                        //-                     li.list-group-item
+                        //-                         span.badge.need-pickup
+                        //-                         需要接车的人数
+                        //-                     li.list-group-item
+                        //-                         span.badge.absence
+                        //-                         请假的人数
+                        //-                     li.list-group-item
+                        //-                         span.badge.total
+                        //-                         总计
+                        //-             div
+                        //-                 h4(style="padding: 0.5em") 请假统计
+                        //-                 div.content-divider
+                        //-                 div#absence-table
+                        //-                 br
+                        //-                 button(type="button").btn.btn-primary 结束统计开始接车！
+                        //-         div.hidden
+                        //-             div 需要接 不用接 接到
+                        //-             div 今天请假的人
+                        //-             div 实时接送记录
+                        //-     div#futurereport.tab-pane
+                        //-         div(style="padding: 0.5em; text-align: right")
+                        //-             button#add-report-button(type=button data-toggle="modal" data-target="#add-report-modal")
+                        //-                 .btn.btn-primary New Report
+                        //-         div#future-report-table
+                        //-     div#pastreport.tab-pane ...
 
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm

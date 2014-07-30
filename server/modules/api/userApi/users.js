@@ -89,7 +89,7 @@ function updateUserById(req, res) {
     logger.info("Users - updateUserById");
     var param = JSON.parse(JSON.stringify(req.body));
     delete param["signature"];
-    logger.debug("params: " + JSON.stringify(param) + "id: " + JSON.stringify(req.params._id));
+    logger.debug("params: " + JSON.stringify(param) + "id: " + JSON.stringify(req.params.id));
 
     User.findOneAndUpdate({
         _id: req.params.id

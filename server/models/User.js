@@ -117,8 +117,28 @@ UserSchema.statics.findByOptions = function (options, cb) {
     this.find(query, cb);
 };
 
-UserSchema.statics.isParent = function(user) {
-    return user.userType === 4;
+UserSchema.methods.isAdmin = function() {
+    return this.userType === 0;
+};
+
+UserSchema.methods.isSchool = function() {
+    return this.userType === 1;
+};
+
+UserSchema.methods.isTeacher = function() {
+    return this.userType === 2;
+};
+
+UserSchema.methods.isStudent = function() {
+    return this.userType === 3;
+};
+
+UserSchema.methods.isParent = function() {
+    return this.userType === 4;
+};
+
+UserSchema.methods.isAlumini = function() {
+    return this.userType === 5;
 };
 
 module.exports = mongoose.model('User', UserSchema);
