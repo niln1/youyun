@@ -16,6 +16,25 @@
  var Q = require('q');
 
  exports.route = function (socket) {
+ 	socket.on('pickup::teacher::get-reports', function (data) {
+ 		Q.fcall(function () {
+ 			if (socket.session.user.userType < 3) {   // is school or teacher or admin
+ 				return true;
+ 			} else {
+ 				throw new Error("You don't have permission");
+ 			}
+ 		})
+ 		.then()
+ 		.then(function (reports) {
+			logger.info("Found", reports);
+			socket.emit('pickup::teacher:update-reports', reports);
+		})
+		.fail(function (err) {
+			logger.warn(err);
+			socket.emit('pickup::all:error', err);
+		});
+ 	}
+
  	socket.on('pickup::all::get-monthly-reports-by-date', function (data) {
 		Q.fcall(function () {
 			if (socket.session.user.userType < 3) {
