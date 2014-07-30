@@ -5,6 +5,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var Q = require('q');
 var Schema = mongoose.Schema;
 
 var moment = require('moment-timezone');
@@ -58,5 +59,20 @@ StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
     console.log(start, end);
     this.find({date: {$gte: start, $lt: end}}).exec(cb);
 }
+
+StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
+    var defer = Q.defer();
+
+    this.find({
+        'needToPickupList': {
+            '$in': users
+        }
+    }, function (err, reports) {
+        if (err) defer.reject(err);
+        else defer.resolve(reports);
+    })
+
+    return defer.promise;
+};
 
 module.exports = mongoose.model('StudentPickupReport', StudentPickupReportSchema);
