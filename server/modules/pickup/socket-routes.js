@@ -14,6 +14,7 @@
  var logger = require('../../utils/logger');
  var __ = require('underscore');
  var Q = require('q');
+ var socketServer = require('../../utils/socketServer');
 
  exports.route = function (socket) {
  	socket.on('pickup::all::get-monthly-reports-by-date', function (data) {
@@ -50,6 +51,27 @@
 		.fail(function (err) {
 			logger.warn(err);
 			socket.emit('pickup::all:error', err);
+		});
+	});
+
+	socket.on('pickup::parent::get-child-report', function (data) {
+
+		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			if (User.isParent(user)) {
+				return [user, StudentParent.findChildrenByParent(user)];
+			} else {
+				throw new Error('You do not have access to this socket route');
+			}
+		})
+		.spread(function (parent, children) {
+			return [parent, children, StudentPickupReport.findReportsByUsers(children)]
+		})
+		.spread(function (parent, children, reports) {
+			socket.emit('pickup::parent::get-child-report::success', reports);
+		})
+		.fail(function (err) {
+			socket.emit('pickup::parent::get-child-report::failure', err.toString());
 		});
 	});
 

@@ -115,6 +115,10 @@ UserSchema.statics.findByOptions = function (options, cb) {
         '$exists': Boolean(JSON.parse(options.isPickUp))
     };
     this.find(query, cb);
-}
+};
+
+UserSchema.statics.isParent = function(user) {
+    return user.userType === 4;
+};
 
 module.exports = mongoose.model('User', UserSchema);
