@@ -97,7 +97,6 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.reRenderReport = function (date) {
-        console.log(date, "++++++++++++++++");
         date.setHours(0,0,0,0);
         if ($.inArray(date.getTime(), this.dateArray)!=-1) {
             console.log("in");
