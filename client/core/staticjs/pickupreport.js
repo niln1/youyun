@@ -15,12 +15,18 @@ var pickupReportApp = (function () {
         this.dateArray = [];
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
-        this.$calender = $("#calender")
+        this.$calender = $("#calender");
+        this.$rightReportContainer = $("#right-report-container");
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
         // this.reRenderCalendar();
 
     }
+
+    function populateUsersHelper (userIds, users) {
+        return _.filter(users, function(user){ return _.contains(userIds, user._id) });
+    }
+
     View.prototype.start = function () {
         this.initSocket();
         this.loadData();
@@ -91,17 +97,67 @@ var pickupReportApp = (function () {
                 console.log(current); //currently focused date
             },
             change: function() {
-                self.reRenderReport(this.value());
+                self.displayReportByDate(this.value());
             }
         });
     };
 
-    View.prototype.reRenderReport = function (date) {
+    View.prototype.displayReportByDate = function (date) {
         date.setHours(0,0,0,0);
         if ($.inArray(date.getTime(), this.dateArray)!=-1) {
-            console.log("in");
+            this.$rightReportContainer.html($("#report-template").html());
+            var currentReport = _.find(this.reports, function(report) {
+                return report.date ? ( new Date(report.date).getTime() === date.getTime()) : false;
+            });
+            this.renderReport(currentReport);
+        } else {
+            var today = new Date().setHours(0,0,0,0);
+            // if less than yesterday
+            if (date.getTime() < today) {
+                this.$rightReportContainer.html($("#past-no-report-template").html());
+            } else {
+                this.$rightReportContainer.html($("#future-no-report-template").html());
+            }
         }
-    }
+    };
+
+    View.prototype.renderReport = function (report) {
+        $("#need-pickup-total").html(report.needToPickupList.length);
+        $("#pickedup-total").html(report.pickedUpList.length);
+        $("#absence-total").html(report.absenceList.length);
+
+        if (report.absenceList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .absence-table",
+                populateUsersHelper(report.absenceList, this.users));
+        }
+        if (report.needToPickupList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .need-pickup-table",
+                populateUsersHelper(report.needToPickupList, this.users));
+        }
+        if (report.pickedUpList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .pickedup-table",
+                populateUsersHelper(report.pickedUpList, this.users));
+        }
+    };
+
+    View.prototype.renderReportTableWithSelectorAndData = function (selectorString, data){
+        $(selectorString).kendoGrid({
+            dataSource: {
+                data: data,
+            },
+            sortable: true,
+            columns: [{
+                field: "firstname",
+                title: "First Name",
+            }, {
+                field: "lastname",
+                title: "Last Name",
+            }, {
+                field: "pickupLocation",
+                title: "Pick Up Location",
+            }]
+        });
+    };
 
     View.prototype.reRender = function () {
         if (!$.isEmptyObject(this.currentReport)) {
