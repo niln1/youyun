@@ -73,14 +73,33 @@ StudentPickupReportSchema.statics.findByOptions = function (options) {
     })
 
     return defer.promise;
-}
+};
+
+StudentPickupReportSchema.statics.findByID = function (reportID) {
+    var defer = Q.defer();
+
+    this.findOne({
+        '_id': mongoose.Types.ObjectId(reportID.toString())
+    }, function (err, report) {
+        if (err) defer.reject(err);
+        else defer.resolve(report);
+    });
+
+    return defer.promise;
+};
+
 
 StudentPickupReportSchema.statics.findAllReports = function () {
     return this.findByOptions({});
 };
 
 StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
-    return this.findByOptions({'needToPickupList': { '$in': users }});
+    return this.findByOptions({
+        $or : [
+            {'needToPickupList': { '$in': users }},
+            {'absenceList': { '$in': users }},
+        ]
+    });
 };
 
 module.exports = mongoose.model('StudentPickupReport', StudentPickupReportSchema);
