@@ -137,7 +137,6 @@
 		}).then(function (report) {
 			logger.info("report Created");
 			socket.emit('pickup::create::success', report);
-			
 			// TODO broadcast this message;
 		}).fail(function (err) {
 			logger.warn(err);
@@ -145,43 +144,73 @@
 		});
 	});
 
-	socket.on('pickup::parents::add-absence', function (data) {
-		var childId = mongoose.Types.ObjectId(data);
+	socket.on('pickup::parent::add-absence', function (data) {
+		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			var defer = Q.defer();
 
-		Q.fcall(function () {
-			if (socket.session.user.userType === 4) {
-				return true;
+			if (user.isParent()) {
+				if (data.reportID && data.childID && data.needToPickup) {
+					var needToPickup = JSON.parse(data.needToPickup)
+					defer.resolve([user, StudentPickupReport.findByID(data.reportID), data.childID, needToPickup]);
+				} else {
+					defer.reject(new Error('Required fields missing'));
+				}
 			} else {
-				throw new Error("You don't have permission");
+				defer.reject(new Error('401 Unauthorized'));
+			}
+
+			return defer.promise;
+		})
+		.spread(function (user, report, childID, needToPickup) {
+			var dateToValidate = moment(report.date).tz('UTC').startOf('day');
+			var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+			if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+				return [user, report, childID, needToPickup];
+			} else {
+				throw new Error('Cannot modify pickup report from the past');
 			}
 		})
-		.then(function (isParent) {
+		.spread(function (user, report, childID, needToPickup) {
 			var defer = Q.defer();
-			var parent = new User(socket.session.user);
-			parent.hasChild(childId, defer);
+
+			var childObjectID = mongoose.Types.ObjectId(childID.toString());
+
+			if (needToPickup) {
+				var index = report.absenceList.indexOf(childObjectID);
+				if (index !== -1) {
+					report.absenceList.splice(index, 1);
+					report.needToPickupList.push(childObjectID);
+					report.save(function (err, report) {
+						if (err) defer.reject(err);
+						else defer.resolve(report);
+					});
+				} else {
+					defer.reject(new Error('ChildID not in absence list.'));
+				}
+			} else {
+				var index = report.needToPickupList.indexOf(childObjectID)
+				if (index !== -1) {
+					report.needToPickupList.splice(index, 1);
+					report.absenceList.push(childObjectID);
+					report.save(function (err, report) {
+						if (err) defer.reject(err);
+						else defer.resolve(report);
+					});
+				} else {
+					defer.reject(new Error('ChildID not in need to pickup list.'));
+				}
+			}
+
 			return defer.promise;
 		})
 		.then(function (report) {
-			var defer = Q.defer();
-			StudentPickupReport.findByLock(false,
-				function (err, reports) {
-					if (err) defer.reject(err);
-					else if (reports.length === 0) 
-						defer.reject(new Error("report havned been initialized"));
-					else if (reports.length > 1) 
-						defer.reject(new Error("Internal Error - current pk report"));
-					else
-						reports[0].addAbsence(childId, defer);
-				});
-			return defer.promise;
-		})
-		.then(function (report) {
-			logger.info("add-absense Done");
-			socket.broadcast.emit('pickup::all:update-current-report', report);
+			socket.emit('pickup::parent::add-absence::success', report);
+			// TODO broadcast this event
 		})
 		.fail(function (err) {
-			logger.warn(err);
-			socket.emit('pickup::all:error', err);
-		});
+			logger.warn(err.toString());
+			socket.emit('pickup::parent::add-absence::failure', err.toString());
+		})
 	});
 }
