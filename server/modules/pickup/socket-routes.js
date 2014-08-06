@@ -115,7 +115,7 @@
 			StudentPickupReport.find({date: data.date}).exec(function(err, reports){
 				if (err) defer.reject(err);
 				else if (reports.length === 0) defer.resolve();
-				else throw new Error("Report Already Exists");
+				else defer.reject(new Error("Report Already Exists"));
 			});
 			return defer.promise;
 		}).then(function () {

@@ -9,19 +9,29 @@
 var app;
 var pickupReportApp = (function () {
     function View() {
+        this.currentDate = new Date();
         this.currentReport = {};
         this.reports = [];
         this.users = [];
+        this.dateArray = [];
+        this.$notifications = $("#notifications");
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
-        this.$calender = this.reRenderCalendar();
-
+        this.$calender = $("#calender");
+        this.$rightReportContainer = $("#right-panel-container");
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
+        this.notifications = this.$notifications.kendoNotification({width: 300}).data("kendoNotification");
     }
+
+    function populateUsersHelper (userIds, users) {
+        return _.filter(users, function(user){ return _.contains(userIds, user._id) });
+    }
+
     View.prototype.start = function () {
         this.initSocket();
         this.loadData();
+        this.displayReportByDate(this.currentDate);
     };
     View.prototype.loadData = function () {
         this._getUserList();
@@ -32,17 +42,21 @@ var pickupReportApp = (function () {
         this.socket.emit("pickup::all::get-current-report");
         this.socket.emit("pickup::teacher::get-reports");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
-        this.socket.on("pickup::create::success", function (data) {
-            console.log(data);
-            this.$addReportModal.hide();
+        this.socket.on("pickup::create::success", function onCreateSuccess(data) {
+            self.notifications.show("Successfully Created", "success");
+            self.$addReportModal.modal("hide");
         });
-        this.socket.on("pickup::teacher:update-reports",function (data) {
-            console.log(data);
+        this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             self.reports = data;
+            self.notifications.show("Updating report", "info");
             self.reRenderCalendar();
         });
-        this.socket.on("pickup::all:error",function (data) {
-            console.log("ERROR", data);
+        this.socket.on("pickup::all:error", function onAllError(data) {
+            self.notifications.show(data, "error");
+        });
+        this.socket.on("pickup::create::error", function onCreateError(data) {
+            self.notifications.show(data, "error");
+            self.$addReportModal.modal("hide");
         });
     };
     View.prototype.parseCurrentReport = function (data) {
@@ -66,10 +80,13 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.reRenderCalendar = function () {
-        $("#calender").empty();
+        var self = this;
+        this.$calender.empty();
+        this.dateArray = _.map(this.reports, function(data) { return new Date(data.date).getTime(); });
         return $("#calender").kendoCalendar({
+            value: self.currentDate,
             // get the date array with date value
-            dates: _.map(this.reports, function(data) { return new Date(data.date).getTime(); }),
+            dates: self.dateArray,
             month:{
                 content: 
                     '# if ($.inArray(data.date.getTime(), data.dates)!=-1) { #' +
@@ -87,9 +104,66 @@ var pickupReportApp = (function () {
                 console.log(current); //currently focused date
             },
             change: function() {
-                var value = this.value();
-                console.log(value); //value is the selected date in the calendar
+                self.currentDate = this.value();
+                self.displayReportByDate(this.value());
             }
+        });
+    };
+
+    View.prototype.displayReportByDate = function (date) {
+        date.setHours(0,0,0,0);
+        if ($.inArray(date.getTime(), this.dateArray)!=-1) {
+            this.$rightReportContainer.html($("#report-template").html());
+            var currentReport = _.find(this.reports, function(report) {
+                return report.date ? ( new Date(report.date).getTime() === date.getTime()) : false;
+            });
+            this.renderReport(currentReport);
+        } else {
+            var today = new Date().setHours(0,0,0,0);
+            // if less than yesterday
+            if (date.getTime() < today) {
+                this.$rightReportContainer.html($("#past-no-report-template").html());
+            } else {
+                this.$rightReportContainer.html($("#future-no-report-template").html());
+            }
+        }
+    };
+
+    View.prototype.renderReport = function (report) {
+        $("#need-pickup-total").html(report.needToPickupList.length);
+        $("#pickedup-total").html(report.pickedUpList.length);
+        $("#absence-total").html(report.absenceList.length);
+
+        if (report.absenceList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .absence-table",
+                populateUsersHelper(report.absenceList, this.users));
+        }
+        if (report.needToPickupList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .need-pickup-table",
+                populateUsersHelper(report.needToPickupList, this.users));
+        }
+        if (report.pickedUpList.length > 0) {
+            this.renderReportTableWithSelectorAndData("#right-report-container .pickedup-table",
+                populateUsersHelper(report.pickedUpList, this.users));
+        }
+    };
+
+    View.prototype.renderReportTableWithSelectorAndData = function (selectorString, data){
+        $(selectorString).kendoGrid({
+            dataSource: {
+                data: data,
+            },
+            sortable: true,
+            columns: [{
+                field: "firstname",
+                title: "First Name",
+            }, {
+                field: "lastname",
+                title: "Last Name",
+            }, {
+                field: "pickupLocation",
+                title: "Pick Up Location",
+            }]
         });
     };
 
