@@ -9,18 +9,19 @@
 var app;
 var pickupReportApp = (function () {
     function View() {
+        this.currentDate = new Date();
         this.currentReport = {};
         this.reports = [];
         this.users = [];
         this.dateArray = [];
+        this.$notifications = $("#notifications");
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
         this.$calender = $("#calender");
-        this.$rightReportContainer = $("#right-report-container");
+        this.$rightReportContainer = $("#right-panel-container");
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
-        // this.reRenderCalendar();
-
+        this.notifications = this.$notifications.kendoNotification().data("kendoNotification");
     }
 
     function populateUsersHelper (userIds, users) {
@@ -30,6 +31,7 @@ var pickupReportApp = (function () {
     View.prototype.start = function () {
         this.initSocket();
         this.loadData();
+        this.displayReportByDate(this.currentDate);
     };
     View.prototype.loadData = function () {
         this._getUserList();
@@ -40,16 +42,21 @@ var pickupReportApp = (function () {
         this.socket.emit("pickup::all::get-current-report");
         this.socket.emit("pickup::teacher::get-reports");
         this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
-        this.socket.on("pickup::create::success", function (data) {
-            console.log(data);
-            this.$addReportModal.hide();
+        this.socket.on("pickup::create::success", function onCreateSuccess(data) {
+            self.notifications.show("Successfully Created", "success");
+            self.$addReportModal.modal("hide");
         });
-        this.socket.on("pickup::teacher:update-reports",function (data) {
+        this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             self.reports = data;
+            self.notifications.show("update report", "error");
             self.reRenderCalendar();
         });
-        this.socket.on("pickup::all:error",function (data) {
-            console.log("ERROR", data);
+        this.socket.on("pickup::all:error", function onAllError(data) {
+            self.notifications.show(data, "error");
+        });
+        this.socket.on("pickup::create::error", function onCreateError(data) {
+            self.notifications.show(data, "error");
+            self.$addReportModal.modal("hide");
         });
     };
     View.prototype.parseCurrentReport = function (data) {
@@ -77,7 +84,7 @@ var pickupReportApp = (function () {
         this.$calender.empty();
         this.dateArray = _.map(this.reports, function(data) { return new Date(data.date).getTime(); });
         return $("#calender").kendoCalendar({
-            value: new Date(),
+            value: self.currentDate,
             // get the date array with date value
             dates: self.dateArray,
             month:{
@@ -97,6 +104,7 @@ var pickupReportApp = (function () {
                 console.log(current); //currently focused date
             },
             change: function() {
+                self.currentDate = this.value();
                 self.displayReportByDate(this.value());
             }
         });

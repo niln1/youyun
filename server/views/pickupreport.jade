@@ -9,17 +9,16 @@ block main-content
                 div.pageboard-shadow(style="background:white;")
                     div.content-header
                         div.header-inner
-                            h2.text-left 日历
+                            h2.text-left Calender
                     div.content-divider
                     div#calender
             div#right-panel-region.col-sm-7
                 div.pageboard-shadow(style="background:white;")
                     div.content-header
                         div.header-inner
-                            h2.text-left 接车报告
+                            h2.text-left Pickup Report
                     div.content-divider
-                    div(style="padding: 1em")
-                    div#right-report-container
+                    div#right-panel-container
 
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm
@@ -68,12 +67,16 @@ block main-content
             div.content-divider
             div.absence-table
 
+    span#notifications
+
     script#future-no-report-template(type="text/x-kendo-template")
-        div(style="padding: 0.5em; text-align: right")
+        div.report-info-center
+            h2 There is no report created for today, want to add one?
             button#add-report-button(type=button data-toggle="modal" data-target="#add-report-modal")
-                .btn.btn-primary New Report
+                .btn.btn-primary Create Report
 
     script#past-no-report-template(type="text/x-kendo-template")
-        div there is no report for today.
+        div.report-info-center
+            h2 There was no report recorded for today.
     script(src='/core/staticjs/common.js')
     script(src='/core/staticjs/pickupreport.js')
