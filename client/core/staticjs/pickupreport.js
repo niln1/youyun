@@ -21,7 +21,7 @@ var pickupReportApp = (function () {
         this.$rightReportContainer = $("#right-panel-container");
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
-        this.notifications = this.$notifications.kendoNotification().data("kendoNotification");
+        this.notifications = this.$notifications.kendoNotification({width: 300}).data("kendoNotification");
     }
 
     function populateUsersHelper (userIds, users) {
@@ -48,7 +48,7 @@ var pickupReportApp = (function () {
         });
         this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             self.reports = data;
-            self.notifications.show("update report", "error");
+            self.notifications.show("Updating report", "info");
             self.reRenderCalendar();
         });
         this.socket.on("pickup::all:error", function onAllError(data) {
