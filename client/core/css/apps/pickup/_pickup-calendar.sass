@@ -1,3 +1,62 @@
-.k-calendar .pickup_date
-	background-color: green
+.calendar-container
+    width: 100%
 
+.k-calendar .pickup_date
+    background-color: green
+    color: white
+
+#calendar
+    margin: auto
+    width: 100%
+    text-align: center
+
+#calendar .k-content
+    height: 300px
+
+#calendar,
+#calendar .k-content,
+#calendar .k-header,
+#calendar th,
+#calendar .k-link,
+#calendar .k-state-hover,
+#calendar .k-state-selected,
+#calendar .k-state-focused 
+    background: transparent
+    border-color: transparent
+    color: #000
+    box-shadow: none
+
+#calendar .k-content .k-state-hover,
+#calendar .k-content .k-state-focused
+    font-size: 14px
+    font-weight: bold
+
+#calendar .k-state-selected, #calendar .k-state-selected.k-state-focused
+    font-size: 24px
+    font-weight: bold
+
+#calendar .k-content .k-link
+    padding: 0
+    min-height: 40px
+    line-height: 40px
+
+#calendar th
+    padding-top: 20px
+    color: #8cbabf
+
+#calendar td.k-other-month .k-link
+    color: #8cbabf
+
+#calendar th,
+#calendar td
+    text-align: center
+
+/* Template Days */
+.k-calendar .pickup_date
+    width: 40px
+    height: 40px
+    margin: auto
+    -webkit-border-radius: 100px
+    -moz-border-radius: 100px
+    border-radius: 50%
+    line-height: 40px
