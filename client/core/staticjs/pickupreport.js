@@ -21,7 +21,7 @@ var pickupReportApp = (function () {
         this.$notifications = $("#notifications");
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
-        this.$calender = $("#calender");
+        this.$calendar = $("#calendar");
         this.$rightReportContainer = $("#right-panel-container");
         this.$addReportModal = $("#add-report-modal");
         this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
@@ -39,7 +39,6 @@ var pickupReportApp = (function () {
     View.prototype.start = function () {
         this._initSocket();
         this._loadData();
-        this.displayReportByDate(this.currentDate);
     };
 
     View.prototype._loadData = function () {
@@ -61,6 +60,7 @@ var pickupReportApp = (function () {
             self.reports = data;
             self.notifications.show("Updating report", "info");
             self.reRenderCalendar();
+            self.displayReportByDate(self.currentDate);
         });
         this.socket.on("pickup::all:error", function onAllError(data) {
             self.notifications.show(data, "error");
@@ -97,9 +97,9 @@ var pickupReportApp = (function () {
 
     View.prototype.reRenderCalendar = function () {
         var self = this;
-        this.$calender.empty();
+        this.$calendar.empty();
         this.dateArray = _.map(this.reports, function(data) { return new Date(data.date).getTime(); });
-        return $("#calender").kendoCalendar({
+        return $("#calendar").kendoCalendar({
             value: self.currentDate,
             // get the date array with date value
             dates: self.dateArray,
