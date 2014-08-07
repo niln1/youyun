@@ -8,7 +8,11 @@
 "use strict";
 var app;
 var pickupReportApp = (function () {
+    /**
+     * Constructor for the View
+     */
     function View() {
+        var self = this;
         this.currentDate = new Date();
         this.currentReport = {};
         this.reports = [];
@@ -28,15 +32,21 @@ var pickupReportApp = (function () {
         return _.filter(users, function(user){ return _.contains(userIds, user._id) });
     }
 
+    /**
+     * Loading the initialization functions
+     * @return {[type]} [description]
+     */
     View.prototype.start = function () {
-        this.initSocket();
-        this.loadData();
+        this._initSocket();
+        this._loadData();
         this.displayReportByDate(this.currentDate);
     };
-    View.prototype.loadData = function () {
+
+    View.prototype._loadData = function () {
         this._getUserList();
     };
-    View.prototype.initSocket = function () {
+
+    View.prototype._initSocket = function () {
         var self = this;
         this.socket = io.connect();
         this.socket.emit("pickup::all::get-current-report");
@@ -45,6 +55,7 @@ var pickupReportApp = (function () {
         this.socket.on("pickup::create::success", function onCreateSuccess(data) {
             self.notifications.show("Successfully Created", "success");
             self.$addReportModal.modal("hide");
+            self.socket.emit("pickup::teacher::get-reports");
         });
         this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             self.reports = data;
@@ -59,15 +70,20 @@ var pickupReportApp = (function () {
             self.$addReportModal.modal("hide");
         });
     };
+
     View.prototype.parseCurrentReport = function (data) {
         this.currentReport = data;
         this.reRender();
     };
+
+    /**
+     * Emit the userlist and date to create report socket if click on save button
+     * @param event [click event]
+     */
     View.prototype.addReportHandler = function (event) {
         if (event.target.type === "button"){
-            var dateInput = this.$addReportModal.find("#new-report-datepicker");
             if (event.target.id === "save-new-report") {
-                var date = moment(new Date(dateInput.val())).utc();
+                var date = moment(new Date(this.currentDate)).utc();
                 var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
                 var userIds = _.pluck(users, '_id');
                 if (date.isValid()) {
@@ -125,8 +141,14 @@ var pickupReportApp = (function () {
                 this.$rightReportContainer.html($("#past-no-report-template").html());
             } else {
                 this.$rightReportContainer.html($("#future-no-report-template").html());
+                this.$addReportButton = $("#add-report-button").click($.proxy(this.showCreateReportModal, this));
             }
         }
+    };
+
+    View.prototype.showCreateReportModal = function () {
+        this.$addReportModal.find(".create-report-date").html(moment(this.currentDate).format("YYYY/MM/DD"));
+        this.$addReportModal.modal("show");
     };
 
     View.prototype.renderReport = function (report) {

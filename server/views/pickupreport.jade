@@ -29,10 +29,9 @@ block main-content
                 div.content-divider
                 div.modal-body
                     //- add new input later
-                    div.input-group.modal-input
-                        span.input-group-addon.notopleftradius.noborderradius
-                            i.glyphicon.glyphicon-calendar
-                        input#new-report-datepicker.noborderradius.form-control(data-provide="datepicker" type="text" placeholder="日期")
+                    div(style='font-size:16px; text-align:center; padding:15px') Going to Create a Report for
+                        h2(style='padding:10px').create-report-date
+                        | Press Create to Confirm
                 div.modal-footer
                     button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") Cancel
                     button.btn-sm#save-new-report(type="button" class="btn btn-primary") Create
@@ -72,7 +71,7 @@ block main-content
     script#future-no-report-template(type="text/x-kendo-template")
         div.report-info-center
             h2 There is no report created for today, want to add one?
-            button#add-report-button(type=button data-toggle="modal" data-target="#add-report-modal")
+            button#add-report-button(type=button)
                 .btn.btn-primary Create Report
 
     script#past-no-report-template(type="text/x-kendo-template")
