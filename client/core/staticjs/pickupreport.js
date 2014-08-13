@@ -69,6 +69,9 @@ var pickupReportApp = (function () {
             self.notifications.show(data, "error");
             self.$addReportModal.modal("hide");
         });
+        this.socket.on("pickup::teacher:get-report-for-today", function dummy(data) {
+            console.log(data);
+        });
     };
 
     View.prototype.parseCurrentReport = function (data) {
