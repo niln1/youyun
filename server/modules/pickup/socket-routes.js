@@ -36,6 +36,25 @@
 		});
  	});
 
+ 	socket.on('pickup::teacher::get-report-for-today', function (data) {
+ 		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			if (user.isTeacher() || user.isAdmin() || user.isSchool()) {
+				return StudentPickupReport.findReportForToday();
+			} else {
+				throw new Error("You don't have permission");;
+			}
+		})
+ 		.then(function (report) {
+			logger.info("found report for 'get report for today'");
+			socket.emit('pickup::teacher:get-report-for-today', report);
+		})
+		.fail(function (err) {
+			logger.warn(err);
+			socket.emit('pickup::all:error', err);
+		});
+ 	});
+
 	socket.on('pickup::parent::get-child-report', function (data) {
 
 		socketServer.validateUserSession(socket)
@@ -57,37 +76,9 @@
 		});
 	});
 
-	// need to change
-	socket.on('pickup::all::get-current-report', function (data) {
-		Q.fcall(function () {
-			if (socket.session.user.userType < 3) {
-				return true;
-			} else {
-				throw new Error("You don't have permission");
-			}
-		})
-		.then(function (havePermission) {
-			var defer = Q.defer();
-			StudentPickupReport.findByLock(false,
-				function (err, reports) {
-					if (err) defer.reject(err);
-					else if (reports.length === 0) 
-						defer.reject(new Error("report havned been initialized"));
-					else
-						defer.resolve(reports[0]);
-				});
-			return defer.promise;
-		})
-		.then(function (report) {
-			logger.info("done");
-			socket.emit('pickup::all:update-current-report', report);
-		})
-		.fail(function (err) {
-			logger.warn(err);
-			socket.emit('pickup::all:error', err);
-		});
-	});
 	socket.on('pickup::create-report', function (data) {
+		var dateToValidate;
+
 		Q.fcall(function () {
 			if (socket.session.user.userType <= 3) {
 				return true;
@@ -96,7 +87,9 @@
 			}
 		}).then(function (hasPermission) {
 			if (data && data.date && data.userIds) {
-				var dateToValidate = moment(data.date).tz('UTC').startOf('day');
+				// @ RC timezone broken...
+				dateToValidate = moment(data.date).tz('UTC').startOf('day');
+
 				var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
 				if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
 					if (data.userIds.length <= 0) {
@@ -112,7 +105,7 @@
 		}).then(function () {
 			// check if there is one report with same date.
 			var defer = Q.defer();
-			StudentPickupReport.find({date: data.date}).exec(function(err, reports){
+			StudentPickupReport.find({date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")}).exec(function(err, reports){
 				if (err) defer.reject(err);
 				else if (reports.length === 0) defer.resolve();
 				else defer.reject(new Error("Report Already Exists"));
@@ -125,7 +118,7 @@
 				needToPickupList: data.userIds,
 				absenceList: [],
 				pickedUpList: [],
-				date: data.date
+				date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
 			});
 
 			newReport.save(function (err) {
@@ -173,7 +166,7 @@
 		})
 		.spread(function (user, report, childID, needToPickup) {
 			var defer = Q.defer();
-
+			// @ Ranchao change this to student report method.. plz reference StudentPickupReport.js
 			var childObjectID = mongoose.Types.ObjectId(childID.toString());
 
 			if (needToPickup) {
@@ -213,4 +206,76 @@
 			socket.emit('pickup::parent::add-absence::failure', err.toString());
 		})
 	});
+	
+	//TODO:
+	socket.on('pickup::teacher::pickup-student', function (data) {
+		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			var defer = Q.defer();
+
+			if (user.isTeacher() || user.isAdmin()) {
+				if (data.reportID && data.childID && data.needToPickup) {
+					var needToPickup = JSON.parse(data.needToPickup)
+					defer.resolve([user, StudentPickupReport.findByID(data.reportID), data.childID, needToPickup]);
+				} else {
+					defer.reject(new Error('Required fields missing'));
+				}
+			} else {
+				defer.reject(new Error('401 Unauthorized'));
+			}
+
+			return defer.promise;
+		})
+		.spread(function (user, report, childID, needToPickup) {
+			var dateToValidate = moment(report.date).tz('UTC').startOf('day');
+			var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+			if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+				return [user, report, childID, needToPickup];
+			} else {
+				throw new Error('Cannot modify pickup report from the past');
+			}
+		})
+		.spread(function (user, report, childID, needToPickup) {
+			var defer = Q.defer();
+			// @ Ranchao change this to student report method.. plz reference StudentPickupReport.js
+			var childObjectID = mongoose.Types.ObjectId(childID.toString());
+
+			if (needToPickup) {
+				var index = report.absenceList.indexOf(childObjectID);
+				if (index !== -1) {
+					report.absenceList.splice(index, 1);
+					report.needToPickupList.push(childObjectID);
+					report.save(function (err, report) {
+						if (err) defer.reject(err);
+						else defer.resolve(report);
+					});
+				} else {
+					defer.reject(new Error('ChildID not in absence list.'));
+				}
+			} else {
+				var index = report.needToPickupList.indexOf(childObjectID)
+				if (index !== -1) {
+					report.needToPickupList.splice(index, 1);
+					report.absenceList.push(childObjectID);
+					report.save(function (err, report) {
+						if (err) defer.reject(err);
+						else defer.resolve(report);
+					});
+				} else {
+					defer.reject(new Error('ChildID not in need to pickup list.'));
+				}
+			}
+
+			return defer.promise;
+		})
+		.then(function (report) {
+			socket.emit('pickup::parent::add-absence::success', report);
+			// TODO broadcast this event
+		})
+		.fail(function (err) {
+			logger.warn(err.toString());
+			socket.emit('pickup::parent::add-absence::failure', err.toString());
+		})
+	});
+
 }

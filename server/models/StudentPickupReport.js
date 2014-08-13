@@ -49,10 +49,6 @@ StudentPickupReportSchema.methods.removePickedUp = function (studentId, defer) {
     this.save(defer.resolve());
 }
 
-StudentPickupReportSchema.statics.findByLock = function (lock, cb) {
-    this.find({lock: lock}).exec(cb);
-}
-
 StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
     var start = moment(date).tz('UTC').startOf('month').format();
     var end = moment(date).tz('UTC').endOf('month').format();
@@ -69,6 +65,7 @@ StudentPickupReportSchema.statics.findByOptions = function (options) {
 
     this.find(options, function (err, reports) {
         if (err) defer.reject(err);
+        if (reports.length === 0) defer.reject(new Error("no report found"));
         else defer.resolve(reports);
     })
 
@@ -88,9 +85,22 @@ StudentPickupReportSchema.statics.findByID = function (reportID) {
     return defer.promise;
 };
 
-
 StudentPickupReportSchema.statics.findAllReports = function () {
     return this.findByOptions({});
+};
+
+StudentPickupReportSchema.statics.findReportForToday = function () {
+    var today = moment(new Date()).utc().startOf('day').format("YYYY-MM-DD HH:mm:ss");
+    var defer = Q.defer();
+
+    this.findOne({
+        "date" : today 
+    }, function (err, report) {
+        if (err) defer.reject(err);
+        else defer.resolve(report);
+    });
+
+    return defer.promise;
 };
 
 StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
