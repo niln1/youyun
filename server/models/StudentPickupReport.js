@@ -65,7 +65,6 @@ StudentPickupReportSchema.statics.findByOptions = function (options) {
 
     this.find(options, function (err, reports) {
         if (err) defer.reject(err);
-        if (reports.length === 0) defer.reject(new Error("no report found"));
         else defer.resolve(reports);
     })
 
