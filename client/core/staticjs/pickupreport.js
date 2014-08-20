@@ -32,6 +32,13 @@ var pickupReportApp = (function () {
         return _.filter(users, function(user){ return _.contains(userIds, user._id) });
     }
 
+    function addPickUpTag (needPickUpList, pickedUpUserIds) {
+        return _.map(needPickUpList, function(student) {
+            student.picked = _.contains(pickedUpUserIds, student._id);
+            return student;
+        });
+    }
+
     /**
      * Loading the initialization functions
      * @return {[type]} [description]
@@ -158,14 +165,12 @@ var pickupReportApp = (function () {
             this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
                 populateUsersHelper(report.absenceList, this.users));
         }
+        // calculate the data and populate the pickup table
         if (report.needToPickupList.length > 0) {
-            this.currentReport.pickupData = populateUsersHelper(report.needToPickupList, this.users);
+            var tempList = populateUsersHelper(report.needToPickupList, this.users);
+            this.currentReport.pickupData = addPickUpTag (tempList, report.pickedUpList)
             this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
                 this.currentReport.pickupData);
-        }
-        if (report.pickedUpList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-panel-container .pickedup-table",
-                populateUsersHelper(report.pickedUpList, this.users));
         }
     };
 
@@ -176,10 +181,10 @@ var pickupReportApp = (function () {
             },
             sortable: true,
             columns: [{
-                field: "firstname",
+                field: "pickup",
                 title: "Pickup",
                 width: "35px",
-                template: '<div class="pickup-table-checkmark #= firstname ? "ion-ios7-checkmark-outline" : "ion-ios7-circle-outline" #"></div>'
+                template: '<div class="pickup-table-checkmark #= picked ? "ion-ios7-checkmark-outline" : "ion-ios7-circle-outline" #"></div>'
             },{
                 field: "firstname",
                 title: "First Name",
