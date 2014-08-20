@@ -19,7 +19,7 @@ block main-content
                         div.header-inner
                             h2.text-left Pickup Report
                     div.content-divider
-                    div#right-panel-container
+                    div#right-panel-container(style="padding:10px;")
 
     div#add-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="add-report-modal-label" aria-hidden="true")
         div.modal-dialog.modal-sm
@@ -58,10 +58,10 @@ block main-content
             h4(style="padding: 0.5em") Need To Pick Up
             div.content-divider
             div.need-pickup-table
-        div
-            h4(style="padding: 0.5em") Picked Up
-            div.content-divider
-            div.pickedup-table
+        //- div
+        //-     h4(style="padding: 0.5em") Picked Up
+        //-     div.content-divider
+        //-     div.pickedup-table
         div
             h4(style="padding: 0.5em") Absence
             div.content-divider

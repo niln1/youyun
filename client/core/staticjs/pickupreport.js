@@ -50,7 +50,6 @@ var pickupReportApp = (function () {
         this.socket = io.connect();
         this.socket.emit("pickup::all::get-current-report");
         this.socket.emit("pickup::teacher::get-reports");
-        this.socket.on("pickup::all:update-current-report", $.proxy(this.parseCurrentReport, this));
         this.socket.on("pickup::create::success", function onCreateSuccess(data) {
             self.notifications.show("Successfully Created", "success");
             self.$addReportModal.modal("hide");
@@ -72,11 +71,6 @@ var pickupReportApp = (function () {
         this.socket.on("pickup::teacher:get-report-for-today", function dummy(data) {
             console.log(data);
         });
-    };
-
-    View.prototype.parseCurrentReport = function (data) {
-        this.currentReport = data;
-        this.reRender();
     };
 
     /**
@@ -133,10 +127,10 @@ var pickupReportApp = (function () {
         date.setHours(0,0,0,0);
         if ($.inArray(date.getTime(), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
-            var currentReport = _.find(this.reports, function(report) {
+            this.currentReport = _.find(this.reports, function(report) {
                 return report.date ? ( new Date(report.date).getTime() === date.getTime()) : false;
             });
-            this.renderReport(currentReport);
+            this.renderCurrentReport();
         } else {
             var today = new Date().setHours(0,0,0,0);
             // if less than yesterday
@@ -154,21 +148,23 @@ var pickupReportApp = (function () {
         this.$addReportModal.modal("show");
     };
 
-    View.prototype.renderReport = function (report) {
+    View.prototype.renderCurrentReport = function () {
+        var report = this.currentReport;
         $("#need-pickup-total").html(report.needToPickupList.length);
         $("#pickedup-total").html(report.pickedUpList.length);
         $("#absence-total").html(report.absenceList.length);
 
         if (report.absenceList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-report-container .absence-table",
+            this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
                 populateUsersHelper(report.absenceList, this.users));
         }
         if (report.needToPickupList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-report-container .need-pickup-table",
-                populateUsersHelper(report.needToPickupList, this.users));
+            this.currentReport.pickupData = populateUsersHelper(report.needToPickupList, this.users);
+            this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
+                this.currentReport.pickupData);
         }
         if (report.pickedUpList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-report-container .pickedup-table",
+            this.renderReportTableWithSelectorAndData("#right-panel-container .pickedup-table",
                 populateUsersHelper(report.pickedUpList, this.users));
         }
     };
@@ -181,6 +177,11 @@ var pickupReportApp = (function () {
             sortable: true,
             columns: [{
                 field: "firstname",
+                title: "Pickup",
+                width: "35px",
+                template: '<div class="pickup-table-checkmark #= firstname ? "ion-ios7-checkmark-outline" : "ion-ios7-circle-outline" #"></div>'
+            },{
+                field: "firstname",
                 title: "First Name",
             }, {
                 field: "lastname",
@@ -192,38 +193,6 @@ var pickupReportApp = (function () {
         });
     };
 
-    View.prototype.reRender = function () {
-        if (!$.isEmptyObject(this.currentReport)) {
-            // put into listview
-            this.$prepickupList.find(".need-pickup").html(this.currentReport.needToPickupList.length
-                - this.currentReport.absenceList.length);
-            this.$prepickupList.find(".absence").html(this.currentReport.absenceList.length);
-            this.$prepickupList.find(".total").html(this.currentReport.needToPickupList.length);
-
-            var tableData = _.filter(this.users, $.proxy(function(student){ 
-                return _.contains(this.currentReport.absenceList, student._id) 
-            }, this));
-
-            $(this.$absenceTable).kendoGrid({
-                dataSource: {
-                    data: tableData,
-                },
-                scrollable: true,
-                sortable: true,
-                columns: [{
-                    field: "firstname",
-                    title: "First Name",
-                }, {
-                    field: "lastname",
-                    title: "Last Name",
-                }, {
-                    field: "pickupLocation",
-                    title: "Pick Up Location",
-                }]
-            });
-        }
-
-    };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
         this.students = _.filter(this.users, function (user) {
@@ -232,7 +201,6 @@ var pickupReportApp = (function () {
         this.teachers = _.filter(this.users, function (user) {
             return user.userType === 2;
         });
-        this.reRender();
     };
     View.prototype._getUserList = function () {
         var url = "/api/v1/users";
