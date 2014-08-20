@@ -8,20 +8,16 @@ block body-content
                 | &nbsp;优云
         nav.main.unselectable
             ul
-                li.home
-                    a(href="/") 主页
                 li.pickupreport-link
-                    a(href="/pickupreport") 接车报告
+                    a(href="/pickupreport") Pickup Report
                 li.usermanage-link
-                    a(href="/usermanage") 管理
+                    a(href="/usermanage") Student Management
         nav.user.unselectable
             div.user-icon
                 i(style="background-image: url('#{ user.userImage }'), url('/static/img/default_image/default-user.png');")
             ul
                 li
-                    a(href="/account") 我的账户
-                li
-                    a(href="/logout") 登出
+                    a(href="/logout") log out
     div#content
         div#header-background-region.fixed
             div.closed
@@ -30,7 +26,7 @@ block body-content
                         p.user-photo
                             i.photo
                                 i
-                            i.saving 保存中...
+                            i.saving Saving...
         block main-content
 
         div#error-modal.modal.fade
@@ -38,10 +34,12 @@ block body-content
                 div.modal-content
                     div.modal-header
                         button(type="button" class="close" data-dismiss="modal" aria-hidden="true")&times;
-                        h4.modal-title 出错了
+                        h4.modal-title Error
                     div.content-divider
                     div.modal-body
-                        div(style="padding: 0.5em") 连接出现问题，我们会尽快解决
+                        div(style="padding: 0.5em") Something goes wrong with the connection,
+                            | a group of trainned monkey is depatched to solve this problem! 
+                            | We will fix it soon! 
                     div.modal-footer
-                        button(type="button" class="btn btn-default" data-dismiss="modal") 知道了
+                        button(type="button" class="btn btn-default" data-dismiss="modal") OK
 
