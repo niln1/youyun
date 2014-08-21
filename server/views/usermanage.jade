@@ -9,14 +9,8 @@ block main-content
                 div.header-inner
                     h2.text-left 学生信息管理 (点击编辑)
             div.content-divider
-            div(style="padding: 1em")
-                table#student-table.table.table-hover
-                    thead
-                        tr
-                            th 用户名
-                            th 姓名
-                            th 接车地点
-                    tbody
+            div(style="padding: 1em")#student-table-container
+
     div#student-manage-modal.modal.fade
         div.modal-dialog.modal-sm
             div.modal-content
