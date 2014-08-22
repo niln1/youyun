@@ -32,7 +32,7 @@
 		})
 		.fail(function (err) {
 			logger.warn(err);
-			socket.emit('pickup::all:error', err);
+			socket.emit('all::failure', err);
 		});
  	});
 
@@ -47,11 +47,12 @@
 		})
  		.then(function (report) {
 			logger.info("found report for 'get report for today'");
-			socket.emit('pickup::teacher:get-report-for-today', report);
+			console.log(report);
+			socket.emit('pickup::teacher::get-report-for-today::success', report);
 		})
 		.fail(function (err) {
 			logger.warn(err);
-			socket.emit('pickup::all:error', err);
+			socket.emit('all::failure', err);
 		});
  	});
 
@@ -72,7 +73,7 @@
 			socket.emit('pickup::parent::get-child-report::success', reports);
 		})
 		.fail(function (err) {
-			socket.emit('pickup::parent::get-child-report::failure', err.toString());
+			socket.emit('all::failure', err.toString());
 		});
 	});
 
@@ -87,10 +88,9 @@
 			}
 		}).then(function (hasPermission) {
 			if (data && data.date && data.userIds) {
-				// @ RC timezone broken...
-				dateToValidate = moment(data.date).tz('UTC').startOf('day');
+				dateToValidate = moment(data.date).startOf('day');
 
-				var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+				var startingAvailableDate = moment(new Date()).startOf('day');
 				if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
 					if (data.userIds.length <= 0) {
 						throw new Error("No student needs pickup");
@@ -203,20 +203,19 @@
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());
-			socket.emit('pickup::parent::add-absence::failure', err.toString());
+			socket.emit('all::failure', err.toString());
 		})
 	});
-	
-	//TODO:
+
 	socket.on('pickup::teacher::pickup-student', function (data) {
 		socketServer.validateUserSession(socket)
 		.then(function (user) {
 			var defer = Q.defer();
 
-			if (user.isTeacher() || user.isAdmin()) {
-				if (data.reportID && data.childID && data.needToPickup) {
-					var needToPickup = JSON.parse(data.needToPickup)
-					defer.resolve([user, StudentPickupReport.findByID(data.reportID), data.childID, needToPickup]);
+			if (user.isTeacher()) {
+				if (data.reportID && data.studentID && data.pickedUp) {
+					var pickedUp = JSON.parse(data.pickedUp)
+					defer.resolve([user, StudentPickupReport.findByID(data.reportID), data.studentID, pickedUp]);
 				} else {
 					defer.reject(new Error('Required fields missing'));
 				}
@@ -226,56 +225,55 @@
 
 			return defer.promise;
 		})
-		.spread(function (user, report, childID, needToPickup) {
-			var dateToValidate = moment(report.date).tz('UTC').startOf('day');
-			var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+		.spread(function (user, report, studentID, pickedUp) {
+			var dateToValidate = moment(report.date).startOf('day');
+			var startingAvailableDate = moment(new Date()).startOf('day');
 			if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
-				return [user, report, childID, needToPickup];
+				return [user, report, studentID, pickedUp];
 			} else {
 				throw new Error('Cannot modify pickup report from the past');
 			}
 		})
-		.spread(function (user, report, childID, needToPickup) {
+		.spread(function (user, report, studentID, pickedUp) {
 			var defer = Q.defer();
 			// @ Ranchao change this to student report method.. plz reference StudentPickupReport.js
-			var childObjectID = mongoose.Types.ObjectId(childID.toString());
+			var studentObjectID = mongoose.Types.ObjectId(studentID.toString());
 
-			if (needToPickup) {
-				var index = report.absenceList.indexOf(childObjectID);
-				if (index !== -1) {
-					report.absenceList.splice(index, 1);
-					report.needToPickupList.push(childObjectID);
-					report.save(function (err, report) {
-						if (err) defer.reject(err);
-						else defer.resolve(report);
-					});
-				} else {
-					defer.reject(new Error('ChildID not in absence list.'));
-				}
-			} else {
-				var index = report.needToPickupList.indexOf(childObjectID)
+			if (pickedUp) {
+				var index = report.needToPickupList.indexOf(studentObjectID);
 				if (index !== -1) {
 					report.needToPickupList.splice(index, 1);
-					report.absenceList.push(childObjectID);
+					report.pickedUpList.push(studentObjectID);
 					report.save(function (err, report) {
 						if (err) defer.reject(err);
 						else defer.resolve(report);
 					});
 				} else {
-					defer.reject(new Error('ChildID not in need to pickup list.'));
+					defer.reject(new Error('StudentID not in need to pickup list.'));
+				}
+			} else {
+				var index = report.pickedUpList.indexOf(studentObjectID)
+				if (index !== -1) {
+					report.pickedUpList.splice(index, 1);
+					report.needToPickupList.push(studentObjectID);
+					report.save(function (err, report) {
+						if (err) defer.reject(err);
+						else defer.resolve(report);
+					});
+				} else {
+					defer.reject(new Error('StudentID not in pickuped up list.'));
 				}
 			}
 
 			return defer.promise;
 		})
 		.then(function (report) {
-			socket.emit('pickup::parent::add-absence::success', report);
+			socket.emit('pickup::teacher::pickup-student::success', report);
 			// TODO broadcast this event
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());
-			socket.emit('pickup::parent::add-absence::failure', err.toString());
+			socket.emit('all::failure', err.toString());
 		})
 	});
-
 }
