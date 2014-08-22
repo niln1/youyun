@@ -182,6 +182,7 @@
 			return defer.promise;
 		})
 		.spread(function (user, report, childID, needToPickup) {
+			// TODO: UTC
 			var dateToValidate = moment(report.date).tz('UTC').startOf('day');
 			var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
 			if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
@@ -226,7 +227,7 @@
 		.then(function (report) {
 			socket.emit('pickup::parent::add-absence::success', report);
 			// TODO broadcast this event
-			socket.emit('pickup::all::add-absence::success', report);
+			socket.broadcast.emit('pickup::all::add-absence::success', report);
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());
@@ -297,7 +298,7 @@
 		.then(function (report) {
 			socket.emit('pickup::teacher::pickup-student::success', report);
 			// TODO broadcast this event
-			socket.emit('pickup::all::picked-up::success', report);
+			socket.broadcast.emit('pickup::all::picked-up::success', report);
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());

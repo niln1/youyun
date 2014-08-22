@@ -32,13 +32,6 @@ var pickupReportApp = (function () {
         return _.filter(users, function(user){ return _.contains(userIds, user._id) });
     }
 
-    function addPickUpTag (needPickUpList, pickedUpUserIds) {
-        return _.map(needPickUpList, function(student) {
-            student.picked = _.contains(pickedUpUserIds, student._id);
-            return student;
-        });
-    }
-
     /**
      * Loading the initialization functions
      * @return {[type]} [description]
@@ -76,10 +69,28 @@ var pickupReportApp = (function () {
             self.$addReportModal.modal("hide");
         });
         this.socket.on("pickup::all::picked-up::success", function dummy(data) {
-            console.log(data);
+            _.each(self.reports, function (report) {
+                if (report._id === data._id) {
+                    report = data;
+                }
+            });
+
+            if (data._id === self.currentReport._id) {
+                self.currentReport = data;
+                self.renderCurrentReport()
+            };
         });
         this.socket.on("pickup::all::add-absence::success", function dummy(data) {
-            console.log(data);
+            _.each(self.reports, function (report) {
+                if (report._id === data._id) {
+                    report = data;
+                }
+            });
+
+            if (data._id === self.currentReport._id) {
+                self.currentReport = data;
+                self.renderCurrentReport()
+            };
         });
     };
 
@@ -164,17 +175,22 @@ var pickupReportApp = (function () {
         $("#pickedup-total").html(report.pickedUpList.length);
         $("#absence-total").html(report.absenceList.length);
 
-        if (report.absenceList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
-                populateUsersHelper(report.absenceList, this.users));
-        }
+        this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
+            populateUsersHelper(report.absenceList, this.users));
+
         // calculate the data and populate the pickup table
-        if (report.needToPickupList.length > 0) {
-            var tempList = populateUsersHelper(report.needToPickupList, this.users);
-            this.currentReport.pickupData = addPickUpTag (tempList, report.pickedUpList)
-            this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
-                this.currentReport.pickupData);
-        }
+        var needToPickupList = _.map(populateUsersHelper(report.needToPickupList, this.users), function(student) {
+            student.picked = false;
+            return student;
+        });
+        var pickedupList = _.map(populateUsersHelper(report.pickedUpList, this.users), function(student) {
+            student.picked = true;
+            return student;
+        });
+        this.currentReport.pickupData = _.sortBy(_.union(needToPickupList, pickedupList), function(student){ return student.pickupLocation; });
+        this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
+            this.currentReport.pickupData);
+        
     };
 
     View.prototype.renderReportTableWithSelectorAndData = function (selectorString, data){
