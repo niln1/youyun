@@ -75,7 +75,10 @@ var pickupReportApp = (function () {
             self.notifications.show(data, "error");
             self.$addReportModal.modal("hide");
         });
-        this.socket.on("pickup::teacher:get-report-for-today", function dummy(data) {
+        this.socket.on("pickup::all::picked-up::success", function dummy(data) {
+            console.log(data);
+        });
+        this.socket.on("pickup::all::add-absence::success", function dummy(data) {
             console.log(data);
         });
     };

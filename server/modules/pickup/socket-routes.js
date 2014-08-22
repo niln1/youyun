@@ -77,6 +77,32 @@
 		});
 	});
 
+	socket.on('pickup::parent::get-future-child-report', function (data) {
+
+		socketServer.validateUserSession(socket)
+		.then(function (user) {
+			if (user.isParent()) {
+				return [user, StudentParent.findChildrenByParent(user)];
+			} else {
+				throw new Error('You do not have access to this socket route');
+			}
+		})
+		.spread(function (parent, children) {
+			return [parent, children, StudentPickupReport.findReportsByUsers(children)]
+		})
+		.spread(function (parent, children, reports) {
+			console.log("here");
+			var dateToValidate = moment(new Date()).startOf('day');
+			var futureReports = __.filter(reports, function(report) { 
+				return dateToValidate.unix() < moment(report.date).unix();
+			});
+			socket.emit('pickup::parent::get-future-child-report::success', futureReports);
+		})
+		.fail(function (err) {
+			socket.emit('all::failure', err.toString());
+		});
+	});
+
 	socket.on('pickup::create-report', function (data) {
 		var dateToValidate;
 
@@ -200,6 +226,7 @@
 		.then(function (report) {
 			socket.emit('pickup::parent::add-absence::success', report);
 			// TODO broadcast this event
+			socket.emit('pickup::all::add-absence::success', report);
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());
@@ -270,6 +297,7 @@
 		.then(function (report) {
 			socket.emit('pickup::teacher::pickup-student::success', report);
 			// TODO broadcast this event
+			socket.emit('pickup::all::picked-up::success', report);
 		})
 		.fail(function (err) {
 			logger.warn(err.toString());
