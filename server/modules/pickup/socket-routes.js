@@ -140,7 +140,7 @@
 			return defer.promise;
 		}).then(function () {
 			var defer = Q.defer();
-
+			
 			var newReport = new StudentPickupReport({
 				needToPickupList: data.userIds,
 				absenceList: [],
