@@ -146,11 +146,10 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.displayReportByDate = function (date) {
-        date.setHours(0,0,0,0);
-        if ($.inArray(date.getTime(), this.dateArray)!=-1) {
+        if ($.inArray(moment(date).format("L"), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
             this.currentReport = _.find(this.reports, function(report) {
-                return report.date ? ( new Date(report.date).getTime() === date.getTime()) : false;
+                return report.date ? ( moment( new Date(report.date) ).format("L") === moment(date).format("L")) : false;
             });
             this.renderCurrentReport();
         } else {
