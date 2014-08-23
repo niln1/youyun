@@ -103,6 +103,7 @@
 		});
 	});
 
+	// TODO: need revisit
 	socket.on('pickup::create-report', function (data) {
 		var dateToValidate;
 
@@ -182,9 +183,10 @@
 			return defer.promise;
 		})
 		.spread(function (user, report, childID, needToPickup) {
-			// TODO: UTC
-			var dateToValidate = moment(report.date).tz('UTC').startOf('day');
-			var startingAvailableDate = moment(new Date()).tz('UTC').startOf('day').add('days', 1);
+			// only allow add absence for today or after
+			// TODO: need cleanup
+			var dateToValidate = moment(report.date).startOf('day');
+			var startingAvailableDate = moment(new Date()).startOf('day');
 			if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
 				return [user, report, childID, needToPickup];
 			} else {
@@ -193,7 +195,7 @@
 		})
 		.spread(function (user, report, childID, needToPickup) {
 			var defer = Q.defer();
-			// @ Ranchao change this to student report method.. plz reference StudentPickupReport.js
+			// TODO: need refactor
 			var childObjectID = mongoose.Types.ObjectId(childID.toString());
 
 			if (needToPickup) {
@@ -226,7 +228,7 @@
 		})
 		.then(function (report) {
 			socket.emit('pickup::parent::add-absence::success', report);
-			// TODO broadcast this event
+			// broadcast this event
 			socket.broadcast.emit('pickup::all::add-absence::success', report);
 		})
 		.fail(function (err) {
@@ -264,7 +266,7 @@
 		})
 		.spread(function (user, report, studentID, pickedUp) {
 			var defer = Q.defer();
-			// @ Ranchao change this to student report method.. plz reference StudentPickupReport.js
+			// TODO: need refactor
 			var studentObjectID = mongoose.Types.ObjectId(studentID.toString());
 
 			if (pickedUp) {
@@ -297,7 +299,7 @@
 		})
 		.then(function (report) {
 			socket.emit('pickup::teacher::pickup-student::success', report);
-			// TODO broadcast this event
+			// broadcast this event
 			socket.broadcast.emit('pickup::all::picked-up::success', report);
 		})
 		.fail(function (err) {
