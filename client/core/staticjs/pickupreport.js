@@ -31,7 +31,7 @@ var pickupReportApp = (function () {
     function populateUsersHelper (userIds, users) {
         return _.filter(users, function(user){ return _.contains(userIds, user._id) });
     }
-
+    
     /**
      * Loading the initialization functions
      * @return {[type]} [description]
