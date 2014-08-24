@@ -72,7 +72,7 @@ var pickupReportApp = (function () {
         this.socket.on("pickup::all::picked-up::success", function dummy(data) {
             _.each(self.reports, function (report) {
                 if (report._id === data._id) {
-                    report = data;
+                    report.pickedUpList = data.pickedUpList;
                 }
             });
 
@@ -84,7 +84,7 @@ var pickupReportApp = (function () {
         this.socket.on("pickup::all::add-absence::success", function dummy(data) {
             _.each(self.reports, function (report) {
                 if (report._id === data._id) {
-                    report = data;
+                    report.absenceList = data.absenceList;
                 }
             });
 
