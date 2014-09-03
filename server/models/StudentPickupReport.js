@@ -50,9 +50,8 @@ StudentPickupReportSchema.methods.removePickedUp = function (studentId, defer) {
 }
 
 StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
-    var start = moment(date).utc().startOf('month').format();
-    var end = moment(date).utc().endOf('month').format();
-    console.log(start, end);
+    var start = moment(date).startOf('month').format();
+    var end = moment(date).endOf('month').format();
     this.find({date: {$gte: start, $lt: end}}).exec(cb);
 }
 

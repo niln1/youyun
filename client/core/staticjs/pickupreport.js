@@ -31,14 +31,7 @@ var pickupReportApp = (function () {
     function populateUsersHelper (userIds, users) {
         return _.filter(users, function(user){ return _.contains(userIds, user._id) });
     }
-
-    function addPickUpTag (needPickUpList, pickedUpUserIds) {
-        return _.map(needPickUpList, function(student) {
-            student.picked = _.contains(pickedUpUserIds, student._id);
-            return student;
-        });
-    }
-
+    
     /**
      * Loading the initialization functions
      * @return {[type]} [description]
@@ -46,6 +39,7 @@ var pickupReportApp = (function () {
     View.prototype.start = function () {
         this._initSocket();
         this._loadData();
+        this.reRenderCalendar();
     };
 
     View.prototype._loadData = function () {
@@ -75,8 +69,29 @@ var pickupReportApp = (function () {
             self.notifications.show(data, "error");
             self.$addReportModal.modal("hide");
         });
-        this.socket.on("pickup::teacher:get-report-for-today", function dummy(data) {
-            console.log(data);
+        this.socket.on("pickup::all::picked-up::success", function dummy(data) {
+            _.each(self.reports, function (report) {
+                if (report._id === data._id) {
+                    report.pickedUpList = data.pickedUpList;
+                }
+            });
+
+            if (data._id === self.currentReport._id) {
+                self.currentReport = data;
+                self.renderCurrentReport()
+            };
+        });
+        this.socket.on("pickup::all::add-absence::success", function dummy(data) {
+            _.each(self.reports, function (report) {
+                if (report._id === data._id) {
+                    report.absenceList = data.absenceList;
+                }
+            });
+
+            if (data._id === self.currentReport._id) {
+                self.currentReport = data;
+                self.renderCurrentReport()
+            };
         });
     };
 
@@ -87,7 +102,7 @@ var pickupReportApp = (function () {
     View.prototype.addReportHandler = function (event) {
         if (event.target.type === "button"){
             if (event.target.id === "save-new-report") {
-                var date = moment(new Date(this.currentDate)).utc();
+                var date = moment(new Date(this.currentDate));
                 var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
                 var userIds = _.pluck(users, '_id');
                 if (date.isValid()) {
@@ -102,14 +117,14 @@ var pickupReportApp = (function () {
     View.prototype.reRenderCalendar = function () {
         var self = this;
         this.$calendar.empty();
-        this.dateArray = _.map(this.reports, function(data) { return new Date(data.date).getTime(); });
+        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).format("L"); });
         return $("#calendar").kendoCalendar({
             value: self.currentDate,
             // get the date array with date value
             dates: self.dateArray,
             month:{
                 content: 
-                    '# if ($.inArray(data.date.getTime(), data.dates)!=-1) { #' +
+                    '# if ($.inArray(moment(data.date).format("L"), data.dates)!=-1) { #' +
                         '<div class="pickup_date">#= data.value #</div>' +
                     '# } else { #' +
                         '#= data.value #' +
@@ -131,11 +146,10 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.displayReportByDate = function (date) {
-        date.setHours(0,0,0,0);
-        if ($.inArray(date.getTime(), this.dateArray)!=-1) {
+        if ($.inArray(moment(date).format("L"), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
             this.currentReport = _.find(this.reports, function(report) {
-                return report.date ? ( new Date(report.date).getTime() === date.getTime()) : false;
+                return report.date ? ( moment( new Date(report.date) ).format("L") === moment(date).format("L")) : false;
             });
             this.renderCurrentReport();
         } else {
@@ -161,17 +175,22 @@ var pickupReportApp = (function () {
         $("#pickedup-total").html(report.pickedUpList.length);
         $("#absence-total").html(report.absenceList.length);
 
-        if (report.absenceList.length > 0) {
-            this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
-                populateUsersHelper(report.absenceList, this.users));
-        }
+        this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
+            populateUsersHelper(report.absenceList, this.users));
+
         // calculate the data and populate the pickup table
-        if (report.needToPickupList.length > 0) {
-            var tempList = populateUsersHelper(report.needToPickupList, this.users);
-            this.currentReport.pickupData = addPickUpTag (tempList, report.pickedUpList)
-            this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
-                this.currentReport.pickupData);
-        }
+        var needToPickupList = _.map(populateUsersHelper(report.needToPickupList, this.users), function(student) {
+            student.picked = false;
+            return student;
+        });
+        var pickedupList = _.map(populateUsersHelper(report.pickedUpList, this.users), function(student) {
+            student.picked = true;
+            return student;
+        });
+        this.currentReport.pickupData = _.sortBy(_.union(needToPickupList, pickedupList), function(student){ return student.pickupLocation; });
+        this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
+            this.currentReport.pickupData);
+        
     };
 
     View.prototype.renderReportTableWithSelectorAndData = function (selectorString, data){
