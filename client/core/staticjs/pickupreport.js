@@ -175,7 +175,7 @@ var pickupReportApp = (function () {
         $("#pickedup-total").html(report.pickedUpList.length);
         $("#absence-total").html(report.absenceList.length);
 
-        this.renderReportTableWithSelectorAndData("#right-panel-container .absence-table",
+        this.renderAbsenceTableWithSelectorAndData("#right-panel-container .absence-table",
             populateUsersHelper(report.absenceList, this.users));
 
         // calculate the data and populate the pickup table
@@ -205,14 +205,42 @@ var pickupReportApp = (function () {
                 width: "35px",
                 template: '<div class="pickup-table-checkmark #= picked ? "ion-ios7-checkmark-outline" : "ion-ios7-circle-outline" #"></div>'
             },{
+                field: "pickupLocation",
+                title: "Location",
+            },{
                 field: "firstname",
                 title: "First Name",
             }, {
                 field: "lastname",
                 title: "Last Name",
             }, {
+                field: "pickedBy",
+                title: "Picked By",
+            }, {
+                field: "pickedtime",
+                title: "Picked Time",
+            }]
+        });
+    };
+
+    View.prototype.renderAbsenceTableWithSelectorAndData = function (selectorString, data){
+        $(selectorString).kendoGrid({
+            dataSource: {
+                data: data,
+            },
+            sortable: true,
+            columns: [{
                 field: "pickupLocation",
-                title: "Pick Up Location",
+                title: "Location",
+            },{
+                field: "firstname",
+                title: "First Name",
+            }, {
+                field: "lastname",
+                title: "Last Name",
+            }, {
+                field: "reporttime",
+                title: "Report Time",
             }]
         });
     };
