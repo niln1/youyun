@@ -52,7 +52,23 @@ var UserSchema = new Schema({
     pickupLocation: {
         type: String,
         required: false,
-    }
+    },
+    pickupStudentGrade: {
+        type: String,
+        required: false,
+    },
+    pickupStudentRoomNumber: {
+        type: String,
+        required: false,
+    },
+    pickupStudentTime: {
+        type: String,
+        required: false,
+    },
+    pickupStudentDayOfWeek: [{
+        type: String,
+        required: false,
+    }],
     // need a json to store enterdate and graduate date
 });
 
