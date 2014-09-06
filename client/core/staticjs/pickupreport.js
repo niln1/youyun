@@ -69,7 +69,7 @@ var pickupReportApp = (function () {
             self.notifications.show(data, "error");
             self.$addReportModal.modal("hide");
         });
-        this.socket.on("pickup::all::picked-up::success", function dummy(data) {
+        this.socket.on("pickup::all::picked-up::success", function onPickUpSuccess(data) {
             _.each(self.reports, function (report) {
                 if (report._id === data._id) {
                     report.pickedUpList = data.pickedUpList;
@@ -81,10 +81,13 @@ var pickupReportApp = (function () {
                 self.renderCurrentReport()
             };
         });
-        this.socket.on("pickup::all::add-absence::success", function dummy(data) {
+        this.socket.on("pickup::all::add-absence::success", function onAddAbsenceSuccess(data) {
             _.each(self.reports, function (report) {
                 if (report._id === data._id) {
+                    // should sync all by data
                     report.absenceList = data.absenceList;
+                    report.needToPickupList = data.needToPickupList;
+                    report.pickedupList = data.pickedupList;
                 }
             });
 
@@ -187,7 +190,9 @@ var pickupReportApp = (function () {
             student.picked = true;
             return student;
         });
-        this.currentReport.pickupData = _.sortBy(_.union(needToPickupList, pickedupList), function(student){ return student.pickupLocation; });
+        this.currentReport.pickupData = _.sortBy(
+            _.union(needToPickupList, pickedupList), 
+            function(student){ return student.pickupLocation; });
         this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
             this.currentReport.pickupData);
         
