@@ -25,7 +25,8 @@
     "redis": "~0.10.0",
     "socket.io": "~0.9.16",
     "underscore": "~1.5.2",
-    "winston": "~0.7.3"
+    "winston": "~0.7.3",
+    "csv": "~0.4.0"
   },
   "devDependencies": {
     "nconf": "~0.6.9",
