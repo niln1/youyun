@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var nconf = require('nconf');
 var __ = require('underscore');
 var config = require('../server/utils/config.json');
+var Q = require('q');
 
 var User = require('../server/models/User');
 
@@ -26,9 +27,6 @@ db.on('error', function() {
 var helper = (function(){
   function App() {
     console.log("hello");
-    User.find({}, function(err, users){
-      console.log(users);
-    });
   }
 
   App.prototype.parseStudentCsv = function() {
@@ -44,7 +42,13 @@ var helper = (function(){
     }, function(err, datas){
       output.push(datas);
       __.each(datas, function(data) {
-        self.generateUsernameByFnLn(data.firstname, data.lastname,0)
+          self.generateUsernameByFnLn(data.firstname, data.lastname, 0)
+          .then(function (name) {
+            console.log(name);
+          })
+          .fail(function (err) {
+            console.log("ERROR", err);
+          });
       })
     });
 
@@ -55,15 +59,26 @@ var helper = (function(){
   }
 
   App.prototype.generateUsernameByFnLn = function( firstname, lastname, hit ) {
+    var self = this;
     var string1 = firstname.replace(/\s+/g, '').replace(",", ".");
     var string2 = lastname.replace(/\s+/g, '').replace(",", ".");
 
     string1 = (string1.length > 3) ? string1.substring(0,3) : string1;
     string2 = (string2.length > 3) ? string2.substring(0,3) : string2;
 
-    testUsername = string1 + string2 + hit;
+    var testUsername = string1 + string2 + hit;
 
-    // console.log(testUsername);
+    var deferred = Q.defer();
+
+    User.find({username:testUsername}, function(err, users){
+      if (err) deferred.reject(err);
+      if ( users.length === 0 ) {
+        deferred.resolve(testUsername);
+      }
+      else self.generateUsernameByFnLn(firstname, lastname, hit++);
+    });
+
+    return deferred.promise;
   }
 
   return App;
