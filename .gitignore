@@ -27,3 +27,4 @@ node_modules
 /.sass-cache
 
 static/img/user_image
+/utilities/output
