@@ -32,5 +32,11 @@ module.exports = { data:[
   },{
     firstname: "Tony",
     lastname: "Laoshi",
+  },{
+    firstname: "Ocean",
+    lastname: "Laoshi",
+  },{
+    firstname: "Tina",
+    lastname: "Laoshi",
   }
 ]};
