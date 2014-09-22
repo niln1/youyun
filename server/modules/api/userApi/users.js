@@ -35,6 +35,42 @@ exports.updateUserImage = function (req, res) {
     apiServer.verifySignature(req, res, updateUserImageHelper);
 }
 
+exports.deleteUserWithId = function (req, res) {
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+        ])
+    .spread(function (user, signatureIsValid) {
+        if (user.isAdmin()){
+            return true;
+        } else {
+            throw new Error("Stay away you muggles!");
+        }
+    })
+    .then(function(hasPermission){
+        var defer = Q.defer();
+        User.where().findOneAndRemove({userId: req.query.userId}, function(err, deletedUser){
+            if(err){
+                defer.reject(err);
+            }else{
+                if(deletedUser) {
+                    console.log(deletedUser);
+                }
+                defer.resolve();
+            }
+            
+        });
+        return defer.promise;
+    })
+    .then(function(){
+        apiServer.sendResponse(req, res, deletedUser, 'User deleted successfully');
+    })
+    .fail(function(err){
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
+
 exports.getChild = function (req, res) {
     Q.all([
         apiServer.validateUserSession(req, res),
@@ -42,9 +78,6 @@ exports.getChild = function (req, res) {
     ])
     .spread(function (user, signatureIsValid) {
 
-        console.log(user)
-        console.log(user._id);
-        console.log(req.query.userId);
         if (user.userType < 3 || user._id.toString() === req.query.userId) {
             if (req.query.userId) return true;
             else throw new Error('userId must be specified.');
