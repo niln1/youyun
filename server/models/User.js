@@ -6,6 +6,8 @@
 
 var StudentParent = require('./StudentParent');
 var mongoose = require('mongoose');
+var postFind = require('mongoose-post-find')
+
 var Schema = mongoose.Schema;
 
 var __ = require('underscore');
@@ -61,14 +63,10 @@ var UserSchema = new Schema({
         type: String,
         required: false,
     },
-    pickupStudentTime: {
-        type: String,
+    pickupStudentDayTime: {
+        type: Schema.Types.Mixed,
         required: false,
     },
-    pickupStudentDayOfWeek: [{
-        type: String,
-        required: false,
-    }],
     // need a json to store enterdate and graduate date
 });
 
@@ -97,22 +95,27 @@ UserSchema.pre('save', function (next) {
 
 });
 
-UserSchema.pre('validate', function (next) {
-    console.log("hi:" , this);
-    this.password = "Black Sheep Wall";
-
-    console.log("hi again", this);
-    next();
+/**
+ * Post find plugin do work before the results get sent to callback
+ */
+UserSchema.plugin(postFind, {
+  find: function(users, next) {
+    //Cast Out all password in Result
+    _.each(users, function(user){
+        user.castOutPassword();
+    });
+    next(null, users);
+  },
+  findOne: function(user, next) {
+    //Cast Out the password in Result
+    user.castOutPassword();
+    next(null, user);
+  },
 });
 
-
-UserSchema.post('validate', function (doc) {
-    console.log("hi:" , this);
-    doc.password = "Black Sheep Wall";
-
-    console.log("doc  ", this);
-});
-
+/**
+ * Compare if the candidate password hash is the same as the one in collection
+ */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
@@ -120,6 +123,21 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
+/**
+ * Simple Method Change password string to BLACK SHEEP WALL
+ */
+UserSchema.methods.castOutPassword = function () {
+    this.password = "Black Sheep Wall";
+    return;
+};
+
+/**
+ * TODO: NEED REVIEW
+ * [Depreciated] Check If User has The Child
+ * @param  {id}  childId
+ * @param  {Q.defer}  defer
+ * @return {Boolean}  return true if has that child, and vice versa
+ */
 UserSchema.methods.hasChild = function (childId, defer) {
     if (this.userType === 4) {
         StudentParent.find({parent: this._id},
