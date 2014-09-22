@@ -97,21 +97,7 @@ UserSchema.pre('save', function (next) {
 
 });
 
-UserSchema.pre('validate', function (next) {
-    console.log("hi:" , this);
-    this.password = "Black Sheep Wall";
 
-    console.log("hi again", this);
-    next();
-});
-
-
-UserSchema.post('validate', function (doc) {
-    console.log("hi:" , this);
-    doc.password = "Black Sheep Wall";
-
-    console.log("doc  ", this);
-});
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
@@ -126,7 +112,6 @@ UserSchema.methods.hasChild = function (childId, defer) {
             function (err, data) {
                 if (err) throw err;
                 var studentIds = __.pluck(data, "student");
-                console.log(studentIds);
                 var isMyChild = __.reduce(studentIds, function(memo, id){ 
                     if (id.equals(childId)) return memo + 1;
                     else return memo + 0; 

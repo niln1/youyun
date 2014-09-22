@@ -27,4 +27,6 @@ node_modules
 /.sass-cache
 
 static/img/user_image
+
+.DS_Store
 /utilities/output
