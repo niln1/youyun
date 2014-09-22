@@ -101,8 +101,6 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        console.log(candidatePassword);
-        console.log(this.password);
         if (err) return cb(err);
         cb(null, isMatch);
     });
@@ -114,7 +112,6 @@ UserSchema.methods.hasChild = function (childId, defer) {
             function (err, data) {
                 if (err) throw err;
                 var studentIds = __.pluck(data, "student");
-                console.log(studentIds);
                 var isMyChild = __.reduce(studentIds, function(memo, id){ 
                     if (id.equals(childId)) return memo + 1;
                     else return memo + 0; 

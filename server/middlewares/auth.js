@@ -58,7 +58,6 @@ function isUserAuthenticated(req, res, next) {
 exports.doLogin = function(req, res) {
     console.log(req.body);
     if (!req.body.username || !req.body.password) {
-        console.log("here");
         logger.warn("Login Error: '用户名或者密码不能为空'");
         return userAuthenticationFailed(req, res, '用户名或者密码不能为空');
     }
@@ -71,6 +70,8 @@ exports.doLogin = function(req, res) {
             return userAuthenticationFailed(req, res, '用户名或者密码错误');
         };
         user.comparePassword(req.body.password, function(err, match) {
+            logger.warn(err);
+            logger.warn(match);
             if (err || !match) {
                 logger.warn("Login Error: '用户名或者密码错误'");
                 return userAuthenticationFailed(req, res, '用户名或者密码错误');
