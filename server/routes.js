@@ -15,7 +15,7 @@ exports.route = function (app) {
     app.get('/login', index.getLogin);
     app.get('/logout', index.logout);
 
-    app.get('/static/populateDB', index.populateDB);
+    // app.get('/static/populateDB', index.populateDB);
     app.get('/static/home', index.home);
     app.get('/usermanage', index.usermanage);
     app.get('/pickupreport', index.pickupreport);

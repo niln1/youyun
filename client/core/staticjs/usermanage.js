@@ -86,23 +86,16 @@ var userManageApp = (function () {
             dataSource: this.dataSource,
             sortable: true,
             columns: [
-                { field: "username", title: "Username", width: "120px" },
+                { field: "username", title: "Username", width: "80px" },
                 { field: "firstname", title: "First Name", width: "120px" },
                 { field: "lastname", title:"Last Name", width: "120px" },
+                { field: "pickupStudentGrade", title:"Grade", width: "50px" },
+                { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "50px" }
             ],
             editable: "inline"
         });
-    };
-    View.prototype._submitStudentEdit = function (event) {
-        var submitData = {
-            firstname: this.$studentManageModal.find(".firstname-input").val(),
-            lastname: this.$studentManageModal.find(".lastname-input").val(),
-            pickupLocation: this.$studentManageModal.find(".pickupLocation-input").val()
-        };
-        this._updateUser(event.data.student, submitData);
-        this.$studentManageModal.modal('hide');
     };
     View.prototype.parseUserList = function (data) {
         this.users = data.result;
@@ -120,22 +113,6 @@ var userManageApp = (function () {
             signature: "tempkey"
         };
         $.get(url, data, $.proxy(this.parseUserList, this));
-    };
-    View.prototype._updateUser = function (user, data) {
-        var url = "/api/v1/users/" + user._id;
-        data.signature = "tempkey";
-        var callback = function (data) {
-            this._getUserList();
-        };
-        $.ajax({
-            url: url,
-            data: JSON.stringify(data),
-            type: 'PATCH',
-            contentType: "application/json",
-            dataType: "json",
-            success: $.proxy(callback, this),
-            error: common.showError
-        });
     };
     return View;
 })();

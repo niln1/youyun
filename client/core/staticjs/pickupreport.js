@@ -218,13 +218,15 @@ var pickupReportApp = (function () {
             }, {
                 field: "lastname",
                 title: "Last Name",
-            }, {
-                field: "pickedBy",
-                title: "Picked By",
-            }, {
-                field: "pickedtime",
-                title: "Picked Time",
-            }]
+            }
+            //, {
+            //     field: "pickedBy",
+            //     title: "Picked By",
+            // }, {
+            //     field: "pickedtime",
+            //     title: "Picked Time",
+            // }
+            ]
         });
     };
 
