@@ -36,6 +36,7 @@ exports.updateUserImage = function (req, res) {
 }
 
 exports.deleteUserWithId = function (req, res) {
+    logger.info("Users - deleteUserWithId");
     Q.all([
         apiServer.validateUserSession(req, res),
         apiServer.validateSignature(req, res)
@@ -49,20 +50,21 @@ exports.deleteUserWithId = function (req, res) {
     })
     .then(function(hasPermission){
         var defer = Q.defer();
-        User.where().findOneAndRemove({userId: req.query.userId}, function(err, deletedUser){
-            if(err){
+
+        logger.debug("User to delete is: " + req.params.id);
+
+        User.findOneAndRemove({_id: req.params.id}, function(err, deletedUser){
+            if (err) {
                 defer.reject(err);
-            }else{
-                if(deletedUser) {
-                    console.log(deletedUser);
-                }
-                defer.resolve();
-            }
-            
+            } else if (deletedUser) {
+                defer.resolve(deletedUser);
+            } else {
+                defer.reject(new Error('Unable to find the user'))
+            }   
         });
         return defer.promise;
     })
-    .then(function(){
+    .then(function(deletedUser){
         apiServer.sendResponse(req, res, deletedUser, 'User deleted successfully');
     })
     .fail(function(err){
@@ -72,6 +74,7 @@ exports.deleteUserWithId = function (req, res) {
 }
 
 exports.getChild = function (req, res) {
+    logger.info("Users - getChild");
     Q.all([
         apiServer.validateUserSession(req, res),
         apiServer.validateSignature(req, res)
