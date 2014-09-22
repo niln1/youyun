@@ -92,6 +92,11 @@ apiServer.serveApiSpec = function(res) {
 apiServer.sendResponse = function(req, res, resp, desc) {
     logger.info("API - sendResponse: " + desc);
 
+    if (resp.password) {
+        logger.trace("Casting out password");
+        resp.password = "Black Sheep Wall";
+    };
+
     res.json(200, {
         result: resp,
         description: desc,

@@ -96,24 +96,6 @@ UserSchema.pre('save', function (next) {
 });
 
 /**
- * Post find plugin do work before the results get sent to callback
- */
-UserSchema.plugin(postFind, {
-  find: function(users, next) {
-    //Cast Out all password in Result
-    _.each(users, function(user){
-        user.castOutPassword();
-    });
-    next(null, users);
-  },
-  findOne: function(user, next) {
-    //Cast Out the password in Result
-    user.castOutPassword();
-    next(null, user);
-  },
-});
-
-/**
  * Compare if the candidate password hash is the same as the one in collection
  */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {

@@ -92,7 +92,7 @@ var userManageApp = (function () {
                 { field: "pickupStudentGrade", title:"Grade", width: "50px" },
                 { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
-                { field: "pickupDay", title:"PickupLocation", width: "120px" },
+                { field: "pickupDayDayTime", title:"DayTime", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "50px" }
             ],
             editable: "inline"
