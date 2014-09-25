@@ -67,7 +67,10 @@ module.exports = [{
         'optional': [
         parameters.firstname,
         parameters.lastname,
-        parameters.pickupLocation
+        parameters.pickupLocation,
+        parameters.pickupStudentGrade,
+        parameters.pickupStudentRoomNumber,
+        parameters.pickupStudentDayTime,
         ],
         'description': 'update user',
         'response': {} // sample data
