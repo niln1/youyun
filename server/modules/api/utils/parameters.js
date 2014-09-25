@@ -27,6 +27,24 @@ exports.pickupLocation = {
     'description': 'A string containing the pickupLocation of the student.'
 };
 
+exports.pickupStudentGrade = {
+    'type': 'string',
+    'param': 'pickupStudentGrade',
+    'description': 'A string containing the pickupStudentGrade of the student.'
+};
+
+exports.pickupStudentRoomNumber = {
+    'type': 'string',
+    'param': 'pickupStudentRoomNumber',
+    'description': 'A string containing the pickupStudentRoomNumber of the student.'
+};
+
+exports.pickupStudentDayTime = {
+    'type': 'string', // change later
+    'param': 'pickupLocation',
+    'description': 'A string containing the pickupStudentDayTime of the student.'
+};
+
 exports.password = {
     'type': 'string',
     'param': 'password',

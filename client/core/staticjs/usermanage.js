@@ -98,7 +98,7 @@ var studentManageApp = (function () {
                 { field: "pickupStudentDayTime", title:"DayTime", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "50px" }
             ],
-            editable: "popup"
+            editable: "inline"
         });
     };
     return View;
