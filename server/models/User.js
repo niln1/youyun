@@ -106,14 +106,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
 };
 
 /**
- * Simple Method Change password string to BLACK SHEEP WALL
- */
-UserSchema.methods.castOutPassword = function () {
-    this.password = "Black Sheep Wall";
-    return;
-};
-
-/**
  * TODO: NEED REVIEW
  * [Depreciated] Check If User has The Child
  * @param  {id}  childId

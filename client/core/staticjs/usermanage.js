@@ -7,7 +7,7 @@
 
 "use strict";
 var app;
-var userManageApp = (function () {
+var studentManageApp = (function () {
     function View() {
         var self = this;
         this.$studentTableContainer = $("#student-table-container");
@@ -70,7 +70,10 @@ var userManageApp = (function () {
                         username: { editable: false, nullable: false },
                         firstname: { validation: { required: true } },
                         lastname: { validation: { required: true } },
+                        pickupStudentGrade: { validation: { required: false } },
+                        pickupStudentRoomNumber: { validation: { required: false } },
                         pickupLocation: { validation: { required: false } },
+                        pickupStudentDayTime: { editable: false, validation: { required: false } },
                     }
                 }
             }
@@ -78,7 +81,7 @@ var userManageApp = (function () {
     }
     View.prototype.start = function () {
         this.users = [];
-        this._getUserList();
+        this._renderTable();
     };
 
     View.prototype._renderTable = function () {
@@ -92,33 +95,16 @@ var userManageApp = (function () {
                 { field: "pickupStudentGrade", title:"Grade", width: "50px" },
                 { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
-                { field: "pickupDayDayTime", title:"DayTime", width: "120px" },
+                { field: "pickupStudentDayTime", title:"DayTime", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "50px" }
             ],
-            editable: "inline"
+            editable: "popup"
         });
-    };
-    View.prototype.parseUserList = function (data) {
-        this.users = data.result;
-        this.students = _.filter(this.users, function (user) {
-            return user.userType === 3;
-        });
-        this.teachers = _.filter(this.users, function (user) {
-            return user.userType === 2;
-        });
-        this._renderTable();
-    };
-    View.prototype._getUserList = function () {
-        var url = "/api/v1/users";
-        var data = {
-            signature: "tempkey"
-        };
-        $.get(url, data, $.proxy(this.parseUserList, this));
     };
     return View;
 })();
 
 $(function () {
-    app = new userManageApp();
+    app = new studentManageApp();
     app.start();
 });
