@@ -57,16 +57,24 @@ function isUserAuthenticated(req, res, next) {
 
 exports.doLogin = function(req, res) {
     if (!req.body.username || !req.body.password) {
+        logger.warn("Login Error: '用户名或者密码不能为空'");
         return userAuthenticationFailed(req, res, '用户名或者密码不能为空');
     }
 
     User.findOne({
         username: req.body.username
     }, function(err, user) {
-        if (err || !user) return userAuthenticationFailed(req, res, '用户名或者密码错误');
-
+        if (err || !user) {
+            logger.warn("Login Error: '用户名或者密码错误'");
+            return userAuthenticationFailed(req, res, '用户名或者密码错误');
+        };
         user.comparePassword(req.body.password, function(err, match) {
-            if (err || !match) return userAuthenticationFailed(req, res, '用户名或者密码错误');
+            logger.warn(err);
+            logger.warn(match);
+            if (err || !match) {
+                logger.warn("Login Error: '用户名或者密码错误'");
+                return userAuthenticationFailed(req, res, '用户名或者密码错误');
+            };
             // casting out password
             user.password = "This is a Joke, My friend";
 

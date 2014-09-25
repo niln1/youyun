@@ -118,7 +118,6 @@ UserSchema.methods.hasChild = function (childId, defer) {
             function (err, data) {
                 if (err) throw err;
                 var studentIds = __.pluck(data, "student");
-                console.log(studentIds);
                 var isMyChild = __.reduce(studentIds, function(memo, id){ 
                     if (id.equals(childId)) return memo + 1;
                     else return memo + 0; 
