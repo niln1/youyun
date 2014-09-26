@@ -27,10 +27,6 @@ exports.updateUserWithId = function (req, res) {
     apiServer.verifySignature(req, res, updateUserById);
 }
 
-exports.deleteUserWithId = function (req, res) {
-    apiServer.verifySignature(req, res, deleteUserById);
-}
-
 exports.updateUserImage = function (req, res) {
     apiServer.verifySignature(req, res, updateUserImageHelper);
 }

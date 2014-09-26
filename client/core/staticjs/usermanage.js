@@ -95,7 +95,6 @@ var studentManageApp = (function () {
                 { field: "pickupStudentGrade", title:"Grade", width: "50px" },
                 { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
-                { field: "pickupStudentDayTime", title:"DayTime", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "140px" }
             ],
             editable: "inline"
