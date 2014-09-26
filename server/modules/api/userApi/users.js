@@ -38,7 +38,7 @@ exports.deleteUserWithId = function (req, res) {
         apiServer.validateSignature(req, res)
         ])
     .spread(function (user, signatureIsValid) {
-        if (user.isAdmin()){
+        if (user.isAdmin() && signatureIsValid){
             return true;
         } else {
             throw new Error("Stay away you muggles!");
@@ -78,7 +78,7 @@ exports.getChild = function (req, res) {
     .spread(function (user, signatureIsValid) {
 
         if (user.userType < 3 || user._id.toString() === req.query.userId) {
-            if (req.query.userId) return true;
+            if (req.query.userId && signatureIsValid) return true;
             else throw new Error('userId must be specified.');
         } else {
             console.log('no permission')
