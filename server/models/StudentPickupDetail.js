@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var StudentPickupDetailSchema = new Schema({
-    studentId: {
+    student: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
