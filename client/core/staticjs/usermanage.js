@@ -90,13 +90,12 @@ var studentManageApp = (function () {
             sortable: true,
             columns: [
                 { field: "username", title: "Username", width: "80px" },
-                { field: "firstname", title: "First Name", width: "120px" },
-                { field: "lastname", title:"Last Name", width: "120px" },
+                { field: "firstname", title: "First Name", width: "100px" },
+                { field: "lastname", title:"Last Name", width: "80px" },
                 { field: "pickupStudentGrade", title:"Grade", width: "50px" },
                 { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
-                { field: "pickupStudentDayTime", title:"DayTime", width: "120px" },
-                { command: ["edit"], title: "&nbsp;", width: "50px" }
+                { command: ["edit"], title: "&nbsp;", width: "140px" }
             ],
             editable: "inline"
         });

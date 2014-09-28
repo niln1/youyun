@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var StudentWeeklyReportSchema = new Schema({
-    userId: {
+    student: {
         type: String,
         required: true
     }
