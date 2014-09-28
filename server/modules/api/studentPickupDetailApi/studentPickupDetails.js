@@ -15,6 +15,7 @@ exports.create = function (req, res) {
     return apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- Create",
         userValidationHandler: function(user, signatureIsValid) {
+            // find if student id exist
             if (user.isAdmin()) {
                 return true;
             } else {
@@ -24,6 +25,15 @@ exports.create = function (req, res) {
         processHandler: function() {
             var defer = Q.defer();
             // do some thing
+            logger.debug("Param: studentId: " + req.body.studentId);
+            var newStudentPickupDetail = new StudentPickupDetail({
+                student: req.body.studentId,
+            })
+
+            newStudentPickupDetail.save(function (err, detail) {
+                if (err) defer.reject(err);
+                defer.resolve(detail);
+            });
             return defer.promise;
         },
         successHandler: function(detail) {
@@ -81,7 +91,7 @@ exports.deleteWithId = function (req, res) {
  */
  function apiCallHelper (req, res, opt) {
 
-    var opt = {} || opt;
+    var opt = opt || {};
 
     // check options
     if (!opt.infoMessage) {

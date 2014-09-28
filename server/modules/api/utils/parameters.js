@@ -105,6 +105,12 @@ exports.isAdd = {
     'description': 'isAdd'
 }
 
+exports.studentId = {
+    'type': 'string',
+    'param': 'studentId',
+    'description': 'studentId'
+}
+
 exports.classId = {
     'type': 'string',
     'param': 'classId',

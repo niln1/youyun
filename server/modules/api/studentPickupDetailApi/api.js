@@ -17,6 +17,7 @@ module.exports = [{
     },
     'POST': {
         'handler': studentPickupDetails.create,
+        'content-type': 'application/json',
         'required': [
         parameters.signature,
         parameters.studentId,
