@@ -20,7 +20,7 @@ exports.createUser = function (req, res) {
 }
 
 exports.readUsers = function (req, res) {
-    apiServer.verifySignature(req, res, findUsersByUserId);
+    apiServer.verifySignature(req, res, findUsers);
 }
 
 exports.updateUserWithId = function (req, res) {
@@ -202,8 +202,8 @@ function createUserWithoutClasses(req, res) {
     });
 }
 
-function findUsersByUserId(req, res) {
-    logger.info("Users - findUsersByUserId");
+function findUsers(req, res) {
+    logger.info("Users - findUsers");
     var param = JSON.parse(JSON.stringify(req.query));
     delete param["signature"];
     logger.debug("userId: " + JSON.stringify(req.session.user._id));
