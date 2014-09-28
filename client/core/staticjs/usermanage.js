@@ -51,6 +51,20 @@ var studentManageApp = (function () {
                             options.error(result);
                         }
                     });
+                },
+                destroy: function(options) {
+                    var signature = "tempkey";
+                    $.ajax({
+                        url: "/api/v1/users/" + options.data._id + "?signature=" + signature,
+                        type: 'DELETE',
+                        success: function(result) {
+                            options.success();
+                        },
+                        error: function(result) {
+                            common.showError();
+                            options.error(result);
+                        }
+                    });
                 }
             },
             schema: {
@@ -89,13 +103,14 @@ var studentManageApp = (function () {
             dataSource: this.dataSource,
             sortable: true,
             columns: [
-                { field: "username", title: "Username", width: "80px" },
-                { field: "firstname", title: "First Name", width: "100px" },
+                { field: "username", title: "Username", width: "70px" },
+                { field: "firstname", title: "First Name", width: "80px" },
                 { field: "lastname", title:"Last Name", width: "80px" },
-                { field: "pickupStudentGrade", title:"Grade", width: "50px" },
-                { field: "pickupStudentRoomNumber", title:"Room", width: "50px" },
+                { field: "pickupStudentGrade", title:"Grade", width: "80px" },
+                { field: "pickupStudentRoomNumber", title:"Room", width: "70px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
-                { command: ["edit"], title: "&nbsp;", width: "140px" }
+                { command: ["edit"], title: "&nbsp;", width: "60px" },
+                { command: ["destroy"], title: "&nbsp;", width: "70px" }
             ],
             editable: "inline"
         });
