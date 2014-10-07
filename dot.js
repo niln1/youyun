@@ -8,6 +8,7 @@ var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var swagger = require("swagger-node-express");
 
 var app;
 module.exports.app = app = express();

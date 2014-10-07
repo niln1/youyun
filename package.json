@@ -29,7 +29,8 @@
     "csv": "~0.4.0",
     "q-flow": "~0.2.0",
     "json2csv": "~2.2.1",
-    "mongoose-post-find": "0.0.2"
+    "mongoose-post-find": "0.0.2",
+    "swagger-node-express": "~2.1.0"
   },
   "devDependencies": {
     "nconf": "~0.6.9",
