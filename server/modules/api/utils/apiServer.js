@@ -94,7 +94,6 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     
     function castPassword(object) {
         if (object.password) {
-            logger.trace("Casting out password");
             object.password = "Black Sheep Wall";
         };
         __.each(object, function(element){
