@@ -93,6 +93,15 @@ function isValidQueryParamsType(path, method, res, query) {
                             apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
+                    case 'timeString':
+                        if (/^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(queryData)) {
+                            logger.trace("Check timeString Type Passed - " + queryData);
+                            break;
+                        } else {
+                            logger.warn("Check timeString Type - " + queryData + "is Not a timeString");
+                            apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
                     default:
                         logger.warn("Invalid Query Parameter Type - " + queryData);
                         apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
