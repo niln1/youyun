@@ -150,43 +150,43 @@ exports.pickedBy = {
 }
 
 exports.mondayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'mondayPickupTime',
     'description': 'mondayPickupTime'
 }
 
 exports.tuesdayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'tuesdayPickupTime',
     'description': 'tuesdayPickupTime'
 }
 
 exports.wednesdayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'wednesdayPickupTime',
     'description': 'wednesdayPickupTime'
 }
 
 exports.thursdayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'thursdayPickupTime',
     'description': 'thursdayPickupTime'
 }
 
 exports.fridayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'fridayPickupTime',
     'description': 'fridayPickupTime'
 }
 
 exports.saturdayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'saturdayPickupTime',
     'description': 'saturdayPickupTime'
 }
 
 exports.sundayPickupTime = {
-    'type': 'timestring',
+    'type': 'timeString',
     'param': 'sundayPickupTime',
     'description': 'sundayPickupTime'
 }

@@ -101,7 +101,9 @@ apiServer.sendResponse = function(req, res, resp, desc) {
         });
     }
 
-    castPassword(resp);
+    if (resp) {
+        castPassword(resp);
+    };
 
     res.json(200, {
         result: resp,
