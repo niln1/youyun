@@ -95,7 +95,7 @@ exports.updateWithId = function (req, res) {
                 _id: req.params.id
             }, param, function (err, detail) {
                 if (!err && detail) {
-                    defer.resolve(req, res, detail, 'StudentPickupDetail updated successfully');
+                    defer.resolve(detail);
                 } else if (!detail) {
                     defer.reject(new Error("StudentPickupDetail didn't exist"));
                 } else {
@@ -130,14 +130,13 @@ exports.deleteWithId = function (req, res) {
                 _id: req.params.id
             }, function (err, detail) {
                 if (!err && detail) {
-                    defer.resolve(req, res, null, 'StudentPickupDetail removed successfully');
+                    defer.resolve(null);
                 } else if (!detail) {
                     defer.reject(new Error("StudentPickupDetail didn't exist"));
                 } else {
                     defer.reject(err);
                 }
             });
-
             return defer.promise;
         },
         successHandler: function(detail) {
