@@ -140,3 +140,53 @@ exports.pushToken = {
     'param': 'token',
     'description': 'Mobile device push notification token'
 }
+
+
+// pickupdetail parameter
+exports.pickedBy = {
+    'type': 'string',
+    'param': 'pickedBy',
+    'description': 'pick by which teacher'
+}
+
+exports.mondayPickupTime = {
+    'type': 'timestring',
+    'param': 'mondayPickupTime',
+    'description': 'mondayPickupTime'
+}
+
+exports.tuesdayPickupTime = {
+    'type': 'timestring',
+    'param': 'tuesdayPickupTime',
+    'description': 'tuesdayPickupTime'
+}
+
+exports.wednesdayPickupTime = {
+    'type': 'timestring',
+    'param': 'wednesdayPickupTime',
+    'description': 'wednesdayPickupTime'
+}
+
+exports.thursdayPickupTime = {
+    'type': 'timestring',
+    'param': 'thursdayPickupTime',
+    'description': 'thursdayPickupTime'
+}
+
+exports.fridayPickupTime = {
+    'type': 'timestring',
+    'param': 'fridayPickupTime',
+    'description': 'fridayPickupTime'
+}
+
+exports.saturdayPickupTime = {
+    'type': 'timestring',
+    'param': 'saturdayPickupTime',
+    'description': 'saturdayPickupTime'
+}
+
+exports.sundayPickupTime = {
+    'type': 'timestring',
+    'param': 'sundayPickupTime',
+    'description': 'sundayPickupTime'
+}

@@ -35,7 +35,14 @@ module.exports = [{
             parameters.signature
         ],
         'optional': [
-        // todo
+            parameters.pickedBy,
+            parameters.mondayPickupTime,
+            parameters.tuesdayPickupTime,
+            parameters.wednesdayPickupTime,
+            parameters.thursdayPickupTime,
+            parameters.fridayPickupTime,
+            parameters.saturdayPickupTime,
+            parameters.sundayPickupTime
         ],
         'description': 'update the studentpickupdetails',
         'response': {} // sample data

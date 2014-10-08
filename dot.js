@@ -8,7 +8,6 @@ var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
-var swagger = require("swagger-node-express");
 var helmet = require('helmet');
 
 var app;

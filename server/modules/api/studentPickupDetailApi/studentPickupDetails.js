@@ -76,11 +76,75 @@ exports.read = function (req, res) {
 };
 
 exports.updateWithId = function (req, res) {
-    // apiServer.verifySignature(req, res, updateReminderById)
+    return apiCallHelper(req, res, {
+        infoMessage: "StudentPickupDetail -- UpdateWithId",
+        userValidationHandler: function(user, signatureIsValid) {
+            if (user.isAdmin()) {
+                return true;
+            } else {
+                throw new Error("U dont have Permission Dude");
+            }
+        },
+        processHandler: function() {
+            var defer = Q.defer();
+            var param = JSON.parse(JSON.stringify(req.body));
+            delete param["signature"];
+            logger.debug("params: " + JSON.stringify(param) + "id: " + JSON.stringify(req.params.id));
+
+            StudentPickupDetail.findOneAndUpdate({
+                _id: req.params.id
+            }, param, function (err, detail) {
+                if (!err && detail) {
+                    defer.resolve(req, res, detail, 'StudentPickupDetail updated successfully');
+                } else if (!detail) {
+                    defer.reject(new Error("StudentPickupDetail didn't exist"));
+                } else {
+                    defer.reject(err);                
+                }
+            });
+            return defer.promise;
+        },
+        successHandler: function(detail) {
+            logger.info("StudentPickupDetail -- update Success");
+            apiServer.sendResponse(req, res, detail, 'StudentPickupDetail info successfully updated');
+        }
+    });
 }
 
 exports.deleteWithId = function (req, res) {
-    // apiServer.verifySignature(req, res, deleteReminderById)
+    return apiCallHelper(req, res, {
+        infoMessage: "StudentPickupDetail -- UpdateWithId",
+        userValidationHandler: function(user, signatureIsValid) {
+            if (user.isAdmin()) {
+                return true;
+            } else {
+                throw new Error("U dont have Permission Dude");
+            }
+        },
+        processHandler: function() {
+            var defer = Q.defer();
+            logger.info("Reminders - deleteReminderById");
+            logger.debug("id: " + JSON.stringify(req.params.id));
+
+            StudentPickupDetail.findOneAndRemove({
+                _id: req.params.id
+            }, function (err, detail) {
+                if (!err && detail) {
+                    defer.resolve(req, res, null, 'StudentPickupDetail removed successfully');
+                } else if (!detail) {
+                    defer.reject(new Error("StudentPickupDetail didn't exist"));
+                } else {
+                    defer.reject(err);
+                }
+            });
+
+            return defer.promise;
+        },
+        successHandler: function(detail) {
+            logger.info("StudentPickupDetail -- delete Success");
+            apiServer.sendResponse(req, res, detail, 'StudentPickupDetail info successfully deleted');
+        }
+    });
 }
 
 /**
