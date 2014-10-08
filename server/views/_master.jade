@@ -1,81 +1,81 @@
 doctype html
 html
-	head
-		meta(charset="utf-8")
-		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
 
-		title= title
+        title= title
 
-		meta(name='description', content='')
-		meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='description', content='')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
 
-		link(rel='icon', href='/core/img/favicon.png', type='image/x-icon')
-		link(rel='shortcut', href='/core/img/favicon.png', type='image/x-icon')
-		link(rel="shortcut", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
-		link(rel="icon", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
+        link(rel='icon', href='/core/img/favicon.png', type='image/x-icon')
+        link(rel='shortcut', href='/core/img/favicon.png', type='image/x-icon')
+        link(rel="shortcut", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
+        link(rel="icon", href="/core/img/favicon.png", type="image/vnd.microsoft.icon")
 
-		if (env == 'development')
-			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
-			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.common.min.css')
-			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
-			link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.css')
-			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
-			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
-			script(src='/core/lib/jquery/js/jquery.js')
-			script(src='/core/lib/modernizr/js/modernizr.js')
-			script(src='/core/lib/underscore/js/underscore.js')
-			script(src='/core/lib/amplify/js/amplify.js')
-			script(src='/core/lib/socket.io/js/socket.io.js')
-			script(src='/core/lib/backbone/js/backbone.js')
-			script(src='/core/lib/backbone/js/backbone.marionette.js')
-			script(src='/core/lib/backbone/js/backbone.deep.model.js')
-			script(src='/core/lib/jade/js/jade.js')
-			script(src='/core/lib/moment/js/moment.min.js')
-			script(src='/core/lib/moment/js/moment-timezone.js')
-			script(src='/core/lib/bootstrap3/js/bootstrap.js')
-			script(src='/core/lib/kendo/js/kendo.all.min.js')
-			script(src='/core/lib/timepicker/js/timepicker.js')
-			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
-			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
-			script(src='/core/lib/requirejs/js/require.js')
+        if (env == 'development')
+            link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.css')
+            link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.common.min.css')
+            link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
+            link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.css')
+            link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
+            link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
+            script(src='/core/lib/jquery/js/jquery.js')
+            script(src='/core/lib/modernizr/js/modernizr.js')
+            script(src='/core/lib/underscore/js/underscore.js')
+            script(src='/core/lib/amplify/js/amplify.js')
+            script(src='/core/lib/socket.io/js/socket.io.js')
+            script(src='/core/lib/backbone/js/backbone.js')
+            script(src='/core/lib/backbone/js/backbone.marionette.js')
+            script(src='/core/lib/backbone/js/backbone.deep.model.js')
+            script(src='/core/lib/jade/js/jade.js')
+            script(src='/core/lib/moment/js/moment.min.js')
+            script(src='/core/lib/moment/js/moment-timezone.js')
+            script(src='/core/lib/bootstrap3/js/bootstrap.js')
+            script(src='/core/lib/kendo/js/kendo.all.min.js')
+            script(src='/core/lib/timepicker/js/timepicker.js')
+            script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
+            script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
+            script(src='/core/lib/requirejs/js/require.js')
 
-		else if (env == 'production')
-			link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
-			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.common.min.css')
-			link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
-			link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.min.css')
-			link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
-			link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
-			script(src='/core/lib/jquery/js/jquery.min.js')
-			script(src='/core/lib/modernizr/js/modernizr.min.js')
-			script(src='/core/lib/underscore/js/underscore.min.js')
-			script(src='/core/lib/amplify/js/amplify.min.js')
-			script(src='/core/lib/socket.io/js/socket.io.min.js')
-			script(src='/core/lib/backbone/js/backbone.min.js')
-			script(src='/core/lib/backbone/js/backbone.marionette.min.js')
-			script(src='/core/lib/backbone/js/backbone.deep.model.min.js')
-			script(src='/core/lib/jade/js/jade.min.js')
-			script(src='/core/lib/moment/js/moment.min.js')
-			script(src='/core/lib/moment/js/moment-timezone.min.js')
-			script(src='/core/lib/bootstrap3/js/bootstrap.min.js')
-			script(src='/core/lib/kendo/js/kendo.all.min.js')
-			script(src='/core/lib/timepicker/js/timepicker.min.js')
-			script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
-			script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
-			script(src='/core/lib/requirejs/js/require.min.js')
+        else if (env == 'production')
+            link(rel='stylesheet', href='/core/lib/bootstrap3/css/bootstrap.min.css')
+            link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.common.min.css')
+            link(rel='stylesheet', href='/core/lib/kendo/styles/kendo.bootstrap.min.css')
+            link(rel='stylesheet', href='/core/lib/ionicons/css/ionicons.min.css')
+            link(rel='stylesheet', href='/core/lib/bootstrap-datepicker/css/datepicker3.css')
+            link(rel='stylesheet', href='/core/lib/timepicker/css/jquery.timepicker.css')
+            script(src='/core/lib/jquery/js/jquery.min.js')
+            script(src='/core/lib/modernizr/js/modernizr.min.js')
+            script(src='/core/lib/underscore/js/underscore.min.js')
+            script(src='/core/lib/amplify/js/amplify.min.js')
+            script(src='/core/lib/socket.io/js/socket.io.min.js')
+            script(src='/core/lib/backbone/js/backbone.min.js')
+            script(src='/core/lib/backbone/js/backbone.marionette.min.js')
+            script(src='/core/lib/backbone/js/backbone.deep.model.min.js')
+            script(src='/core/lib/jade/js/jade.min.js')
+            script(src='/core/lib/moment/js/moment.min.js')
+            script(src='/core/lib/moment/js/moment-timezone.min.js')
+            script(src='/core/lib/bootstrap3/js/bootstrap.min.js')
+            script(src='/core/lib/kendo/js/kendo.all.min.js')
+            script(src='/core/lib/timepicker/js/timepicker.min.js')
+            script(src='/core/lib/bootstrap-datepicker/js/bootstrap-datepicker.js')
+            script(src='/core/lib/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js', charset="UTF-8")
+            script(src='/core/lib/requirejs/js/require.min.js')
 
-		link(rel='stylesheet', href='/core/css/app.css')
+        link(rel='stylesheet', href='/core/css/app.css')
 
-		block head-extra
+        block head-extra
 
-		block head-requirejs
+        block head-requirejs
 
-	body.school_color_line
-		//if lt IE 8
-			p.browsehappy
-				| 你用的浏览器 <strong>太过时了！</strong>
-				| 请 <a href="http://browsehappy.com/">升级你的浏览器</a>
-				| 来正常使用本网站.
+    body.school_color_line
+        //if lt IE 8
+            p.browsehappy
+                | 你用的浏览器 <strong>太过时了！</strong>
+                | 请 <a href="http://browsehappy.com/">升级你的浏览器</a>
+                | 来正常使用本网站.
 
-		block body-content
+        block body-content
 

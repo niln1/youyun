@@ -8,6 +8,7 @@ var nconf = require('nconf');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var helmet = require('helmet');
 
 var app;
 module.exports.app = app = express();
@@ -38,6 +39,17 @@ app.set('view engine', 'jade');
 /*
  * Setup middlewares
  */
+app.use(helmet());
+
+app.use(helmet.csp({
+  defaultSrc: ["'self' 'unsafe-inline' 'unsafe-eval'"],
+  connectSrc: ["'self' " + nconf.get('socket-url') + ""],
+  reportUri: '/report-violation',
+  reportOnly: false, // set to true if you only want to report errors
+  setAllHeaders: false, // set to true if you want to set all headers
+  safari5: false // set to true if you want to force buggy CSP in Safari 5
+}));
+
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
