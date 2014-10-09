@@ -5,10 +5,24 @@ block head-extra
 block main-content
     div#main-region.container-fluid
         div.page-board.pageboard-shadow(style="background:white;")
-            div.content-header
-                div.header-inner
-                    h2.text-left User Management
-            div.content-divider
-            div(style="padding: 1em")#student-table-container
+            div.col-md-2
+                ul.nav.nav-pills.nav-stacked(role="tablist")
+                    li.active
+                        a(href="#studentinfo" role="tab" data-toggle="tab") Student Info
+                    li
+                        a(href="#studentpickupdetail" role="tab" data-toggle="tab") Pickup Detail
+            div.col-md-10.tab-content
+                div#studentinfo.tab-pane.active
+                    div.content-header
+                        div.header-inner
+                            h2.text-left Student Info
+                    div.content-divider
+                    div(style="padding: 1px")#student-table-container
+                div#studentpickupdetail.tab-pane
+                    div.content-header
+                        div.header-inner
+                            h2.text-left Pickup Detail
+                    div.content-divider
+                    div(style="padding: 1px")#pickupdetail-table-container
     script(src='/core/staticjs/common.js')
     script(src='/core/staticjs/usermanage.js')

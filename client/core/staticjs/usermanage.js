@@ -106,8 +106,8 @@ var studentManageApp = (function () {
                 { field: "username", title: "Username", width: "70px" },
                 { field: "firstname", title: "First Name", width: "80px" },
                 { field: "lastname", title:"Last Name", width: "80px" },
-                { field: "pickupStudentGrade", title:"Grade", width: "80px" },
-                { field: "pickupStudentRoomNumber", title:"Room", width: "70px" },
+                { field: "pickupStudentGrade", title:"Grade", width: "40px" },
+                { field: "pickupStudentRoomNumber", title:"Room", width: "40px" },
                 { field: "pickupLocation", title:"PickupLocation", width: "120px" },
                 { command: ["edit"], title: "&nbsp;", width: "60px" },
                 { command: ["destroy"], title: "&nbsp;", width: "70px" }
