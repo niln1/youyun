@@ -83,7 +83,6 @@ var studentManageApp = (function () {
                         pickupStudentGrade: { validation: { required: false } },
                         pickupStudentRoomNumber: { validation: { required: false } },
                         pickupLocation: { validation: { required: false } },
-                        pickupStudentDayTime: { editable: false, validation: { required: false } },
                     }
                 }
             }
@@ -192,6 +191,7 @@ var studentManageApp = (function () {
     };
 
     View.prototype._renderTable = function () {
+        var self = this;
         // Student info table
         this.$studentTableContainer.kendoGrid({
             dataSource: this.studentDataSource,
@@ -233,8 +233,16 @@ var studentManageApp = (function () {
             },
             edit: function(e) {
                 $(".timepicker").timepicker({ timeFormat: 'H:i', useSelect: false });
+                var $studentName = e.container.find("input[name=studentName]");
+                $studentName.prop('disabled', false);
+                $studentName.kendoDropDownList({
+                    dataSource: self.studentDataSource._data,
+                    filter: "startswith",
+                    minLength: 3,   
+                    dataTextField: "username",
+                    dataValueField: "id"
+                });
                 if (!e.model.isNew()) {
-                    var $studentName = e.container.find("input[name=studentName]");
                     $studentName.prop('disabled', true);
                 }
             }
