@@ -57,6 +57,7 @@ exports.read = function (req, res) {
 
             StudentPickupDetail.find({})
             .populate("student")
+            .populate("pickedBy")
             .exec(function(err, details){
                 if (err) {
                     defer.reject(err);
