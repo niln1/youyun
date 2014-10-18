@@ -11,6 +11,8 @@ block main-content
                         a(href="#studentinfo" role="tab" data-toggle="tab") Student Info
                     li
                         a(href="#studentpickupdetail" role="tab" data-toggle="tab") Pickup Detail
+                    li
+                        a(href="#teacherinfo" role="tab" data-toggle="tab") Teacher Info
             div.col-md-10.tab-content
                 div#studentinfo.tab-pane.active
                     div.content-header
@@ -24,6 +26,13 @@ block main-content
                             h2.text-left Pickup Detail
                     div.content-divider
                     div(style="padding: 1px")#pickupdetail-table-container
+                div#teacherinfo.tab-pane
+                    div.content-header
+                        div.header-inner
+                            h2.text-left Teacher info
+                    div.content-divider
+                    div(style="padding: 1px")#teacher-table-container
+                    
     script#pickup-popup-editor(type="text/x-kendo-template")
         div.k-edit-label
             label(for="studentName") Student Name
