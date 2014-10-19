@@ -92,18 +92,17 @@ var studentManageApp = (function () {
         this.pickupDetailDataSource = new kendo.data.DataSource({
             transport: {
                 create: function (options) {
-                    console.log(options);
                     var url = "/api/v1/studentpickupdetails";
                     var data = {
                         studentId: options.data.student,
-                        // pickedBy: options.data.pickedBy,
-                        // mondayPickupTime: options.data.mondayPickupTime,
-                        // tuesdayPickupTime: options.data.tuesdayPickupTime,
-                        // wednesdayPickupTime: options.data.wednesdayPickupTime,
-                        // thursdayPickupTime: options.data.thursdayPickupTime,
-                        // fridayPickupTime: options.data.fridayPickupTime,
-                        // saturdayPickupTime: options.data.saturdayPickupTime,
-                        // sundayPickupTime: options.data.sundayPickupTime,
+                        pickedBy: options.data.pickedBy,
+                        mondayPickupTime: options.data.mondayPickupTime,
+                        tuesdayPickupTime: options.data.tuesdayPickupTime,
+                        wednesdayPickupTime: options.data.wednesdayPickupTime,
+                        thursdayPickupTime: options.data.thursdayPickupTime,
+                        fridayPickupTime: options.data.fridayPickupTime,
+                        saturdayPickupTime: options.data.saturdayPickupTime,
+                        sundayPickupTime: options.data.sundayPickupTime,
                         signature: "tempkey"
                     };
                     $.ajax({
@@ -113,10 +112,12 @@ var studentManageApp = (function () {
                         contentType: "application/json",
                         dataType: "json",
                         success: function(result) {
-                          options.success(result);
+                            options.success();
+                            self.pickupDetailDataSource.read();
                         },
                         error: function(result) {
-                          options.error(result);
+                            common.showError();
+                            options.error(result);
                         }
                     });
                 },
@@ -132,7 +133,8 @@ var studentManageApp = (function () {
                           options.success(result);
                         },
                         error: function(result) {
-                          options.error(result);
+                            common.showError();
+                            options.error(result);
                         }
                     });
                 },
@@ -222,10 +224,11 @@ var studentManageApp = (function () {
                         url: url,
                         data: data,
                         success: function(result) {
-                          options.success(result);
+                            options.success(result);
                         },
                         error: function(result) {
-                          options.error(result);
+                            common.showError();
+                            options.error(result);
                         }
                     });
                 },

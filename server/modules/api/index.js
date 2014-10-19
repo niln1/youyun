@@ -43,8 +43,9 @@ function isValidQueryParamsType(path, method, res, query) {
     var requiredParamsList = apiSpec[path][method]['required'];
     var paramsList = optionalParamsList.concat(requiredParamsList);
     // verifying if the query parameters supplied are valid query parameters
-    __.each(query, function(queryData, queryKey) {
-        __.each(paramsList, function(parameter) {
+    var result = [];
+    return __.every(query, function(queryData, queryKey) {
+         return __.every(paramsList, function(parameter) {
             if (parameter['param'] == queryKey) {
                 switch (parameter['type']) {
                     case 'string':
@@ -111,7 +112,6 @@ function isValidQueryParamsType(path, method, res, query) {
             return true;
         })
     });
-    return true;
 }
 
 function isRequiredQueryParams(path, method, res, queryParams) {
@@ -176,6 +176,8 @@ exports.createObject = function(req, res) {
             if (isValidQueryParams(req.path, req.method, res, queryParams) &&
                 isRequiredQueryParams(req.path, req.method, res, queryParams) &&
                 isValidQueryParamsType(req.path, req.method, res, req.body)) {
+                console.log("++++++++++here++++++++++++")
+                console.log(isValidQueryParamsType(req.path, req.method, res, req.body));
                 apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {
