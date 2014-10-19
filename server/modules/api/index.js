@@ -10,6 +10,15 @@ var apiServer = require('./utils/apiServer');
 var apiSpec = require('./utils/apiSpec');
 var logger = require('../../utils/logger');
 
+function filterParamValue(req, res) {
+    logger.debug("filter the parameters");
+    __.each(req.body, function(val, key){
+        if (val === "" || val == null) {
+            delete req.body[key];
+        }
+    });
+};
+
 function isValidQueryParams(path, method, res, queryParams) {
     logger.debug("Checking if Parameter is valid");
     logger.debug("path: " + path + ", method: " + method + ", queryParams: " + JSON.stringify(queryParams));
@@ -148,6 +157,7 @@ exports.getSpec = function(req, res) {
 exports.readObject = function(req, res) {
     logger.debug("ReadObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
@@ -166,6 +176,7 @@ exports.readObject = function(req, res) {
 exports.createObject = function(req, res) {
     logger.debug("CreateObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
@@ -176,8 +187,6 @@ exports.createObject = function(req, res) {
             if (isValidQueryParams(req.path, req.method, res, queryParams) &&
                 isRequiredQueryParams(req.path, req.method, res, queryParams) &&
                 isValidQueryParamsType(req.path, req.method, res, req.body)) {
-                console.log("++++++++++here++++++++++++")
-                console.log(isValidQueryParamsType(req.path, req.method, res, req.body));
                 apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {
@@ -192,6 +201,7 @@ exports.createObject = function(req, res) {
 exports.updateObjectWithId = function(req, res) {
     logger.debug("UpdateObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
@@ -218,6 +228,7 @@ exports.updateObjectWithId = function(req, res) {
 exports.deleteObjectWithId = function(req, res) {
     logger.debug("DeleteObject");
     logger.debug("path: " + req.path + ", method: " + req.method + ",da" + JSON.stringify(req.body));
+    filterParamValue(req, res);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';

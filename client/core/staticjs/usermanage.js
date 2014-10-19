@@ -158,6 +158,7 @@ var studentManageApp = (function () {
                         dataType: "json",
                         success: function(result) {
                             options.success();
+                            self.pickupDetailDataSource.read();
                         },
                         error: function(result) {
                             common.showError();
