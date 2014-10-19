@@ -11,7 +11,8 @@ var StudentPickupDetailSchema = new Schema({
     student: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        unique: true
     },
     pickedBy: {
         type: Schema.Types.ObjectId,

@@ -11,6 +11,7 @@ var studentManageApp = (function () {
     function View() {
         var self = this;
         this.$studentTableContainer = $("#student-table-container");
+        this.$teacherTableContainer = $("#teacher-table-container");
         this.$pickupDetailTableContainer = $("#pickupdetail-table-container");
 
         this.studentDataSource = new kendo.data.DataSource({
@@ -93,17 +94,30 @@ var studentManageApp = (function () {
                 create: function (options) {
                     var url = "/api/v1/studentpickupdetails";
                     var data = {
-                        signature: "tempkey",
+                        studentId: options.data.student,
+                        pickedBy: options.data.pickedBy,
+                        mondayPickupTime: options.data.mondayPickupTime,
+                        tuesdayPickupTime: options.data.tuesdayPickupTime,
+                        wednesdayPickupTime: options.data.wednesdayPickupTime,
+                        thursdayPickupTime: options.data.thursdayPickupTime,
+                        fridayPickupTime: options.data.fridayPickupTime,
+                        saturdayPickupTime: options.data.saturdayPickupTime,
+                        sundayPickupTime: options.data.sundayPickupTime,
+                        signature: "tempkey"
                     };
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: data,
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        dataType: "json",
                         success: function(result) {
-                          options.success(result);
+                            options.success();
+                            self.pickupDetailDataSource.read();
                         },
                         error: function(result) {
-                          options.error(result);
+                            common.showError();
+                            options.error(result);
                         }
                     });
                 },
@@ -119,12 +133,21 @@ var studentManageApp = (function () {
                           options.success(result);
                         },
                         error: function(result) {
-                          options.error(result);
+                            common.showError();
+                            options.error(result);
                         }
                     });
                 },
                 update: function(options) {
                     var submitData = {
+                        pickedBy: options.data.pickedBy,
+                        mondayPickupTime: options.data.mondayPickupTime,
+                        tuesdayPickupTime: options.data.tuesdayPickupTime,
+                        wednesdayPickupTime: options.data.wednesdayPickupTime,
+                        thursdayPickupTime: options.data.thursdayPickupTime,
+                        fridayPickupTime: options.data.fridayPickupTime,
+                        saturdayPickupTime: options.data.saturdayPickupTime,
+                        sundayPickupTime: options.data.sundayPickupTime,
                         signature: "tempkey"
                     };
                     $.ajax({
@@ -135,6 +158,7 @@ var studentManageApp = (function () {
                         dataType: "json",
                         success: function(result) {
                             options.success();
+                            self.pickupDetailDataSource.read();
                         },
                         error: function(result) {
                             common.showError();
@@ -161,6 +185,9 @@ var studentManageApp = (function () {
                 data: function(response) {
                     var data = _.map(response.result, function(each){
                         each.studentName = each.student.firstname + ' ' + each.student.lastname;
+                        if (each.pickedBy) {
+                            each.pickedByTeacherName = each.pickedBy.firstname + ' ' + each.pickedBy.lastname;
+                        };
                         return each;
                     });
                     self.pickupDetails = data;
@@ -173,6 +200,7 @@ var studentManageApp = (function () {
                         student: { },
                         studentName: { editable: true },
                         pickedBy: { editable: true },
+                        pickedByTeacherName: { editable: true },
                         mondayPickupTime: { validation: { required: false } },
                         tuesdayPickupTime: { validation: { required: false } },
                         wednesdayPickupTime: { validation: { required: false } },
@@ -184,9 +212,80 @@ var studentManageApp = (function () {
                 }
             }
         });
+
+        this.teacherDataSource = new kendo.data.DataSource({
+            transport: {
+                read: function (options) {
+                    var url = "/api/v1/users";
+                    var data = {
+                        signature: "tempkey",
+                        userType: 2
+                    };
+                    $.ajax({
+                        url: url,
+                        data: data,
+                        success: function(result) {
+                            options.success(result);
+                        },
+                        error: function(result) {
+                            common.showError();
+                            options.error(result);
+                        }
+                    });
+                },
+                update: function(options) {
+                    var submitData = {
+                        firstname: options.data.firstname,
+                        lastname: options.data.lastname,
+                        signature: "tempkey"
+                    };
+                    $.ajax({
+                        url: "/api/v1/users/"+options.data._id,
+                        data: JSON.stringify(submitData),
+                        type: 'PATCH',
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function(result) {
+                            options.success();
+                        },
+                        error: function(result) {
+                            common.showError();
+                            options.error(result);
+                        }
+                    });
+                },
+                destroy: function(options) {
+                    var signature = "tempkey";
+                    $.ajax({
+                        url: "/api/v1/users/" + options.data._id + "?signature=" + signature,
+                        type: 'DELETE',
+                        success: function(result) {
+                            options.success();
+                        },
+                        error: function(result) {
+                            common.showError();
+                            options.error(result);
+                        }
+                    });
+                }
+            },
+            schema: {
+                data: function(response) {
+                    self.students = response.result;
+                    return self.students;
+                },
+                model: {
+                    id: "_id",
+                    fields: {
+                        username: { editable: false, nullable: false },
+                        firstname: { validation: { required: true } },
+                        lastname: { validation: { required: true } }
+                    }
+                }
+            }
+        });
     }
     View.prototype.start = function () {
-        this.users = [];
         this._renderTable();
     };
 
@@ -208,21 +307,33 @@ var studentManageApp = (function () {
             editable: "inline"
         });
 
+        this.$teacherTableContainer.kendoGrid({
+            dataSource: this.teacherDataSource,
+            sortable: true,
+            columns: [
+                { field: "username", title: "Username", width: "1%" },
+                { field: "firstname", title: "First Name", width: "1%" },
+                { field: "lastname", title:"Last Name", width: "1%" },
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "1%" },
+            ],
+            editable: "inline"
+        });
+
         // Pickup Detail Table
         this.$pickupDetailTableContainer.kendoGrid({
             dataSource: this.pickupDetailDataSource,
             sortable: true,
             columns: [
-                { field: "studentName", title: "Student Name", width: "120px" },
-                { field: "pickedBy", title: "Picked By", width: "80px" },
-                { field: "mondayPickupTime", title:"Mon", width: "50px"},
-                { field: "tuesdayPickupTime", title:"Tue", width: "50px"},
-                { field: "wednesdayPickupTime", title:"Wed", width: "50px"},
-                { field: "thursdayPickupTime", title:"Thu", width: "50px"},
-                { field: "fridayPickupTime", title:"Fri", width: "50px"},
-                { field: "saturdayPickupTime", title:"Sat", width: "50px"},
-                { field: "sundayPickupTime", title:"Sun", width: "50px"},
-                { command: ["edit", "destroy"], title: "&nbsp;", width: "130px"},
+                { field: "studentName", title: "Student Name", width: "11%" },
+                { field: "pickedByTeacherName", title: "Picked By", width: "11%" },
+                { field: "mondayPickupTime", title:"Mon", width: "8%"},
+                { field: "tuesdayPickupTime", title:"Tue", width: "8%"},
+                { field: "wednesdayPickupTime", title:"Wed", width: "8%"},
+                { field: "thursdayPickupTime", title:"Thu", width: "8%"},
+                { field: "fridayPickupTime", title:"Fri", width: "8%"},
+                { field: "saturdayPickupTime", title:"Sat", width: "8%"},
+                { field: "sundayPickupTime", title:"Sun", width: "8%"},
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "22%"},
             ],
             toolbar: [
                 { name: "create", text: "Add New" }
@@ -233,17 +344,29 @@ var studentManageApp = (function () {
             },
             edit: function(e) {
                 $(".timepicker").timepicker({ timeFormat: 'H:i', useSelect: false });
-                var $studentName = e.container.find("input[name=studentName]");
-                $studentName.prop('disabled', false);
-                $studentName.kendoDropDownList({
+                var $student = e.container.find("input[name=student]");
+                var $pickedBy = e.container.find("input[name=pickedBy]");
+                $student.prop('disabled', false);
+                $student.kendoDropDownList({
+                    optionLabel: "Select Student...",
                     dataSource: self.studentDataSource._data,
+                    valuePrimitive: true,
+                    filter: "startswith",
+                    minLength: 3,   
+                    dataTextField: "username",
+                    dataValueField: "id"
+                });
+                $pickedBy.kendoDropDownList({
+                    optionLabel: "Select Teacher...",
+                    dataSource: self.teacherDataSource._data,
+                    valuePrimitive: true,
                     filter: "startswith",
                     minLength: 3,   
                     dataTextField: "username",
                     dataValueField: "id"
                 });
                 if (!e.model.isNew()) {
-                    $studentName.prop('disabled', true);
+                    $("#student-input-wrapper").hide();
                 }
             }
         });

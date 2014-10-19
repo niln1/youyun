@@ -10,6 +10,15 @@ var apiServer = require('./utils/apiServer');
 var apiSpec = require('./utils/apiSpec');
 var logger = require('../../utils/logger');
 
+function filterParamValue(req, res) {
+    logger.debug("filter the parameters");
+    __.each(req.body, function(val, key){
+        if (val === "" || val == null) {
+            delete req.body[key];
+        }
+    });
+};
+
 function isValidQueryParams(path, method, res, queryParams) {
     logger.debug("Checking if Parameter is valid");
     logger.debug("path: " + path + ", method: " + method + ", queryParams: " + JSON.stringify(queryParams));
@@ -43,8 +52,9 @@ function isValidQueryParamsType(path, method, res, query) {
     var requiredParamsList = apiSpec[path][method]['required'];
     var paramsList = optionalParamsList.concat(requiredParamsList);
     // verifying if the query parameters supplied are valid query parameters
-    __.each(query, function(queryData, queryKey) {
-        __.each(paramsList, function(parameter) {
+    var result = [];
+    return __.every(query, function(queryData, queryKey) {
+         return __.every(paramsList, function(parameter) {
             if (parameter['param'] == queryKey) {
                 switch (parameter['type']) {
                     case 'string':
@@ -111,7 +121,6 @@ function isValidQueryParamsType(path, method, res, query) {
             return true;
         })
     });
-    return true;
 }
 
 function isRequiredQueryParams(path, method, res, queryParams) {
@@ -148,6 +157,7 @@ exports.getSpec = function(req, res) {
 exports.readObject = function(req, res) {
     logger.debug("ReadObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     if (__.has(apiSpec, req.path)) {
         var queryParams = __.keys(req.query);
@@ -166,6 +176,7 @@ exports.readObject = function(req, res) {
 exports.createObject = function(req, res) {
     logger.debug("CreateObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     if (__.has(apiSpec, req.path)) {
         if (__.isEqual(req.headers['content-type'].split(';')[0],
@@ -190,6 +201,7 @@ exports.createObject = function(req, res) {
 exports.updateObjectWithId = function(req, res) {
     logger.debug("UpdateObject");
     logger.debug("path: " + req.path + ", method: " + req.method);
+    filterParamValue(req, res);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';
@@ -216,6 +228,7 @@ exports.updateObjectWithId = function(req, res) {
 exports.deleteObjectWithId = function(req, res) {
     logger.debug("DeleteObject");
     logger.debug("path: " + req.path + ", method: " + req.method + ",da" + JSON.stringify(req.body));
+    filterParamValue(req, res);
 
     var pathWithoutId = req.path.substring(0, req.path.lastIndexOf("/"));
     var path = pathWithoutId + '/{id}';

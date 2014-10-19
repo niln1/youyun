@@ -26,9 +26,16 @@ exports.create = function (req, res) {
             var defer = Q.defer();
             // do some thing
             logger.debug("Param: studentId: " + req.body.studentId);
+            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+            data.student = data.studentId;
+            delete data.signature;
+            delete data.studentId;
+            
+            logger.debug("Param: " + JSON.stringify(data));
+
             var newStudentPickupDetail = new StudentPickupDetail({
-                student: req.body.studentId,
-            })
+                student: req.body.studentId
+            });
 
             newStudentPickupDetail.save(function (err, detail) {
                 if (err) defer.reject(err);
@@ -40,7 +47,8 @@ exports.create = function (req, res) {
             logger.info("StudentPickupDetail -- Create Success");
             apiServer.sendResponse(req, res, detail, 'StudentPickupDetail info successfully Created');
         }
-    });}
+    });
+}
 
 exports.read = function (req, res) {
     return apiCallHelper(req, res, {
@@ -57,6 +65,7 @@ exports.read = function (req, res) {
 
             StudentPickupDetail.find({})
             .populate("student")
+            .populate("pickedBy")
             .exec(function(err, details){
                 if (err) {
                     defer.reject(err);

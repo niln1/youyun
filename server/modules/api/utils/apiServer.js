@@ -105,7 +105,7 @@ apiServer.sendResponse = function(req, res, resp, desc) {
         castPassword(resp);
     };
 
-    res.json(200, {
+    res.status(200).json({
         result: resp,
         description: desc,
         source: nconf.get('server-name')

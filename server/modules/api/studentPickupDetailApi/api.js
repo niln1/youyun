@@ -22,7 +22,16 @@ module.exports = [{
         parameters.signature,
         parameters.studentId,
         ],
-        'optional': [],
+        'optional': [
+        parameters.pickedBy,
+        parameters.mondayPickupTime,
+        parameters.tuesdayPickupTime,
+        parameters.wednesdayPickupTime,
+        parameters.thursdayPickupTime,
+        parameters.fridayPickupTime,
+        parameters.saturdayPickupTime,
+        parameters.sundayPickupTime
+        ],
         'description': 'create studentpickupdetails',
         'response': {} // sample data
     }
