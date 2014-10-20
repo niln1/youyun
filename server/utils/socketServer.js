@@ -6,7 +6,7 @@ var User = require('../models/User');
 var socketServer = {};
 
 socketServer.validateUserSession = function (socket) {
-	var deferred = Q.defer();
+    var deferred = Q.defer();
 
     if (socket.session.user) {
         User.findOne({username: socket.session.user.username}, function (err, user) {

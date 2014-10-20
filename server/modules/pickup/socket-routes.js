@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014, Zhihao Ni & Ranchao Zhang. All rights reserved.
+ * TODO: need to make things more clean before every emit...
  */
 
  "use strict";
@@ -28,6 +29,7 @@
             }
         })
         .then(function (reports) {
+            if (reports) castPassword(reports);
             logger.info("Found", reports);
             socket.emit('pickup::teacher:update-reports', reports);
         })
@@ -47,8 +49,9 @@
             }
         })
         .then(function (report) {
+            //TODO: this is bad need rework
+            if (report) castPassword(report);
             logger.info("found report for 'get report for today'");
-            console.log(report);
             socket.emit('pickup::teacher::get-report-for-today::success', report);
         })
         .fail(function (err) {
@@ -71,6 +74,7 @@
             return [parent, children, StudentPickupReport.findReportsByUsers(children)]
         })
         .spread(function (parent, children, reports) {
+            if (reports) castPassword(reports);
             socket.emit('pickup::parent::get-child-report::success', reports);
         })
         .fail(function (err) {
@@ -92,11 +96,11 @@
             return [parent, children, StudentPickupReport.findReportsByUsers(children)]
         })
         .spread(function (parent, children, reports) {
-            console.log("here");
             var dateToValidate = moment(new Date()).startOf('day');
             var futureReports = __.filter(reports, function(report) { 
                 return dateToValidate.unix() < moment(report.date).unix();
             });
+            if (futureReports) castPassword(futureReports);
             socket.emit('pickup::parent::get-future-child-report::success', futureReports);
         })
         .fail(function (err) {
@@ -207,6 +211,7 @@
 
             return defer.promise;
         }).then(function (report) {
+            if (report) castPassword(report);
             logger.info("report Created");
             socket.emit('pickup::create::success', report);
             // TODO broadcast this message;
@@ -279,6 +284,7 @@
             return defer.promise;
         })
         .then(function (report) {
+            if (report) castPassword(report);
             socket.emit('pickup::parent::add-absence::success', report);
             // broadcast this event
             socket.broadcast.emit('pickup::all::add-absence::success', report);
@@ -350,6 +356,7 @@
             return defer.promise;
         })
         .then(function (report) {
+            if (report) castPassword(report);
             socket.emit('pickup::teacher::pickup-student::success', report);
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', report);
@@ -358,5 +365,14 @@
             logger.warn(err.toString());
             socket.emit('all::failure', err.toString());
         })
+    });
+}
+
+function castPassword(object) {
+    if (object.password) {
+        object.password = "Black Sheep Wall";
+    };
+    __.each(object, function(element){
+        if (__.isObject(element)) castPassword(element);
     });
 }
