@@ -1,4 +1,7 @@
-
+/*
+ * Copyright (c) 2014, Zhihao Ni. All rights reserved.
+ * TODO: need to make things more clean before every emit...
+ */
 'use strict';
 
 var Q = require('q');
