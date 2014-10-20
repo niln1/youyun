@@ -104,12 +104,8 @@
         });
     });
 
-    // TODO: need revisit
     socket.on('pickup::create-report', function (data) {
         var dateToValidate;
-
-        // var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
-        // var userIds = _.pluck(users, '_id');
 
         Q.fcall(function () {
             if (socket.session.user.userType <= 3) {
@@ -142,38 +138,63 @@
         }).then(function () {
             // get user list
             var defer = Q.defer();
-            var dayOfTheWeek = moment(dateToValidate).format('d')); 
+            var dayOfTheWeek = moment(dateToValidate).format('d'); 
+            var existAndNotEmpty = { $exists:true, $ne: "" };
+            var dayString;
 
             switch(dayOfTheWeek) {
-                case 0:
-                    day = "Sunday";
+                case "0":
+                    dayString = "sundayPickupTime";
                     break;
-                case 1:
-                    day = "Monday";
+                case "1":
+                    dayString = "mondayPickupTime";
                     break;
-                case 2:
-                    day = "Tuesday";
+                case "2":
+                    dayString = "tuesdayPickupTime";
                     break;
-                case 3:
-                    day = "Wednesday";
+                case "3":
+                    dayString = "wednesdayPickupTime";
                     break;
-                case 4:
-                    day = "Thursday";
+                case "4":
+                    dayString = "thursdayPickupTime";
                     break;
-                case 5:
-                    day = "Friday";
+                case "5":
+                    dayString = "fridayPickupTime";
                     break;
-                case 6:
-                    day = "Saturday";
+                case "6":
+                    dayString = "saturdayPickupTime";
                     break;
+                default:
+                    throw new Error("Fail to get the day string");
             }
 
+            StudentPickupDetail.find()
+            .where("pickedBy").exists(true)
+            .where(dayString).exists(true).ne("")
+            .populate('student')
+            .exec(function(err, details) {
+                if (err) defer.reject(err);
+                else {
+                    var filteredDetails = __.filter(details, 
+                        function(detail){ 
+                            // filter all the ones without pickup location
+                            return detail.student.pickupLocation != null 
+                            && detail.student.pickupLocation !== "";
+                        });
+
+                    defer.resolve(filteredDetails);
+                }
+            });
+
             return defer.promise;
-        }).then(function () {
+        }).then(function (details) {
             var defer = Q.defer();
+
+            var needToPickupList = __.pluck(__.pluck(details, 'student'), '_id');
+            if (needToPickupList.length === 0) throw new Error("No student need to pickup");
             
             var newReport = new StudentPickupReport({
-                needToPickupList: data,
+                needToPickupList: needToPickupList,
                 absenceList: [],
                 pickedUpList: [],
                 date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
