@@ -5,6 +5,7 @@ var moment = require('moment');
 // Set up logger
 var customColors = {
     trace: 'grey',
+    db: 'magenta',
     debug: 'cyan',
     info: 'green',
     warn: 'yellow',
@@ -16,11 +17,12 @@ var logger = new(winston.Logger)({
     colors: customColors,
     levels: {
         trace: 0,
-        debug: 1,
-        info: 2,
-        warn: 3,
-        error: 4,
-        fatal: 5
+        db: 1,
+        debug: 2,
+        info: 3,
+        warn: 4,
+        error: 5,
+        fatal: 6
     },
     transports: [
         new(winston.transports.Console)({

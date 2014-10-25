@@ -49,14 +49,25 @@
             }
         })
         .then(function (report) {
-            //TODO: this is bad need rework
-            if (report) castPassword(report);
-            logger.info("found report for 'get report for today'");
-            socket.emit('pickup::teacher::get-report-for-today::success', report);
+            if (report) {
+            //TODO: this is bad need rework casting password
+                castPassword(report);
+                logger.info("found report for 'get report for today'");
+                report.needToPickupList = __.filter(report.needToPickupList,
+                    function(student) {
+                        // only check value
+                        return socket.session.user._id == student.studentPickupDetail.pickedBy;
+                    })
+                logger.info("filtered report for the current user");
+                socket.emit('pickup::teacher::get-report-for-today::success', report);
+            } else {
+                throw new Error("No report for today");;
+            }
         })
         .fail(function (err) {
             logger.warn(err);
             socket.emit('all::failure', err);
+            socket.emit('pickup::teacher::get-report-for-today::fail', err);
         });
     });
 
