@@ -59,6 +59,7 @@
                         return socket.session.user._id == student.studentPickupDetail.pickedBy;
                     })
                 logger.info("filtered report for the current user");
+                console.log(report);    
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
             } else {
                 throw new Error("No report for today");;

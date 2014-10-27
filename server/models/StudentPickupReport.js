@@ -102,12 +102,22 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
     .exec(function (err, report) {
         if (err) defer.reject(err);
         else if (report) {
-            StudentPickupDetail.populate(report.needToPickupList, { 
+            // Actually this is the only way to do this now: take a look later if supported
+            StudentPickupDetail
+            .populate(report.needToPickupList, { 
                 path : 'studentPickupDetail',
                 model: 'StudentPickupDetail'
             }, function(err, things){
                 if ( err ) throw new err;
-                defer.resolve(report);
+
+                StudentPickupDetail
+                .populate(report.pickedUpList, { 
+                    path : 'studentPickupDetail',
+                    model: 'StudentPickupDetail'
+                }, function(err, things){
+                    if ( err ) throw new err;
+                    defer.resolve(report);
+                });
             });
         } else {
             defer.reject(new Error('No report For today'));
