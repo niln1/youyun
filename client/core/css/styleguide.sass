@@ -1,0 +1,80 @@
+@import "utils/_variables"
+@import "utils/_typography"
+@import "utils/_mixins"
+@import "utils/_common"
+
+body
+    background: black
+
+.column-4
+    -webkit-column-count: 4
+    -moz-column-count: 4
+    column-count: 4
+
+.colorblock
+    height: 100px
+    width: 100%
+
+.school-very-dark-color
+    @extend .colorblock
+    background: $school-very-dark-color
+
+.school-dark-color
+    @extend .colorblock
+    background: $school-dark-color
+
+.school-color
+    @extend .colorblock
+    background: $school-color
+
+.school-light-color
+    @extend .colorblock
+    background: $school-light-color
+
+.school-very-light-color
+    @extend .colorblock
+    background: $school-very-light-color
+
+.inverse-very-dark-color
+    @extend .colorblock
+    background: $inverse-very-dark-color
+
+.inverse-dark-color
+    @extend .colorblock
+    background: $inverse-dark-color
+
+.inverse-color
+    @extend .colorblock
+    background: $inverse-color
+
+.inverse-light-color
+    @extend .colorblock
+    background: $inverse-light-color
+
+.inverse-very-light-color
+    @extend .colorblock
+    background: $inverse-very-light-color
+
+.bright-school-dark-color
+    @extend .colorblock
+    background: $bright-school-dark-color
+
+.bright-school-color
+    @extend .colorblock
+    background: $bright-school-color
+
+.bright-school-light-color
+    @extend .colorblock
+    background: $bright-school-light-color
+
+.error-school-dark-color
+    @extend .colorblock
+    background: $error-school-dark-color
+
+.error-school-color
+    @extend .colorblock
+    background: $error-school-color
+
+.error-school-light-color
+    @extend .colorblock
+    background: $error-school-light-color
