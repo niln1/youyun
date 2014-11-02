@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var Q = require('q');
 var Schema = mongoose.Schema;
 
+var StudentPickupDetail = require('./StudentPickupDetail');
+
 var moment = require('moment-timezone');
 
 var StudentPickupReportSchema = new Schema({
@@ -91,8 +93,6 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
     var today = moment(new Date()).startOf('day').format("YYYY-MM-DD HH:mm:ss");
     var defer = Q.defer();
 
-    console.log(today);
-
     this.findOne({
         "date" : today
     })
@@ -101,7 +101,27 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
     .populate('absenceList')
     .exec(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve(report);
+        else if (report) {
+            // Actually this is the only way to do this now: take a look later if supported
+            StudentPickupDetail
+            .populate(report.needToPickupList, { 
+                path : 'studentPickupDetail',
+                model: 'StudentPickupDetail'
+            }, function(err, things){
+                if ( err ) throw new err;
+
+                StudentPickupDetail
+                .populate(report.pickedUpList, { 
+                    path : 'studentPickupDetail',
+                    model: 'StudentPickupDetail'
+                }, function(err, things){
+                    if ( err ) throw new err;
+                    defer.resolve(report);
+                });
+            });
+        } else {
+            defer.reject(new Error('No report For today'));
+        }
     });
 
     return defer.promise;

@@ -19,6 +19,7 @@ exports.route = function (app) {
     app.get('/static/home', index.home);
     app.get('/usermanage', index.usermanage);
     app.get('/pickupreport', index.pickupreport);
+    app.get('/styleguide', index.styleguide);
 
     /*
      * Helper method to load module

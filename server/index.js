@@ -72,3 +72,11 @@ exports.pickupreport = function (req, res) {
         user: req.session.user
     });
 }
+
+exports.styleguide = function (req, res) {
+    if (!req.session.user) return res.send(404);
+    if (req.session.user.userType > 1) return res.send(401);
+    res.render('styleguide', {
+        user: req.session.user
+    });
+}

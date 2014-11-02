@@ -106,10 +106,8 @@ var pickupReportApp = (function () {
         if (event.target.type === "button"){
             if (event.target.id === "save-new-report") {
                 var date = moment(new Date(this.currentDate));
-                var users = _.filter(this.users, function(user) {return user.pickupLocation && user.userType === 3});
-                var userIds = _.pluck(users, '_id');
                 if (date.isValid()) {
-                    this.socket.emit("pickup::create-report",{ date: date.format(), userIds: userIds })
+                    this.socket.emit("pickup::create-report",{ date: date.format() })
                 } else {
                     throw Error("invalid date");
                 }

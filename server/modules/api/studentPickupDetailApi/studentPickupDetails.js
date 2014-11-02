@@ -33,9 +33,7 @@ exports.create = function (req, res) {
             
             logger.debug("Param: " + JSON.stringify(data));
 
-            var newStudentPickupDetail = new StudentPickupDetail({
-                student: req.body.studentId
-            });
+            var newStudentPickupDetail = new StudentPickupDetail(data);
 
             newStudentPickupDetail.save(function (err, detail) {
                 if (err) defer.reject(err);

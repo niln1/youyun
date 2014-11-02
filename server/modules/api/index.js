@@ -13,7 +13,7 @@ var logger = require('../../utils/logger');
 function filterParamValue(req, res) {
     logger.debug("filter the parameters");
     __.each(req.body, function(val, key){
-        if (val === "" || val == null) {
+        if (val == null) {
             delete req.body[key];
         }
     });
@@ -108,6 +108,10 @@ function isValidQueryParamsType(path, method, res, query) {
                             logger.trace("Check timeString Type Passed - " + queryData);
                             break;
                         } else {
+                            if (queryData === "") {
+                                logger.trace("Check empty timeString Type Passed - " + queryData);
+                                break;
+                            }
                             logger.warn("Check timeString Type - " + queryData + "is Not a timeString");
                             apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;

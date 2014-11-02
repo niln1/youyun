@@ -63,10 +63,11 @@ var UserSchema = new Schema({
         type: String,
         required: false,
     },
-    pickupStudentDayTime: {
-        type: Schema.Types.Mixed,
+    studentPickupDetail: {
+        type: Schema.Types.ObjectId,
+        ref: 'studentPickupDetail',
         required: false,
-    },
+    }
     // need a json to store enterdate and graduate date
 });
 
