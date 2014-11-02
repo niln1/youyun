@@ -4,12 +4,15 @@
 @import "utils/_common"
 
 body
-    background: black
+    background: white
 
 .column-4
     -webkit-column-count: 4
     -moz-column-count: 4
     column-count: 4
+    -webkit-column-gap: 0 /* Chrome, Safari, Opera */
+    -moz-column-gap: 0 /* Firefox */
+    column-gap: 0
 
 .colorblock
     height: 100px
@@ -78,3 +81,11 @@ body
 .error-school-light-color
     @extend .colorblock
     background: $error-school-light-color
+
+.bg-color
+    @extend .colorblock
+    background: $bg-color
+
+.fg-color
+    @extend .colorblock
+    background: $fg-color
