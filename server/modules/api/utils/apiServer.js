@@ -21,6 +21,56 @@ var apnConnection = new apn.Connection(apnOptions);
 
 var apiServer = {};
 
+/**
+ * General Api call Wrapper to reduce redendent code
+ * @param  {object} req needed
+ * @param  {object} res needed
+ * @param  {object} opt needed
+ */
+ apiServer.apiCallHelper = function (req, res, opt) {
+
+    var opt = opt || {};
+
+    // check options
+    if (!opt.infoMessage) {
+        logger.warn("Missing infoMessage");
+        return;
+    } else if (!opt.userValidationHandler) {
+        logger.warn("Missing userValidationHandler");
+        return;
+    } else if (!opt.processHandler) {
+        logger.warn("Missing processHandler");
+        return;
+    } else if (!opt.successHandler) {
+        logger.warn("Missing successHandler");
+        return;
+    }
+
+    // start helper
+    logger.info(opt.infoMessage);
+    Q.all([
+        this.validateUserSession(req, res),
+        this.validateSignature(req, res)
+        ])
+    .spread(function (user, signatureIsValid) {
+        return opt.userValidationHandler(user, signatureIsValid);
+    })
+    .then(function(hasPermission){
+        return opt.processHandler(hasPermission);
+    })
+    .then(function(data){
+        return opt.successHandler(data);
+    })
+    .fail(function(err){
+        if (opt.errorHandler) {
+            return opt.errorHandler(err);
+        } else {
+            logger.warn(err);
+            this.sendBadRequest(req, res, err.toString());
+        }
+    });
+}
+
 apiServer.sendPushNotification = function (deviceType, token, message, options) {
     if (deviceType == 0) {
         logger.info('Pushing to an iOS device with message "' + message + '" and token "' + token + '".');

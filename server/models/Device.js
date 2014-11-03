@@ -12,16 +12,12 @@ var DeviceSchema = new Schema({
         type: Number, // 0: iOS, 1: Android
         required: true
     },
-    deviceUUID:{
+    token:{
         type: String,
         required: true
     },
     owner: {
         type: Schema.Types.ObjectId,
-        required: true
-    },
-    pushToken: {
-        type: String,
         required: true
     }
 });

@@ -12,7 +12,7 @@
  var Q = require('q');
 
 exports.create = function (req, res) {
-    return apiCallHelper(req, res, {
+    return apiServer.apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- Create",
         userValidationHandler: function(user, signatureIsValid) {
             // find if student id exist
@@ -49,7 +49,7 @@ exports.create = function (req, res) {
 }
 
 exports.read = function (req, res) {
-    return apiCallHelper(req, res, {
+    return apiServer.apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- Read",
         userValidationHandler: function(user, signatureIsValid) {
             if (user.isAdmin()) {
@@ -83,7 +83,7 @@ exports.read = function (req, res) {
 };
 
 exports.updateWithId = function (req, res) {
-    return apiCallHelper(req, res, {
+    return apiServer.apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- UpdateWithId",
         userValidationHandler: function(user, signatureIsValid) {
             if (user.isAdmin()) {
@@ -119,7 +119,7 @@ exports.updateWithId = function (req, res) {
 }
 
 exports.deleteWithId = function (req, res) {
-    return apiCallHelper(req, res, {
+    return apiServer.apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- UpdateWithId",
         userValidationHandler: function(user, signatureIsValid) {
             if (user.isAdmin()) {
@@ -149,56 +149,6 @@ exports.deleteWithId = function (req, res) {
         successHandler: function(detail) {
             logger.info("StudentPickupDetail -- delete Success");
             apiServer.sendResponse(req, res, detail, 'StudentPickupDetail info successfully deleted');
-        }
-    });
-}
-
-/**
- * General Api call Wrapper to reduce redendent code
- * @param  {object} req needed
- * @param  {object} res needed
- * @param  {object} opt needed
- */
- function apiCallHelper (req, res, opt) {
-
-    var opt = opt || {};
-
-    // check options
-    if (!opt.infoMessage) {
-        logger.warn("Missing infoMessage");
-        return;
-    } else if (!opt.userValidationHandler) {
-        logger.warn("Missing userValidationHandler");
-        return;
-    } else if (!opt.processHandler) {
-        logger.warn("Missing processHandler");
-        return;
-    } else if (!opt.successHandler) {
-        logger.warn("Missing successHandler");
-        return;
-    }
-
-    // start helper
-    logger.info(opt.infoMessage);
-    Q.all([
-        apiServer.validateUserSession(req, res),
-        apiServer.validateSignature(req, res)
-        ])
-    .spread(function (user, signatureIsValid) {
-        return opt.userValidationHandler(user, signatureIsValid);
-    })
-    .then(function(hasPermission){
-        return opt.processHandler(hasPermission);
-    })
-    .then(function(data){
-        return opt.successHandler(data);
-    })
-    .fail(function(err){
-        if (opt.errorHandler) {
-            return opt.errorHandler(err);
-        } else {
-            logger.warn(err);
-            apiServer.sendBadRequest(req, res, err.toString());
         }
     });
 }

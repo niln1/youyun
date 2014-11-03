@@ -42,7 +42,9 @@ exports.addUserDevice = function (req, res) {
     ]).spread(function (user, signatureIsValid) {
         var defer = Q.defer();
         Device.findOne({
-            deviceUUID: req.body.uuid
+            token: req.body.token,
+            owner: user._id,
+            deviceType: req.body.type
         }, function (err, device) {
             if (err) defer.reject(err);
             else if (device) defer.resolve([user, device]);
@@ -50,9 +52,8 @@ exports.addUserDevice = function (req, res) {
                 // Create a new device
                 var newDevice = new Device({
                     deviceType: req.body.type,
-                    deviceUUID: req.body.uuid,
+                    token: req.body.token,
                     owner: user._id,
-                    pushToken: req.body.token
                 });
                 newDevice.save(function (err, newDevice) {
                     if (err) defer.reject(err);
@@ -63,7 +64,7 @@ exports.addUserDevice = function (req, res) {
         return defer.promise;
     }).spread(function (user, device) {
         var defer = Q.defer();
-        user.devices.push(device._id);
+        user.devices.addToSet(device._id);
         user.save(function (err, user) {
             if (err) defer.reject(err);
             else defer.resolve(device);
