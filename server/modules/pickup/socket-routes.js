@@ -34,8 +34,6 @@
             if (reports) castPassword(reports);
             logger.info("Found", reports);
             socket.emit('pickup::teacher:update-reports', reports);
-           // test
-            PNServer.sendPushNotification(0,"","a", {});
         })
         .fail(function (err) {
             logger.warn(err);
@@ -366,7 +364,7 @@
 
 function castPassword(object) {
     // lean the mongoose document
-    object = JSON.parse(JSON.stringify(object));
+    if (object.toObject) object = object.toObject(); 
     if (__.isObject(object)) {
         if (object.password) {
             object.password = "Black Sheep Wall";

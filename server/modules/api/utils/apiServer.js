@@ -117,7 +117,7 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     
     function castPassword(object) {
         // lean the mongoose doc
-        object = JSON.parse(JSON.stringify(object));
+        if (object.toObject) object = object.toObject(); 
         if (__.isObject(object)) {
             if (object.password) {
                 object.password = "Black Sheep Wall";
