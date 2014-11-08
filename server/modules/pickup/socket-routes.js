@@ -17,8 +17,10 @@
  var __ = require('underscore');
  var Q = require('q');
  var socketServer = require('../../utils/socketServer');
+ var PNServer = require('../../utils/pushNotificationServer');
 
  exports.route = function (socket) {
+    // for web
     socket.on('pickup::teacher::get-reports', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -32,6 +34,8 @@
             if (reports) castPassword(reports);
             logger.info("Found", reports);
             socket.emit('pickup::teacher:update-reports', reports);
+           // test
+            PNServer.sendPushNotification(0,"","a", {});
         })
         .fail(function (err) {
             logger.warn(err);
@@ -39,6 +43,7 @@
         });
     });
 
+    // for app
     socket.on('pickup::teacher::get-report-for-today', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -51,6 +56,7 @@
         .then(function (report) {
             if (report) {
             //TODO: this is bad need rework casting password
+                console.log(report);
                 castPassword(report);
                 logger.info("found report for 'get report for today'");
                 report.needToPickupList = __.filter(report.needToPickupList,
@@ -59,7 +65,6 @@
                         return socket.session.user._id == student.studentPickupDetail.pickedBy;
                     })
                 logger.info("filtered report for the current user");
-                console.log(report);    
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
             } else {
                 throw new Error("No report for today");;
@@ -145,7 +150,9 @@
         }).then(function () {
             // check if there is one report with same date.
             var defer = Q.defer();
-            StudentPickupReport.find({date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")}).exec(function(err, reports){
+            StudentPickupReport.find({
+                date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
+            }).exec(function(err, reports){
                 if (err) defer.reject(err);
                 else if (reports.length === 0) defer.resolve();
                 else defer.reject(new Error("Report Already Exists"));
@@ -335,43 +342,20 @@
             }
         })
         .spread(function (user, report, studentID, pickedUp) {
-            var defer = Q.defer();
-            // TODO: need refactor
-            var studentObjectID = mongoose.Types.ObjectId(studentID.toString());
-
             if (pickedUp) {
-                var index = report.needToPickupList.indexOf(studentObjectID);
-                if (index !== -1) {
-                    report.needToPickupList.splice(index, 1);
-                    report.pickedUpList.push(studentObjectID);
-                    report.save(function (err, report) {
-                        if (err) defer.reject(err);
-                        else defer.resolve(report);
-                    });
-                } else {
-                    defer.reject(new Error('StudentID not in need to pickup list.'));
-                }
+                return report.addPickedUp(studentID, user._id);
             } else {
-                var index = report.pickedUpList.indexOf(studentObjectID)
-                if (index !== -1) {
-                    report.pickedUpList.splice(index, 1);
-                    report.needToPickupList.push(studentObjectID);
-                    report.save(function (err, report) {
-                        if (err) defer.reject(err);
-                        else defer.resolve(report);
-                    });
-                } else {
-                    defer.reject(new Error('StudentID not in pickuped up list.'));
-                }
+                return report.removePickedUp(studentID, user._id);
             }
-
-            return defer.promise;
         })
         .then(function (report) {
             if (report) castPassword(report);
             socket.emit('pickup::teacher::pickup-student::success', report);
+
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', report);
+
+            PNServer.sendPushNotification(0,"","a", {});
         })
         .fail(function (err) {
             logger.warn(err.toString());
@@ -381,10 +365,15 @@
 }
 
 function castPassword(object) {
-    if (object.password) {
-        object.password = "Black Sheep Wall";
-    };
-    __.each(object, function(element){
-        if (__.isObject(element)) castPassword(element);
-    });
+    // lean the mongoose document
+    object = JSON.parse(JSON.stringify(object));
+    if (__.isObject(object)) {
+        if (object.password) {
+            object.password = "Black Sheep Wall";
+        };
+        __.each(object, function(element){
+            castPassword(element);
+        });
+    }
+    return;
 }

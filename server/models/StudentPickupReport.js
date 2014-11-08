@@ -22,8 +22,17 @@ var StudentPickupReportSchema = new Schema({
         ref: 'User'
     }],
     pickedUpList: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        student: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        pickedBy: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        pickedUpTime: {
+            type: Date,
+        }
     }],
     date: {
         type: Date,
@@ -31,24 +40,55 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
-StudentPickupReportSchema.methods.addAbsence = function (studentId, defer) {
-    this.absenceList.addToSet(studentId);
-    this.save(function(err, report){
-        if (err) defer.fail(err);
-        else defer.resolve(report);
-    });
+StudentPickupReportSchema.methods.addPickedUp = function (studentId, pickedBy) {
+    var defer = Q.defer();
+    this.needToPickupList.pull(studentId);
+    var pickedUpRecord = {
+        student: studentId,
+        pickedBy: pickedBy,
+        pickedUpTime: new Date()
+    };
+    console.log(pickedUpRecord);
+    this.pickedUpList.push(pickedUpRecord);
+    this.save(function (err, report) {
+            if (err) defer.reject(err);
+            else defer.resolve(report);
+        });
+
+    // if (index !== -1) {
+    //     report.needToPickupList.splice(index, 1);
+    //     report.pickedUpList.addToSet(studentObjectID);
+    //     report.save(function (err, report) {
+    //         if (err) defer.reject(err);
+    //         else defer.resolve(report, studentObjectID, 0);
+    //     });
+    // } else {
+    //     defer.reject(new Error('StudentID not in need to pickup list.'));
+    // }
+    // this.pickedUpList.addToSet(studentId);
+    // this.save(defer.resolve());
+
+    return defer.promise;
 }
-StudentPickupReportSchema.methods.removeAbsence = function (studentId, defer) {
-    this.absenceList.pull(studentId);
-    this.save(defer.resolve());
-}
-StudentPickupReportSchema.methods.addPickedUp = function (studentId, defer) {
-    this.pickedUpList.addToSet(studentId);
-    this.save(defer.resolve());
-}
-StudentPickupReportSchema.methods.removePickedUp = function (studentId, defer) {
-    this.pickedUpList.pull(studentId);
-    this.save(defer.resolve());
+
+StudentPickupReportSchema.methods.removePickedUp = function (studentId, unPickedBy) {
+    var defer = Q.defer();
+
+    var index = report.pickedUpList.indexOf(studentObjectID)
+    if (index !== -1) {
+        report.pickedUpList.splice(index, 1);
+        report.needToPickupList.addToSet(studentObjectID);
+        report.save(function (err, report) {
+            if (err) defer.reject(err);
+            else defer.resolve(report, studentObjectID, 1);
+        });
+    } else {
+        defer.reject(new Error('StudentID not in pickuped up list.'));
+    }
+    // this.pickedUpList.pull(studentId);
+    // this.save(defer.resolve());
+
+    return defer.promise;
 }
 
 StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
@@ -97,7 +137,6 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
         "date" : today
     })
     .populate('needToPickupList')
-    .populate('pickedUpList')
     .populate('absenceList')
     .exec(function (err, report) {
         if (err) defer.reject(err);
