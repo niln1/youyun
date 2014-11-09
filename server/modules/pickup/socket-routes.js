@@ -32,7 +32,7 @@
         })
         .then(function (reports) {
             if (reports) castPassword(reports);
-            logger.info("Found", reports);
+            logger.info("updating reports: ", reports);
             socket.emit('pickup::teacher:update-reports', reports);
         })
         .fail(function (err) {
@@ -312,6 +312,9 @@
         })
     });
 
+    /**
+     * This event handles pickup and unpick student
+     */
     socket.on('pickup::teacher::pickup-student', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -341,17 +344,17 @@
         })
         .spread(function (user, report, studentID, pickedUp) {
             if (pickedUp) {
-                return report.addPickedUp(studentID, user._id);
+                return report.pickUpStudent(studentID, user._id);
             } else {
-                return report.removePickedUp(studentID, user._id);
+                return report.unpickPickedUp(studentID, user._id);
             }
         })
-        .then(function (report) {
-            if (report) castPassword(report);
-            socket.emit('pickup::teacher::pickup-student::success', report);
+        .then(function (data) {
+            if (data) castPassword(data);
+            socket.emit('pickup::teacher::pickup-student::success', data);
 
             // broadcast this event
-            socket.broadcast.emit('pickup::all::picked-up::success', report);
+            socket.broadcast.emit('pickup::all::picked-up::success', data);
 
             PNServer.sendPushNotification(0,"","a", {});
         })

@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var Q = require('q');
 var Schema = mongoose.Schema;
 
+var logger = require('../utils/logger.js');
+
 var StudentPickupDetail = require('./StudentPickupDetail');
 
 var moment = require('moment-timezone');
@@ -40,54 +42,40 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
-StudentPickupReportSchema.methods.addPickedUp = function (studentId, pickedBy) {
+StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy) {
     var defer = Q.defer();
+    // should think about edge case?
+    logger.db('StudentPickupReportSchema -- pickUpStudent');
     this.needToPickupList.pull(studentId);
     var pickedUpRecord = {
         student: studentId,
         pickedBy: pickedBy,
         pickedUpTime: new Date()
     };
-    console.log(pickedUpRecord);
     this.pickedUpList.push(pickedUpRecord);
     this.save(function (err, report) {
-            if (err) defer.reject(err);
-            else defer.resolve(report);
+        if (err) defer.reject(err);
+        else defer.resolve({ 
+            report: report,
+            record: pickedUpRecord
         });
-
-    // if (index !== -1) {
-    //     report.needToPickupList.splice(index, 1);
-    //     report.pickedUpList.addToSet(studentObjectID);
-    //     report.save(function (err, report) {
-    //         if (err) defer.reject(err);
-    //         else defer.resolve(report, studentObjectID, 0);
-    //     });
-    // } else {
-    //     defer.reject(new Error('StudentID not in need to pickup list.'));
-    // }
-    // this.pickedUpList.addToSet(studentId);
-    // this.save(defer.resolve());
-
+    });
     return defer.promise;
 }
 
-StudentPickupReportSchema.methods.removePickedUp = function (studentId, unPickedBy) {
+StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPickedBy) {
     var defer = Q.defer();
-
-    var index = report.pickedUpList.indexOf(studentObjectID)
-    if (index !== -1) {
-        report.pickedUpList.splice(index, 1);
-        report.needToPickupList.addToSet(studentObjectID);
-        report.save(function (err, report) {
-            if (err) defer.reject(err);
-            else defer.resolve(report, studentObjectID, 1);
+    logger.db('StudentPickupReportSchema -- unpickPickedUp');
+    this.pickedUpList.pull({ student: studentId });
+    this.needToPickupList.addToSet(studentId);
+    this.save(function (err, report) {
+        if (err) defer.reject(err);
+        else defer.resolve({ 
+            report: report,
+            unPickedBy: unPickedBy,
+            unPickedTime: new Date()
         });
-    } else {
-        defer.reject(new Error('StudentID not in pickuped up list.'));
-    }
-    // this.pickedUpList.pull(studentId);
-    // this.save(defer.resolve());
-
+    });
     return defer.promise;
 }
 
