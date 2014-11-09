@@ -114,7 +114,17 @@ StudentPickupReportSchema.statics.findByID = function (reportID) {
 };
 
 StudentPickupReportSchema.statics.findAllReports = function () {
-    return this.findByOptions({});
+    var defer = Q.defer();
+
+    this.find({})
+    .populate('needToPickupList')
+    .populate('absenceList')
+    .populate('pickedUpList.student pickedUpList.pickedBy')
+    .exec(function (err, reports) {
+        if (err) defer.reject(err);
+        else defer.resolve(reports);
+    });
+    return defer.promise;
 };
 
 StudentPickupReportSchema.statics.findReportForToday = function () {
@@ -126,6 +136,7 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
     })
     .populate('needToPickupList')
     .populate('absenceList')
+    .populate('pickedUpList.student pickedUpList.pickedBy')
     .exec(function (err, report) {
         if (err) defer.reject(err);
         else if (report) {

@@ -54,13 +54,17 @@
         .then(function (report) {
             if (report) {
             //TODO: this is bad need rework casting password
-                console.log(report);
                 castPassword(report);
                 logger.info("found report for 'get report for today'");
                 report.needToPickupList = __.filter(report.needToPickupList,
                     function(student) {
                         // only check value
                         return socket.session.user._id == student.studentPickupDetail.pickedBy;
+                    })
+                report.pickedUpList = __.filter(report.pickedUpList,
+                    function(data) {
+                        // only check value
+                        return socket.session.user._id == data.pickedBy._id;
                     })
                 logger.info("filtered report for the current user");
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
@@ -313,7 +317,9 @@
     });
 
     /**
-     * This event handles pickup and unpick student
+     * This event handles pickup and unpick
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
      */
     socket.on('pickup::teacher::pickup-student', function (data) {
         socketServer.validateUserSession(socket)
@@ -352,10 +358,8 @@
         .then(function (data) {
             if (data) castPassword(data);
             socket.emit('pickup::teacher::pickup-student::success', data);
-
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', data);
-
             PNServer.sendPushNotification(0,"","a", {});
         })
         .fail(function (err) {
