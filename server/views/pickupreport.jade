@@ -45,23 +45,28 @@ block main-content
                 table.table.table-bordered
                     thead
                         tr
-                            th Need To Pickup
+                            th Need To Pick
                             th Picked Up
                             th Absence
                     tbody
                         tr
                             td#need-pickup-total
-                            td#pickedup-total
+                            td#picked-total
                             td#absence-total
 
         div
-            h4(style="padding: 0.5em") Pick Up
+            h4(style="padding: 0.5em") Picked
             div.content-divider
-            div.need-pickup-table
+            div#picked-table
+
+        div
+            h4(style="padding: 0.5em") Need to Pick
+            div.content-divider
+            div#need-pickup-table
         div
             h4(style="padding: 0.5em") Absence
             div.content-divider
-            div.absence-table
+            div#absence-table
 
     span#notifications
 

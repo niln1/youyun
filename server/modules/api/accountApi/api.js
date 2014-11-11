@@ -46,7 +46,6 @@ module.exports = [{
         'required': [
             parameters.signature, 
             parameters.deviceType, 
-            parameters.deviceUUID,
             parameters.pushToken
         ],
         'optional': [],

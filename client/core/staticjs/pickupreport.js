@@ -14,13 +14,19 @@ var pickupReportApp = (function () {
     function View() {
         var self = this;
         this.currentDate = new Date();
-        this.currentReport = {};
+        this.currentReport = {
+            needToPickupList: [],
+            absenceList: [],
+            pickedUpList: []
+        };
         this.reports = [];
         this.users = [];
         this.dateArray = [];
         this.$notifications = $("#notifications");
         this.$prepickupList = $("#prepickup-list");
         this.$absenceTable = $("#absence-table");
+        this.$pickedTable = $("#picked-table");
+        this.$needPickupTable = $("#need-pickup-table");
         this.$calendar = $("#calendar");
         this.$rightReportContainer = $("#right-panel-container");
         this.$addReportModal = $("#add-report-modal");
@@ -37,9 +43,16 @@ var pickupReportApp = (function () {
      * @return {[type]} [description]
      */
     View.prototype.start = function () {
+        this._updateSelectors();
         this._initSocket();
         this._loadData();
         this.reRenderCalendar();
+    };
+
+    View.prototype._updateSelectors = function () {
+        this.$absenceTable = $("#absence-table");
+        this.$pickedTable = $("#picked-table");
+        this.$needPickupTable = $("#need-pickup-table");
     };
 
     View.prototype._loadData = function () {
@@ -49,7 +62,6 @@ var pickupReportApp = (function () {
     View.prototype._initSocket = function () {
         var self = this;
         this.socket = io.connect();
-        this.socket.emit("pickup::all::get-current-report");
         this.socket.emit("pickup::teacher::get-reports");
         this.socket.on("pickup::create::success", function onCreateSuccess(data) {
             self.notifications.show("Successfully Created", "success");
@@ -70,31 +82,11 @@ var pickupReportApp = (function () {
             self.$addReportModal.modal("hide");
         });
         this.socket.on("pickup::all::picked-up::success", function onPickUpSuccess(data) {
-            _.each(self.reports, function (report) {
-                if (report._id === data._id) {
-                    report.pickedUpList = data.pickedUpList;
-                }
-            });
-
-            if (data._id === self.currentReport._id) {
-                self.currentReport = data;
-                self.renderCurrentReport()
-            };
+            self.notifications.show("Student get picked up", "info");
+            self.socket.emit("pickup::teacher::get-reports");
         });
         this.socket.on("pickup::all::add-absence::success", function onAddAbsenceSuccess(data) {
-            _.each(self.reports, function (report) {
-                if (report._id === data._id) {
-                    // should sync all by data
-                    report.absenceList = data.absenceList;
-                    report.needToPickupList = data.needToPickupList;
-                    report.pickedupList = data.pickedupList;
-                }
-            });
-
-            if (data._id === self.currentReport._id) {
-                self.currentReport = data;
-                self.renderCurrentReport()
-            };
+            self.socket.emit("pickup::teacher::get-reports");
         });
     };
 
@@ -134,10 +126,7 @@ var pickupReportApp = (function () {
             footer: false,
             navigate: function() {
                 var view = this.view();
-                console.log(view.name); //name of the current view
-
                 var current = this.current();
-                console.log(current); //currently focused date
             },
             change: function() {
                 self.currentDate = this.value();
@@ -149,6 +138,7 @@ var pickupReportApp = (function () {
     View.prototype.displayReportByDate = function (date) {
         if ($.inArray(moment(date).format("L"), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
+            this._updateSelectors();
             this.currentReport = _.find(this.reports, function(report) {
                 return report.date ? ( moment( new Date(report.date) ).format("L") === moment(date).format("L")) : false;
             });
@@ -160,92 +150,99 @@ var pickupReportApp = (function () {
                 this.$rightReportContainer.html($("#past-no-report-template").html());
             } else {
                 this.$rightReportContainer.html($("#future-no-report-template").html());
-                this.$addReportButton = $("#add-report-button").click($.proxy(this.showCreateReportModal, this));
+                this.$addReportButton = $("#add-report-button")
+                    .click($.proxy(this.showCreateReportModal, this));
             }
         }
     };
 
     View.prototype.showCreateReportModal = function () {
-        this.$addReportModal.find(".create-report-date").html(moment(this.currentDate).format("YYYY/MM/DD"));
+        this.$addReportModal.find(".create-report-date")
+            .html(moment(this.currentDate).format("YYYY/MM/DD"));
         this.$addReportModal.modal("show");
     };
 
     View.prototype.renderCurrentReport = function () {
         var report = this.currentReport;
         $("#need-pickup-total").html(report.needToPickupList.length);
-        $("#pickedup-total").html(report.pickedUpList.length);
+        $("#picked-total").html(report.pickedUpList.length);
         $("#absence-total").html(report.absenceList.length);
+    
+        if (this.$absenceTable.data('kendoGrid')) {
+            this.$absenceTable.data('kendoGrid').refresh();
+        } else {
+            this.initAbsenceTable();    
+        }
 
-        this.renderAbsenceTableWithSelectorAndData("#right-panel-container .absence-table",
-            populateUsersHelper(report.absenceList, this.users));
+        if (this.$needPickupTable.data('kendoGrid')) {
+            this.$needPickupTable.data('kendoGrid').refresh();
+        } else {
+            this.initNeedPickupTable();    
+        }
 
-        // calculate the data and populate the pickup table
-        var needToPickupList = _.map(populateUsersHelper(report.needToPickupList, this.users), function(student) {
-            student.picked = false;
-            return student;
-        });
-        var pickedupList = _.map(populateUsersHelper(report.pickedUpList, this.users), function(student) {
-            student.picked = true;
-            return student;
-        });
-        this.currentReport.pickupData = _.sortBy(
-            _.union(needToPickupList, pickedupList), 
-            function(student){ return student.pickupLocation; });
-        this.renderReportTableWithSelectorAndData("#right-panel-container .need-pickup-table",
-            this.currentReport.pickupData);
-        
+        if (this.$pickedTable.data('kendoGrid')) {
+            this.$pickedTable.data('kendoGrid').refresh();
+        } else {
+            this.initPickedTable();    
+        }
     };
 
-    View.prototype.renderReportTableWithSelectorAndData = function (selectorString, data){
-        $(selectorString).kendoGrid({
+    View.prototype.initPickedTable = function () {
+        var self = this;
+        this.$pickedTable.kendoGrid({
             dataSource: {
-                data: data,
+                data: self.currentReport.pickedUpList,
             },
             sortable: true,
             columns: [{
-                field: "pickup",
-                title: "Pickup",
-                width: "35px",
-                template: '<div class="pickup-table-checkmark #= picked ? "ion-ios7-checkmark-outline" : "ion-ios7-circle-outline" #"></div>'
+                template: '#= student.firstname # #= student.lastname #',
+                field: 'student.firstname',
+                title: "Student",
             },{
-                field: "pickupLocation",
-                title: "Location",
-            },{
-                field: "firstname",
-                title: "First Name",
+                template: '#= pickedBy.firstname # #= pickedBy.lastname #',
+                field: 'pickedBy.firstname',
+                title: 'Picked By',
             }, {
-                field: "lastname",
-                title: "Last Name",
-            }
-            //, {
-            //     field: "pickedBy",
-            //     title: "Picked By",
-            // }, {
-            //     field: "pickedtime",
-            //     title: "Picked Time",
-            // }
-            ]
+                
+                template: '#= kendo.toString(new Date(pickedUpTime), "g") #',
+                field: "pickedUpTime",
+                title: 'Picked Time',
+            }]
         });
     };
 
-    View.prototype.renderAbsenceTableWithSelectorAndData = function (selectorString, data){
-        $(selectorString).kendoGrid({
+    View.prototype.initNeedPickupTable = function () {
+        var self = this;
+        this.$needPickupTable.kendoGrid({
             dataSource: {
-                data: data,
+                data: self.currentReport.needToPickupList,
             },
             sortable: true,
             columns: [{
                 field: "pickupLocation",
                 title: "Location",
             },{
+                template: "#= firstname # #= lastname #",
                 field: "firstname",
-                title: "First Name",
-            }, {
-                field: "lastname",
-                title: "Last Name",
-            }, {
-                field: "reporttime",
-                title: "Report Time",
+                title: "Student Name",
+            }]
+        });
+    };
+
+    View.prototype.initAbsenceTable = function () {
+        var self = this;
+        this.$absenceTable.kendoGrid({
+            dataSource: {
+                data: self.currentReport.absenceList,
+            },
+            sortable: true,
+            columns: [{
+                field: "pickupLocation",
+                title: "Location",
+            },{
+                template: "#= firstname # #= lastname #",
+                field: "firstname",
+                title: "Student Name",
             }]
         });
     };

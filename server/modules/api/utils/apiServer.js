@@ -14,33 +14,56 @@ var crypto = require('crypto');
 var logger = require('../../../utils/logger');
 var User = require('../../../models/User');
 
-/* Apple push notification */
-var apn = require('apn');
-var apnOptions = {};
-var apnConnection = new apn.Connection(apnOptions);
-
 var apiServer = {};
 
-apiServer.sendPushNotification = function (deviceType, token, message, options) {
-    if (deviceType == 0) {
-        logger.info('Pushing to an iOS device with message "' + message + '" and token "' + token + '".');
+/**
+ * General Api call Wrapper to reduce redendent code
+ * @param  {object} req needed
+ * @param  {object} res needed
+ * @param  {object} opt needed
+ */
+ apiServer.apiCallHelper = function (req, res, opt) {
 
-        var device = new apn.Device(token);
-        var note = new apn.Notification();
+    var opt = opt || {};
 
-        note.expiry = options.expiry || Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-        note.badge = options.badge || 3;
-        note.sound = options.sound || "ping.aiff";
-        note.alert = message || '';
-        note.payload = options.payload || {};
-
-        apnConnection.pushNotification(note, device);
-
-    } else if (deviceType == 1) {
-        logger.info('Pushing to an Android device with message "' + deviceType + '" and token "' + token + '".');
-    } else {
-        logger.warn('Trying to push to an unknown device with type "' + deviceType + '" and token "' + token + '".');
+    // check options
+    if (!opt.infoMessage) {
+        logger.warn("Missing infoMessage");
+        return;
+    } else if (!opt.userValidationHandler) {
+        logger.warn("Missing userValidationHandler");
+        return;
+    } else if (!opt.processHandler) {
+        logger.warn("Missing processHandler");
+        return;
+    } else if (!opt.successHandler) {
+        logger.warn("Missing successHandler");
+        return;
     }
+
+    // start helper
+    logger.info(opt.infoMessage);
+    Q.all([
+        this.validateUserSession(req, res),
+        this.validateSignature(req, res)
+        ])
+    .spread(function (user, signatureIsValid) {
+        return opt.userValidationHandler(user, signatureIsValid);
+    })
+    .then(function(hasPermission){
+        return opt.processHandler(hasPermission);
+    })
+    .then(function(data){
+        return opt.successHandler(data);
+    })
+    .fail(function(err){
+        if (opt.errorHandler) {
+            return opt.errorHandler(err);
+        } else {
+            logger.warn(err);
+            this.sendBadRequest(req, res, err.toString());
+        }
+    });
 }
 
 apiServer.invalidContentType = function(res, desc) {
@@ -93,12 +116,17 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     logger.info("API - sendResponse: " + desc);
     
     function castPassword(object) {
-        if (object.password) {
-            object.password = "Black Sheep Wall";
-        };
-        __.each(object, function(element){
-            if (__.isObject(element)) castPassword(element);
-        });
+        // lean the mongoose doc
+        if (object.toObject) object = object.toObject(); 
+        if (__.isObject(object)) {
+            if (object.password) {
+                object.password = "Black Sheep Wall";
+            };
+            __.each(object, function(element){
+                castPassword(element);
+            });
+        }
+        return;
     }
 
     if (resp) {

@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var Q = require('q');
 var Schema = mongoose.Schema;
 
+var logger = require('../utils/logger.js');
+
 var StudentPickupDetail = require('./StudentPickupDetail');
 
 var moment = require('moment-timezone');
@@ -22,8 +24,17 @@ var StudentPickupReportSchema = new Schema({
         ref: 'User'
     }],
     pickedUpList: [{
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        student: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        pickedBy: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        pickedUpTime: {
+            type: Date,
+        }
     }],
     date: {
         type: Date,
@@ -31,24 +42,41 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
-StudentPickupReportSchema.methods.addAbsence = function (studentId, defer) {
-    this.absenceList.addToSet(studentId);
-    this.save(function(err, report){
-        if (err) defer.fail(err);
-        else defer.resolve(report);
+StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy) {
+    var defer = Q.defer();
+    // should think about edge case?
+    logger.db('StudentPickupReportSchema -- pickUpStudent');
+    this.needToPickupList.pull(studentId);
+    var pickedUpRecord = {
+        student: studentId,
+        pickedBy: pickedBy,
+        pickedUpTime: new Date()
+    };
+    this.pickedUpList.push(pickedUpRecord);
+    this.save(function (err, report) {
+        if (err) defer.reject(err);
+        else defer.resolve({ 
+            report: report,
+            record: pickedUpRecord
+        });
     });
+    return defer.promise;
 }
-StudentPickupReportSchema.methods.removeAbsence = function (studentId, defer) {
-    this.absenceList.pull(studentId);
-    this.save(defer.resolve());
-}
-StudentPickupReportSchema.methods.addPickedUp = function (studentId, defer) {
-    this.pickedUpList.addToSet(studentId);
-    this.save(defer.resolve());
-}
-StudentPickupReportSchema.methods.removePickedUp = function (studentId, defer) {
-    this.pickedUpList.pull(studentId);
-    this.save(defer.resolve());
+
+StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPickedBy) {
+    var defer = Q.defer();
+    logger.db('StudentPickupReportSchema -- unpickPickedUp');
+    this.pickedUpList.pull({ student: studentId });
+    this.needToPickupList.addToSet(studentId);
+    this.save(function (err, report) {
+        if (err) defer.reject(err);
+        else defer.resolve({ 
+            report: report,
+            unPickedBy: unPickedBy,
+            unPickedTime: new Date()
+        });
+    });
+    return defer.promise;
 }
 
 StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
@@ -86,7 +114,17 @@ StudentPickupReportSchema.statics.findByID = function (reportID) {
 };
 
 StudentPickupReportSchema.statics.findAllReports = function () {
-    return this.findByOptions({});
+    var defer = Q.defer();
+
+    this.find({})
+    .populate('needToPickupList')
+    .populate('absenceList')
+    .populate('pickedUpList.student pickedUpList.pickedBy')
+    .exec(function (err, reports) {
+        if (err) defer.reject(err);
+        else defer.resolve(reports);
+    });
+    return defer.promise;
 };
 
 StudentPickupReportSchema.statics.findReportForToday = function () {
@@ -97,8 +135,8 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
         "date" : today
     })
     .populate('needToPickupList')
-    .populate('pickedUpList')
     .populate('absenceList')
+    .populate('pickedUpList.student pickedUpList.pickedBy')
     .exec(function (err, report) {
         if (err) defer.reject(err);
         else if (report) {

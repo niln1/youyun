@@ -63,7 +63,9 @@ exports.doLogin = function(req, res) {
 
     User.findOne({
         username: req.body.username
-    }, function(err, user) {
+    })
+    .populate('devices')
+    .exec(function(err, user) {
         if (err || !user) {
             logger.warn("Login Error: '用户名或者密码错误'");
             return userAuthenticationFailed(req, res, '用户名或者密码错误');

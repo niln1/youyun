@@ -129,12 +129,6 @@ exports.deviceType = {
     'description': 'Mobile device type'
 }
 
-exports.deviceUUID = {
-    'type': 'string',
-    'param': 'uuid',
-    'description': 'Mobile device unique identifier'
-}
-
 exports.pushToken = {
     'type': 'string',
     'param': 'token',

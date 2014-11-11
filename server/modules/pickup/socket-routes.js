@@ -17,8 +17,10 @@
  var __ = require('underscore');
  var Q = require('q');
  var socketServer = require('../../utils/socketServer');
+ var PNServer = require('../../utils/pushNotificationServer');
 
  exports.route = function (socket) {
+    // for web
     socket.on('pickup::teacher::get-reports', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -30,7 +32,7 @@
         })
         .then(function (reports) {
             if (reports) castPassword(reports);
-            logger.info("Found", reports);
+            logger.info("updating reports: ", reports);
             socket.emit('pickup::teacher:update-reports', reports);
         })
         .fail(function (err) {
@@ -39,6 +41,7 @@
         });
     });
 
+    // for app
     socket.on('pickup::teacher::get-report-for-today', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -58,8 +61,12 @@
                         // only check value
                         return socket.session.user._id == student.studentPickupDetail.pickedBy;
                     })
+                report.pickedUpList = __.filter(report.pickedUpList,
+                    function(data) {
+                        // only check value
+                        return socket.session.user._id == data.pickedBy._id;
+                    })
                 logger.info("filtered report for the current user");
-                console.log(report);    
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
             } else {
                 throw new Error("No report for today");;
@@ -145,7 +152,9 @@
         }).then(function () {
             // check if there is one report with same date.
             var defer = Q.defer();
-            StudentPickupReport.find({date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")}).exec(function(err, reports){
+            StudentPickupReport.find({
+                date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
+            }).exec(function(err, reports){
                 if (err) defer.reject(err);
                 else if (reports.length === 0) defer.resolve();
                 else defer.reject(new Error("Report Already Exists"));
@@ -307,6 +316,11 @@
         })
     });
 
+    /**
+     * This event handles pickup and unpick
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
     socket.on('pickup::teacher::pickup-student', function (data) {
         socketServer.validateUserSession(socket)
         .then(function (user) {
@@ -335,43 +349,18 @@
             }
         })
         .spread(function (user, report, studentID, pickedUp) {
-            var defer = Q.defer();
-            // TODO: need refactor
-            var studentObjectID = mongoose.Types.ObjectId(studentID.toString());
-
             if (pickedUp) {
-                var index = report.needToPickupList.indexOf(studentObjectID);
-                if (index !== -1) {
-                    report.needToPickupList.splice(index, 1);
-                    report.pickedUpList.push(studentObjectID);
-                    report.save(function (err, report) {
-                        if (err) defer.reject(err);
-                        else defer.resolve(report);
-                    });
-                } else {
-                    defer.reject(new Error('StudentID not in need to pickup list.'));
-                }
+                return report.pickUpStudent(studentID, user._id);
             } else {
-                var index = report.pickedUpList.indexOf(studentObjectID)
-                if (index !== -1) {
-                    report.pickedUpList.splice(index, 1);
-                    report.needToPickupList.push(studentObjectID);
-                    report.save(function (err, report) {
-                        if (err) defer.reject(err);
-                        else defer.resolve(report);
-                    });
-                } else {
-                    defer.reject(new Error('StudentID not in pickuped up list.'));
-                }
+                return report.unpickPickedUp(studentID, user._id);
             }
-
-            return defer.promise;
         })
-        .then(function (report) {
-            if (report) castPassword(report);
-            socket.emit('pickup::teacher::pickup-student::success', report);
+        .then(function (data) {
+            if (data) castPassword(data);
+            socket.emit('pickup::teacher::pickup-student::success', data);
             // broadcast this event
-            socket.broadcast.emit('pickup::all::picked-up::success', report);
+            socket.broadcast.emit('pickup::all::picked-up::success', data);
+            PNServer.sendPushNotification(0,"","a", {});
         })
         .fail(function (err) {
             logger.warn(err.toString());
@@ -381,10 +370,15 @@
 }
 
 function castPassword(object) {
-    if (object.password) {
-        object.password = "Black Sheep Wall";
-    };
-    __.each(object, function(element){
-        if (__.isObject(element)) castPassword(element);
-    });
+    // lean the mongoose document
+    if (object.toObject) object = object.toObject(); 
+    if (__.isObject(object)) {
+        if (object.password) {
+            object.password = "Black Sheep Wall";
+        };
+        __.each(object, function(element){
+            castPassword(element);
+        });
+    }
+    return;
 }
