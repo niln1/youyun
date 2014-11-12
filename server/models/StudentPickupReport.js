@@ -7,9 +7,9 @@
 var mongoose = require('mongoose');
 var Q = require('q');
 var Schema = mongoose.Schema;
+var __ = require('underscore');
 
 var logger = require('../utils/logger.js');
-
 var StudentPickupDetail = require('./StudentPickupDetail');
 
 var moment = require('moment-timezone');
@@ -66,8 +66,14 @@ StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy)
 StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPickedBy) {
     var defer = Q.defer();
     logger.db('StudentPickupReportSchema -- unpickPickedUp');
-    this.pickedUpList.pull({ student: studentId });
+    // bypass mongoose weirdness
+    this.pickedUpList = __.reject(this.pickedUpList, 
+        function(report){ 
+            // using == to bypass type
+            return report.student  == studentId; 
+        });
     this.needToPickupList.addToSet(studentId);
+    console.log(this);
     this.save(function (err, report) {
         if (err) defer.reject(err);
         else defer.resolve({ 
