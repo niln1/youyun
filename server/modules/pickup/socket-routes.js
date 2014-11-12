@@ -357,6 +357,7 @@
         })
         .then(function (data) {
             if (data) castPassword(data);
+            console.log(data);
             socket.emit('pickup::teacher::pickup-student::success', data);
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', data);
