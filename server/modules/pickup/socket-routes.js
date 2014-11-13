@@ -3,22 +3,22 @@
  * TODO: need to make things more clean before every emit...
  */
 
- "use strict";
+"use strict";
 
- var User = require('../../models/User');
- var StudentPickupReport = require('../../models/StudentPickupReport');
- var StudentParent = require('../../models/StudentParent');
- var StudentPickupDetail = require('../../models/StudentPickupDetail');
- var mongoose = require('mongoose');
+var User = require('../../models/User');
+var StudentPickupReport = require('../../models/StudentPickupReport');
+var StudentParent = require('../../models/StudentParent');
+var StudentPickupDetail = require('../../models/StudentPickupDetail');
+var mongoose = require('mongoose');
 
- var moment = require('moment-timezone');
+var moment = require('moment-timezone');
 
- var __ = require('underscore');
- var Q = require('q');
- var socketServer = require('../../utils/socketServer');
- var PNServer = require('../../utils/pushNotificationServer');
+var __ = require('underscore');
+var Q = require('q');
+var socketServer = require('../../utils/socketServer');
+var PNServer = require('../../utils/pushNotificationServer');
 
- exports.route = function (socket) {
+exports.route = function (socket) {
     // for web
     socket.on('pickup::teacher::get-reports', function (data) {
         socketServer.validateUserSession(socket)
@@ -52,19 +52,19 @@
         })
         .then(function (report) {
             if (report) {
-            //TODO: this is bad need rework casting password
+                //TODO: this is bad need rework casting password
                 castPassword(report);
                 logger.info("found report for 'get report for today'");
                 report.needToPickupList = __.filter(report.needToPickupList,
                     function(student) {
                         // only check value
                         return socket.session.user._id == student.studentPickupDetail.pickedBy;
-                    })
+                    });
                 report.pickedUpList = __.filter(report.pickedUpList,
                     function(data) {
                         // only check value
                         return socket.session.user._id == data.pickedBy._id;
-                    })
+                    });
                 logger.info("filtered report for the current user");
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
             } else {
