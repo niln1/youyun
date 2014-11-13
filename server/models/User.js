@@ -5,11 +5,13 @@
 'use strict';
 
 var StudentParent = require('./StudentParent');
+var Device = require('./Device');
 var mongoose = require('mongoose');
-var postFind = require('mongoose-post-find')
+var Q = require('q');
 
 var Schema = mongoose.Schema;
 
+var logger = require('../utils/logger.js');
 var __ = require('underscore');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
@@ -24,11 +26,11 @@ var UserSchema = new Schema({
     },
     lastname: {
         type: String,
-        required: true,
+        required: true
     },
     firstname: {
         type: String,
-        required: true,
+        required: true
     },
     password: {
         type: String,
@@ -117,7 +119,7 @@ UserSchema.methods.hasChild = function (childId, defer) {
     if (this.userType === 4) {
         StudentParent.find({parent: this._id},
             function (err, data) {
-                if (err) throw err;
+                if (err) defer.reject(err);
                 var studentIds = __.pluck(data, "student");
                 var isMyChild = __.reduce(studentIds, function(memo, id){ 
                     if (id.equals(childId)) return memo + 1;
@@ -131,6 +133,42 @@ UserSchema.methods.hasChild = function (childId, defer) {
         defer.reject(new Error("U cannot have child if not parent"));
     }
 };
+
+UserSchema.methods.getParents = function () {
+    var defer = Q.defer();
+
+    logger.db('UserSchema -- getParents');
+    if (this.userType === 3) {
+        StudentParent.find({student: this._id})
+        .populate('parent')
+        .exec(function (err, data) {
+            if (err) defer.reject(err);
+            Device.populate(data, { 
+                path : 'parent.devices',
+                model: 'Device'
+            }, function(err, things){
+                var parents = __.pluck(data, "parent");
+                defer.resolve(parents);
+            });
+        });
+    } else {
+        defer.reject(new Error("U cannot have parent if not student"));
+    }
+
+    return defer.promise;
+};
+
+UserSchema.methods.addDevice = function (device) {
+    var defer = Q.defer();
+
+    logger.db('UserSchema -- addDevice');
+    this.devices.addToSet(device._id);
+    this.save(function (err, user) {
+        if (err) defer.reject(err);
+        else defer.resolve(user);
+    });
+    return defer.promise;
+}
 
 UserSchema.statics.findByOptions = function (options, cb) {
     var query = {};

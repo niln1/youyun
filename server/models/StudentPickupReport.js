@@ -9,8 +9,8 @@ var Q = require('q');
 var Schema = mongoose.Schema;
 var __ = require('underscore');
 
-var logger = require('../utils/logger.js');
 var StudentPickupDetail = require('./StudentPickupDetail');
+var User = require('./User');
 
 var moment = require('moment-timezone');
 
@@ -55,10 +55,18 @@ StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy)
     this.pickedUpList.push(pickedUpRecord);
     this.save(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve({ 
-            report: report,
-            record: pickedUpRecord
-        });
+        else {
+            User.findById(studentId)
+            .exec(function(err, student) {
+                if (err) defer.reject(err);
+                defer.resolve({ 
+                    student: student,
+                    picked: true,
+                    report: report,
+                    record: pickedUpRecord
+                });
+            });
+        }
     });
     return defer.promise;
 }
@@ -73,14 +81,21 @@ StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPicked
             return report.student  == studentId; 
         });
     this.needToPickupList.addToSet(studentId);
-    console.log(this);
     this.save(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve({ 
-            report: report,
-            unPickedBy: unPickedBy,
-            unPickedTime: new Date()
-        });
+        else {
+            User.findById(studentId)
+            .exec(function(err, student) {
+                if (err) defer.reject(err);
+                defer.resolve({
+                    student: student,
+                    picked: false, 
+                    report: report,
+                    unPickedBy: unPickedBy,
+                    unPickedTime: new Date()
+                });
+            });
+        }
     });
     return defer.promise;
 }
@@ -153,15 +168,7 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
                 model: 'StudentPickupDetail'
             }, function(err, things){
                 if ( err ) throw new err;
-
-                StudentPickupDetail
-                .populate(report.pickedUpList, { 
-                    path : 'studentPickupDetail',
-                    model: 'StudentPickupDetail'
-                }, function(err, things){
-                    if ( err ) throw new err;
-                    defer.resolve(report);
-                });
+                defer.resolve(report);
             });
         } else {
             defer.reject(new Error('No report For today'));
