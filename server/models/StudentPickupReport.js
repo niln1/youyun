@@ -56,6 +56,8 @@ StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy)
     this.save(function (err, report) {
         if (err) defer.reject(err);
         else defer.resolve({ 
+            student: studentId,
+            picked: true,
             report: report,
             record: pickedUpRecord
         });
@@ -73,10 +75,11 @@ StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPicked
             return report.student  == studentId; 
         });
     this.needToPickupList.addToSet(studentId);
-    console.log(this);
     this.save(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve({ 
+        else defer.resolve({
+            student: studentId,
+            picked: false, 
             report: report,
             unPickedBy: unPickedBy,
             unPickedTime: new Date()
@@ -153,15 +156,7 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
                 model: 'StudentPickupDetail'
             }, function(err, things){
                 if ( err ) throw new err;
-
-                StudentPickupDetail
-                .populate(report.pickedUpList, { 
-                    path : 'studentPickupDetail',
-                    model: 'StudentPickupDetail'
-                }, function(err, things){
-                    if ( err ) throw new err;
-                    defer.resolve(report);
-                });
+                defer.resolve(report);
             });
         } else {
             defer.reject(new Error('No report For today'));

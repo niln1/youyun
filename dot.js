@@ -19,12 +19,13 @@ module.exports.app = app = express();
 nconf.argv().env().file('./server/utils/config.json');
 
 // Local modules and variables
+// setup global variables
+require('./server/utils/globalVariables');
 var routes = require('./server/routes');
 var socketRoutes = require('./server/socket-routes');
 var auth = require('./server/middlewares/auth');
 var session = require('./server/middlewares/session');
 var helper = require('./server/middlewares/helper');
-var logger = require('./server/utils/logger');
 
 /*
  * Setup environment

@@ -63,15 +63,10 @@ exports.addUserDevice = function (req, res) {
         })
         return defer.promise;
     }).spread(function (user, device) {
-        var defer = Q.defer();
-        user.devices.addToSet(device._id);
-        user.save(function (err, user) {
-            if (err) defer.reject(err);
-            else defer.resolve(device);
-        });
-        return defer.promise;
-    }).then(function (device) {
-        apiServer.sendResponse(req, res, device, 'Device successfully added/updated')
+        return user.addDevice(device);
+    }).then(function (user) {
+        logger.info('Device updated' + JSON.stringify(user));
+        apiServer.sendResponse(req, res, user, 'Device successfully added/updated')
     }).fail(function (err) {
         logger.warn(err);
         apiServer.sendBadRequest(req, res, err.toString());

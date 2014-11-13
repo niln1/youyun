@@ -13,7 +13,6 @@
 
  var moment = require('moment-timezone');
 
- var logger = require('../../utils/logger');
  var __ = require('underscore');
  var Q = require('q');
  var socketServer = require('../../utils/socketServer');
@@ -357,11 +356,14 @@
         })
         .then(function (data) {
             if (data) castPassword(data);
-            console.log(data);
             socket.emit('pickup::teacher::pickup-student::success', data);
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', data);
-            PNServer.sendPushNotification(0,"","a", {});
+
+            var message;
+            if (data.picked) message = 'Your Child ' + ' is picked by ' + ' at ' + '';
+            else message = 'Your Child ' + ' is not picked by ' + ' yet, the info before is clicked by mistake, Sorry for that ;)' + '';
+            PNServer.notifyParent(data.student, message);
         })
         .fail(function (err) {
             logger.warn(err.toString());
