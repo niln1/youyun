@@ -9,8 +9,8 @@ var Q = require('q');
 var Schema = mongoose.Schema;
 var __ = require('underscore');
 
-var logger = require('../utils/logger.js');
 var StudentPickupDetail = require('./StudentPickupDetail');
+var User = require('./User');
 
 var moment = require('moment-timezone');
 
@@ -55,12 +55,18 @@ StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy)
     this.pickedUpList.push(pickedUpRecord);
     this.save(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve({ 
-            student: studentId,
-            picked: true,
-            report: report,
-            record: pickedUpRecord
-        });
+        else {
+            User.findById(studentId)
+            .exec(function(err, student) {
+                if (err) defer.reject(err);
+                defer.resolve({ 
+                    student: student,
+                    picked: true,
+                    report: report,
+                    record: pickedUpRecord
+                });
+            });
+        }
     });
     return defer.promise;
 }
@@ -77,13 +83,19 @@ StudentPickupReportSchema.methods.unpickPickedUp = function (studentId, unPicked
     this.needToPickupList.addToSet(studentId);
     this.save(function (err, report) {
         if (err) defer.reject(err);
-        else defer.resolve({
-            student: studentId,
-            picked: false, 
-            report: report,
-            unPickedBy: unPickedBy,
-            unPickedTime: new Date()
-        });
+        else {
+            User.findById(studentId)
+            .exec(function(err, student) {
+                if (err) defer.reject(err);
+                defer.resolve({
+                    student: student,
+                    picked: false, 
+                    report: report,
+                    unPickedBy: unPickedBy,
+                    unPickedTime: new Date()
+                });
+            });
+        }
     });
     return defer.promise;
 }

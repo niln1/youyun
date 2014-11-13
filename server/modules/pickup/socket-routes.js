@@ -361,8 +361,18 @@ exports.route = function (socket) {
             socket.broadcast.emit('pickup::all::picked-up::success', data);
 
             var message;
-            if (data.picked) message = 'Your Child ' + ' is picked by ' + ' at ' + '';
-            else message = 'Your Child ' + ' is not picked by ' + ' yet, the info before is clicked by mistake, Sorry for that ;)' + '';
+            var studentName = data.student.firstname + ' ' + data.student.lastname;
+            var teacherName = socket.session.user.firstname + ' ' + socket.session.user.lastname;
+            if (data.picked) {
+                var time = moment(data.record.pickedUpTime).format('LT');
+                message = 'Your Child ' + studentName +
+                    ' is picked by ' + teacherName + ' at ' + time + '.';
+            } else {
+                // unPickedTime
+                message = 'Your Child ' + studentName +
+                    ' is not picked by ' + teacherName +
+                    ' yet, the info before is clicked by mistake, Sorry for that ;)' + '';
+            }   
             PNServer.notifyParent(data.student, message);
         })
         .fail(function (err) {
