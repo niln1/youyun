@@ -34,7 +34,8 @@ var UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        get: passwordGetter
     },
     userImage: {
         type: String,
@@ -73,6 +74,10 @@ var UserSchema = new Schema({
     // need a json to store enterdate and graduate date
 });
 
+function passwordGetter() {
+    return 'Black Sheep Wall';
+};
+
 UserSchema.pre('save', function (next) {
     var user = this;
 
@@ -102,7 +107,9 @@ UserSchema.pre('save', function (next) {
  * Compare if the candidate password hash is the same as the one in collection
  */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    console.log(this.password);
+    console.log(this.toObject());
+    bcrypt.compare(candidatePassword, this.toObject().password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });

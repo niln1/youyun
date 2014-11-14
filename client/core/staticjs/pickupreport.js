@@ -22,16 +22,23 @@ var pickupReportApp = (function () {
         this.reports = [];
         this.users = [];
         this.dateArray = [];
-        this.$notifications = $("#notifications");
-        this.$prepickupList = $("#prepickup-list");
-        this.$absenceTable = $("#absence-table");
-        this.$pickedTable = $("#picked-table");
-        this.$needPickupTable = $("#need-pickup-table");
-        this.$calendar = $("#calendar");
-        this.$rightReportContainer = $("#right-panel-container");
-        this.$addReportModal = $("#add-report-modal");
-        this.$addReportFooter = this.$addReportModal.find(".modal-footer").click($.proxy(this.addReportHandler, this));
-        this.notifications = this.$notifications.kendoNotification({width: 300}).data("kendoNotification");
+        this.$notifications = $('#notifications');
+        this.$reportSubInfo = $('#report-sub-info');
+        this.$statusPill = $('#status-pill');
+        this.$prepickupList = $('#prepickup-list');
+        this.$absenceTable = $('#absence-table');
+        this.$pickedTable = $('#picked-table');
+        this.$needPickupTable = $('#need-pickup-table');
+        this.$calendar = $('#calendar');
+        this.$rightReportContainer = $('#right-panel-container');
+        this.$addReportModal = $('#add-report-modal');
+        this.$addReportFooter = this.$addReportModal.find('.modal-footer').click($.proxy(this.addReportHandler, this));
+        this.notifications = this.$notifications.kendoNotification({
+            width: 300,
+            autoHideAfter: 2500,
+            button: true
+        }).data('kendoNotification');
+
     }
 
     function populateUsersHelper (userIds, users) {
@@ -59,14 +66,48 @@ var pickupReportApp = (function () {
         this._getUserList();
     };
 
+    /**
+     * _updateSocketStatus
+     * [description]: update the status pill info
+     * status[string]: success, error, info
+     * message[string]
+     */
+    View.prototype._updateSocketStatus = function (status, message) {
+        this.$statusPill.attr('yy-status', status);
+        this.$statusPill.find('.socket-status').text(message);
+    };
+
     View.prototype._initSocket = function () {
         var self = this;
-        this.socket = io.connect();
-        this.socket.emit("pickup::teacher::get-reports");
-        this.socket.on("pickup::create::success", function onCreateSuccess(data) {
-            self.notifications.show("Successfully Created", "success");
-            self.$addReportModal.modal("hide");
-            self.socket.emit("pickup::teacher::get-reports");
+        var reconnectCounter = 0;
+        this.socket = io.connect('/', {});
+
+        this.socket.on('connect', function () {
+            reconnectCounter = 0;
+            self._updateSocketStatus('success', 'Connected')
+            self.notifications.show('Connected to Server', 'success');
+            self.socket.emit('pickup::teacher::get-reports');
+        });
+
+        this.socket.on('reconnect_failed', function () {
+            self._updateSocketStatus('error', 'Reconnect Failed');
+        });
+
+        this.socket.on('reconnecting', function () {
+            reconnectCounter += 1;
+            self._updateSocketStatus('info', 'Reconnecting')
+            self.notifications.show('Attempting to reconnect #' + reconnectCounter, 'info');
+        });
+
+        this.socket.on('disconnect', function onDisconnect() {
+            self._updateSocketStatus('error', 'Disconnected')
+            self.notifications.show('Lost Connection to Server', 'error');
+        });
+
+        this.socket.on('pickup::create::success', function onCreateSuccess(data) {
+            self.notifications.show('Successfully Created', 'success');
+            self.$addReportModal.modal('hide');
+            self.socket.emit('pickup::teacher::get-reports');
         });
         this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             self.reports = data;
@@ -86,6 +127,7 @@ var pickupReportApp = (function () {
             self.socket.emit("pickup::teacher::get-reports");
         });
         this.socket.on("pickup::all::add-absence::success", function onAddAbsenceSuccess(data) {
+            //self.notifications.show("...", "info");
             self.socket.emit("pickup::teacher::get-reports");
         });
     };
@@ -136,6 +178,7 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.displayReportByDate = function (date) {
+        this.$reportSubInfo.text('Date:' + moment(date).format("L"));
         if ($.inArray(moment(date).format("L"), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
             this._updateSelectors();

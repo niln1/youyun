@@ -18,9 +18,9 @@
 
 .reminder-item
 	background-color: #ffffff
-	border-bottom: 1px dotted $school-very-light-color
-	border-left: 1px solid $school-very-light-color
-	border-right: 1px solid $school-very-light-color
+	border-bottom: 1px dotted $school-light-color
+	border-left: 1px solid $school-light-color
+	border-right: 1px solid $school-light-color
 	background-clip: padding-box
 
 .reminder .toggle
@@ -39,12 +39,12 @@ li .toggle:after
 	content: '✔'
 	line-height: 40px
 	font-size: 18px
-	color: #d9d9d9
-	text-shadow: 0 -1px 0 #bfbfbf
+	color: $bg-color
+	text-shadow: 0 -1px 0 $bg-color
 
 li .toggle:checked:after
-	color: #85ada7
-	text-shadow: 0 1px 0 #669991
+	color: $inverse-light-color
+	text-shadow: 0 1px 0 $inverse-light-color
 	bottom: 1px
 	position: relative
 
@@ -61,7 +61,7 @@ li .destroy:after
 	height: 40px
 	margin: auto 0
 	font-size: 22px
-	color: #a88a8a
+	color: $error-color
 	+transition-property(all)
 	+transition-duration(0.2s)
 

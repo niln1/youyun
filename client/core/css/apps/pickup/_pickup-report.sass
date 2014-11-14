@@ -1,11 +1,35 @@
 .report-info-center
-	margin: auto
-	text-align: center
-	padding: 20px
-	button
-		margin-top: 15px
+    margin: auto
+    text-align: center
+    padding: 20px
+    button
+        margin-top: 15px
 
-.pickup-table-checkmark
-	font-size: 20px
-	color: #115e35
+header.content-header
+    span#report-sub-info
+        font-size: 14px
+        line-height: 17px
+        vertical-align: bottom
+        padding-left: 10px
+        color: $school-light-color
+    span#status-pill
+        font-size: 14px
+        line-height: 17px
+        vertical-align: middle
+        padding: 3px 5px
+        border-radius: 3px
+        background-color: transparent
+        color: transparent
+        +transition(0.25s)
 
+        &[yy-status~="success"]
+            background-color: $success-light-color
+            color: $success-color
+
+        &[yy-status~="error"]
+            background-color: $error-light-color
+            color: $error-color
+
+        &[yy-status~="info"]
+            background-color: $info-light-color
+            color: $info-color
