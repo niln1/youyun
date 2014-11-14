@@ -6,13 +6,13 @@
         margin-top: 15px
 
 header.content-header
-    span.report-date
+    span#report-sub-info
         font-size: 14px
         line-height: 17px
-        vertical-align: middle
+        vertical-align: bottom
         padding-left: 10px
         color: $school-light-color
-    span.status-pill
+    span#status-pill
         font-size: 14px
         line-height: 17px
         vertical-align: middle
@@ -22,14 +22,14 @@ header.content-header
         color: transparent
         +transition(0.25s)
 
-        &.success
+        &[yy-status~="success"]
             background-color: $success-light-color
             color: $success-color
 
-        &.error
+        &[yy-status~="error"]
             background-color: $error-light-color
             color: $error-color
 
-        &.info
+        &[yy-status~="info"]
             background-color: $info-light-color
             color: $info-color
