@@ -61,8 +61,20 @@ var pickupReportApp = (function () {
 
     View.prototype._initSocket = function () {
         var self = this;
-        this.socket = io.connect();
-        this.socket.emit("pickup::teacher::get-reports");
+        var reconnectCounter = 0;
+        this.socket = io.connect('/', {});
+        this.socket.on('connect', function () {
+            reconnectCounter = 0;
+            self.notifications.show("Connected to Server", "success");
+            self.socket.emit('pickup::teacher::get-reports');
+        });
+        this.socket.on('reconnecting', function () {
+            reconnectCounter += 1;
+            self.notifications.show("Attempting to reconnect #" + reconnectCounter, "info");
+        });
+        this.socket.on('disconnect', function onDisconnect() {
+            self.notifications.show("Lost Connection to Server", "error");
+        });
         this.socket.on("pickup::create::success", function onCreateSuccess(data) {
             self.notifications.show("Successfully Created", "success");
             self.$addReportModal.modal("hide");

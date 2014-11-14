@@ -5,19 +5,21 @@ block head-extra
 block main-content
     div#main-region.container-fluid
         div#main.page-board
-            div#left-panel-region.col-sm-5
-                div.pageboard-shadow(style="background:white;")
-                    div.content-header
+            section#left-panel-region.col-sm-5
+                div.pageboard-shadow
+                    header.content-header
                         div.header-inner
                             h2.text-left Calender
                     div.content-divider
                     div.calendar-container
                         div#calendar
-            div#right-panel-region.col-sm-7
-                div.pageboard-shadow(style="background:white;")
-                    div.content-header
+            section#right-panel-region.col-sm-7
+                div.pageboard-shadow
+                    header.content-header
                         div.header-inner
                             h2.text-left Pickup Report
+                                span.report-date -- 2013/12/12
+                                span.text-right.status-pill status: connected
                     div.content-divider
                     div#right-panel-container(style="padding:10px;")
 
