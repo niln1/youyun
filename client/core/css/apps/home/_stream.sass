@@ -11,7 +11,7 @@ $feed-center-background: #ffffff
 .feed-center-control-box
 	height: 30px
 	background-color: $feed-center-background
-	border-bottom: 1px solid #e1e8ed
+	border-bottom: 1px solid $bg-color
 
 .stream, .stream-items
 	position: relative
@@ -27,22 +27,22 @@ $feed-center-background: #ffffff
 	margin-left: -58px
 
 .message
-	border-bottom: 1px solid #e1e8ed
+	border-bottom: 1px solid $bg-color
 	position: relative
 	min-height: 72px
 	padding: 9px 12px
 
 .stream-item
 	background-color: $feed-center-background
-	border-left: 1px solid $school-very-light-color
-	border-right: 1px solid $school-very-light-color
+	border-left: 1px solid $school-light-color
+	border-right: 1px solid $school-light-color
 	background-clip: padding-box
 
 .message .time
 	position: relative
 	float: right
 	margin-top: 1px
-	color: #bbb
+	color: $bg-color
 
 h2#content-main-heading
 	position: relative
@@ -54,7 +54,7 @@ h2#content-time-heading
 
 .time a
 	font-size: 13px
-	color: #8899a6
+	color: $inverse-light-color
 
 .message
 	white-space: pre-wrap
