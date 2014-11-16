@@ -73,24 +73,29 @@ var pickupReportApp = (function () {
      * message[string]
      */
     View.prototype._updateSocketStatus = function (status, message) {
+        var self = this;
         this.$statusPill.attr('yy-status', status);
-        this.$statusPill.find('.socket-status').text(message);
+        this.$statusPill.find('.info').text(message);
+        this.$statusPill.find('.hover-info').text(message);
     };
 
     View.prototype._initSocket = function () {
         var self = this;
         var reconnectCounter = 0;
+        var loaded = false;
         this.socket = io.connect('/', {});
 
         this.socket.on('connect', function () {
             reconnectCounter = 0;
-            self._updateSocketStatus('success', 'Connected')
+            self._updateSocketStatus('success', 'Connected');
             self.notifications.show('Connected to Server', 'success');
             self.socket.emit('pickup::teacher::get-reports');
-        });
-
-        this.socket.on('reconnect_failed', function () {
-            self._updateSocketStatus('error', 'Reconnect Failed');
+            // resend the message to try fallback race condition
+            setTimeout(function() {
+                if (loaded === false) {
+                    self.socket.emit('pickup::teacher::get-reports');
+                };
+            }, 5000);
         });
 
         this.socket.on('reconnecting', function () {
@@ -110,6 +115,7 @@ var pickupReportApp = (function () {
             self.socket.emit('pickup::teacher::get-reports');
         });
         this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
+            loaded = true;
             self.reports = data;
             self.notifications.show("Updating report", "info");
             self.reRenderCalendar();
@@ -178,7 +184,7 @@ var pickupReportApp = (function () {
     };
 
     View.prototype.displayReportByDate = function (date) {
-        this.$reportSubInfo.text('Date:' + moment(date).format("L"));
+        this.$statusPill.find('.info').text(moment(date).format("L"));
         if ($.inArray(moment(date).format("L"), this.dateArray)!=-1) {
             this.$rightReportContainer.html($("#report-template").html());
             this._updateSelectors();
