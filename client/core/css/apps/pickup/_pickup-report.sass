@@ -6,35 +6,44 @@
         margin-top: 15px
 
 header.content-header
-    span#report-sub-info
-        font-size: 14px
-        line-height: 17px
-        vertical-align: middle
-        margin-left: 10px
-        color: $school-light-color
-        border: 1px solid $school-light-color
-        border-radius: 3px
-        padding: 3px 5px
-        +transition(1.5s)
-
     span#status-pill
+        text-align: center
         font-size: 14px
         line-height: 17px
         vertical-align: middle
-        padding: 3px 5px
+        padding: 4px 8px
         border-radius: 3px
+        min-width: 86px
         background-color: transparent
         color: transparent
-        +transition(0.25s)
+        font-weight: normal // normal
+
+        .info
+            +transition(0.5s)
+            display: block
+
+        .hover-info
+            +transition(0.5s)
+            font-weight: 500
+            display: none
+
+        &:hover
+            .info
+                display: none
+            .hover-info
+                display: block
 
         &[yy-status~="success"]
+            +transition(0.5s)
             background-color: $success-light-color
             color: $success-color
 
         &[yy-status~="error"]
+            +transition(0.5s)
             background-color: $error-light-color
             color: $error-color
 
         &[yy-status~="info"]
+            +transition(0.5s)
             background-color: $info-light-color
             color: $info-color
