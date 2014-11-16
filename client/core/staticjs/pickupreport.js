@@ -88,7 +88,7 @@ var pickupReportApp = (function () {
             self._updateSocketStatus('success', 'Connected')
             self.notifications.show('Connected to Server', 'success');
             self.socket.emit('pickup::teacher::get-reports');
-            // resend the message to try bypass race condition
+            // resend the message to try fallback race condition
             setTimeout(function() {
                 if (loaded === false) {
                     self.socket.emit('pickup::teacher::get-reports');
