@@ -19,6 +19,11 @@ var feedSchema = new Schema({
     imagePath: {
         type: String,
     },
+    isRead: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     timeStamp: {
         type: Date,
         required: true
@@ -43,15 +48,5 @@ feedSchema.methods.findByUser = function (userId, isRead) {
 
     return defer.promise;
 };
-
-/**
- * Add Feed with option // no defer
- */
-feedSchema.statics.addFeed = function (option) {
-    var option = option || {};
-    option.timeStamp = new Date();
-
-
-}
 
 module.exports = mongoose.model('Feed', feedSchema);

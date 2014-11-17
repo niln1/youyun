@@ -41,7 +41,7 @@ pushNotificationServer.notifyParent = function (studentId, message) {
                         if (err) {
                             subDefer.reject(err);
                         } else {
-                            logger.db('feed ' + feed._id + ' saved.');
+                            logger.db('Feed ' + feed._id + ' created and saved.');
                             subDefer.resolve(feed);
                         }
                     });
