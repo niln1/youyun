@@ -4,6 +4,7 @@ var __ = require('underscore');
 var logger = require('./logger');
 
 var User = require('../models/User');
+var Feed = require('../models/Feed');
 
 /* Apple push notification */
 var apn = require('apn');
@@ -26,12 +27,33 @@ pushNotificationServer.notifyParent = function (studentId, message) {
         if (student) {
             student.getParents()
             .then(function(parents){
-                __.each(parents, function(parent){
+                return Q.all(__.map(parents, function(parent){
+                    var subDefer = Q.defer();
                     __.each(parent.devices, function(device){
                         pushNotificationServer.sendPushNotification(device.deviceType, device.token, message);
                     });
+                    var newFeed = new Feed({ 
+                        message: message, 
+                        user: parent._id, 
+                        timeStamp: new Date()
+                    });
+                    newFeed.save(function(err, feed) {
+                        if (err) {
+                            subDefer.reject(err);
+                        } else {
+                            logger.db('feed ' + feed._id + ' saved.');
+                            subDefer.resolve(feed);
+                        }
+                    });
+                    return subDefer.promise;
+                }))
+                .then(function() {
+                    logger.info('notify parent done')
+                    defer.resolve();
+                })
+                .fail(function(err) {
+                    defer.reject(err);
                 });
-                defer.resolve();
             });
         } else {
             defer.reject(new Error("Student Not Found"));

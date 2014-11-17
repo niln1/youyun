@@ -184,3 +184,9 @@ exports.sundayPickupTime = {
     'param': 'sundayPickupTime',
     'description': 'sundayPickupTime'
 }
+
+exports.isRead = {
+    'type': 'boolean',
+    'param': 'isRead',
+    'description': 'read boolean'
+}

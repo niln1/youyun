@@ -178,6 +178,7 @@ StudentPickupReportSchema.statics.findReportForToday = function () {
     return defer.promise;
 };
 
+// need rework
 StudentPickupReportSchema.statics.findReportsByUsers = function (users) {
     return this.findByOptions({
         $or : [
