@@ -4,6 +4,8 @@
 
 'use strict';
 
+var Q = require('q');
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -35,7 +37,7 @@ var feedSchema = new Schema({
  * @param  {ObjectId}  userId
  * @param  {Boolean} isRead
  */
-feedSchema.methods.findByUser = function (userId, isRead) {
+feedSchema.statics.findByUser = function (userId, isRead) {
     var defer = Q.defer();
     logger.db('feedSchema -- findByUser');
 

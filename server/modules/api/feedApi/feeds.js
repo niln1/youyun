@@ -4,6 +4,7 @@
 'use strict';
 
 var User = require('../../../models/User');
+var Feed = require('../../../models/Feed');
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 
@@ -21,9 +22,7 @@ exports.read = function (req, res) {
             }
         },
         processHandler: function() {
-            var defer = Q.defer();
-
-            return defer.promise;
+            return Feed.findByUser();
         },
         successHandler: function(feeds) {
             logger.info("Feeds -- Read Success");
