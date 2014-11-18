@@ -12,6 +12,7 @@ var apiModules = [
     require('../classApi/api'),
     require('../reminderApi/api'),
     require('../userApi/api'),
+    require('../feedApi/api'),
     require('../studentPickupReportApi/api'),
     require('../studentPickupDetailApi/api')
 ];

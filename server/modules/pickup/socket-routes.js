@@ -31,7 +31,7 @@ exports.route = function (socket) {
         })
         .then(function (reports) {
             if (reports) castPassword(reports);
-            logger.info("updating reports: ", reports);
+            logger.info('sending ' + reports.length + ' reports');
             socket.emit('pickup::teacher:update-reports', reports);
         })
         .fail(function (err) {
@@ -365,15 +365,15 @@ exports.route = function (socket) {
             var teacherName = socket.session.user.firstname + ' ' + socket.session.user.lastname;
             if (data.picked) {
                 var time = moment(data.record.pickedUpTime).format('LT');
-                message = 'Your Child ' + studentName +
+                message = 'Your child ' + studentName +
                     ' is picked by ' + teacherName + ' at ' + time + '.';
             } else {
                 // unPickedTime
-                message = 'Your Child ' + studentName +
+                message = 'Your child ' + studentName +
                     ' is not picked by ' + teacherName +
                     ' yet, the info before is clicked by mistake, Sorry for that ;)' + '';
             }   
-            PNServer.notifyParent(data.student, message);
+            return PNServer.notifyParent(data.student, message);
         })
         .fail(function (err) {
             logger.warn(err.toString());
