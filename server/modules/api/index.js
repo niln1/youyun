@@ -116,6 +116,19 @@ function isValidQueryParamsType(path, method, res, query) {
                             apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
+                    case 'mongoId':
+                        if (/^[0-9a-fA-F]{24}$/.test(queryData)) {
+                            logger.trace("Check mongoId Type Passed - " + queryData);
+                            break;
+                        } else {
+                            if (queryData === "") {
+                                logger.trace("Check empty mongoId Type Passed - " + queryData);
+                                break;
+                            }
+                            logger.warn("Check Id Type - " + queryData + "is Not a Id");
+                            apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
                     default:
                         logger.warn("Invalid Query Parameter Type - " + queryData);
                         apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');

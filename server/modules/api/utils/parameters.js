@@ -64,13 +64,13 @@ exports.signature = {
 };
 
 exports.userId = {
-    'type': 'string',
+    'type': 'mongoId',
     'param': 'userId',
     'description': 'userId'
 };
 
 exports.reminderId = {
-    'type': 'string',
+    'type': 'mongoId',
     'param': 'reminderId',
     'description': 'reminderId'
 };
@@ -106,13 +106,13 @@ exports.isAdd = {
 }
 
 exports.studentId = {
-    'type': 'string',
+    'type': 'mongoId',
     'param': 'studentId',
     'description': 'studentId'
 }
 
 exports.classId = {
-    'type': 'string',
+    'type': 'mongoId',
     'param': 'classId',
     'description': 'classId'
 };
