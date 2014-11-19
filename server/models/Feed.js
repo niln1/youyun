@@ -23,7 +23,13 @@ var feedSchema = new Schema({
     },
     type: {
         type: String,
-        required: true
+        required: true,
+        default: "school" // this determine the icon before feed
+    },
+    infoType: {
+        type: String,
+        required: true,
+        default: "info" // this change the icon color
     },
     isRead: {
         type: Boolean,
@@ -44,8 +50,10 @@ var feedSchema = new Schema({
 feedSchema.statics.findByUser = function (userId, isRead) {
     var defer = Q.defer();
     logger.db('feedSchema -- findByUser');
-
-    this.find({}).exec(function(err, feeds) {
+    this.find({
+        user: userId,
+        isRead: isRead
+    }).exec(function(err, feeds) {
         if (err) defer.reject(err);
         else {
             defer.resolve(feeds);

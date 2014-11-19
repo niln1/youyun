@@ -12,11 +12,9 @@ module.exports = [{
     'GET': {
         'handler': feeds.read,
         'required': [
-        	parameters.signature,
-        	parameters.userId,
-        	parameters.feedType,
-        	parameters.feedInfoType,
-        	parameters.isRead
+            parameters.signature,
+            parameters.userId,
+            parameters.isRead
         ],
         'optional': [],
         'description': 'Get all the feeds for user',

@@ -190,15 +190,3 @@ exports.isRead = {
     'param': 'isRead',
     'description': 'read boolean'
 }
-
-exports.feedType = {
-    'type': 'string',
-    'param': 'feedType',
-    'description': 'A string containing the feedType of the feed.'
-};
-
-exports.feedInfoType = {
-    'type': 'string',
-    'param': 'feedInfoType',
-    'description': 'A string containing the feedInfoType of the feed.'
-};

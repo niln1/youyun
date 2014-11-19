@@ -20,7 +20,7 @@ var apnConnection = new apn.Connection(apnOptions);
 
 var pushNotificationServer = {};
 
-pushNotificationServer.notifyParent = function (studentId, message) {
+pushNotificationServer.notifyParent = function (studentId, message, type, infoType) {
     var defer = Q.defer();
     User.findById(studentId).exec(function(err, student){
         if (err) defer.reject(err);
@@ -32,11 +32,15 @@ pushNotificationServer.notifyParent = function (studentId, message) {
                     __.each(parent.devices, function(device){
                         pushNotificationServer.sendPushNotification(device.deviceType, device.token, message);
                     });
-                    var newFeed = new Feed({ 
+                    var options = {
                         message: message, 
-                        user: parent._id, 
+                        user: parent._id,
                         timeStamp: new Date()
-                    });
+                    };
+                    if (type) options.type = type;
+                    if (infoType) options.infoType = infoType;
+
+                    var newFeed = new Feed(options);
                     newFeed.save(function(err, feed) {
                         if (err) {
                             subDefer.reject(err);
@@ -48,7 +52,7 @@ pushNotificationServer.notifyParent = function (studentId, message) {
                     return subDefer.promise;
                 }))
                 .then(function() {
-                    logger.info('notify parent done')
+                    logger.info('notify parent done');
                     defer.resolve();
                 })
                 .fail(function(err) {
