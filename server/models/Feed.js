@@ -21,6 +21,10 @@ var feedSchema = new Schema({
     imagePath: {
         type: String,
     },
+    type: {
+        type: String,
+        required: true
+    },
     isRead: {
         type: Boolean,
         required: true,
