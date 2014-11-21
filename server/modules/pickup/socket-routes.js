@@ -387,6 +387,7 @@ exports.route = function (socket) {
 
 function castPassword(object) {
     // lean the mongoose document
+    if (object == null) return;
     if (object.toObject) object = object.toObject(); 
     if (__.isObject(object)) {
         if (object.password) {
