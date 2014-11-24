@@ -47,13 +47,18 @@ var feedSchema = new Schema({
  * @param  {ObjectId}  userId
  * @param  {Boolean} isRead
  */
-feedSchema.statics.findByUser = function (userId, isRead) {
+feedSchema.statics.findByUser = function (userId, page) {
     var defer = Q.defer();
-    logger.db('feedSchema -- findByUser');
+    var perPage = 10;
+    var page = page > 0 ? page : 0;
+    logger.db('feedSchema -- findByUser -- page:' + page);
     this.find({
-        user: userId,
-        isRead: isRead
-    }).exec(function(err, feeds) {
+        user: userId
+    })
+    .sort({timeStamp: -1}) // decending sort by date
+    .limit(perPage)
+    .skip(perPage * page)
+    .exec(function(err, feeds) {
         if (err) defer.reject(err);
         else {
             defer.resolve(feeds);

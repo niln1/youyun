@@ -190,3 +190,9 @@ exports.isRead = {
     'param': 'isRead',
     'description': 'read boolean'
 }
+
+exports.pageNumber = {
+    'type': 'number',
+    'param': 'pageNumber',
+    'description': 'page number'
+}

@@ -14,9 +14,10 @@ module.exports = [{
         'required': [
             parameters.signature,
             parameters.userId,
-            parameters.isRead
         ],
-        'optional': [],
+        'optional': [
+            parameters.pageNumber,
+        ],
         'description': 'Get all the feeds for user',
         'response': {} // sample data
     }

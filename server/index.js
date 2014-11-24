@@ -52,6 +52,11 @@ exports.populateDB = function (req, res) {
     res.send('see console');
 }
 
+exports.addChild = function (req, res) {
+    db.addChild();
+    res.send('see console');
+}
+
 exports.home = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
     res.render('home', {});

@@ -31,7 +31,7 @@ exports.route = function (socket) {
         })
         .then(function (reports) {
             if (reports) castPassword(reports);
-            logger.info('sending ' + reports.length + ' reports');
+            logger.info('Sent ' + reports.length + ' reports for get-reports');
             socket.emit('pickup::teacher:update-reports', reports);
         })
         .fail(function (err) {
@@ -78,6 +78,7 @@ exports.route = function (socket) {
         });
     });
 
+    // Not used?
     socket.on('pickup::parent::get-child-report', function (data) {
 
         socketServer.validateUserSession(socket)
