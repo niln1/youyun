@@ -12,6 +12,17 @@ var StudentParent = require('../models/StudentParent');
 var logger = require('../utils/logger');
 var __ = require('underscore');
 
+exports.addChild = function () {
+    var studentParent = new StudentParent({
+        student: '541fa3a1356cff56c71170d1',
+        parent: '541fa3a3356cff56c71170f8'
+    });
+
+    studentParent.save(function (err, studentParent) {
+        console.log(studentParent);
+    })
+}
+
 exports.populateDB = function () {
     // populate db with test data
     // cleaning the db

@@ -22,7 +22,11 @@ var StudentParentSchema = new Schema({
     }
 });
 
-
+/**
+ * [findChildrenByParent return array]
+ * @param  {[id]} parentid
+ * @return {[]}        [description]
+ */
 StudentParentSchema.statics.findChildrenByParent = function (parent) {
     var defer = Q.defer();
 

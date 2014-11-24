@@ -78,6 +78,7 @@ exports.route = function (socket) {
         });
     });
 
+    // Not used?
     socket.on('pickup::parent::get-child-report', function (data) {
 
         socketServer.validateUserSession(socket)
