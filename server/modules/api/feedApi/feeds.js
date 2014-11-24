@@ -22,7 +22,7 @@ exports.read = function (req, res) {
             }
         },
         processHandler: function() {
-            return Feed.findByUser(req.query.userId, req.query.isRead);
+            return Feed.findByUser(req.query.userId, req.query.pageNumber);
         },
         successHandler: function(feeds) {
             logger.info("Feeds -- Read Success");
