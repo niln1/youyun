@@ -116,21 +116,23 @@ apiServer.sendResponse = function(req, res, resp, desc) {
     logger.info("API - sendResponse: " + desc);
     
     function castPassword(object) {
-        // lean the mongoose doc
-        if (object.toObject) object = object.toObject(); 
-        if (__.isObject(object)) {
-            if (object.password) {
-                object.password = "Black Sheep Wall";
+        // lean the mongoose document
+        var newObject = object;
+        if (object == null) return null;
+        if (object.toObject) newObject = object.toObject({ getters: true, virtuals: true }); 
+        if (__.isObject(newObject)) {
+            if (newObject.password) {
+                newObject.password = "Black Sheep Wall";
             };
-            __.each(object, function(element){
-                castPassword(element);
+            __.each(newObject, function(element, key, list){
+                list[key] = castPassword(element);
             });
         }
-        return;
+        return newObject;
     }
 
     if (resp) {
-        castPassword(resp);
+        resp = castPassword(resp);
     };
 
     res.status(200).json({

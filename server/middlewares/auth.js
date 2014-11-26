@@ -71,12 +71,12 @@ exports.doLogin = function(req, res) {
             return userAuthenticationFailed(req, res, '用户名或者密码错误');
         };
         user.comparePassword(req.body.password, function(err, match) {
-            logger.warn(err);
-            logger.warn(match);
+            if (err) logger.warn(err);
             if (err || !match) {
                 logger.warn("Login Error: '用户名或者密码错误'");
                 return userAuthenticationFailed(req, res, '用户名或者密码错误');
             };
+            user = user.toObject();
             // casting out password
             user.password = "This is a Joke, My friend";
 
