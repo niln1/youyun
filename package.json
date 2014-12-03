@@ -2,9 +2,6 @@
   "name": "youyun",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "node line.js"
-  },
   "dependencies": {
     "apn": "^1.5.2",
     "async": "~0.2.9",
