@@ -14,20 +14,25 @@ exports.route = function (io, sessionStore, cookieParser) {
     if (env == 'test' || env == 'coverage') {
         // Defaults to MemoryStore
     } else {
-        console.log('here');
         var RedisStore = require('socket.io/lib/stores/redis');
         var redis = require('socket.io/node_modules/redis');
-        var pub = redis.createClient();
-        var sub = redis.createClient();
-        var client = redis.createClient();
+
+        if (process.env.REDIS_URL) {
+            var rtg   = require("url").parse(process.env.REDIS_URL);
+            var pub = redis.createClient(rtg.port, rtg.hostname);
+            var sub = redis.createClient(rtg.port, rtg.hostname);
+            var client = redis.createClient(rtg.port, rtg.hostname);
+        } else {
+            var pub = redis.createClient();
+            var sub = redis.createClient();
+            var client = redis.createClient();
+        }
 
         io.set('store', new RedisStore({
             redisPub: pub,
             redisSub: sub,
             redisClient: client
         }));
-        console.log('here');
-
     }
 
     if (env === 'development') {
