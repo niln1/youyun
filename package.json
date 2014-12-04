@@ -6,7 +6,6 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "preinstall" : "bundle install",
     "start": "node dot.js",
     "postinstall": "./node_modules/grunt-cli/bin/grunt build && node ./utilities/postinstall.js"
   },
