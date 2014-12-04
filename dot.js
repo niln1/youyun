@@ -112,6 +112,7 @@ function startServer() {
         logger.info("LogLevel - " + nconf.get('log-level'));
         logger.info('Express server listening on port ' + process.env.PORT || app.get('port') + ' in ' + app.get('env') + ' environment.');
     });
+    
     var io = require('socket.io').listen(server);
     socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
 }
