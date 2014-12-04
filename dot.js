@@ -16,7 +16,7 @@ module.exports.app = app = express();
 /*
  * Configuration from nconf
  */
-nconf.argv().env().file('./server/utils/config.js');
+nconf.argv().env().file('./server/utils/config.json');
 
 // Local modules and variables
 // setup global variables
