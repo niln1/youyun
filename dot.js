@@ -70,14 +70,6 @@ app.use(helper.logErrors);
 app.use(helper.clientErrorHandler);
 app.use(helper.errorHandler);
 
-/*
- * Setup mongoose
- */
-mongoose.connect(nconf.get('mongodb-url'));
-
-var db = mongoose.connection;
-db.on('error', logger.error.bind(logger, 'connection error:'));
-
 // Static file server
 if (env == 'development') {
     app.use('/', express.static('development'));
@@ -96,9 +88,30 @@ if ('development' == env) {
     app.use(express.errorHandler());
 }
 
-var server = app.listen(app.get('port'), function() {
-    logger.info("LogLevel - " + nconf.get('log-level'));
-    logger.info('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
+/*
+ * Setup mongoose
+ */
+var uristring = process.env.MONGO_URL ||
+                process.env.MONGO_URI ||
+                nconf.get('mongodb-url');
+
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+    logger.error('ERROR connecting to: ' + uristring + '. ' + err);
+    process.exit(1);
+  } else {
+    logger.info ('Succeessfully connected to: ' + uristring);
+    startServer();
+  }
 });
-var io = require('socket.io').listen(server);
-socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
+
+function startServer() {
+    var server = app.listen(app.get('port'), function() {
+        logger.info("LogLevel - " + nconf.get('log-level'));
+        logger.info('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
+    });
+    var io = require('socket.io').listen(server);
+    socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
+}
