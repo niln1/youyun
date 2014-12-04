@@ -10,137 +10,140 @@ var async = require('async');
 var MongoStore = require('mong.socket.io');
 
 exports.route = function (io, sessionStore, cookieParser) {
-	var env = nconf.get('env');
-	if (env == 'test' || env == 'coverage') {
-		// Defaults to MemoryStore
-	} else {
-		var RedisStore = require('socket.io/lib/stores/redis');
-		var redis = require('socket.io/node_modules/redis');
-		var pub = redis.createClient();
-		var sub = redis.createClient();
-		var client = redis.createClient();
+    var env = nconf.get('env');
+    if (env == 'test' || env == 'coverage') {
+        // Defaults to MemoryStore
+    } else {
+        console.log('here');
+        var RedisStore = require('socket.io/lib/stores/redis');
+        var redis = require('socket.io/node_modules/redis');
+        var pub = redis.createClient();
+        var sub = redis.createClient();
+        var client = redis.createClient();
 
-		io.set('store', new RedisStore({
-			redisPub: pub,
-			redisSub: sub,
-			redisClient: client
-		}));
-	}
+        io.set('store', new RedisStore({
+            redisPub: pub,
+            redisSub: sub,
+            redisClient: client
+        }));
+        console.log('here');
 
-	if (env === 'development') {
-		io.set('log level', 2);
-	} else {
-		io.set('log level', 0);
-	}
+    }
 
-	io.set('browser client', false);
+    if (env === 'development') {
+        io.set('log level', 2);
+    } else {
+        io.set('log level', 0);
+    }
 
-	/*
-	 * Authentication
-	 */
-	io.set('authorization', function (handshakeData, accept) {
-		cookieParser(handshakeData, {}, function(err) {
-			if (err) {
-				accept(err, false);
-			} else {
-				var sessionCookie = handshakeData.signedCookies[nconf.get('cookie-key')];
-				sessionStore.get(sessionCookie, function(err, session) {
-					if (err || !session || !session.user) {
-						accept(err, false);
-					} else {
-						handshakeData.session = session;
-						accept(null, true);
-					}
-				});
-			}
-		});
-	});
+    io.set('browser client', false);
 
-	/*
-	 * Routes and settings defined in core module
-	 */
-	io.on('connection', function (socket) {
+    /*
+     * Authentication
+     */
+    io.set('authorization', function (handshakeData, accept) {
+        cookieParser(handshakeData, {}, function(err) {
+            if (err) {
+                accept(err, false);
+            } else {
+                var sessionCookie = handshakeData.signedCookies[nconf.get('cookie-key')];
+                sessionStore.get(sessionCookie, function(err, session) {
+                    if (err || !session || !session.user) {
+                        accept(err, false);
+                    } else {
+                        handshakeData.session = session;
+                        accept(null, true);
+                    }
+                });
+            }
+        });
+    });
 
-		// Make sure socket is valid
-		if (!socket.manager.handshaken[socket.id].session) {
-			socket.destroy();
-			return;
-		}
+    /*
+     * Routes and settings defined in core module
+     */
+    io.on('connection', function (socket) {
 
-		socket.session = socket.manager.handshaken[socket.id].session;
+        // Make sure socket is valid
+        if (!socket.manager.handshaken[socket.id].session) {
+            socket.destroy();
+            return;
+        }
 
-		// Define core socket events HERE
+        socket.session = socket.manager.handshaken[socket.id].session;
 
-		// Load socket events from submodules
-		loadModules(socket);
-	});
+        // Define core socket events HERE
 
-	/*
-	 * Routes and settings defined in submodules
-	 */
-	function loadModules(socket) {
-		var cwd = process.cwd();
-		var modulesDir = __dirname + '/modules';
+        // Load socket events from submodules
+        loadModules(socket);
+    });
 
-		async.waterfall([
-			function (callback) {
-				// Read all of the files in '/app/src/modules', the submodules folder
-				return fs.readdir(modulesDir, function (err, files) {
-					if (err) {
-						return callback(err);
-					} else {
-						return callback(null, files);
-					}
-				});
-			}, function (files) {
-				// For each module, load the module
-				// if 'socket_routes.js' is found in the folder
+    /*
+     * Routes and settings defined in submodules
+     */
+    function loadModules(socket) {
+        var cwd = process.cwd();
+        var modulesDir = __dirname + '/modules';
 
-				files.forEach(function (file) {
-					readModule(file, socket);
-				});
-			}
-		]);
-	}
+        async.waterfall([
+            function (callback) {
+                // Read all of the files in '/app/src/modules', the submodules folder
+                return fs.readdir(modulesDir, function (err, files) {
+                    if (err) {
+                        return callback(err);
+                    } else {
+                        return callback(null, files);
+                    }
+                });
+            }, function (files) {
+                // For each module, load the module
+                // if 'socket_routes.js' is found in the folder
 
-	/*
-	 * Helper method to load module
-	 */
-	function readModule (file, socket) {
-		// Get absolute path of submodule file
-		var cwd = process.cwd();
-		var modulesDir = __dirname + '/modules';
-		var moduleDir = modulesDir + '/' + file;
+                files.forEach(function (file) {
+                    readModule(file, socket);
+                });
+            }
+        ]);
+    }
 
-		return async.waterfall([
-			function (callback) {
-				// Detect if the file is a directory
-				// (a module is a directory in '/app/src/modules' folder)
-				return fs.lstat(moduleDir, function (err, stats) {
-					if (err) {
-						return callback(err);
-					}
+    /*
+     * Helper method to load module
+     */
+    function readModule (file, socket) {
+        // Get absolute path of submodule file
+        var cwd = process.cwd();
+        var modulesDir = __dirname + '/modules';
+        var moduleDir = modulesDir + '/' + file;
 
-					return callback(null, stats.isDirectory());
-				});
-			}, function (isDir, callback) {
-				// Read 'routes.js' if it's found in the module
-				var routesFile;
-				if (!isDir) {
-					return callback();
-				}
+        return async.waterfall([
+            function (callback) {
+                // Detect if the file is a directory
+                // (a module is a directory in '/app/src/modules' folder)
+                return fs.lstat(moduleDir, function (err, stats) {
+                    if (err) {
+                        return callback(err);
+                    }
 
-				routesFile = moduleDir + '/socket-routes.js';
-				return fs.exists(routesFile, function (exists) {
-					if (!exists) {
-						return callback();
-					}
+                    return callback(null, stats.isDirectory());
+                });
+            }, function (isDir, callback) {
+                // Read 'routes.js' if it's found in the module
+                var routesFile;
+                if (!isDir) {
+                    return callback();
+                }
 
-					require(routesFile).route(socket);
+                routesFile = moduleDir + '/socket-routes.js';
+                return fs.exists(routesFile, function (exists) {
+                    if (!exists) {
+                        return callback();
+                    }
 
-					return callback();
-				});
-			}
-		]);
-	}
+                    require(routesFile).route(socket);
+
+                    return callback();
+                });
+            }
+        ]);
+    }
 }
