@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "node dot.js",
-    "postinstall": "./node_modules/grunt-cli/bin/grunt build"
+    "postinstall": "./node_modules/grunt-cli/bin/grunt build && cp ./utilities/config.dokku.js"
   },
   "dependencies": {
     "apn": "^1.5.2",
