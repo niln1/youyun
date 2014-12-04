@@ -17,6 +17,7 @@ exports.route = function (io, sessionStore, cookieParser) {
         var RedisStore = require('socket.io/lib/stores/redis');
         var redis = require('socket.io/node_modules/redis');
 
+
         if (process.env.REDIS_URL) {
             var rtg   = require("url").parse(process.env.REDIS_URL);
             var pub = redis.createClient(rtg.port, rtg.hostname);
