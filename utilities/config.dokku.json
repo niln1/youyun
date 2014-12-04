@@ -1,7 +1,7 @@
 {
     "server-name": "YouYun Server",
     "env": "development",
-    "port": 49171,
+    "port": 49175,
     "cookie-key": "yy.sid",
     "cookie-maxage": 604800000,
     "cookie-secret": "cac9904545bae07cb09bad9dab7f3ced",
