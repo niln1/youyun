@@ -78,6 +78,12 @@ function passwordGetter() {
     return 'Black Sheep Wall';
 };
 
+UserSchema.virtual('fullname').get(function () {
+    return this.firstname + ' ' + this.lastname;
+});
+
+UserSchema.set('toObject', { getters: true, virtuals: true });
+
 UserSchema.pre('save', function (next) {
     var user = this;
 
@@ -107,9 +113,7 @@ UserSchema.pre('save', function (next) {
  * Compare if the candidate password hash is the same as the one in collection
  */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-    console.log(this.password);
-    console.log(this.toObject());
-    bcrypt.compare(candidatePassword, this.toObject().password, function (err, isMatch) {
+    bcrypt.compare(candidatePassword, this.toJSON().password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
@@ -124,18 +128,20 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
  */
 UserSchema.methods.hasChild = function (childId, defer) {
     if (this.userType === 4) {
-        StudentParent.find({parent: this._id},
+        StudentParent.find({
+                parent: this._id
+            },
             function (err, data) {
                 if (err) defer.reject(err);
                 var studentIds = __.pluck(data, "student");
-                var isMyChild = __.reduce(studentIds, function(memo, id){ 
+                var isMyChild = __.reduce(studentIds, function (memo, id) {
                     if (id.equals(childId)) return memo + 1;
-                    else return memo + 0; 
+                    else return memo + 0;
                 }, 0);
                 if (studentIds.length === 0) defer.reject(new Error("U have no child"));
                 else if (isMyChild === 1) defer.resolve();
                 else defer.reject(new Error("That child is not yours"));
-        })
+            })
     } else {
         defer.reject(new Error("U cannot have child if not parent"));
     }
@@ -146,18 +152,20 @@ UserSchema.methods.getParents = function () {
 
     logger.db('UserSchema -- getParents');
     if (this.userType === 3) {
-        StudentParent.find({student: this._id})
-        .populate('parent')
-        .exec(function (err, data) {
-            if (err) defer.reject(err);
-            Device.populate(data, { 
-                path : 'parent.devices',
-                model: 'Device'
-            }, function(err, things){
-                var parents = __.pluck(data, "parent");
-                defer.resolve(parents);
+        StudentParent.find({
+            student: this._id
+        })
+            .populate('parent')
+            .exec(function (err, data) {
+                if (err) defer.reject(err);
+                Device.populate(data, {
+                    path: 'parent.devices',
+                    model: 'Device'
+                }, function (err, things) {
+                    var parents = __.pluck(data, "parent");
+                    defer.resolve(parents);
+                });
             });
-        });
     } else {
         defer.reject(new Error("U cannot have parent if not student"));
     }
@@ -186,27 +194,27 @@ UserSchema.statics.findByOptions = function (options, cb) {
     this.find(query, cb);
 };
 
-UserSchema.methods.isAdmin = function() {
+UserSchema.methods.isAdmin = function () {
     return this.userType === 0;
 };
 
-UserSchema.methods.isSchool = function() {
+UserSchema.methods.isSchool = function () {
     return this.userType === 1;
 };
 
-UserSchema.methods.isTeacher = function() {
+UserSchema.methods.isTeacher = function () {
     return this.userType === 2;
 };
 
-UserSchema.methods.isStudent = function() {
+UserSchema.methods.isStudent = function () {
     return this.userType === 3;
 };
 
-UserSchema.methods.isParent = function() {
+UserSchema.methods.isParent = function () {
     return this.userType === 4;
 };
 
-UserSchema.methods.isAlumini = function() {
+UserSchema.methods.isAlumini = function () {
     return this.userType === 5;
 };
 

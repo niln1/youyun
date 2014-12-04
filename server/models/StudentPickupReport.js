@@ -42,6 +42,8 @@ var StudentPickupReportSchema = new Schema({
     }
 });
 
+StudentPickupReportSchema.set('toObject', { getters: true, virtuals: true });
+
 StudentPickupReportSchema.methods.pickUpStudent = function (studentId, pickedBy) {
     var defer = Q.defer();
     // should think about edge case?
@@ -113,10 +115,14 @@ StudentPickupReportSchema.statics.findMonthByDate = function (date, cb) {
 StudentPickupReportSchema.statics.findByOptions = function (options) {
     var defer = Q.defer();
 
-    this.find(options, function (err, reports) {
+    this.find(options)
+    .populate('needToPickupList')
+    .populate('absenceList')
+    .populate('pickedUpList.student pickedUpList.pickedBy')
+    .exec(function (err, reports) {
         if (err) defer.reject(err);
         else defer.resolve(reports);
-    })
+    });
 
     return defer.promise;
 };

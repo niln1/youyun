@@ -30,7 +30,7 @@ exports.route = function (socket) {
             }
         })
         .then(function (reports) {
-            if (reports) castPassword(reports);
+            if (reports) reports = castPassword(reports);
             logger.info('Sent ' + reports.length + ' reports for get-reports');
             socket.emit('pickup::teacher:update-reports', reports);
         })
@@ -53,7 +53,7 @@ exports.route = function (socket) {
         .then(function (report) {
             if (report) {
                 //TODO: this is bad need rework casting password
-                castPassword(report);
+                report = castPassword(report);
                 logger.info("found report for 'get report for today'");
                 report.needToPickupList = __.filter(report.needToPickupList,
                     function(student) {
@@ -93,8 +93,13 @@ exports.route = function (socket) {
             return [parent, children, StudentPickupReport.findReportsByUsers(children)]
         })
         .spread(function (parent, children, reports) {
-            if (reports) castPassword(reports);
-            socket.emit('pickup::parent::get-child-report::success', reports);
+            if (reports) reports = castPassword(reports);
+            if (children) children = castPassword(children);
+
+            socket.emit('pickup::parent::get-child-report::success', { 
+                    reports: reports,
+                    children: children
+                });
         })
         .fail(function (err) {
             socket.emit('all::failure', err.toString());
@@ -119,8 +124,12 @@ exports.route = function (socket) {
             var futureReports = __.filter(reports, function(report) { 
                 return dateToValidate.unix() < moment(report.date).unix();
             });
-            if (futureReports) castPassword(futureReports);
-            socket.emit('pickup::parent::get-future-child-report::success', futureReports);
+            if (futureReports) futureReports = castPassword(futureReports);
+            if (children) children = castPassword(children);
+            socket.emit('pickup::parent::get-future-child-report::success', { 
+                    reports: futureReports,
+                    children: children
+                });
         })
         .fail(function (err) {
             socket.emit('all::failure', err.toString());
@@ -232,7 +241,7 @@ exports.route = function (socket) {
 
             return defer.promise;
         }).then(function (report) {
-            if (report) castPassword(report);
+            if (report) report = castPassword(report);
             logger.info("report Created");
             socket.emit('pickup::create::success', report);
             // TODO broadcast this message;
@@ -305,7 +314,7 @@ exports.route = function (socket) {
             return defer.promise;
         })
         .then(function (report) {
-            if (report) castPassword(report);
+            if (report) report = castPassword(report);
             socket.emit('pickup::parent::add-absence::success', report);
             // broadcast this event
             socket.broadcast.emit('pickup::all::add-absence::success', report);
@@ -356,7 +365,7 @@ exports.route = function (socket) {
             }
         })
         .then(function (data) {
-            if (data) castPassword(data);
+            if (data) data = castPassword(data);
             socket.emit('pickup::teacher::pickup-student::success', data);
             // broadcast this event
             socket.broadcast.emit('pickup::all::picked-up::success', data);
@@ -388,15 +397,16 @@ exports.route = function (socket) {
 
 function castPassword(object) {
     // lean the mongoose document
+    var newObject = object;
     if (object == null) return;
-    if (object.toObject) object = object.toObject(); 
-    if (__.isObject(object)) {
-        if (object.password) {
-            object.password = "Black Sheep Wall";
+    if (object.toObject) newObject = object.toObject({ getters: true, virtuals: true }); 
+    if (__.isObject(newObject)) {
+        if (newObject.password) {
+            newObject.password = "Black Sheep Wall";
         };
-        __.each(object, function(element){
-            castPassword(element);
+        __.each(newObject, function(element, key, list){
+            list[key] = castPassword(element);
         });
     }
-    return;
+    return newObject;
 }
