@@ -1,1 +1,1 @@
-web: bundle install && npm start
+web: npm start
