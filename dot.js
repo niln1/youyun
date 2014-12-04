@@ -110,6 +110,7 @@ mongoose.connect(uristring, function (err, res) {
 function startServer() {
     var server = app.listen(app.get('port'), function() {
         logger.info("LogLevel - " + nconf.get('log-level'));
+        console.log(process.env);
         logger.info('Express server listening on port ' + process.env.PORT || app.get('port') + ' in ' + app.get('env') + ' environment.');
     });
     var io = require('socket.io').listen(server);
