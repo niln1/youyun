@@ -458,5 +458,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
     grunt.registerTask('build-dev', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
 
+    grunt.registerTask('heroku', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
+
     grunt.registerTask('default', ['install', 'build']);
 };
