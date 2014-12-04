@@ -58,6 +58,6 @@
     "celeri": "~0.3.3",
     "grunt-contrib-compass": "~0.7.1",
     "grunt-amd-wrap": "~1.0.1",
-    "grunt-wrap": "~0.3.0",
+    "grunt-wrap": "~0.3.0"
   }
 }
