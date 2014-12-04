@@ -6,7 +6,8 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node dot.js"
+    "start": "node dot.js",
+    "postinstall": "./node_modules/grunt/bin/grunt build && node ./utilities/postinstall.js"
   },
   "dependencies": {
     "apn": "^1.5.2",
