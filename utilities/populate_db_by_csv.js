@@ -34,10 +34,10 @@ var mongoOptions = {
 // operations and release them when the connection is complete.
 mongoose.connect(uristring, { mongos: true }, function (err, res) {
   if (err) {
-    logger.error('ERROR connecting to: ' + uristring + '. ' + err);
+    console.error('ERROR connecting to: ' + uristring + '. ' + err);
     process.exit(-1);
   } else {
-    logger.info ('Succeessfully connected to: ' + uristring);
+    console.log('Succeessfully connected to: ' + uristring);
   }
 });
 
