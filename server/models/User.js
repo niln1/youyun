@@ -35,7 +35,7 @@ var UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        get: passwordGetter
+        // get: passwordGetter
     },
     userImage: {
         type: String,
@@ -113,8 +113,8 @@ UserSchema.pre('save', function (next) {
  * Compare if the candidate password hash is the same as the one in collection
  */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-    console.log(this.toJSON().password);
-    bcrypt.compare(candidatePassword, this.toJSON().password, function (err, isMatch) {
+    console.log(this.password);
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
