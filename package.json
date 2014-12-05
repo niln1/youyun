@@ -6,7 +6,6 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node forever.js",
     "postinstall": "node ./utilities/postinstall.js"
   },
   "dependencies": {
