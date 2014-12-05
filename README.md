@@ -5,8 +5,9 @@ Chinese Education Private Cloud
 
 Branch Name
 ======
-  Stable Branch is the main branch
-  Master Branch is release branch
+Stable Branch is the main branch
+
+Master Branch is release branch
 
 
 Run the app
