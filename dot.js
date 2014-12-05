@@ -102,7 +102,7 @@ if (env == 'development') {
     app.use('/static', express.static('static'));
 }
 
-// Router
+// Routers
 app.use(app.router);
 routes.route(app);
 
