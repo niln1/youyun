@@ -9,7 +9,7 @@ var handlebars = require('handlebars');
 var fs = require('fs');
 
 module.exports = function(grunt) {
-    require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+    require('matchdep').filter('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.option('force', true);
 
@@ -455,8 +455,10 @@ module.exports = function(grunt) {
     grunt.registerTask('watch-views', ['watch:views']);
     grunt.registerTask('watch-others', ['watch:others']);
 
-    grunt.registerTask('build', ['clean', 'css', 'js', 'views', 'others']);
+    grunt.registerTask('build', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
     grunt.registerTask('build-dev', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
+
+    grunt.registerTask('heroku', ['clean', 'css-dev', 'js-dev', 'views-dev', 'others-dev']);
 
     grunt.registerTask('default', ['install', 'build']);
 };

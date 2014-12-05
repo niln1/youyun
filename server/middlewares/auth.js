@@ -17,7 +17,6 @@
 'use strict';
 
 var __ = require('underscore');
-var nconf = require('nconf');
 var User = require('../models/User');
 var apiServer = require('../modules/api/utils/apiServer');
 var logger = require('../utils/logger');
@@ -70,6 +69,7 @@ exports.doLogin = function(req, res) {
             logger.warn("Login Error: '用户名或者密码错误'");
             return userAuthenticationFailed(req, res, '用户名或者密码错误');
         };
+        logger.info("Login: User Found");
         user.comparePassword(req.body.password, function(err, match) {
             if (err) logger.warn(err);
             if (err || !match) {

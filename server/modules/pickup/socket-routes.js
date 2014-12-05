@@ -122,7 +122,7 @@ exports.route = function (socket) {
         .spread(function (parent, children, reports) {
             var dateToValidate = moment(new Date()).startOf('day');
             var futureReports = __.filter(reports, function(report) { 
-                return dateToValidate.unix() < moment(report.date).unix();
+                return dateToValidate.unix() <= moment(report.date).unix();
             });
             if (futureReports) futureReports = castPassword(futureReports);
             if (children) children = castPassword(children);

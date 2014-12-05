@@ -28,6 +28,29 @@ var session = require('./server/middlewares/session');
 var helper = require('./server/middlewares/helper');
 
 /*
+ * Setup mongoose
+ */
+var uristring = process.env.MONGO_URL ||
+                process.env.MONGO_URI ||
+                nconf.get('mongodb-url');
+
+var mongoOptions = {
+    user: process.env.MONGODB_USERNAME,
+    pass: process.env.MONGODB_PASSWORD
+}
+
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, { mongos: true }, function (err, res) {
+  if (err) {
+    logger.error('ERROR connecting to: ' + uristring + '. ' + err);
+    process.exit(-1);
+  } else {
+    logger.info ('Succeessfully connected to: ' + uristring);
+  }
+});
+
+/*
  * Setup environment
  */
 var env = nconf.get('env');
@@ -70,14 +93,6 @@ app.use(helper.logErrors);
 app.use(helper.clientErrorHandler);
 app.use(helper.errorHandler);
 
-/*
- * Setup mongoose
- */
-mongoose.connect(nconf.get('mongodb-url'));
-
-var db = mongoose.connection;
-db.on('error', logger.error.bind(logger, 'connection error:'));
-
 // Static file server
 if (env == 'development') {
     app.use('/', express.static('development'));
@@ -87,7 +102,7 @@ if (env == 'development') {
     app.use('/static', express.static('static'));
 }
 
-// Router
+// Routers
 app.use(app.router);
 routes.route(app);
 
@@ -96,9 +111,10 @@ if ('development' == env) {
     app.use(express.errorHandler());
 }
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(process.env.PORT || app.get('port'), function() {
     logger.info("LogLevel - " + nconf.get('log-level'));
-    logger.info('Express server listening on port ' + app.get('port') + ' in ' + app.get('env') + ' environment.');
+    logger.info('Express server listening on port ' + process.env.PORT || app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
+
 var io = require('socket.io').listen(server);
 socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));

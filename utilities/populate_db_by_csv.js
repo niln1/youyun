@@ -18,12 +18,27 @@ var Class = require('../server/models/Class');
 var StudentParent = require('../server/models/StudentParent');
 var StudentPickupReport = require('../server/models/StudentPickupReport');
 
-// Setup mongoose
-mongoose.connect(config['mongodb-url']);
+/*
+ * Setup mongoose
+ */
+var uristring = process.env.MONGO_URL ||
+                process.env.MONGO_URI ||
+                nconf.get('mongodb-url');
 
-var db = mongoose.connection;
-db.on('error', function(err) {
-  console.log("mongoErr:", err);
+var mongoOptions = {
+    user: process.env.MONGODB_USERNAME,
+    pass: process.env.MONGODB_PASSWORD
+}
+
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, { mongos: true }, function (err, res) {
+  if (err) {
+    console.error('ERROR connecting to: ' + uristring + '. ' + err);
+    process.exit(-1);
+  } else {
+    console.log('Succeessfully connected to: ' + uristring);
+  }
 });
 
 var teachersData = require("./datasource/teachers").data;
@@ -65,6 +80,9 @@ var helper = (function(){
       return self.createAdmin();
     })
     .then(function() {
+      return self.createSuperAdmin();
+    })
+    .then(function() {
       return self.createDataCsvByToken("teacher");
     })
     .then(function() {
@@ -81,6 +99,7 @@ var helper = (function(){
     })
     .done(function(){
       console.log("EVERYTHING DONE");
+      return;
     });
   };
 
@@ -234,7 +253,7 @@ var helper = (function(){
 
     console.log("create student:", data.firstname);
 
-    this.generateUsernameByFnLn(data.firstname, data.lastname, "Stu", 0)
+    this.generateUsernameByFnLn(data.firstname, data.lastname, "stu", 0)
     .then(function (uname) {
       var deferred = Q.defer();
 
@@ -298,7 +317,7 @@ var helper = (function(){
       return deferred.promise;
     })
     .then(function () {
-      return self.generateUsernameByFnLn(nameArray[0], nameArray[1] || "", "Par", 0);
+      return self.generateUsernameByFnLn(nameArray[0], nameArray[1] || "", "par", 0);
     })
     .then(function (uname) {
       var deferred = Q.defer();
@@ -356,7 +375,7 @@ var helper = (function(){
 
     console.log("create teacher:", data.firstname);
 
-    this.generateUsernameByFnLn(data.firstname, data.lastname, "Tea", 0)
+    this.generateUsernameByFnLn(data.firstname, data.lastname, "tea", 0)
     .then(function (uname) {
       var deferred = Q.defer();
 
@@ -424,6 +443,38 @@ var helper = (function(){
     return deferred.promise;
   };
 
+  App.prototype.createSuperAdmin = function () {
+    var self = this;
+    var uname = "hanlin-super-admin"
+
+    console.log("create superadmin:", uname);
+
+    var deferred = Q.defer();
+
+    tempPassword = "HelloWorld1";
+    console.log("++++uname++++",uname);
+
+    var tempAdmin = new User({
+      firstname: "superadmin",
+      lastname: "superadmin",
+      username: uname,
+      password: tempPassword,
+      userType: 0
+    });
+
+    tempAdmin.save(function (err, admin) {
+      if (err) deferred.reject(err);
+      console.log("== admin Saved ==", uname);
+      self.admin.push({ 
+        firstname:admin.firstname,
+        lastname:admin.lastname,
+        username: admin.username,
+        password: tempPassword });
+      deferred.resolve(admin._id);
+    });
+    return deferred.promise;
+  };
+
   App.prototype.generateUsernameByFnLn = function( firstname, lastname, token, hit ) {
     var self = this;
     var string1 = firstname.replace(/\s+/g, '').replace(",", ".");
@@ -432,7 +483,7 @@ var helper = (function(){
     string1 = (string1.length > 3) ? string1.substring(0,3) : string1;
     string2 = (string2.length > 3) ? string2.substring(0,3) : string2;
 
-    var testUsername = token + string1 + string2 + hit;
+    var testUsername = token.toLowerCase() + string1.toLowerCase() + string2.toLowerCase() + hit;
 
     var deferred = Q.defer();
 
@@ -477,5 +528,6 @@ var helper = (function(){
 
 })();
 
+console.log('Populate DB');
 var app = new helper();
 app.start();

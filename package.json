@@ -2,8 +2,11 @@
   "name": "youyun",
   "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": "0.10.x"
+  },
   "scripts": {
-    "start": "node line.js"
+    "postinstall": "node ./utilities/postinstall.js"
   },
   "dependencies": {
     "apn": "^1.5.2",
@@ -31,13 +34,12 @@
     "json2csv": "~2.2.1",
     "mongoose-post-find": "0.0.2",
     "swagger-node-express": "~2.1.0",
-    "helmet": "~0.4.1"
-  },
-  "devDependencies": {
+    "helmet": "~0.4.1",
     "nconf": "~0.6.9",
-    "grunt": "~0.4.2",
     "matchdep": "~0.3.0",
     "handlebars": "~1.3.0",
+    "celeri": "~0.3.3",
+    "grunt": "~0.4.2",
     "grunt-contrib-sass": "~0.6.0",
     "grunt-contrib-symlink": "~0.2.0",
     "grunt-contrib-clean": "~0.5.0",
@@ -51,9 +53,11 @@
     "grunt-contrib-handlebars": "~0.6.0",
     "grunt-contrib-uglify": "~0.3.0",
     "grunt-autowrap": "~0.3.0",
-    "celeri": "~0.3.3",
     "grunt-contrib-compass": "~0.7.1",
     "grunt-amd-wrap": "~1.0.1",
-    "grunt-wrap": "~0.3.0"
-  }
+    "grunt-wrap": "~0.3.0",
+    "forever-monitor": "~1.5.2",
+    "mkdirp": "~0.5.0"
+  },
+  "devDependencies": {}
 }
