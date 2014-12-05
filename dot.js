@@ -28,6 +28,24 @@ var session = require('./server/middlewares/session');
 var helper = require('./server/middlewares/helper');
 
 /*
+ * Setup mongoose
+ */
+var uristring = process.env.MONGO_URL ||
+                process.env.MONGO_URI ||
+                nconf.get('mongodb-url');
+
+// Makes connection asynchronously.  Mongoose will queue up database
+// operations and release them when the connection is complete.
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+    logger.error('ERROR connecting to: ' + uristring + '. ' + err);
+    process.exit(-1);
+  } else {
+    logger.info ('Succeessfully connected to: ' + uristring);
+  }
+});
+
+/*
  * Setup environment
  */
 var env = nconf.get('env');
@@ -88,32 +106,10 @@ if ('development' == env) {
     app.use(express.errorHandler());
 }
 
-/*
- * Setup mongoose
- */
-var uristring = process.env.MONGO_URL ||
-                process.env.MONGO_URI ||
-                nconf.get('mongodb-url');
-
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
-mongoose.connect(uristring, function (err, res) {
-  if (err) {
-    logger.error('ERROR connecting to: ' + uristring + '. ' + err);
-    process.exit(1);
-  } else {
-    logger.info ('Succeessfully connected to: ' + uristring);
-    startServer();
-  }
+var server = app.listen(process.env.PORT || app.get('port'), function() {
+    logger.info("LogLevel - " + nconf.get('log-level'));
+    logger.info('Express server listening on port ' + process.env.PORT || app.get('port') + ' in ' + app.get('env') + ' environment.');
 });
 
-
-function startServer() {
-    var server = app.listen(process.env.PORT || app.get('port'), function() {
-        logger.info("LogLevel - " + nconf.get('log-level'));
-        logger.info('Express server listening on port ' + process.env.PORT || app.get('port') + ' in ' + app.get('env') + ' environment.');
-    });
-
-    var io = require('socket.io').listen(server);
-    socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
-}
+var io = require('socket.io').listen(server);
+socketRoutes.route(io, app.get('session-store'), app.get('cookie-parser'));
