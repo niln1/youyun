@@ -12,5 +12,8 @@ if (isClient === 'client') {
 	var sourceFile = './utilities/config.dokku.json';
 	fs.writeFileSync(targetFile, fs.readFileSync(sourceFile));
 	console.log('config file for Server Updated');
+	var mkdirp = require('mkdirp');
+	mkdirp.sync('./utilities/output');
+	console.log('Output Dir Created');
 	return;
 }
