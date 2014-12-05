@@ -6,7 +6,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "postinstall": "node ./utilities/postinstall.js && node ./utilities/populate_db_by_csv.js"
+    "postinstall": "node ./utilities/postinstall.js"
   },
   "dependencies": {
     "apn": "^1.5.2",
