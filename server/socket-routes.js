@@ -7,7 +7,6 @@
 var fs = require('fs');
 var nconf = require('nconf');
 var async = require('async');
-var MongoStore = require('mong.socket.io');
 
 exports.route = function (io, sessionStore, cookieParser) {
     var env = nconf.get('env');
