@@ -15,8 +15,14 @@ module.exports = function(app) {
         store = new MemoryStore();
     } else {
         var MongoStore = require('connect-mongo')(express);
+        var uristring = process.env.MONGO_URL ||
+                        process.env.MONGO_URI ||
+                        nconf.get('mongodb-url');
         var options = {
-            url: nconf.get('mongodb-url') + '/' + nconf.get('mongodb-session-collection'),
+            username: process.env.MONGODB_USERNAME,
+            password: process.env.MONGODB_PASSWORD,
+            auto_reconnect: true,
+            url: uristring + '/' + nconf.get('mongodb-session-collection'),
             maxAge: nconf.get('cookie-maxage')
         };
         store = new MongoStore(options);
