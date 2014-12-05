@@ -14,5 +14,3 @@ if (isClient === 'client') {
 	console.log('config file for Server Updated');
 	return;
 }
-
-process.exit(1);

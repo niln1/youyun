@@ -6,7 +6,7 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node dot.js",
+    "start": "node forever.js",
     "postinstall": "node ./utilities/postinstall.js"
   },
   "dependencies": {
@@ -56,8 +56,8 @@
     "grunt-autowrap": "~0.3.0",
     "grunt-contrib-compass": "~0.7.1",
     "grunt-amd-wrap": "~1.0.1",
-    "grunt-wrap": "~0.3.0"
+    "grunt-wrap": "~0.3.0",
+    "forever-monitor": "~1.5.2"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
