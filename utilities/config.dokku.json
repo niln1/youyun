@@ -8,7 +8,7 @@
     "mongodb-url": "mongodb://localhost/yy-dev",
     "mongodb-socket-collection": "sockets",
     "mongodb-session-collection": "sessions",
-    "socket-url": "ws://localhost:3000",
+    "socket-url": "ws://hanlin.iyoucloud.com",
     "log-level": "trace",
     "repopulate-db": "YES",
     "version": 1
