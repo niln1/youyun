@@ -113,6 +113,7 @@ UserSchema.pre('save', function (next) {
  * Compare if the candidate password hash is the same as the one in collection
  */
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+    console.log(this.toJSON().password);
     bcrypt.compare(candidatePassword, this.toJSON().password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
