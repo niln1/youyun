@@ -34,9 +34,14 @@ var uristring = process.env.MONGO_URL ||
                 process.env.MONGO_URI ||
                 nconf.get('mongodb-url');
 
+var mongoOptions = {
+    user: process.env.MONGODB_USERNAME,
+    pass: process.env.MONGODB_PASSWORD
+}
+
 // Makes connection asynchronously.  Mongoose will queue up database
 // operations and release them when the connection is complete.
-mongoose.connect(uristring, function (err, res) {
+mongoose.connect(uristring, { mongos: true }, function (err, res) {
   if (err) {
     logger.error('ERROR connecting to: ' + uristring + '. ' + err);
     process.exit(-1);
