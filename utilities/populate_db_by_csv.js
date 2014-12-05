@@ -528,10 +528,6 @@ var helper = (function(){
 
 })();
 
-if (nconf.get('repopulate-db')=='YES') {
-    console.log('Populate DB');
-    var app = new helper();
-    app.start();
-} else {
-    return;
-}
+console.log('Populate DB');
+var app = new helper();
+app.start();
