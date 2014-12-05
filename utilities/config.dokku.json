@@ -10,5 +10,6 @@
     "mongodb-session-collection": "sessions",
     "socket-url": "ws://localhost:3000",
     "log-level": "trace",
+    "repopulate-db": "YES",
     "version": 1
 }

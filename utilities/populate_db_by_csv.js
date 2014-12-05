@@ -99,6 +99,7 @@ var helper = (function(){
     })
     .done(function(){
       console.log("EVERYTHING DONE");
+      return;
     });
   };
 
@@ -527,5 +528,9 @@ var helper = (function(){
 
 })();
 
-var app = new helper();
-app.start();
+if (nconf.get('repopulate-db')==='YES') {
+    var app = new helper();
+    app.start();
+} else {
+    return;
+}
