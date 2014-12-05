@@ -353,7 +353,7 @@ var studentManageApp = (function () {
                     valuePrimitive: true,
                     filter: "startswith",
                     minLength: 3,   
-                    dataTextField: "username",
+                    dataTextField: "fullname",
                     dataValueField: "id"
                 });
                 $pickedBy.kendoDropDownList({
@@ -362,7 +362,7 @@ var studentManageApp = (function () {
                     valuePrimitive: true,
                     filter: "startswith",
                     minLength: 3,   
-                    dataTextField: "username",
+                    dataTextField: "fullname",
                     dataValueField: "id"
                 });
                 if (!e.model.isNew()) {
