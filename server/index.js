@@ -35,6 +35,7 @@ exports.getLogin = function (req, res) {
     if (!message || message.length < 1) message = null;
 
     res.render('login', {
+        school: 'Hanlin',
         title: 'Login',
         message: message,
         user: req.session.user 
@@ -66,7 +67,9 @@ exports.usermanage = function (req, res) {
     if (!req.session.user) return res.send(404);
     if (req.session.user.userType > 1) return res.send(401);
     res.render('usermanage', {
-        user: req.session.user
+        user: req.session.user,
+        school: 'Hanlin',
+        title: 'User Management'
     });
 }
 
@@ -75,6 +78,8 @@ exports.pickupreport = function (req, res) {
     if (req.session.user.userType > 1) return res.send(401);
     res.render('pickupreport', {
         user: req.session.user
+        school: 'Hanlin',
+        title: 'Pickup Report'
     });
 }
 
@@ -83,5 +88,7 @@ exports.styleguide = function (req, res) {
     if (req.session.user.userType > 1) return res.send(401);
     res.render('styleguide', {
         user: req.session.user
+        school: 'Hanlin',
+        title: 'StyleGuide'
     });
 }
