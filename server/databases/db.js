@@ -9,6 +9,8 @@ var nconf = require('nconf');
 var User = require('../models/User');
 var Class = require('../models/Class');
 var StudentParent = require('../models/StudentParent');
+var StudentPickupDetail = require('../models/StudentPickupDetail');
+var StudentPickupReport = require('../models/StudentPickupDetail');
 var logger = require('../utils/logger');
 var __ = require('underscore');
 
@@ -35,6 +37,13 @@ exports.populateDB = function () {
     });
     StudentParent.remove({}, function(err) {
         logger.info('StudentParent removed')
+    });
+
+    StudentPickupDetail.remove({}, function (err) {
+        logger.info('StudentPickupDetail removed')
+    });
+    StudentPickupReport.remove({}, function (err) {
+        logger.info('StudentPickupReport removed')
     });
 
     //testuser
