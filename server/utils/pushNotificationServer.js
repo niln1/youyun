@@ -11,7 +11,7 @@ var apn = require('apn');
 var apnOptions = {
     cert: __dirname + '/pushNotificationCerts/apns/HLYYDevCert.pem',
     key:  __dirname + '/pushNotificationCerts/apns/HLYYDevKey.pem',
-    production: false,
+    production: (process.env.MONGODB_DATABASE == 'hanlin-production') ? true : false,
     // "batchFeedback": true,
     // "interval": 300
 };

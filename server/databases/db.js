@@ -11,6 +11,7 @@ var Class = require('../models/Class');
 var StudentParent = require('../models/StudentParent');
 var StudentPickupDetail = require('../models/StudentPickupDetail');
 var StudentPickupReport = require('../models/StudentPickupDetail');
+var Device = require('../models/Device');
 var logger = require('../utils/logger');
 var __ = require('underscore');
 
@@ -44,6 +45,10 @@ exports.populateDB = function () {
     });
     StudentPickupReport.remove({}, function (err) {
         logger.info('StudentPickupReport removed')
+    });
+
+    Device.remove({}, function (err) {
+        logger.info('Device removed')
     });
 
     //testuser
