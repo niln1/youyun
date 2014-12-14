@@ -8,14 +8,21 @@ var Feed = require('../models/Feed');
 
 /* Apple push notification */
 var apn = require('apn');
-var apnOptions = {
-    cert: __dirname + '/pushNotificationCerts/apns/HLYYDevCert.pem',
-    key:  __dirname + '/pushNotificationCerts/apns/HLYYDevKey.pem',
-    production: false
-    // production: (process.env.MONGODB_DATABASE == 'hanlin-production') ? true : false
-    // "batchFeedback": true,
-    // "interval": 300
-};
+var apnOptions;
+// check env
+if (process.env.MONGODB_DATABASE == 'hanlin-production') {
+    apnOptions = {
+        cert: __dirname + '/pushNotificationCerts/apns/HLYYProdCert.pem',
+        key:  __dirname + '/pushNotificationCerts/apns/HLYYDevKey.pem',
+        production: true
+    };
+} else {
+    apnOptions = {
+        cert: __dirname + '/pushNotificationCerts/apns/HLYYDevCert.pem',
+        key:  __dirname + '/pushNotificationCerts/apns/HLYYDevKey.pem',
+        production: false
+    };
+}
 
 var apnConnection = new apn.Connection(apnOptions);
 
@@ -83,9 +90,12 @@ pushNotificationServer.sendPushNotification = function (deviceType, token, messa
         note.alert = message || '';
         note.payload = options.payload || {};
 
-        console.log(apnOptions);
-
-        apnConnection.pushNotification(note, device);
+        try {
+            apnConnection.pushNotification(note, device);
+        } catch (e) {
+            logger.error('APNS Error');
+            logger.error(e); 
+        }
 
     } else if (deviceType === 1) {
         logger.info('Pushing to an Android device with message "' + deviceType + '" and token "' + token + '".');
