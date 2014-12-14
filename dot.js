@@ -54,6 +54,7 @@ mongoose.connect(uristring, { mongos: true }, function (err, res) {
  * Setup environment
  */
 var env = nconf.get('env');
+process.env.DEBUG='apn';
 process.env.NODE_ENV = env;
 app.set('env', nconf.get('env'))
 app.set('port', nconf.get('port'));
