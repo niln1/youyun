@@ -66,12 +66,14 @@ exports.route = function (socket) {
                         return socket.session.user._id == data.pickedBy._id;
                     });
                 logger.info("filtered report for the current user");
+                console.log(report);
                 socket.emit('pickup::teacher::get-report-for-today::success', report);
             } else {
                 throw new Error("No report for today");;
             }
         })
         .fail(function (err) {
+            logger.warn("Error: pickup::teacher::get-report-for-today::fail");
             logger.warn(err);
             socket.emit('all::failure', err);
             socket.emit('pickup::teacher::get-report-for-today::fail', err);
