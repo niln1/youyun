@@ -11,7 +11,7 @@ var apn = require('apn');
 var apnOptions = {
     cert: __dirname + '/pushNotificationCerts/apns/HLYYDevCert.pem',
     key:  __dirname + '/pushNotificationCerts/apns/HLYYDevKey.pem',
-    production: (process.env.MONGODB_DATABASE == 'hanlin-production') ? true : false,
+    production: (process.env.MONGODB_DATABASE == 'hanlin-production') ? true : false
     // "batchFeedback": true,
     // "interval": 300
 };
@@ -81,6 +81,8 @@ pushNotificationServer.sendPushNotification = function (deviceType, token, messa
         note.sound = options.sound || "ping.aiff";
         note.alert = message || '';
         note.payload = options.payload || {};
+
+        console.log(apnOptions);
 
         apnConnection.pushNotification(note, device);
 
