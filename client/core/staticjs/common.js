@@ -10,3 +10,7 @@ var common = {};
 common.showError = function () {
     $("#error-modal").modal("show");
 };
+
+$('html.touch nav.user').click(function() {
+	$('nav.user ul').toggleClass('active');
+});
