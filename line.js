@@ -1,5 +1,5 @@
 /*
- * file: line.js
+ * file: line.js multithread simulation
  * Copyright (c) 2014, Ranchao Zhang & Zhihao Ni. All rights reserved.
  */
 "use strict";
