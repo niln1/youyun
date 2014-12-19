@@ -144,12 +144,15 @@ StudentPickupReportSchema.statics.findAllReports = function () {
     var defer = Q.defer();
 
     this.find({})
-    .populate('needToPickupList')
+    // .populate('needToPickupList', 'studentPickupDetail')
     .populate('absenceList')
     .populate('pickedUpList.student pickedUpList.pickedBy')
+    .populate('needToPickupList')
     .exec(function (err, reports) {
         if (err) defer.reject(err);
-        else defer.resolve(reports);
+        else {
+            defer.resolve(reports);
+        }
     });
     return defer.promise;
 };

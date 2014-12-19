@@ -20,7 +20,7 @@ var StudentPickupDetailSchema = new Schema({
     pickedBy: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: false
+        required: true
     },
     mondayPickupTime: {
         type: String

@@ -72,6 +72,7 @@ exports.route = function (socket) {
             }
         })
         .fail(function (err) {
+            logger.warn("Error: pickup::teacher::get-report-for-today::fail");
             logger.warn(err);
             socket.emit('all::failure', err);
             socket.emit('pickup::teacher::get-report-for-today::fail', err);

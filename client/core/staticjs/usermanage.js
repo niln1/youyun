@@ -95,7 +95,7 @@ var studentManageApp = (function () {
                     var url = "/api/v1/studentpickupdetails";
                     var data = {
                         studentId: options.data.student,
-                        pickedBy: options.data.pickedBy === "" ? null : options.data.pickedBy,
+                        pickedBy: options.data.pickedBy,
                         mondayPickupTime: options.data.mondayPickupTime,
                         tuesdayPickupTime: options.data.tuesdayPickupTime,
                         wednesdayPickupTime: options.data.wednesdayPickupTime,
@@ -140,7 +140,7 @@ var studentManageApp = (function () {
                 },
                 update: function(options) {
                     var submitData = {
-                        pickedBy: options.data.pickedBy === "" ? null : options.data.pickedBy,
+                        pickedBy: options.data.pickedBy._id,
                         mondayPickupTime: options.data.mondayPickupTime,
                         tuesdayPickupTime: options.data.tuesdayPickupTime,
                         wednesdayPickupTime: options.data.wednesdayPickupTime,
@@ -363,7 +363,7 @@ var studentManageApp = (function () {
                     filter: "startswith",
                     minLength: 3,   
                     dataTextField: "fullname",
-                    dataValueField: "id"
+                    dataValueField: "_id"
                 });
                 if (!e.model.isNew()) {
                     $("#student-input-wrapper").hide();

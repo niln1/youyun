@@ -244,12 +244,12 @@ var pickupReportApp = (function () {
             },
             sortable: true,
             columns: [{
-                template: '#= student.firstname # #= student.lastname #',
-                field: 'student.firstname',
+                template: '#= student.fullname #',
+                field: 'student.fullname',
                 title: "Student",
             },{
-                template: '#= pickedBy.firstname # #= pickedBy.lastname #',
-                field: 'pickedBy.firstname',
+                template: '#= pickedBy.fullname #',
+                field: 'pickedBy.fullname',
                 title: 'Picked By',
             }, {
                 
@@ -271,8 +271,8 @@ var pickupReportApp = (function () {
                 field: "pickupLocation",
                 title: "Location",
             },{
-                template: "#= firstname # #= lastname #",
-                field: "firstname",
+                template: "#= fullname #",
+                field: "fullname",
                 title: "Student Name",
             }]
         });
