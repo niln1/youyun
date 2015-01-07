@@ -15,6 +15,24 @@ var gm = require('gm');
 var __ = require('underscore');
 var Q = require('q');
 
+exports.dehash = function (req, res) {
+    return apiServer.apiCallHelper(req, res, {
+        infoMessage: "Users -- Dehash",
+        userValidationHandler: function(user, signatureIsValid) {
+            return true;
+        },
+        processHandler: function() {
+            // var defer = Q.defer();
+            // return defer.promise;
+            return true;
+        },
+        successHandler: function(detail) {
+            logger.info("Users -- Dehash Finished");
+            apiServer.sendResponse(req, res, detail, 'User info successfully dehashed');
+        }
+    });
+}
+
 exports.createUser = function (req, res) {
     apiServer.verifySignature(req, res, createUserHelper);
 }

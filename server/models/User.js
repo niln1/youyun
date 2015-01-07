@@ -16,6 +16,8 @@ var __ = require('underscore');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
+var HASH_FACTOR = 3;
+
 var UserSchema = new Schema({
     username: {
         type: String,
@@ -108,6 +110,23 @@ UserSchema.pre('save', function (next) {
     });
 
 });
+
+/**
+ * Get the public hash from userid
+ */
+UserSchema.methods.gethash = function (cb) {
+    this._id
+};
+
+/**
+ * dehash the public hash to get user id
+ */
+UserSchema.methods.gethash = function (cb) {
+    bcrypt.compare(candidatePassword, this.toJSON().password, function (err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
 
 /**
  * Compare if the candidate password hash is the same as the one in collection
