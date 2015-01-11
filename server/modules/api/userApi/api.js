@@ -96,7 +96,7 @@ module.exports = [{
         'description': 'return child user of user with userId',
         'response': {} // sample data
     }
-}, {
+},{
     'url': '/api/v1/users/dehash',
     'GET': {
         'handler': users.dehash,

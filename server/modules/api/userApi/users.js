@@ -24,7 +24,7 @@ exports.dehash = function (req, res) {
         processHandler: function() {
             // var defer = Q.defer();
             // return defer.promise;
-            return true;
+            return User.dehash("328888842");
         },
         successHandler: function(detail) {
             logger.info("Users -- Dehash Finished");

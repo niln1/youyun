@@ -114,18 +114,15 @@ UserSchema.pre('save', function (next) {
 /**
  * Get the public hash from userid
  */
-UserSchema.methods.gethash = function (cb) {
-    this._id
+UserSchema.methods.gethash = function (hash) {
+    return '32' + this._id + '42';
 };
 
 /**
  * dehash the public hash to get user id
  */
-UserSchema.methods.gethash = function (cb) {
-    bcrypt.compare(candidatePassword, this.toJSON().password, function (err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
+UserSchema.statics.dehash = function (hash) {
+    return hash.slice(2,-2);
 };
 
 /**
