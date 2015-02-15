@@ -1,76 +1,67 @@
 location,firstname,lastname,grade,room,parentsname
-Heather,"Mingyan, Zhou",,K(1),8,Senqiang Zhou/Xiaotao Huang
-Heather,"Francis, Lu",,1(17),2,Jason Lu/Weipeng
-Heather,"Jackson, Mao",,1(17),9,Daniel Maling/Kelly Wong
-Heather,"Kevin, Shen",,1(17),22,Kang Shen/Hua Long
-Heather,"Austyn, Lee-Meintzer",,1(17),6,Kip Meintzer/Millie Lee
-Heather,"Daniel, Lin",,2(17),,Ming Lin/Yan Tan
-Heather,"Ethan, Im",,2(17),12,Fred Im/Amy Im
-Heather,"Kevin, Yang",,2(17),,Bin Yang/Jing Liu
-Heather,"Alan, Szymanski",,2(17),,Filip Szymanski/Lei Wang
-Heather,"Alison, Mao",,3(17),14,Daniel Maling/Kelly Wong
-Heather,"Aymen, Jackson",,3(17),15,Adam Jackson/Cai Chan Zhang
-Heather,Natalie Su,,2(17),13,Eric Su/Angela Teng
-Heather,"Linda, Lin",,4(17),,Ming Lin/Yan Tan
-Heather,"Lillian, Chen",,4(17),19,Xiaoke Chen/Yan Li
-Heather,"Ivy,Zhou",,4(17),20,Senqiang Zhou/Xiaotao Huang
-SCLC,"Kanav, Shah",,K,9,"Chitrang, Shah/Prachi Shah"
+Heather,"Mingyan, Zhou*",,K,8,Senqiang Zhou/Xiaotao Huang
+Heather,Kevin Shen,,1,,Kang Shen/Hua Long
+Heather,"Jackson, Mao",,1,9,Daniel Maling/Kelly Leong
+Heather,"Kevin, Shen",,1,22,Kang Shen/Hua Long
+Heather,"Austyn, Lee-Meintzer",,1,6,Kip Meintzer/Millie Lee
+Heather,"Ethan, Im",,2,12,Fred Im/Amy Im
+Heather,"Kevin, Yang(3)",,2,,Bin Yang/Jing Liu
+Heather,"Alan, Szymanski",,2,,Filip Szymanski/Lei Wang
+Heather,"Alison, Mao",,3,14,Daniel Maling/Kelly Leong
+Heather,"Aymen, Jackson",,3,15,Adam Jackson/Cai Chan Zhang
+Heather,Natalie Su,,2,13,Eric Su/Angela Teng
+Heather,"Lillian, Chen",,4,19,Xiaoke Chen/Yan Li
+Heather,"Ivy,Zhou",,4,20,Jieqiang zhou/xiaotao huang
+Arudel,Annie Szymanski,,K,13,Filip Szymanski/Lei Wang
+Arudel,Noah Pang,,K,1,Creighton Pang/Tian Tseng
+Arudel,"Sophia, Lee",,K,3,Nelson Lee/Sherice Lee
+Arudel,Emily Lu,,1,11,Xiao Sheng Lu/Sui To
+Arudel,"Aiden, Lee",,2,9,Nelson Lee/Sherice Lee
+Arudel,"Alex, Nicholson(3)",,2,,BrianNicholson/CatheryneNicholsn
+Arudel,"Ella, Phun",,1,,Phieu Phun/Melinda Bang
+Arudel,"Markus, Lu",,2,20,Edward Lu/Phoebe To
+Arudel,"Marc, Soohoo (3)",,2,18,Jeffrey Soohoo/Leticia Soohoo
+SCLC,"Kanav, Shah*",,K,9,"Chitrang, Shah/Prachi Shah"
 SCLC,"Kylie, Ho",,1,9,Ricky Ho/Joy Cheung
 SCLC,"Sabrina, Alvarez",,1,10,Alvin Alvarez/Grace Chen
 SCLC,"Juliet, Klinke",,1,8,John Kinke/Alvis Lee
 SCLC,"Sabrina, Klinke",,k,11,John Kinke/Alvis Lee
 SCLC,"Ava, Wong",,1,,David Wong/Daphne Chi
 SCLC,"Kyle, Ho",,2,,Ricky Ho/Joy Cheung
-Arundel,Annie Szymanski,,TK,13,Filip Szymanski/Lei Wang
-Arundel,Noah Pang,,K,1,Creighton Pang/Tian Tseng
-Arundel,"Sophia, Lee",,K,3,Nelson Lee/Sherice Lee
-Arundel,Emily Lu,,1,11,Xiao Sheng Lu/Sui To
-Arundel,"Aiden, Lee",,2,9,Nelson Lee/Sherice Lee
-Arundel,"Alex, Nicholson",,2,,BrianNicholson/CatheryneNicholson
-Arundel,"Ella, Phun",,1,,Phieu Phun/Melinda Bang
-Arundel,"Markus, Lu",,2,20,Edward Lu/Phoebe To
-Arundel,"Marc, Soohoo (3)",,2,18,Jeffrey Soohoo/Leticia Soohoo
-Arundel,"Madeline, Wright",,2,,Stephen Wright/Julie Wong
-Arundel,"Isabel, Wright",,3,,Stephen Wright/Julie Wong
 White Oaks,"Erin, Chow",,1,F,"Eugene, Chow/Corrine, Tan"
 White Oaks,"Zachary, Heisler",,1,11,"Kevin, Heisler/Jing, Heisler"
 White Oaks,"Shangheng, Wu",,1,11,"Dongdan, Wu/Sonia, Wang"
-Brittan Acres,Miles Yu,,K,3,Joseph Yu/Mary Rhee
-Fox,Bailey Mok,,K(8),16,Barney Mok/Ervinna Mok
-Fox,Emmett Rennich 郑佳宇,,K(8),6,Steve Rennich/Junmei Rennich
-Fox,Justin Wong,,K(8),16,Jason Wong/Angela Wong
-Fox,Dominic Wong 黄宇瀚,,K(8),2,Leonard Wong/Alice Wong
-Fox,Mak Boonyapornnad,,K(8),6,Kaweesak/ Donaya Luangchotikul
-Fox,Kyle Huang,,K(8),4,Val Huang/Daniele Ja
-Fox,Keonie Lam 林慧,,K(8),16,David Lam/Jessie Jiang
-Fox,Sophia Angelie Laluc,,K(8),6,Ben Laluc/Anne Laluc
-Fox,"Michelle, Lo",,1 (15),1,Hillman Lo/Petty Yao
-Fox,"Jason,Westpal",,1 (15),3,Evi Wiratma
-Fox,"Sophia,Shen,Yip",,1 (15),3,Edgar Yip/Dongni Shen
-Fox,Skyler Peterson,,2 (15),7,Michael Peterson/Cindy Peterson
-Fox,Skylar Le,,2 (15),,Andy Le/Autumn Truong
-Fox,Kellie Lam 林嘉,,3 (15),18,David Lam/Jessie Jiang
-Fox,Sydney Tao 陶敬怡,,3 (15),18,Peter/Jenny Tao
-Fox,"Christina, Yip",,3 (15),18,Dayan Yip/Jenny Yip
-Fox,Mikayla Rennich,,3 (15),8,Steve Rennich/ Junmei Rennich
-Fox,Ethan Huang,,3 (15),8,Val Huang/Daniete Ja
-Fox,"Tiana Pan(M,Tu, Thurs)",,3 (15),18,Yonghong Pan/Queenie Ke
-Fox,Misha Zhou周蕾,,4 (15),,Xiangxing zhou/Yuonne Jiang
-Fox,"Austin, Li (3)",,4 (15),,Sun Li
-Fox,Teasha Zhou 周芸(3),,5 (15),,Xiangxing zhou/Yuonne Jiang
-Fox,Megan Lo,,5 (15),14,Hillman Lo/Petty Yao
+Brittan Acres ,Miles Yu*,,K,3,Joseph Yu/Mary Rhee
+Fox,Bailey Mok,,K,16,Barney Mok/Ervinna Mok
+Fox,Emmett Rennich,,K,6,Steve Rennich/Junmei Rennich
+Fox,Justin Wong,,K,16,Jason Wong/Angela Wong
+Fox,Mak Boonyapornnad,,K,6,Kaweesak/ Donaya Luangchotikul
+Fox,Kyle Huang,,K,4,Val Huang/Daniele Ja
+Fox,Keonie Lam 林慧,,K,16,David Lam/Jessie Jiang
+Fox,Sophia Angelie Laluc,,K,6,Ben Laluc/Anne Laluc
+Fox,"Michelle, Lo",,1,1,Hillman Lo/Petty Yao
+Fox,"Jason,Westpal",,1,3,Evi Wiratma
+Fox,"Sophia, Yip",,1,3,Edgar Yip/Dongni Shen
+Fox,Skyler Peterson,,2,7,Michael Peterson/Cindy Peterso
+Fox,Kellie Lam 林嘉,,3,18,David Lam/Jessie Jiang
+Fox,Sydney Tao 陶敬怡,,3,18,Peter/Jenny Tao
+Fox,"Christina, Yip",,3,18,Dayan Yip/Jenny Yip
+Fox,Mikayla Rennich,,3,8,Steve Rennich/ Junmei Rennich
+Fox,Ethan Huang,,3,8,Val Huang/Daniete Ja
+Fox,Tiana Pan(3),,3,18,Yonghong Pan/Queenie Ke
+Fox,Misha Zhou周蕾(3),,4,,Xiangxing zhou/Yuonne Jiang
+Fox,Teasha Zhou 周芸(3),,5,,Xiangxing zhou/Yuonne Jiang
+Fox,Megan Lo,,5,14,Hillman Lo/Petty Yao
+Fox,Dominic Wong 黄宇瀚,,K,2,Leonard Wong/Alice Wong
 Cipriani,Owen Lee 李昌桦,,K,,Tommy Lee/Vicky Tsang
 Cipriani,"Ian, Shi",,1,,Frank Shi/Fang Li
 Cipriani,"Ryan, Choong",,1,,Nicholas Choong/Helen Lin
 Cipriani,"Mina, Wu (3)",,2,,Ben Wu/Pat Lee
 Cipriani,Nicole Jin 晋嘉宝,,5,,Lizhang Jin/Zhaoyu Qian
-Seridipity,Owen Fu,,K,,Joe Fu/Grace Xiao
-Seridipity,"Hanwei, Lu",,K,,Lin Lu/Yue Sun
+Seridipity,"Hanwen, Lu",,K,,Lin Lu/Yue Sun
 Seridipity,"Bohan, Shao",,1,,"Weili Shao/Jing, Chen"
-Seridipity,Jack Fu,,2,,Joe Fu/Grace Xiao
 Seridipity,"Cealyn, Cheng",,2,,Casey Cheng/Chelsi Cheng
-Notro Dame,"Audrey&Olivia, Luey",,K,,Andrew Luey/Jennifer Vo
-Central,Kaden Praditkul,,K,,Bryan Praditkul/Megan Cai
+Notro Dame,"Olivia, Luey",,K,,Andrew Luey/Jennifer Vo
 Central,Victor Behera 彭维克,,K,,Prabhat Behera/Binbin Peng
 Central,Ava K Allen,,K,,Rodney Allen/Elizabeth Allen
 Central,Kathleen Hananouchi,,K,,Danny Hananouchi/Kerry Hananouchi
@@ -78,60 +69,50 @@ Central,Zachary Tou,,K,,Joseph Tou/Trinh Tran
 Central,"Jacob, Mauger",,1,,Jacob Bradford Mauger/Laurie Leung
 Central,"Connor, Chin",,2,,Kyle Chin/Jennifer Chin
 Central,"Lina, Yu",,2,,Shane Yu/Jennifer Yu
-Central,"Daniel, Behera",,2,,Prabhat Behera/Binbin Peng
 Central,"Dimitry, Flores",,2,,Nestor Flores/Olga Singleton
+Central,"Clarissa, Lai",,5,,William Lai/Cassandra Shu
 Central,"Toryn, Ma",,2,,Gilbert Ma/Sharan Hue
 Central,"Derek, Zhang",,2,,"Lulu, Zhang/Jing, Li"
 Central,"Joshua, Chin",,3,,Kyle Chan/Jennifer Chan
 Central,"Aiden, Chan (3)",,4,,Johnny Chan/Betty Yip Chan
 Central,"Cayden, Ma",,5,,Gilbert Ma/Sharan Hue
-Central,"Clarissa, Lai",,5,,William Lai/Cassandra Shu
-Nesbitt (7),Anna Bernadi (3),,TK,,Nicolas Bernadi/Caroline Bernadi
-Nesbitt (7),Caitlyn Cheung,,TK,,Anthony Cheung/Agnes Tsang
-Nesbitt (7),Andrew Yip,,TK,,Dayan Jason Yip/Jenny Yip
-Nesbitt (7),"Kathryn,Ercoli",,TK,,Marc Ercoli/Kristina Erocli
-Nesbitt (7),Connor Hoang 黄锦洋,,TK,,Chi Hoang/Dorothy Huang
-Nesbitt (7),Conner Peterson姚千林,,TK,,Michael Peterson/Cindy Peterson
-Nesbitt (7),Ava Saucedo,,K,,Andrew Saucedo/Kathy Gilbreath
-IHM,"Jayden, Young",,K,,Joshua Young/Jennifer Young
+Nesbitt,Ty Akin Narisaranukul,,TK,,Nick /Neuf Narisaranukul
+Nesbitt,Caitlyn Cheung,,TK,,Anthony Cheung/Agnes Tsang
+Nesbitt,Andrew Yip,,TK,,Dayan Jason Yip/Jenny Yip
+Nesbitt,"Kathryn,Ercoli",,TK,,Marc Ercoli/Kristina Erocli
+Nesbitt,Connor Hoang 黄锦洋,,TK,,Chi Hoang/Dorothy Huang
+Nesbitt,Conner Peterson姚千林,,TK,,Michael Peterson/Cindy Peterson
+Nesbitt,Ava Saucedo,,K,,Andrew Saucedo/Kathy Gilbreath
+Nesbitt,"Jayden, Young",,K,,Joshua Young/Jennifer Young
 IHM,"Isabella,Saleza",,1,,Alex Salazar/Karen Chu
 IHM,"Jacob,Young",,2,,Joshua Young/Jennifer Young
-ROYCLOUD,Christopher Baran,,2,,Peter Baran/Sandra Chang
+IHM,Christopher Baran,,2,,Peter Baran/Sandra Chang
 ROYCLOUD,Oliver Newhauser,,2,,Rick Newharser/Esther Newhauser
 ROYCLOUD,Andrew Duh,,2,,Harry Duh/Jen Cuo
-BOA,"Jalen, Wong",,K,,Steven Wong/Barbara Qin
-Laorel,Kyle Peng 彭飞,,2,,Kevin Peng/Lynn Jiang
-Redwood Shores,Benjamin Wu,,K,,Jinqiang Wu/Li Gao
-Redwood Shores,Kelvin Gao 高泊宇,,K,,Jeff Gao/Bing Gao
-Redwood Shores,Tiffany Sun,,K,2,Caijin Sun/Yingping Wang
-Redwood Shores,"Allison, Tang",,1,,Chihui Tang/Cyanna Chung
-Redwood Shores,Henry Fu,,1,8,Frank Fu/Judy Xu
-Redwood Shores,"Jason, Yuan",,1,,Hong Yuan/Zhi Hong Tang
-Redwood Shores,Paul Zheng,,1,,Yu Zheng/ Hua Wang
-Redwood Shores,"Euclid, Wong",,1,,Eric Wong/Charlotte Lee
-Redwood Shores,"Angelina, Zhang",,1,10,Yunxiang Zhang/Yinyan Tang
-Redwood Shores,"Bryce, Deng",,2,,Jia Deng/Yingchen Xi
-Redwood Shores,Tyler Loo,,2,,Andy Loo/Rebecca Chan
-Redwood Shores,"Elisa,Wimmer",,3,,Richard WImmer/Cathy Luo-Wimmer
-Redwood Shores,"Aidan, Tang",,3,,Chi-hui Tang/Sinyan Cyanna Chung
-Redwood Shores,"Amelie, Zhou",,3,,Baosuo Zhou/Jinye Huo
-Redwood Shores,"Charlotte, Lin",,3,,Ben Lin/Amy Mene
-Redwood Shores,"Enya, Luo-Wimmer",,5,,Richard Wimmer/Cathy Luo-Wimmer
-Redwood Shores,"Wendy, Fu",,5,,Frank Fu/Judy Xu
-Redwood Shores,"Christina, Fu(3)",,5,,Haomin Fu/Qin yu
+BOA,"Jalen, Wong*",,K,Room,Steven Wong/Barbara Qin
+Laurel,Kyle Peng 彭飞,,2,,Kevin Peng/Lynn Jiang
+Laurel,Yang Yang,,1,11,Yushun Yang/Weixia Dong
+Redwood Shores Elementary,Benjamin Wu,,K,,Jinqiang Wu/Li Gao
+Redwood Shores Elementary,Kelvin Gao 高泊宇,,K,,Jeff Gao/Bing Gao
+Redwood Shores Elementary,Tiffany Sun,,K,,Yingping Wang
+Redwood Shores Elementary,Christina Fu(3),,5,,Qin Yu
+Redwood Shores Elementary,"Jason, Yuan",,1,,Hong Yuan/Zhi Hong Tang
+Redwood Shores Elementary,Paul Zheng,,1,,Yu Zheng/ Hua Wang
+Redwood Shores Elementary,"Euclid, Wong",,1,,Eric Wong/Charlotte Lee
+Redwood Shores Elementary,"Allison, Tang",,1,,Chihui Tang/Cyanna Chung
+Redwood Shores Elementary,"Bryce, Deng",,2,,Jia Deng/Yingchen Xi
+Redwood Shores Elementary,Tyler Loo,,2,,andy Loo/Rebecca Chan
+Redwood Shores Elementary,"Aidan, Tang",,3,,Chi-hui Tang/Sinyan Cyanna Chung
+Redwood Shores Elementary,"Amelie, Zhou",,3,,Baosuo Zhou/Jinye Huo
+Redwood Shores Elementary,"Charlotte, Lin",,3,,Ben Lin/Amy Meng
 Sand Piper,Jaime Yong,,K,,Ronald Yong/Bernice Lam
-Sand Piper,Amanda Feidmeier 王曼达,,K,,David Feldmeier/Yan Wang
 Sand Piper,Emma Duan/段佳妮,,k,,Huizhong Duan/ZhenWu
-Sand Piper,Erica Hu,,1,,Arun Nagpal/Sunny Su
 Sand Piper,"Michael, Long",,1,,Dong Long/Amy Koo
 Sand Piper,"Isabelle, Ling (3)",,1,,Gary Shu Ling/Jing Huang
-Sand Piper,"Aurthur, Bernadi (3)",,1,,Nicholas Bernadi/Caroline Bernadi
 Sand Piper,"Leonard, Cheung",,1,,Anthony Cheung/Agnes Tsang
-Sand Piper,"Haeley, Kwok (3)",,1,,Kurt Kwok/Anthea Pang
 Sand Piper,"Magnus, Chow",,2,5,Christopher Chow/Nancy Yao
-Sand Piper,"Emily, Song",,2,,Yuan Song/Amy Meng
-Sand Piper,"Brianna, Feldmeier",,2,,David Feldmeier/Yan Wang
-Sand Piper,Ryan Geng 耿瑞,,2,,Mao Geng/Yu Zhang
+Sand Piper,"Emily, Song",,2,,Yuan Song/Amy Meng (Fanru Meng)
+Sand Piper,Ryan Geng 耿瑞(3),,2,,Mao Geng/Yu Zhang
 Sand Piper,"Kacy, Wang (3)",,2,,Kirk Wang/Amy Liu
 Sand Piper,"Sandra, Luo",,2,,Qing Luo/Shumin Wu
 Sand Piper,"Ethan, Zhang",,3,,Edwin Zhang/Lili Shi
@@ -139,3 +120,4 @@ Sand Piper,"Ryan, Yong",,3,,Ronald Yong/Bernice Lam
 Sand Piper,"Leeloo, Chow",,4,10,Christopher Chow/Nancy Yao
 Sand Piper,"Jasmine, Yu",,4,,Jarrod Joseph Yu/Leylanie Go
 Sand Piper,"Karina, Tam",,4,,Tony Tam/Wynne Chan
+Sand Piper,Erica Hu,,1,,Arun Nagpal/Sunny Su

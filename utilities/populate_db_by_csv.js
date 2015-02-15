@@ -257,7 +257,8 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+      // self.generateRandomPassword(10);
       console.log("++++uname++++",uname);
 
       var tempStudent = new User({

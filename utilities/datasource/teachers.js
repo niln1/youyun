@@ -3,40 +3,25 @@ module.exports = { data:[
     firstname: "Jay",
     lastname: "Son"
   },{
-    firstname: "Ray",
-    lastname: "Sun"
-  },{
     firstname: "Annie",
     lastname: "Yan"
   },{
-    firstname: "Beibei",
-    lastname: "Liu"
-  },{
     firstname: "Betty",
-    lastname: "Laoshi"
-  },{
-    firstname: "Kiki",
-    lastname: "Yuan"
-  },{
-    firstname: "Xiang",
-    lastname: "Laoshi"
-  },{
-    firstname: "Li",
     lastname: "Laoshi"
   },{
     firstname: "Lei",
     lastname: "Laoshi"
   },{
-    firstname: "Selena",
-    lastname: "Laoshi"
-  },{
-    firstname: "Tony",
+    firstname: "Sue",
     lastname: "Laoshi",
   },{
-    firstname: "Ocean",
+    firstname: "Kathy",
     lastname: "Laoshi",
   },{
     firstname: "Tina",
+    lastname: "Laoshi",
+  },{
+    firstname: "Gong",
     lastname: "Laoshi",
   }
 ]};
