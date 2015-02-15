@@ -21,9 +21,12 @@ var StudentPickupReport = require('../server/models/StudentPickupReport');
 /*
  * Setup mongoose
  */
+
+var conf = require('../server/utils/config.json');
+
 var uristring = process.env.MONGO_URL ||
                 process.env.MONGO_URI ||
-                nconf.get('mongodb-url');
+                nconf.get('mongodb-url') || conf['mongodb-url'];
 
 var mongoOptions = {
     user: process.env.MONGODB_USERNAME,
@@ -323,7 +326,8 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+      // tempPassword = self.generateRandomPassword(10);
       // self.parents.push(user);
       var tempParent = new User({
         firstname: name,
@@ -380,7 +384,9 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+
+      // tempPassword = self.generateRandomPassword(10);
       console.log("++++uname++++",uname);
 
       var tempTeacher = new User({
@@ -420,7 +426,9 @@ var helper = (function(){
 
     var deferred = Q.defer();
 
-    tempPassword = self.generateRandomPassword(10);
+    tempPassword = uname + 'pw';
+
+    // tempPassword = self.generateRandomPassword(10);
     console.log("++++uname++++",uname);
 
     var tempAdmin = new User({
