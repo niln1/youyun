@@ -242,6 +242,7 @@ var helper = (function(){
         if (err) console.log(err);
         fs.writeFile(__dirname + options.path, csv, function(err) {
           if (err) throw err;
+          console.log(csv);
           console.log(options.name + ' csv file saved');
           deferred.resolve();
         });
