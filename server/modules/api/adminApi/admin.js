@@ -70,24 +70,22 @@ exports.createUser = function (req, res) {
                 data.password = data.username + 'pw';
                 logger.debug(data);
                 var newUser = new User(data);
-                defer.resolve(newUser);
-                // newUser.save(function (err, user) {
-                //     if (!err && user) {
-                //         user = castOutPassword(user);
-                //         defer.resolve(user);
-                //     } else {
-                //         defer.reject(err);
-                //     }
-                // });
+                newUser.save(function (err, user) {
+                    if (!err && user) {
+                        user = castOutPassword(user);
+                        defer.resolve(user);
+                    } else {
+                        defer.reject(err);
+                    }
+                });
 
             });
-                            return defer.promise;
+
+            return defer.promise;
 
         },
 
         successHandler: function(user) {
-
-            logger.warn(user);
             logger.info("Admin -- User Created");
             apiServer.sendResponse(req, res, user, 'New user successfully Created');
         }
