@@ -218,4 +218,17 @@ UserSchema.methods.isAlumini = function () {
     return this.userType === 5;
 };
 
+UserSchema.statics.getUserTypeString = function (userType) {
+logger.debug(userType);
+    switch(userType) {
+        case 0: return 'admin';
+        case 1: return 'schoolhead';
+        case 2: return 'teacher';
+        case 3: return 'student';
+        case 4: return 'parent';
+        case 5: return 'alumini';
+        default: throw new Error('unsupported type ' + userType + '!'); 
+    }
+};
+
 module.exports = mongoose.model('User', UserSchema);
