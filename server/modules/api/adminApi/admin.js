@@ -13,36 +13,6 @@
 
 exports.createUser = function (req, res) {
 
-    var generateUsernameByFnLn = function( firstname, lastname, token, hit ) {
-        var self = this;
-        var string1 = firstname.replace(/\s+/g, '').replace(",", ".");
-        var string2 = lastname.replace(/\s+/g, '').replace(",", ".");
-
-        string1 = (string1.length > 3) ? string1.substring(0,3) : string1;
-        string2 = (string2.length > 3) ? string2.substring(0,3) : string2;
-
-        var testUsername = token.toLowerCase() + string1.toLowerCase() + string2.toLowerCase() + hit;
-
-        var deferred = Q.defer();
-
-        User.find({"username":testUsername}, function(err, users){
-            if (err) deferred.reject(err);
-            if ( users.length === 0 ) {
-            deferred.resolve(testUsername);
-            } else {
-            console.log("++++++++++USERNAME EXIST+++++++++");
-            deferred.resolve(generateUsernameByFnLn(firstname, lastname, token, hit+1));
-            }
-        });
-
-        return deferred.promise;
-    };
-
-    var castOutPassword = function(user) {
-        user.password = "Black Sheep Wall";
-        return user;
-    };
-
     return apiServer.apiCallHelper(req, res, {
         infoMessage: "admin create new user",
         userValidationHandler: function(user, signatureIsValid) {
@@ -92,5 +62,37 @@ exports.createUser = function (req, res) {
 
     });
 
+}
 
+
+
+
+function castOutPassword (user) {
+    user.password = "Black Sheep Wall";
+    return user;
+}
+
+function generateUsernameByFnLn( firstname, lastname, token, hit ) {
+    var self = this;
+    var string1 = firstname.replace(/\s+/g, '').replace(",", ".");
+    var string2 = lastname.replace(/\s+/g, '').replace(",", ".");
+
+    string1 = (string1.length > 3) ? string1.substring(0,3) : string1;
+    string2 = (string2.length > 3) ? string2.substring(0,3) : string2;
+
+    var testUsername = token.toLowerCase() + string1.toLowerCase() + string2.toLowerCase() + hit;
+
+    var deferred = Q.defer();
+
+    User.find({"username":testUsername}, function(err, users){
+        if (err) deferred.reject(err);
+        if ( users.length === 0 ) {
+            deferred.resolve(testUsername);
+        } else {
+            console.log("++++++++++USERNAME EXIST+++++++++");
+            deferred.resolve(generateUsernameByFnLn(firstname, lastname, token, hit+1));
+        }
+    });
+
+    return deferred.promise;
 }
