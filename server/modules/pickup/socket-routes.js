@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
 
 var moment = require('moment-timezone');
 var timezone = 'America/Los_Angeles';
+var storedFormat = 'YYYY-MM-DD HH:mm';
 moment.tz.setDefault(timezone);
 
 var __ = require('underscore');
@@ -165,7 +166,7 @@ exports.route = function (socket) {
             // check if there is one report with same date.
             var defer = Q.defer();
             StudentPickupReport.find({
-                date: dateToValidate.format()
+                date: dateToValidate.format(storedFormat)
             }).exec(function(err, reports){
                 if (err) defer.reject(err);
                 else if (reports.length === 0) defer.resolve();
@@ -234,7 +235,7 @@ exports.route = function (socket) {
                 needToPickupList: needToPickupList,
                 absenceList: [],
                 pickedUpList: [],
-                date: dateToValidate.format()
+                date: dateToValidate.format(storedFormat)
             });
 
             newReport.save(function (err) {
