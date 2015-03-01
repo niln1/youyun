@@ -354,14 +354,12 @@ exports.route = function (socket) {
             return defer.promise;
         })
         .spread(function (user, report, studentID, pickedUp) {
-            var dateToValidate = moment(report.date);
+            var dateToValidate = moment(report.date).utc();
             var startingAvailableDate = moment(new Date()).startOf('day');
             console.log(report.date);
-            console.log(dateToValidate.format());
-
-            console.log(dateToValidate.format('L'));
+            console.log(dateToValidate.utc().format());
+            console.log(dateToValidate.utc().format('L'));
             console.log( startingAvailableDate.format());
-
             console.log( startingAvailableDate.format('L'));
             if (dateToValidate.format('L') === startingAvailableDate.format('L')
              || dateToValidate.isAfter(startingAvailableDate)) {
