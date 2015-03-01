@@ -12,6 +12,8 @@ var StudentPickupDetail = require('../../models/StudentPickupDetail');
 var mongoose = require('mongoose');
 
 var moment = require('moment-timezone');
+var timezone = 'America/Los_Angeles';
+moment.tz.setDefault(timezone);
 
 var __ = require('underscore');
 var Q = require('q');
@@ -173,7 +175,7 @@ exports.route = function (socket) {
         }).then(function () {
             // get user list
             var defer = Q.defer();
-            var dayOfTheWeek = moment(dateToValidate).format('d'); 
+            var dayOfTheWeek = moment(data.date).format('d'); 
             var existAndNotEmpty = { $exists:true, $ne: "" };
             var dayString;
 
