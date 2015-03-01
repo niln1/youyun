@@ -17,6 +17,7 @@ var User = require('../server/models/User');
 var Class = require('../server/models/Class');
 var StudentParent = require('../server/models/StudentParent');
 var StudentPickupReport = require('../server/models/StudentPickupReport');
+var StudentPickupDetail = require('../server/models/StudentPickupDetail');
 
 /*
  * Setup mongoose
@@ -66,7 +67,8 @@ var helper = (function(){
       this.removeUser(),
       this.removeClass(),
       this.removeStudentParent(),
-      this.removeStudentPickupReport()
+      this.removeStudentPickupReport(),
+      this.removeStudentPickupDetail()
       ])
     .then(self.parseDataCsv())
     .then(function() {
@@ -182,6 +184,18 @@ var helper = (function(){
     var deferred = Q.defer();
 
     StudentPickupReport.remove({}, function (err) {
+      if (err) deferred.reject(err);
+      console.log('info: Class removed');
+      deferred.resolve();
+
+    });
+    return deferred.promise;
+  };
+
+  App.prototype.removeStudentPickupDetail = function () {
+    var deferred = Q.defer();
+
+    StudentPickupDetail.remove({}, function (err) {
       if (err) deferred.reject(err);
       console.log('info: Class removed');
       deferred.resolve();
