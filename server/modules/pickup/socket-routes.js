@@ -175,8 +175,6 @@ exports.route = function (socket) {
         }).then(function () {
             // get user list
             var defer = Q.defer();
-            console.log(data.date);
-            console.log(dateToValidate);
             var dayOfTheWeek = moment(dateToValidate).format('d'); 
             var existAndNotEmpty = { $exists:true, $ne: "" };
             var dayString;
@@ -207,7 +205,9 @@ exports.route = function (socket) {
                     throw new Error("Fail to get the day string");
             }
             console.log(moment(data.date).format('d'));
+            console.log(moment(data.date).format("YYYY-MM-DD HH:mm:ss"));
             console.log(dayOfTheWeek);
+            console.log(dateToValidate.format("YYYY-MM-DD HH:mm:ss"));
 
             StudentPickupDetail.find()
             .where("pickedBy").exists(true)
