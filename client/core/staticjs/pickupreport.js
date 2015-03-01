@@ -7,6 +7,8 @@
 
 "use strict";
 var app;
+var timezone = 'America/Los_Angeles';
+moment.tz.setDefault(timezone);
 var pickupReportApp = (function () {
     /**
      * Constructor for the View
