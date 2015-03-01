@@ -278,7 +278,8 @@ exports.route = function (socket) {
             // TODO: need cleanup
             var dateToValidate = moment(report.date).startOf('day');
             var startingAvailableDate = moment(new Date()).startOf('day');
-            if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+            if (dateToValidate.utc().format('L') === startingAvailableDate.format('L')
+                || dateToValidate.isAfter(startingAvailableDate)) {
                 return [user, report, childID, needToPickup];
             } else {
                 throw new Error('Cannot modify pickup report from the past');
@@ -355,7 +356,8 @@ exports.route = function (socket) {
         .spread(function (user, report, studentID, pickedUp) {
             var dateToValidate = moment(report.date).startOf('day');
             var startingAvailableDate = moment(new Date()).startOf('day');
-            if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+            if (dateToValidate.utc().format('L') === startingAvailableDate.format('L')
+             || dateToValidate.isAfter(startingAvailableDate)) {
                 return [user, report, studentID, pickedUp];
             } else {
                 throw new Error('Cannot modify pickup report from the past');
