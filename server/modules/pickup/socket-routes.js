@@ -356,6 +356,7 @@ exports.route = function (socket) {
         .spread(function (user, report, studentID, pickedUp) {
             var dateToValidate = moment(report.date);
             var startingAvailableDate = moment(new Date()).startOf('day');
+            console.log(report.date);
             console.log(dateToValidate.format());
 
             console.log(dateToValidate.format('L'));
