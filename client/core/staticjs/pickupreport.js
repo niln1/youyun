@@ -160,7 +160,7 @@ var pickupReportApp = (function () {
     View.prototype.reRenderCalendar = function () {
         var self = this;
         this.$calendar.empty();
-        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).format("L"); });
+        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).utc().format("L"); });
         return $("#calendar").kendoCalendar({
             value: self.currentDate,
             // get the date array with date value
