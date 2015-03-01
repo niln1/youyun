@@ -276,7 +276,7 @@ exports.route = function (socket) {
         .spread(function (user, report, childID, needToPickup) {
             // only allow add absence for today or after
             // TODO: need cleanup
-            var dateToValidate = moment(report.date).startOf('day');
+            var dateToValidate = moment(report.date).utc();
             var startingAvailableDate = moment(new Date()).startOf('day');
             if (dateToValidate.utc().format('L') === startingAvailableDate.format('L')
                 || dateToValidate.isAfter(startingAvailableDate)) {
@@ -356,11 +356,6 @@ exports.route = function (socket) {
         .spread(function (user, report, studentID, pickedUp) {
             var dateToValidate = moment(report.date).utc();
             var startingAvailableDate = moment(new Date()).startOf('day');
-            console.log(report.date);
-            console.log(dateToValidate.utc().format());
-            console.log(dateToValidate.utc().format('L'));
-            console.log( startingAvailableDate.format());
-            console.log( startingAvailableDate.format('L'));
             if (dateToValidate.format('L') === startingAvailableDate.format('L')
              || dateToValidate.isAfter(startingAvailableDate)) {
                 return [user, report, studentID, pickedUp];
