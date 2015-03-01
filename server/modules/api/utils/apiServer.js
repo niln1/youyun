@@ -43,6 +43,7 @@ var apiServer = {};
 
     // start helper
     logger.info(opt.infoMessage);
+    var self = this;
     Q.all([
         this.validateUserSession(req, res),
         this.validateSignature(req, res)
@@ -61,7 +62,7 @@ var apiServer = {};
             return opt.errorHandler(err);
         } else {
             logger.warn(err);
-            this.sendBadRequest(req, res, err.toString());
+            self.sendBadRequest(req, res, err.toString());
         }
     });
 }
