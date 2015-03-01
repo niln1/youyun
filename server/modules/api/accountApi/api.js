@@ -52,4 +52,19 @@ module.exports = [{
         'description': 'Get the user using session',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/account/password',
+    'POST': {
+        'handler': accounts.changePassword,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        parameters.oldPassword,
+        parameters.newPassword
+        ],
+        'optional': [
+        ],
+        'description': 'update user password',
+        'response': {} // sample data
+    }
 }];

@@ -64,9 +64,6 @@ exports.createUser = function (req, res) {
 
 }
 
-
-
-
 function castOutPassword (user) {
     user.password = "Black Sheep Wall";
     return user;
