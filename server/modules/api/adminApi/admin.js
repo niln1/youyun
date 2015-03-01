@@ -42,7 +42,6 @@ exports.createUser = function (req, res) {
                 var newUser = new User(data);
                 newUser.save(function (err, user) {
                     if (!err && user) {
-                        user = castOutPassword(user);
                         defer.resolve(user);
                     } else {
                         defer.reject(err);
@@ -62,11 +61,6 @@ exports.createUser = function (req, res) {
 
     });
 
-}
-
-function castOutPassword (user) {
-    user.password = "Black Sheep Wall";
-    return user;
 }
 
 function generateUsernameByFnLn( firstname, lastname, token, hit ) {
