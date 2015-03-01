@@ -17,13 +17,17 @@ var User = require('../server/models/User');
 var Class = require('../server/models/Class');
 var StudentParent = require('../server/models/StudentParent');
 var StudentPickupReport = require('../server/models/StudentPickupReport');
+var StudentPickupDetail = require('../server/models/StudentPickupDetail');
 
 /*
  * Setup mongoose
  */
+
+var conf = require('../server/utils/config.json');
+
 var uristring = process.env.MONGO_URL ||
                 process.env.MONGO_URI ||
-                nconf.get('mongodb-url');
+                nconf.get('mongodb-url') || conf['mongodb-url'];
 
 var mongoOptions = {
     user: process.env.MONGODB_USERNAME,
@@ -63,7 +67,8 @@ var helper = (function(){
       this.removeUser(),
       this.removeClass(),
       this.removeStudentParent(),
-      this.removeStudentPickupReport()
+      this.removeStudentPickupReport(),
+      this.removeStudentPickupDetail()
       ])
     .then(self.parseDataCsv())
     .then(function() {
@@ -187,6 +192,18 @@ var helper = (function(){
     return deferred.promise;
   };
 
+  App.prototype.removeStudentPickupDetail = function () {
+    var deferred = Q.defer();
+
+    StudentPickupDetail.remove({}, function (err) {
+      if (err) deferred.reject(err);
+      console.log('info: Class removed');
+      deferred.resolve();
+
+    });
+    return deferred.promise;
+  };
+
   App.prototype.parseDataCsv = function () {
     var self = this;
     var deferred = Q.defer();
@@ -239,6 +256,7 @@ var helper = (function(){
         if (err) console.log(err);
         fs.writeFile(__dirname + options.path, csv, function(err) {
           if (err) throw err;
+          console.log(csv);
           console.log(options.name + ' csv file saved');
           deferred.resolve();
         });
@@ -257,7 +275,8 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+      // self.generateRandomPassword(10);
       console.log("++++uname++++",uname);
 
       var tempStudent = new User({
@@ -322,7 +341,8 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+      // tempPassword = self.generateRandomPassword(10);
       // self.parents.push(user);
       var tempParent = new User({
         firstname: name,
@@ -379,7 +399,9 @@ var helper = (function(){
     .then(function (uname) {
       var deferred = Q.defer();
 
-      tempPassword = self.generateRandomPassword(10);
+      tempPassword = uname + 'pw';
+
+      // tempPassword = self.generateRandomPassword(10);
       console.log("++++uname++++",uname);
 
       var tempTeacher = new User({
@@ -419,7 +441,9 @@ var helper = (function(){
 
     var deferred = Q.defer();
 
-    tempPassword = self.generateRandomPassword(10);
+    tempPassword = uname + 'pw';
+
+    // tempPassword = self.generateRandomPassword(10);
     console.log("++++uname++++",uname);
 
     var tempAdmin = new User({

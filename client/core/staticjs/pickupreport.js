@@ -7,6 +7,8 @@
 
 "use strict";
 var app;
+var timezone = 'America/Los_Angeles';
+moment.tz.setDefault(timezone);
 var pickupReportApp = (function () {
     /**
      * Constructor for the View
@@ -158,7 +160,7 @@ var pickupReportApp = (function () {
     View.prototype.reRenderCalendar = function () {
         var self = this;
         this.$calendar.empty();
-        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).format("L"); });
+        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).utc().format("L"); });
         return $("#calendar").kendoCalendar({
             value: self.currentDate,
             // get the date array with date value
@@ -189,7 +191,7 @@ var pickupReportApp = (function () {
             this.$rightReportContainer.html($("#report-template").html());
             this._updateSelectors();
             this.currentReport = _.find(this.reports, function(report) {
-                return report.date ? ( moment( new Date(report.date) ).format("L") === moment(date).format("L")) : false;
+                return report.date ? ( moment( new Date(report.date) ).utc().format("L") === moment(date).format("L")) : false;
             });
             this.renderCurrentReport();
         } else {
