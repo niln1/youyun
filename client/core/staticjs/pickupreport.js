@@ -191,7 +191,7 @@ var pickupReportApp = (function () {
             this.$rightReportContainer.html($("#report-template").html());
             this._updateSelectors();
             this.currentReport = _.find(this.reports, function(report) {
-                return report.date ? ( moment( new Date(report.date) ).format("L") === moment(date).format("L")) : false;
+                return report.date ? ( moment( new Date(report.date) ).utc().format("L") === moment(date).format("L")) : false;
             });
             this.renderCurrentReport();
         } else {
