@@ -204,10 +204,6 @@ exports.route = function (socket) {
                 default:
                     throw new Error("Fail to get the day string");
             }
-            console.log(moment(data.date).format('d'));
-            console.log(moment(data.date).format());
-            console.log(dayOfTheWeek);
-            console.log(dateToValidate.format());
 
             StudentPickupDetail.find()
             .where("pickedBy").exists(true)
