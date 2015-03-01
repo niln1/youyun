@@ -13,9 +13,15 @@ var userApiHelper = require('./modules/api/userApi/users.js').helpers;
 
 exports.main = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
-    res.render('index', {
-        user: req.session.user
-    });
+    logger.warn(req.session.user);
+    if (req.session.user.userType > 1 ) {
+        res.render('index', {
+            user: req.session.user
+        });
+    } else {
+        res.redirect('/pickupreport');
+
+    }
 };
 
 exports.lost = function (req, res) {
