@@ -10,6 +10,7 @@ var auth = require('../../../middlewares/auth');
 var apiServer = require('../utils/apiServer');
 var logger = require('../../../utils/logger');
 var Device = require('../../../../server/models/Device');
+var User = require('../../../models/User');
 
 exports.login = function (req, res) {
     logger.info("AccountApi - Login");
@@ -76,3 +77,66 @@ exports.addUserDevice = function (req, res) {
 exports.updateUserDevice = function (req, res) {
 
 };
+
+
+exports.changePassword = function(req, res) {
+        return apiServer.apiCallHelper(req, res, {
+
+        infoMessage: "update password",
+        userValidationHandler: function(user, signatureIsValid) {
+            
+            return true;
+        },
+
+        processHandler: function() {
+            var defer = Q.defer();
+
+            var userId = req.session.user._id;
+
+            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+
+            delete data.signature;
+            
+            logger.debug("Param: " + JSON.stringify(data));
+
+            User.findOne({"_id": req.session.user._id}, function(err, user){
+
+                if(!err && user) {
+                    user.comparePassword(data.oldPassword, function(err, match) {
+                        if(err) {
+                            logger.error('comparePassword error: ' + err);
+                            defer.reject(err);
+                            return;
+                        }
+                        if(!match) {
+                            logger.warn('comparePassword not match');
+                            defer.reject('credential error');
+                            return;
+                        }
+                        //change pw
+                        user.password = data.newPassword;
+                        user.save(function(err, user) {
+                            if(!err && user) {
+                                defer.resolve(user);
+                            } else {
+                                defer.reject(err);
+                            }
+                        });
+                    });
+                } else {
+                    defer.reject('user not found');
+                }
+            });
+
+            return defer.promise;
+
+        },
+
+        successHandler: function(user) {
+            apiServer.sendResponse(req, res, user, 'Password changed');
+        }
+
+    });
+
+
+}

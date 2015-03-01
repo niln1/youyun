@@ -51,6 +51,18 @@ exports.password = {
     'description': 'A string containing the password of the user.'
 };
 
+exports.oldPassword = {
+    'type': 'string',
+    'param': 'oldPassword',
+    'description': 'A string containing the old password of the user.'
+};
+
+exports.newPassword = {
+    'type': 'string',
+    'param': 'newPassword',
+    'description': 'A string containing the new password of the user.'
+};
+
 exports.userType = {
     'type': 'number',
     'param': 'userType',

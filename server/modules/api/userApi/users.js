@@ -115,6 +115,7 @@ exports.getChild = function (req, res) {
     });
 }
 
+
 //-----------------helpers--------------------//
 
 function updateUserById(req, res) {

@@ -196,6 +196,7 @@ exports.createObject = function(req, res) {
     filterParamValue(req, res);
 
     if (__.has(apiSpec, req.path)) {
+        // TODO: check content type; if not return error
         if (__.isEqual(req.headers['content-type'].split(';')[0],
             apiSpec[req.path][req.method]['content-type'])) {
             var queryParams = __.keys(req.body);
@@ -207,6 +208,7 @@ exports.createObject = function(req, res) {
                 apiSpec[req.path][req.method]['handler'](req, res);
             }
         } else {
+            logger.debug(req.headers['content-type']);
             apiServer.invalidContentType(res, 'Content-Type: ' +
                 req.headers['content-type'].split(';')[0] + ' not supported.');
         }
