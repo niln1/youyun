@@ -165,7 +165,7 @@ exports.route = function (socket) {
             // check if there is one report with same date.
             var defer = Q.defer();
             StudentPickupReport.find({
-                date: dateToValidate.format("L")
+                date: dateToValidate.format()
             }).exec(function(err, reports){
                 if (err) defer.reject(err);
                 else if (reports.length === 0) defer.resolve();
@@ -205,9 +205,9 @@ exports.route = function (socket) {
                     throw new Error("Fail to get the day string");
             }
             console.log(moment(data.date).format('d'));
-            console.log(moment(data.date).format("L"));
+            console.log(moment(data.date).format());
             console.log(dayOfTheWeek);
-            console.log(dateToValidate.format("L"));
+            console.log(dateToValidate.format());
 
             StudentPickupDetail.find()
             .where("pickedBy").exists(true)
@@ -238,7 +238,7 @@ exports.route = function (socket) {
                 needToPickupList: needToPickupList,
                 absenceList: [],
                 pickedUpList: [],
-                date: dateToValidate.format("L")
+                date: dateToValidate.format()
             });
 
             newReport.save(function (err) {
