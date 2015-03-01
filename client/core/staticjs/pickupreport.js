@@ -160,14 +160,14 @@ var pickupReportApp = (function () {
     View.prototype.reRenderCalendar = function () {
         var self = this;
         this.$calendar.empty();
-        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).format("L"); });
+        this.dateArray = _.map(this.reports, function(data) { return moment(new Date(data.date)).format("YYYY-MM-DD HH:mm:ss"); });
         return $("#calendar").kendoCalendar({
             value: self.currentDate,
             // get the date array with date value
             dates: self.dateArray,
             month:{
                 content: 
-                    '# if ($.inArray(moment(data.date).format("L"), data.dates)!=-1) { #' +
+                    '# if ($.inArray(moment(data.date).format("YYYY-MM-DD HH:mm:ss"), data.dates)!=-1) { #' +
                         '<div class="pickup_date">#= data.value #</div>' +
                     '# } else { #' +
                         '#= data.value #' +
