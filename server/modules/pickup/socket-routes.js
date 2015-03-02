@@ -129,6 +129,8 @@ exports.route = function (socket) {
                 return true;
             });
             ////
+            logger.info("starting get-future-child-report");
+
             console.log(children.length);
             console.log(children);
             console.log('==========================');
