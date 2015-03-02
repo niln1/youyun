@@ -128,8 +128,11 @@ exports.route = function (socket) {
             var futureReports = __.filter(reports, function(report) { 
                 return true;
             });
+            console.log(children);
+            console.log(reports);
             if (futureReports) futureReports = castPassword(futureReports);
             if (children) children = castPassword(children);
+            logger.info("getting future reports");
             socket.emit('pickup::parent::get-future-child-report::success', { 
                     reports: futureReports,
                     children: children
