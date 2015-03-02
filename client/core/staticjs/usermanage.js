@@ -343,7 +343,13 @@ var studentManageApp = (function () {
                 template: kendo.template($("#pickup-popup-editor").html())
             },
             edit: function(e) {
-                $(".timepicker").timepicker({ timeFormat: 'H:i', useSelect: false });
+                $(".timepicker").timepicker({ 
+                    timeFormat: 'H:i', 
+                    useSelect: false ,
+                    step: 15,
+                    minTime: '11:45',
+                    maxTime: '15:15'
+                });
                 var $student = e.container.find("input[name=student]");
                 var $pickedBy = e.container.find("input[name=pickedBy]");
                 $student.prop('disabled', false);

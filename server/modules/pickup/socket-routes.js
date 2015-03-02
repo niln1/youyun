@@ -12,6 +12,9 @@ var StudentPickupDetail = require('../../models/StudentPickupDetail');
 var mongoose = require('mongoose');
 
 var moment = require('moment-timezone');
+var timezone = 'America/Los_Angeles';
+var storedFormat = 'YYYY-MM-DD HH:mm';
+moment.tz.setDefault(timezone);
 
 var __ = require('underscore');
 var Q = require('q');
@@ -163,7 +166,7 @@ exports.route = function (socket) {
             // check if there is one report with same date.
             var defer = Q.defer();
             StudentPickupReport.find({
-                date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
+                date: dateToValidate.format(storedFormat)
             }).exec(function(err, reports){
                 if (err) defer.reject(err);
                 else if (reports.length === 0) defer.resolve();
@@ -232,7 +235,7 @@ exports.route = function (socket) {
                 needToPickupList: needToPickupList,
                 absenceList: [],
                 pickedUpList: [],
-                date: dateToValidate.format("YYYY-MM-DD HH:mm:ss")
+                date: dateToValidate.format(storedFormat)
             });
 
             newReport.save(function (err) {
@@ -273,9 +276,10 @@ exports.route = function (socket) {
         .spread(function (user, report, childID, needToPickup) {
             // only allow add absence for today or after
             // TODO: need cleanup
-            var dateToValidate = moment(report.date).startOf('day');
+            var dateToValidate = moment(report.date).utc();
             var startingAvailableDate = moment(new Date()).startOf('day');
-            if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+            if (dateToValidate.utc().format('L') === startingAvailableDate.format('L')
+                || dateToValidate.isAfter(startingAvailableDate)) {
                 return [user, report, childID, needToPickup];
             } else {
                 throw new Error('Cannot modify pickup report from the past');
@@ -350,9 +354,10 @@ exports.route = function (socket) {
             return defer.promise;
         })
         .spread(function (user, report, studentID, pickedUp) {
-            var dateToValidate = moment(report.date).startOf('day');
+            var dateToValidate = moment(report.date).utc();
             var startingAvailableDate = moment(new Date()).startOf('day');
-            if (dateToValidate.isSame(startingAvailableDate) || dateToValidate.isAfter(startingAvailableDate)) {
+            if (dateToValidate.format('L') === startingAvailableDate.format('L')
+             || dateToValidate.isAfter(startingAvailableDate)) {
                 return [user, report, studentID, pickedUp];
             } else {
                 throw new Error('Cannot modify pickup report from the past');
