@@ -124,11 +124,13 @@ exports.route = function (socket) {
             return [parent, children, StudentPickupReport.findReportsByUsers(children)]
         })
         .spread(function (parent, children, reports) {
+            logger.info("starting get-future-child-report");
             var dateToValidate = moment(new Date()).startOf('day');
             var futureReports = __.filter(reports, function(report) { 
-                return dateToValidate.unix() <= moment(report.date).unix();;
+                var today = dateToValidate.format(storedFormat);
+                var reportDate = moment(report.date).utc().startOf('day').format(storedFormat);
+                return moment(today).unix() <= moment(reportDate).unix();
             });
-            logger.info("starting get-future-child-report");
             if (futureReports) futureReports = castPassword(futureReports);
             if (children) children = castPassword(children);
             logger.info("getting future reports");
