@@ -126,17 +126,9 @@ exports.route = function (socket) {
         .spread(function (parent, children, reports) {
             var dateToValidate = moment(new Date()).startOf('day');
             var futureReports = __.filter(reports, function(report) { 
-                return true;
+                return dateToValidate.unix() <= moment(report.date).unix();;
             });
-            ////
             logger.info("starting get-future-child-report");
-
-            console.log(children.length);
-            console.log(children);
-            console.log('==========================');
-            console.log(reports);
-            console.log('===========================');
-            console.log(futureReports);
             if (futureReports) futureReports = castPassword(futureReports);
             if (children) children = castPassword(children);
             logger.info("getting future reports");
