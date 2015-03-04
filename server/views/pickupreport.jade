@@ -41,6 +41,22 @@ block main-content
                     button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") Cancel
                     button.btn-sm#save-new-report(type="button" class="btn btn-primary") Create
 
+    div#edit-report-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="edit-report-modal-label" aria-hidden="true")
+        div.modal-dialog.modal-sm
+            div.modal-content
+                div.modal-header
+                    button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    h4#edit-report-modal-label.modal-title Edit Report
+                div.content-divider
+                div.modal-body
+                    //- add new input later
+                    div(style='font-size:16px; text-align:center; padding:15px') Going to Delete a Report for
+                        h2(style='padding:10px').edit-report-date
+                        | Press Delete to Confirm
+                div.modal-footer
+                    button.btn-sm(type="button" class="btn btn-default" data-dismiss="modal") Cancel
+                    button.btn-sm#delete-current-report(type="button" class="btn btn-danger") Delete
+
     script#report-template(type="text/x-kendo-template")
         div
             h4(style="padding: 0.5em") Summary
