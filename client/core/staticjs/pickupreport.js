@@ -35,6 +35,7 @@ var pickupReportApp = (function () {
         this.$rightReportContainer = $('#right-panel-container');
         this.$addReportModal = $('#add-report-modal');
         this.$addReportFooter = this.$addReportModal.find('.modal-footer').click($.proxy(this.addReportHandler, this));
+        this.$editReportButton = $('#edit-report-button').on('click', $.proxy(this.editReportHandler, this))
         this.notifications = this.$notifications.kendoNotification({
             width: 300,
             autoHideAfter: 2500,
@@ -156,6 +157,10 @@ var pickupReportApp = (function () {
             }
         }
     };
+
+    View.prototype.editReportHandler = function (event) {
+        console.log('click');
+    }
 
     View.prototype.reRenderCalendar = function () {
         var self = this;
