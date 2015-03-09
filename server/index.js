@@ -15,8 +15,10 @@ exports.main = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
     logger.warn(req.session.user);
     if (req.session.user.userType > 1 ) {
-        res.render('index', {
-            user: req.session.user
+        res.render('account-management', {
+            user: req.session.user,
+            school: 'Hanlin',
+            title: 'Account Management',
         });
     } else {
         res.redirect('/pickupreport');
@@ -67,7 +69,7 @@ exports.addChild = function (req, res) {
 exports.home = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
     res.render('home', {});
-}
+}           
 
 exports.usermanage = function (req, res) {
     if (!req.session.user) return res.send(404);
