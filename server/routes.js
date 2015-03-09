@@ -9,7 +9,7 @@ var async = require('async');
 var index = require('./index');
 
 exports.route = function (app) {
-    app.get('/', index.pickupreport); // change to pickupreport for release
+    app.get('/', index.main); // change to pickupreport for release
 
     app.post('/login', index.postLogin);
     app.get('/login', index.getLogin);
