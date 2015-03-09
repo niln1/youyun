@@ -336,7 +336,8 @@ var studentManageApp = (function () {
                 { command: ["edit", "destroy"], title: "&nbsp;", width: "22%"},
             ],
             toolbar: [
-                { name: "create", text: "Add New" }
+                { name: "create", text: "Add New" },
+                { name: "createGroup", text: "Add By Group (BETA)"}
             ],
             editable: {
                 mode: "popup",
@@ -352,10 +353,25 @@ var studentManageApp = (function () {
                 });
                 var $student = e.container.find("input[name=student]");
                 var $pickedBy = e.container.find("input[name=pickedBy]");
+
+                var addedStudents = _.pluck(self.pickupDetailDataSource.data(), "student");
+
+                // remove added students
+                var studentDataLeft = _.filter(self.studentDataSource._data, function(student) {
+                    var temp = _.any(addedStudents, function(addedStudent, i, a) {
+                        if (addedStudent._id) {
+                            return addedStudent._id === student._id;
+                        } else {
+                            return false;
+                        }
+                    });
+                    return !temp;
+                });
+
                 $student.prop('disabled', false);
                 $student.kendoDropDownList({
                     optionLabel: "Select Student...",
-                    dataSource: self.studentDataSource._data,
+                    dataSource: studentDataLeft,
                     valuePrimitive: true,
                     filter: "startswith",
                     minLength: 3,   
