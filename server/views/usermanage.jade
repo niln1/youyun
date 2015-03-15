@@ -34,42 +34,50 @@ block main-content
                     div(style="padding: 1px")#teacher-table-container
 
     div#add-by-group-modal(style='display: none')
-        div.k-edit-label
-                label(for="student") Group/Location
-        div(data-container-for="group" class="k-edit-field")
-            input(type="text" class="k-input k-textbox" name="group" data-bind="value:group")
-        div.k-edit-label
-            label(for="pickedBy") Picked By
-        div(data-container-for="pickedBy" class="k-edit-field")
-            input(type="text" class="k-input k-textbox" name="pickedBy" data-bind="value:pickedBy")
-        div(class="k-edit-label")
-            label(for="mondayPickupTime") Mon
-        div(data-container-for="mondayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="mondayPickupTime" data-bind="value:mondayPickupTime")
-        div(class="k-edit-label")
-            label(for="tuesdayPickupTime") Tue
-        div(data-container-for="tuesdayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="tuesdayPickupTime" data-bind="value:tuesdayPickupTime")
-        div(class="k-edit-label")
-            label(for="wednesdayPickupTime") Wed
-        div(data-container-for="wednesdayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="wednesdayPickupTime" data-bind="value:wednesdayPickupTime")
-        div(class="k-edit-label")
-            label(for="thursdayPickupTime") Thu
-        div(data-container-for="thursdayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="thursdayPickupTime" data-bind="value:thursdayPickupTime")
-        div(class="k-edit-label")
-            label(for="fridayPickupTime") Fri
-        div(data-container-for="fridayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="fridayPickupTime" data-bind="value:fridayPickupTime")
-        div(class="k-edit-label")
-            label(for="saturdayPickupTime") Sat
-        div(data-container-for="saturdayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="saturdayPickupTime" data-bind="value:saturdayPickupTime")
-        div(class="k-edit-label")
-            label(for="sundayPickupTime") Sun
-        div(data-container-for="sundayPickupTime" class="k-edit-field")
-            input(type="text" class="k-input k-textbox timepicker" name="sundayPickupTime" data-bind="value:sundayPickupTime")
+        div.k-edit-form-container
+            div.k-edit-label
+                    label(for="student") Group/Location
+            div(data-container-for="group" class="k-edit-field")
+                input(type="text" class="k-input k-textbox" name="group" data-bind="value:group")
+            div.k-edit-label
+                label(for="pickedBy") Picked By
+            div(data-container-for="pickedBy" class="k-edit-field")
+                input(type="text" class="k-input k-textbox" name="pickedBy" data-bind="value:pickedBy")
+            div(class="k-edit-label")
+                label(for="mondayPickupTime") Mon
+            div(data-container-for="mondayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="mondayPickupTime" data-bind="value:mondayPickupTime")
+            div(class="k-edit-label")
+                label(for="tuesdayPickupTime") Tue
+            div(data-container-for="tuesdayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="tuesdayPickupTime" data-bind="value:tuesdayPickupTime")
+            div(class="k-edit-label")
+                label(for="wednesdayPickupTime") Wed
+            div(data-container-for="wednesdayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="wednesdayPickupTime" data-bind="value:wednesdayPickupTime")
+            div(class="k-edit-label")
+                label(for="thursdayPickupTime") Thu
+            div(data-container-for="thursdayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="thursdayPickupTime" data-bind="value:thursdayPickupTime")
+            div(class="k-edit-label")
+                label(for="fridayPickupTime") Fri
+            div(data-container-for="fridayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="fridayPickupTime" data-bind="value:fridayPickupTime")
+            div(class="k-edit-label")
+                label(for="saturdayPickupTime") Sat
+            div(data-container-for="saturdayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="saturdayPickupTime" data-bind="value:saturdayPickupTime")
+            div(class="k-edit-label")
+                label(for="sundayPickupTime") Sun
+            div(data-container-for="sundayPickupTime" class="k-edit-field")
+                input(type="text" class="k-input k-textbox timepicker" name="sundayPickupTime" data-bind="value:sundayPickupTime")
+            div.k-edit-buttons.k-state-default
+                a.k-button.k-button-icontext.k-primary.k-grid-update(href="#")
+                    span.k-icon.k-update
+                    | Update
+                a.k-button.k-button-icontext.k-grid-cancel(href="#")
+                    span.k-icon.k-cancel
+                    | Cancel
     script#pickup-popup-editor(type="text/x-kendo-template")
         div#student-input-wrapper
             div.k-edit-label

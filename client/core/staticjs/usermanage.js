@@ -406,6 +406,34 @@ var studentManageApp = (function () {
                     // close: onClose
                 });
             }
+            $(".timepicker").timepicker({ 
+                timeFormat: 'H:i', 
+                useSelect: false ,
+                step: 15,
+                minTime: '11:45',
+                maxTime: '15:15'
+            });
+
+            // $student.kendoDropDownList({
+            //         optionLabel: "Select Student...",
+            //         dataSource: studentDataLeft,
+            //         valuePrimitive: true,
+            //         filter: "startswith",
+            //         minLength: 3,   
+            //         dataTextField: "fullname",
+            //         dataValueField: "id"
+            //     });
+            var $pickedBy = $modal.find("input[name=pickedBy]");
+
+            $pickedBy.kendoDropDownList({
+                optionLabel: "Select Teacher...",
+                dataSource: self.teacherDataSource._data,
+                valuePrimitive: true,
+                filter: "startswith",
+                minLength: 3,   
+                dataTextField: "fullname",
+                dataValueField: "_id"
+            });
             $modal.data('kendoWindow').center().open();
         });
     };
