@@ -401,8 +401,7 @@ var studentManageApp = (function () {
                     title: 'Add Student By Group',
                     modal: true,
                     actions: [
-                        "Close",
-                        "Update"
+                        "Close"
                     ],
                     // close: onClose
                 });
