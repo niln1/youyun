@@ -392,6 +392,23 @@ var studentManageApp = (function () {
                 }
             }
         });
+
+        $('.k-grid-createGroup').on('click.addByGroup', function(e){
+            var $modal = $('#add-by-group-modal');
+            if (!$modal.data('kendoWindow')) {
+                $modal.kendoWindow({
+                    width: '400px',
+                    title: 'Add Student By Group',
+                    modal: true,
+                    actions: [
+                        "Close",
+                        "Update"
+                    ],
+                    // close: onClose
+                });
+            }
+            $modal.data('kendoWindow').center().open();
+        });
     };
     return View;
 })();
