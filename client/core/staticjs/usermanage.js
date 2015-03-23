@@ -14,6 +14,8 @@ var studentManageApp = (function () {
         this.$teacherTableContainer = $("#teacher-table-container");
         this.$pickupDetailTableContainer = $("#pickupdetail-table-container");
 
+        this.groups = [];
+
         this.studentDataSource = new kendo.data.DataSource({
             transport: {
                 read: function (options) {
@@ -73,6 +75,7 @@ var studentManageApp = (function () {
             schema: {
                 data: function(response) {
                     self.students = response.result;
+                    self.groups =  _.uniq(_.pluck(self.students, 'pickupLocation'));
                     return self.students;
                 },
                 model: {
@@ -393,8 +396,18 @@ var studentManageApp = (function () {
             }
         });
 
+        function submitModalData() {
+            var $formInputs= $('#add-by-group-modal input.k-input');
+            var data = {};
+            _.each($formInputs, function(input) {
+                data[input.name] = input.value;
+            })
+            console.log(data);
+        }
+
         $('.k-grid-createGroup').on('click.addByGroup', function(e){
             var $modal = $('#add-by-group-modal');
+            $modal.html($('#add-by-group-modal-editor').html());
             if (!$modal.data('kendoWindow')) {
                 $modal.kendoWindow({
                     width: '400px',
@@ -414,15 +427,18 @@ var studentManageApp = (function () {
                 maxTime: '15:15'
             });
 
-            // $student.kendoDropDownList({
-            //         optionLabel: "Select Student...",
-            //         dataSource: studentDataLeft,
-            //         valuePrimitive: true,
-            //         filter: "startswith",
-            //         minLength: 3,   
-            //         dataTextField: "fullname",
-            //         dataValueField: "id"
-            //     });
+            // assign group drop down
+            var $group = $modal.find("input[name=group]");
+
+            $group.kendoDropDownList({
+                optionLabel: "Select Group...",
+                dataSource: self.groups,
+                valuePrimitive: true,
+                filter: "startswith",
+                minLength: 3
+            });
+
+            // picked By drop down
             var $pickedBy = $modal.find("input[name=pickedBy]");
 
             $pickedBy.kendoDropDownList({
@@ -433,6 +449,12 @@ var studentManageApp = (function () {
                 minLength: 3,   
                 dataTextField: "fullname",
                 dataValueField: "_id"
+            });
+
+            $modal.find('.k-grid-update')
+            .off('.addByGroupSubmit')
+            .on('click.addByGroupSubmit', function(e) {
+                submitModalData();
             });
             $modal.data('kendoWindow').center().open();
         });

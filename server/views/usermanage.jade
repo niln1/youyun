@@ -34,9 +34,14 @@ block main-content
                     div(style="padding: 1px")#teacher-table-container
 
     div#add-by-group-modal(style='display: none')
+
+    script#add-by-group-modal-editor(type="text/x-kendo-template")
+        br
+        p Note: this action will reset all the pickup detail in that group
+        br
         div.k-edit-form-container
             div.k-edit-label
-                    label(for="student") Group/Location
+                    label(for="group") Group/Location
             div(data-container-for="group" class="k-edit-field")
                 input(type="text" class="k-input k-textbox" name="group" data-bind="value:group")
             div.k-edit-label
