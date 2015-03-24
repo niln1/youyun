@@ -25,20 +25,38 @@ exports.create = function (req, res) {
         processHandler: function() {
             var defer = Q.defer();
             // do some thing
-            logger.debug("Param: studentId: " + req.body.studentId);
-            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
-            data.student = data.studentId;
-            delete data.signature;
-            delete data.studentId;
-            
-            logger.debug("Param: " + JSON.stringify(data));
+            if (req.body.studentId) {
+                logger.debug("Param: studentId: " + req.body.studentId);
+                var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+                data.student = data.studentId;
+                delete data.signature;
+                delete data.studentId;
+                
+                logger.debug("Param: " + JSON.stringify(data));
 
-            var newStudentPickupDetail = new StudentPickupDetail(data);
+                var newStudentPickupDetail = new StudentPickupDetail(data);
 
-            newStudentPickupDetail.save(function (err, detail) {
-                if (err) defer.reject(err);
-                defer.resolve(detail);
-            });
+                newStudentPickupDetail.save(function (err, detail) {
+                    if (err) defer.reject(err);
+                    defer.resolve(detail);
+                });
+            } else if (req.body.pickupGroup) {
+                logger.debug("Param: group: " + req.body.pickupGroup);
+
+                User.findStudentsByPickupLocation(req.body.pickupGroup)
+                .then(function (users){
+                    Q.all([saveToDisk(), saveToCloud()])
+                    .done(function () {
+                        console.log("Data saved!");
+                    });
+                    var ids = _.pluck(users, '_id');
+                    console.log('ids', ids);
+                    defer.resolve(ids);
+                })
+
+            } else {
+                throw new Error("no id or group found");
+            }
             return defer.promise;
         },
         successHandler: function(detail) {

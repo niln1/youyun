@@ -21,6 +21,12 @@ exports.lastname = {
     'description': 'A string containing the lastname of the user.'
 };
 
+exports.pickupGroup = {
+    'type': 'string',
+    'param': 'pickupGroup',
+    'description': 'A string containing the pickupGroup of the user.'
+};
+
 exports.pickupLocation = {
     'type': 'string',
     'param': 'pickupLocation',

@@ -397,12 +397,30 @@ var studentManageApp = (function () {
         });
 
         function submitModalData() {
+            var url = '/api/v1/studentpickupdetails';
             var $formInputs= $('#add-by-group-modal input.k-input');
             var data = {};
             _.each($formInputs, function(input) {
                 data[input.name] = input.value;
-            })
-            console.log(data);
+            });
+
+            data.signature = 'tempkey';
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(result) {
+                    // options.success();
+                    self.pickupDetailDataSource.read();
+                },
+                error: function(result) {
+                    common.showError();
+                    // options.error(result);
+                }
+            });
         }
 
         $('.k-grid-createGroup').on('click.addByGroup', function(e){
@@ -428,7 +446,7 @@ var studentManageApp = (function () {
             });
 
             // assign group drop down
-            var $group = $modal.find("input[name=group]");
+            var $group = $modal.find("input[name=pickupGroup]");
 
             $group.kendoDropDownList({
                 optionLabel: "Select Group...",
