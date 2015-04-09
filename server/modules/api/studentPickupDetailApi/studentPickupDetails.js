@@ -23,9 +23,10 @@ exports.create = function (req, res) {
             }
         },
         processHandler: function() {
-            var defer = Q.defer();
             // do some thing
             if (req.body.studentId) {
+                var defer = Q.defer();
+
                 logger.debug("Param: studentId: " + req.body.studentId);
                 var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
                 data.student = data.studentId;
@@ -41,17 +42,49 @@ exports.create = function (req, res) {
                     defer.resolve(detail);
                 });
             } else if (req.body.pickupGroup) {
+                var defer = Q.defer();
+
                 logger.debug("Param: group: " + req.body.pickupGroup);
 
+                var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+                delete data.signature;
+                delete data.pickupGroup;
+
                 User.findStudentsByPickupLocation(req.body.pickupGroup)
-                .then(function (users){
-                    Q.all([saveToDisk(), saveToCloud()])
-                    .done(function () {
-                        console.log("Data saved!");
+                .then(function (users){  
+                    var subDefer = Q.defer();
+                    var calls = [];
+
+                    var fn = function (id) {
+                        var defer1 = Q.defer();
+                        var pickupData = data;
+                        pickupData.student = id;
+
+                        var newStudentPickupDetail = new StudentPickupDetail(data);
+
+                        newStudentPickupDetail.save(function (err, detail) {
+                            if (err) defer1.reject(err);
+                            defer1.resolve(detail);
+                        });
+                        return defer1.promise;
+                    };
+
+
+                    for (var i in users) {
+                        calls.push(fn(user[i]._id));
+                    }
+
+                    Q.all(calls)
+                    .done(function(data){
+                        console.log(data);
+                        subDefer.resolve();
+                    }).fail(function(err){
+                        console.log('ERROR', err);
                     });
-                    var ids = _.pluck(users, '_id');
-                    console.log('ids', ids);
-                    defer.resolve(ids);
+
+                    return subDefer.promise;
+                }).then(function(data){
+                    defer.resolve(data);
                 })
 
             } else {
