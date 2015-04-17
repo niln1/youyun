@@ -191,6 +191,7 @@ UserSchema.statics.findStudentsByPickupLocation = function (location) {
     this.find({pickupLocation:location})
     .exec(function (err, students) {
         if (err) defer.reject(err);
+        logger.db('UserSchema -- findStudentsByPickupLocation:' + location + ', success');
         defer.resolve(students);
     })
     return defer.promise;

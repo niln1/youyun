@@ -24,8 +24,8 @@ exports.create = function (req, res) {
         },
         processHandler: function() {
             // do some thing
+            var defer = Q.defer();
             if (req.body.studentId) {
-                var defer = Q.defer();
 
                 logger.debug("Param: studentId: " + req.body.studentId);
                 var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
@@ -42,8 +42,6 @@ exports.create = function (req, res) {
                     defer.resolve(detail);
                 });
             } else if (req.body.pickupGroup) {
-                var defer = Q.defer();
-
                 logger.debug("Param: group: " + req.body.pickupGroup);
 
                 var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
@@ -51,39 +49,22 @@ exports.create = function (req, res) {
                 delete data.pickupGroup;
 
                 User.findStudentsByPickupLocation(req.body.pickupGroup)
-                .then(function (users){  
-                    var subDefer = Q.defer();
-                    var calls = [];
+                .then(function (users){
+                    var promises = [];
+                    logger.debug('Populating promises with ' + users.length + ' users');
 
-                    var fn = function (id) {
-                        var defer1 = Q.defer();
+                    users.forEach(function(user){
                         var pickupData = data;
-                        pickupData.student = id;
+                        pickupData.student = user._id;
+                        promises.push(StudentPickupDetail.createWithData(pickupData)); 
+                    })
 
-                        var newStudentPickupDetail = new StudentPickupDetail(data);
-
-                        newStudentPickupDetail.save(function (err, detail) {
-                            if (err) defer1.reject(err);
-                            defer1.resolve(detail);
-                        });
-                        return defer1.promise;
-                    };
-
-
-                    for (var i in users) {
-                        calls.push(fn(user[i]._id));
-                    }
-
-                    Q.all(calls)
-                    .done(function(data){
-                        console.log(data);
-                        subDefer.resolve();
-                    }).fail(function(err){
-                        console.log('ERROR', err);
-                    });
-
-                    return subDefer.promise;
+                    return Q.all(promises);
                 }).then(function(data){
+                    logger.debug('success');
+                    defer.resolve(data);
+                }).fail(function(data){
+                    logger.fatal('fail');
                     defer.resolve(data);
                 })
 

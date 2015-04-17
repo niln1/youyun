@@ -10,6 +10,8 @@ var logger = require('../utils/logger.js');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var Q = require('q');
+
 var StudentPickupDetailSchema = new Schema({
     student: {
         type: Schema.Types.ObjectId,
@@ -56,5 +58,20 @@ StudentPickupDetailSchema.post('save', function (detail) {
         });
     });
 });
+
+StudentPickupDetailSchema.statics.createWithData = function(data) {
+    logger.db('Creating new StudentPickupDetail with data ' + data);
+    var defer1 = Q.defer();
+    this.create(data, function (err, detail) {
+        if (err) {
+            logger.fatal("ERROR:" + err);
+            defer1.reject(err);
+        }
+        logger.db('Creating new StudentPickupDetail with data ' + data + ', success');
+        defer1.resolve(detail);
+    });
+
+    return defer1.promise;
+}
 
 module.exports = mongoose.model('StudentPickupDetail', StudentPickupDetailSchema);
