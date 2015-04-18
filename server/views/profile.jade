@@ -1,0 +1,36 @@
+extends app-header
+
+block head-extra
+    script.
+        var current_user = !{JSON.stringify(user)};
+
+block main-content
+  div.pageboard-shadow.user-profile-container
+    a#user-profile-group(data-toggle="modal" data-target="#user-profile-modal")
+        div
+            i.user-image(style="background-image: url('#{ userImage }'),url('/static/img/default_image/default-user.png')")
+        //- div.fullname #{ username }
+        //- div.username
+        //-     s @
+        //-     b #{ username }
+    //Model
+
+    div#user-profile-modal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+        div.modal-dialog
+            div.modal-content.profile-modal-content(style="height: 450px")
+                div.form-group.change-pwd-form-group
+                        form#user-profile-image-form
+                            input(type="file", name="userImage")
+                            input(type="hidden", name="signature", value="tempkey")
+                            button(type="submit").btn.btn-block.btn-lg.btn-success#upload-btn Upload
+                div.preview
+                    img#preivew-img(src="#", alt="your image")
+
+                //- form#user-image-form(action="/api/v1/users/image", method="post", enctype="multipart/form-data" target="user-image-upload-target")
+                //-     input(type="file", name="userImage")
+                //-     input(type="hidden", name="signature", value="tempkey")
+                //-     input(type='submit')
+                //-     iframe#user-image-upload-target(src="#" style="width:0;height:0;border:0px solid #fff;")                
+
+    script(src='/core/staticjs/common.js')
+    script(src='/core/staticjs/profile.js')

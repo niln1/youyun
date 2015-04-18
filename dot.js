@@ -69,6 +69,7 @@ app.use(helmet());
 app.use(helmet.csp({
   defaultSrc: ["'self' 'unsafe-inline' 'unsafe-eval'"],
   connectSrc: ["'self' " + nconf.get('socket-url') + ""],
+  imgSrc: ["'self' data:"],
   reportUri: '/report-violation',
   reportOnly: false, // set to true if you only want to report errors
   setAllHeaders: false, // set to true if you want to set all headers

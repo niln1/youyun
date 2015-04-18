@@ -14,6 +14,7 @@ exports.route = function (app) {
     app.post('/login', index.postLogin);
     app.get('/login', index.getLogin);
     app.get('/logout', index.logout);
+    app.get('/profile', index.profile);
 
     app.get('/static/populateDB', index.populateDB);
     // app.get('/static/addChild', index.addChild)
