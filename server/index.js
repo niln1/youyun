@@ -21,9 +21,21 @@ exports.main = function (req, res) {
             title: 'Account Management',
         });
     } else {
-        res.redirect('/pickupreport');
+         res.render('index', {
+            user: req.session.user,
+           
+        });
+        //res.redirect('/pickupreport');
 
     }
+};
+
+exports.profile = function(req, res) {
+    console.log('profile');
+    res.render('profile', {
+        user: req.session.user,
+        title: 'Account Management',
+    });
 };
 
 exports.lost = function (req, res) {
