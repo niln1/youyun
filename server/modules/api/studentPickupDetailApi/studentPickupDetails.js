@@ -23,22 +23,54 @@ exports.create = function (req, res) {
             }
         },
         processHandler: function() {
-            var defer = Q.defer();
             // do some thing
-            logger.debug("Param: studentId: " + req.body.studentId);
-            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
-            data.student = data.studentId;
-            delete data.signature;
-            delete data.studentId;
-            
-            logger.debug("Param: " + JSON.stringify(data));
+            var defer = Q.defer();
+            if (req.body.studentId) {
 
-            var newStudentPickupDetail = new StudentPickupDetail(data);
+                logger.debug("Param: studentId: " + req.body.studentId);
+                var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+                data.student = data.studentId;
+                delete data.signature;
+                delete data.studentId;
+                
+                logger.debug("Param: " + JSON.stringify(data));
 
-            newStudentPickupDetail.save(function (err, detail) {
-                if (err) defer.reject(err);
-                defer.resolve(detail);
-            });
+                var newStudentPickupDetail = new StudentPickupDetail(data);
+
+                newStudentPickupDetail.save(function (err, detail) {
+                    if (err) defer.reject(err);
+                    defer.resolve(detail);
+                });
+            } else if (req.body.pickupGroup) {
+                logger.debug("Param: group: " + req.body.pickupGroup);
+
+                var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+                delete data.signature;
+                delete data.pickupGroup;
+
+                User.findStudentsByPickupLocation(req.body.pickupGroup)
+                .then(function (users){
+                    var promises = [];
+                    logger.debug('Populating promises with ' + users.length + ' users');
+
+                    users.forEach(function(user){
+                        var pickupData = data;
+                        pickupData.student = user._id;
+                        promises.push(StudentPickupDetail.createWithData(pickupData)); 
+                    })
+
+                    return Q.all(promises);
+                }).then(function(data){
+                    logger.debug('success');
+                    defer.resolve(data);
+                }).fail(function(data){
+                    logger.fatal('fail');
+                    defer.resolve(data);
+                })
+
+            } else {
+                throw new Error("no id or group found");
+            }
             return defer.promise;
         },
         successHandler: function(detail) {

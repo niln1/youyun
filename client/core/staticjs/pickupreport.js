@@ -34,7 +34,10 @@ var pickupReportApp = (function () {
         this.$calendar = $('#calendar');
         this.$rightReportContainer = $('#right-panel-container');
         this.$addReportModal = $('#add-report-modal');
+        this.$editReportModal = $('#edit-report-modal');
+        this.$deleteReportButton = $('#delete-current-report');
         this.$addReportFooter = this.$addReportModal.find('.modal-footer').click($.proxy(this.addReportHandler, this));
+        this.$editReportButton = $('#edit-report-button').hide();
         this.notifications = this.$notifications.kendoNotification({
             width: 300,
             autoHideAfter: 2500,
@@ -116,6 +119,13 @@ var pickupReportApp = (function () {
             self.$addReportModal.modal('hide');
             self.socket.emit('pickup::teacher::get-reports');
         });
+
+        this.socket.on('pickup::delete::success', function onCreateSuccess(data) {
+            self.notifications.show('Successfully Deleted', 'success');
+            self.$editReportModal.modal('hide');
+            self.socket.emit('pickup::teacher::get-reports');
+        });
+
         this.socket.on("pickup::teacher:update-reports", function onUpdateReports(data) {
             loaded = true;
             self.reports = data;
@@ -125,10 +135,12 @@ var pickupReportApp = (function () {
         });
         this.socket.on("pickup::all:error", function onAllError(data) {
             self.notifications.show(data, "error");
+            self.$addReportModal.modal('hide');
         });
         this.socket.on("pickup::create::error", function onCreateError(data) {
             self.notifications.show(data, "error");
             self.$addReportModal.modal("hide");
+            self.$editReportModal.modal('hide');
         });
         this.socket.on("pickup::all::picked-up::success", function onPickUpSuccess(data) {
             self.notifications.show("Student get picked up", "info");
@@ -156,6 +168,16 @@ var pickupReportApp = (function () {
             }
         }
     };
+
+    View.prototype.editReportHandler = function (event) {
+        console.log('click');
+        console.log(app.currentReport['_id']);
+        if (app.currentReport['_id']) {
+            app.socket.emit("pickup::delete-report",{ reportID: app.currentReport['_id'] })
+        } else {
+            throw Error("no current report id");
+        }
+    }
 
     View.prototype.reRenderCalendar = function () {
         var self = this;
@@ -194,6 +216,9 @@ var pickupReportApp = (function () {
                 return report.date ? ( moment( new Date(report.date) ).utc().format("L") === moment(date).format("L")) : false;
             });
             this.renderCurrentReport();
+            this.$editReportButton.show()
+                .on('click.editReport', $.proxy(this.showEditReportModal, this));
+            this.$deleteReportButton.on('click.editReport', this.editReportHandler)
         } else {
             var today = new Date().setHours(0,0,0,0);
             // if less than yesterday
@@ -203,6 +228,8 @@ var pickupReportApp = (function () {
                 this.$rightReportContainer.html($("#future-no-report-template").html());
                 this.$addReportButton = $("#add-report-button")
                     .click($.proxy(this.showCreateReportModal, this));
+                this.$editReportButton.hide();
+                this.$deleteReportButton.off('.editReport');
             }
         }
     };
@@ -211,6 +238,12 @@ var pickupReportApp = (function () {
         this.$addReportModal.find(".create-report-date")
             .html(moment(this.currentDate).format("YYYY/MM/DD"));
         this.$addReportModal.modal("show");
+    };
+
+    View.prototype.showEditReportModal = function () {
+        this.$editReportModal.find(".edit-report-date")
+            .html(moment(this.currentDate).format("YYYY/MM/DD"));
+        this.$editReportModal.modal("show");
     };
 
     View.prototype.renderCurrentReport = function () {

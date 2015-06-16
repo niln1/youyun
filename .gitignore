@@ -28,3 +28,6 @@ static/img/user_image
 
 .DS_Store
 /utilities/output
+
+*.sublime-project
+*.sublime-workspace

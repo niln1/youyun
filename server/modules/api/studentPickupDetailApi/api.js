@@ -20,9 +20,10 @@ module.exports = [{
         'content-type': 'application/json',
         'required': [
         parameters.signature,
-        parameters.studentId,
         ],
         'optional': [
+        parameters.studentId,
+        parameters.pickupGroup,
         parameters.pickedBy,
         parameters.mondayPickupTime,
         parameters.tuesdayPickupTime,

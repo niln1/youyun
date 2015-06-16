@@ -14,6 +14,8 @@ var studentManageApp = (function () {
         this.$teacherTableContainer = $("#teacher-table-container");
         this.$pickupDetailTableContainer = $("#pickupdetail-table-container");
 
+        this.groups = [];
+
         this.studentDataSource = new kendo.data.DataSource({
             transport: {
                 read: function (options) {
@@ -73,6 +75,7 @@ var studentManageApp = (function () {
             schema: {
                 data: function(response) {
                     self.students = response.result;
+                    self.groups =  _.uniq(_.pluck(self.students, 'pickupLocation'));
                     return self.students;
                 },
                 model: {
@@ -336,7 +339,8 @@ var studentManageApp = (function () {
                 { command: ["edit", "destroy"], title: "&nbsp;", width: "22%"},
             ],
             toolbar: [
-                { name: "create", text: "Add New" }
+                { name: "create", text: "Add New" },
+                { name: "createGroup", text: "Add By Group (BETA)"}
             ],
             editable: {
                 mode: "popup",
@@ -352,10 +356,25 @@ var studentManageApp = (function () {
                 });
                 var $student = e.container.find("input[name=student]");
                 var $pickedBy = e.container.find("input[name=pickedBy]");
+
+                var addedStudents = _.pluck(self.pickupDetailDataSource.data(), "student");
+
+                // remove added students
+                var studentDataLeft = _.filter(self.studentDataSource._data, function(student) {
+                    var temp = _.any(addedStudents, function(addedStudent, i, a) {
+                        if (addedStudent._id) {
+                            return addedStudent._id === student._id;
+                        } else {
+                            return false;
+                        }
+                    });
+                    return !temp;
+                });
+
                 $student.prop('disabled', false);
                 $student.kendoDropDownList({
                     optionLabel: "Select Student...",
-                    dataSource: self.studentDataSource._data,
+                    dataSource: studentDataLeft,
                     valuePrimitive: true,
                     filter: "startswith",
                     minLength: 3,   
@@ -375,6 +394,87 @@ var studentManageApp = (function () {
                     $("#student-input-wrapper").hide();
                 }
             }
+        });
+
+        function submitModalData() {
+            var url = '/api/v1/studentpickupdetails';
+            var $formInputs= $('#add-by-group-modal input.k-input');
+            var data = {};
+            _.each($formInputs, function(input) {
+                data[input.name] = input.value;
+            });
+
+            data.signature = 'tempkey';
+            
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(result) {
+                    // options.success();
+                    self.pickupDetailDataSource.read();
+                },
+                error: function(result) {
+                    common.showError();
+                    // options.error(result);
+                }
+            });
+        }
+
+        $('.k-grid-createGroup').on('click.addByGroup', function(e){
+            var $modal = $('#add-by-group-modal');
+            $modal.html($('#add-by-group-modal-editor').html());
+            if (!$modal.data('kendoWindow')) {
+                $modal.kendoWindow({
+                    width: '400px',
+                    title: 'Add Student By Group',
+                    modal: true,
+                    actions: [
+                        "Close"
+                    ],
+                    // close: onClose
+                });
+            }
+            $(".timepicker").timepicker({ 
+                timeFormat: 'H:i', 
+                useSelect: false ,
+                step: 15,
+                minTime: '11:45',
+                maxTime: '15:15'
+            });
+
+            // assign group drop down
+            var $group = $modal.find("input[name=pickupGroup]");
+
+            $group.kendoDropDownList({
+                optionLabel: "Select Group...",
+                dataSource: self.groups,
+                valuePrimitive: true,
+                filter: "startswith",
+                minLength: 3
+            });
+
+            // picked By drop down
+            var $pickedBy = $modal.find("input[name=pickedBy]");
+
+            $pickedBy.kendoDropDownList({
+                optionLabel: "Select Teacher...",
+                dataSource: self.teacherDataSource._data,
+                valuePrimitive: true,
+                filter: "startswith",
+                minLength: 3,   
+                dataTextField: "fullname",
+                dataValueField: "_id"
+            });
+
+            $modal.find('.k-grid-update')
+            .off('.addByGroupSubmit')
+            .on('click.addByGroupSubmit', function(e) {
+                submitModalData();
+            });
+            $modal.data('kendoWindow').center().open();
         });
     };
     return View;

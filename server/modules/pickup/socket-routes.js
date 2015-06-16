@@ -124,12 +124,16 @@ exports.route = function (socket) {
             return [parent, children, StudentPickupReport.findReportsByUsers(children)]
         })
         .spread(function (parent, children, reports) {
+            logger.info("starting get-future-child-report");
             var dateToValidate = moment(new Date()).startOf('day');
             var futureReports = __.filter(reports, function(report) { 
-                return dateToValidate.unix() <= moment(report.date).unix();
+                var today = dateToValidate.format(storedFormat);
+                var reportDate = moment(report.date).utc().startOf('day').format(storedFormat);
+                return moment(today).unix() <= moment(reportDate).unix();
             });
             if (futureReports) futureReports = castPassword(futureReports);
             if (children) children = castPassword(children);
+            logger.info("getting future reports");
             socket.emit('pickup::parent::get-future-child-report::success', { 
                     reports: futureReports,
                     children: children
@@ -137,6 +141,35 @@ exports.route = function (socket) {
         })
         .fail(function (err) {
             socket.emit('all::failure', err.toString());
+        });
+    });
+
+    socket.on('pickup::delete-report', function (data) {
+        Q.fcall(function () {
+            if (socket.session.user.userType <= 3) {
+                return true;
+            } else {
+                throw new Error("You don't have permission to delete pickup report");
+            }
+        }).then(function (hasPermission) {
+            return StudentPickupReport.findByID(data.reportID);
+        }).then(function (report) {
+            // get user list
+            var defer = Q.defer();
+            report.remove(function(err, report) {
+                if (err) defer.reject(err);
+                else {
+                    defer.resolve();
+                }
+            });
+            return defer.promise;
+        }).then(function () {
+            logger.info("report deleted " + data.reportID);
+            socket.emit('pickup::delete::success', {});
+            // TODO broadcast this message;
+        }).fail(function (err) {
+            logger.warn(err);
+            socket.emit('pickup::delete::error', err.toString());
         });
     });
 
