@@ -67,9 +67,15 @@ app.set('view engine', 'jade');
 app.use(helmet());
 
 app.use(helmet.csp({
-  defaultSrc: ["'self' 'unsafe-inline' 'unsafe-eval'"],
+  defaultSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'",
+    'connect.facebook.net',
+    'facebook.com',
+    'static.ak.facebook.com',
+    's-static.ak.facebook.com',
+    'graph.facebook.com',
+    'www.facebook.com'],
   connectSrc: ["'self' " + nconf.get('socket-url') + ""],
-  imgSrc: ["'self' data:"],
+  imgSrc: ["'self' data:", 'www.facebook.com'],
   reportUri: '/report-violation',
   reportOnly: false, // set to true if you only want to report errors
   setAllHeaders: false, // set to true if you want to set all headers
