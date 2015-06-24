@@ -9,6 +9,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var helmet = require('helmet');
+var passport = require('passport');
 
 var app;
 module.exports.app = app = express();
@@ -90,8 +91,29 @@ app.use(express.multipart());
 app.use(express.methodOverride());
 session(app);
 
+app.get('/auth/facebook',
+  passport.authenticate('facebook'),
+  function(req, res){
+    console.log('called');
+    // The request will be redirected to Facebook for authentication, so this
+    // function will not be called.
+  });
+
+// GET /auth/facebook/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/facebook/callback', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    console.log('here');
+
+    res.redirect('/');
+  });
+
 // Global authentication middle ware
-app.use(auth.checkUserSession);
+// app.use(auth.checkUserSession);
 
 // csrf()
 // app.use(require('express').csrf());

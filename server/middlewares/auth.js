@@ -20,6 +20,11 @@ var __ = require('underscore');
 var User = require('../models/User');
 var apiServer = require('../modules/api/utils/apiServer');
 var logger = require('../utils/logger');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+var FACEBOOK_APP_ID = "1671778889721336";
+var FACEBOOK_APP_SECRET = "17fd1d541bead7ede9d23fd41e1fac23";
 
 function apiLoginSuccess(req, res, user) {
     req.session.user = user;
@@ -53,6 +58,33 @@ function isUserAuthenticated(req, res, next) {
         next();
     }
 }
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      
+      // To keep the example simple, the user's Facebook profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Facebook account with a user record in your database,
+      // and return that user instead.
+      console.log(profile);
+      return done(null, profile);
+    });
+  }
+));
 
 exports.doLogin = function(req, res) {
     if (!req.body.username || !req.body.password) {
