@@ -39,30 +39,13 @@ endef
 # Install
 #############################################################################################
 
-install: install-nodejs install-npm install-rvm install-sass install-mongodb install-redis
-
-install-nodejs:
-	$(HIDE)echo Installing Node.js
-ifeq ($(UNAME),Linux)
-	$(HIDE)sudo apt-get update
-	$(HIDE)sudo apt-get install -y python-software-properties python g++ make
-	$(HIDE)sudo add-apt-repository -y ppa:chris-lea/node.js
-	$(HIDE)sudo apt-get update
-	$(HIDE)sudo apt-get install nodejs
-endif
-ifeq ($(UNAME),Darwin)
-	$(HIDE)ruby -e "$$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" &> 2; echo;
-	$(call BREW,"node")
-endif
+install: install-npm install-rvm install-sass install-mongodb install-redis
 
 install-npm:
 	$(HIDE)echo Installing npm dependencies
 ifeq ($(UNAME),Linux)
 	$(HIDE)sudo npm install -g requirejs grunt-cli karma jade nodemon --force
 	$(HIDE)sudo rm -rf ~/tmp ~/.tmp ~/.npm
-endif
-ifeq ($(UNAME),Darwin)
-	$(HIDE)npm install -g requirejs grunt-cli karma jade nodemon --force
 endif
 	$(HIDE)npm install
 
