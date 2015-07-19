@@ -59,5 +59,7 @@
     "forever-monitor": "~1.5.2",
     "mkdirp": "~0.5.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "react": "~0.13.3"
+  }
 }
