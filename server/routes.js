@@ -12,6 +12,8 @@ exports.route = function (app) {
     app.get('/', index.main); // change to pickupreport for release
 
     app.post('/login', index.postLogin);
+
+    app.get('/signup', index.getSignup);
     app.get('/login', index.getLogin);
     app.get('/logout', index.logout);
     app.get('/profile', index.profile);

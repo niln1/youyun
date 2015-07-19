@@ -62,6 +62,17 @@ exports.getLogin = function (req, res) {
     });
 }
 
+exports.getSignup = function (req, res) {
+    if (req.session.user) return res.redirect('/');
+    else req.session.user = null;
+
+    res.render('signup', {
+        school: 'Hanlin',
+        title: 'Signup',
+        user: req.session.user 
+    });
+}
+
 exports.logout = function (req, res) {
     logger.info("Logging out");
     req.session.user = null;
