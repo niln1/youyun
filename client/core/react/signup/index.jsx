@@ -22,8 +22,8 @@ let Container = React.createClass({
     render: () => {
         return (
             <div style={containerStyle}> 
-            hello world 
             <Minput/>
+            <input/>
             </div>
         )
     }
