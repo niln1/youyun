@@ -23,7 +23,16 @@ let Container = React.createClass({
         return (
             <div style={containerStyle}>
                 <div>
-                    <Minput/>
+                    <Minput labelName={"School Token"}/>
+                </div>
+                <div>
+                    <Minput labelName={"Email"}/>
+                    <Minput labelName={"Password"}/>
+                    <Minput labelName={"Retype Password"}/>
+                </div>
+                <div>
+                    <Minput labelName={"First Name"}/>
+                    <Minput labelName={"Last Name"}/>
                 </div>
             </div>
         )

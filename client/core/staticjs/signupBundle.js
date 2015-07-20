@@ -80,8 +80,24 @@
 	        return _react2["default"].createElement(
 	            "div",
 	            { style: containerStyle },
-	            _react2["default"].createElement(_componentsMinputJsx2["default"], null),
-	            _react2["default"].createElement("input", null)
+	            _react2["default"].createElement(
+	                "div",
+	                null,
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "School Token" })
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                null,
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Email" }),
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Password" }),
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Retype Password" })
+	            ),
+	            _react2["default"].createElement(
+	                "div",
+	                null,
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "First Name" }),
+	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Last Name" })
+	            )
 	        );
 	    }
 	});
@@ -20480,11 +20496,6 @@
 	var MInput = _react2["default"].createClass({
 	    displayName: "MInput",
 
-	    getInitialState: function getInitialState() {
-	        return {
-	            currentStep: 0
-	        };
-	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
 	            "div",
@@ -20495,7 +20506,7 @@
 	            _react2["default"].createElement(
 	                "label",
 	                null,
-	                "Name"
+	                undefined.props.labelName
 	            )
 	        );
 	    }
@@ -20538,7 +20549,7 @@
 
 
 	// module
-	exports.push([module.id, "/* form starting stylings ------------------------------- */\n.group \t\t\t  { \n  position:relative; \n  margin-bottom:45px; \n}\ninput \t\t\t\t{\n  font-size:18px;\n  padding:10px 10px 10px 5px;\n  display:block;\n  width:300px;\n  border:none;\n  border-bottom:1px solid #757575;\n  background: transparent;\n}\ninput:focus \t\t{ outline:none; }\n\n/* LABEL ======================================= */\nlabel \t\t\t\t {\n  color:#999; \n  font-size:18px;\n  font-weight:normal;\n  position:absolute;\n  pointer-events:none;\n  left:5px;\n  top:10px;\n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n\n/* active state */\ninput:focus ~ label, input:valid ~ label \t\t{\n  top:-20px;\n  font-size:14px;\n  color:#5264AE;\n}\n\n/* BOTTOM BARS ================================= */\n.bar \t{ position:relative; display:block; width:300px; }\n.bar:before, .bar:after \t{\n  content:'';\n  height:2px; \n  width:0;\n  bottom:1px; \n  position:absolute;\n  background:#5264AE; \n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n.bar:before {\n  left:50%;\n}\n.bar:after {\n  right:50%; \n}\n\n/* active state */\ninput:focus ~ .bar:before, input:focus ~ .bar:after {\n  width:50%;\n}\n\n/* HIGHLIGHTER ================================== */\n.highlight {\n  position:absolute;\n  height:60%; \n  width:100px; \n  top:25%; \n  left:0;\n  pointer-events:none;\n  opacity:0.5;\n}\n\n/* active state */\ninput:focus ~ .highlight {\n  -webkit-animation:inputHighlighter 0.3s ease;\n  -moz-animation:inputHighlighter 0.3s ease;\n  animation:inputHighlighter 0.3s ease;\n}\n\n/* ANIMATIONS ================ */\n@-webkit-keyframes inputHighlighter {\n\tfrom { background:#5264AE; }\n  to \t{ width:0; background:transparent; }\n}\n@-moz-keyframes inputHighlighter {\n\tfrom { background:#5264AE; }\n  to \t{ width:0; background:transparent; }\n}\n@keyframes inputHighlighter {\n\tfrom { background:#5264AE; }\n  to \t{ width:0; background:transparent; }\n}", ""]);
+	exports.push([module.id, "/* form starting stylings ------------------------------- */\n/* bgcolor #ecf0f1*/\n/* dark school color #124720*/\n\n.group \t\t\t  { \n  position:relative; \n  margin-bottom:45px; \n}\ninput \t\t\t\t{\n  font-size:18px;\n  padding:10px 10px 10px 5px;\n  display:block;\n  width:300px;\n  border:none;\n  border-bottom:1px solid #757575;\n  background: transparent;\n}\ninput:focus \t\t{ outline:none; }\n\n/* LABEL ======================================= */\nlabel \t\t\t\t {\n  color:#999; \n  font-size:18px;\n  font-weight:normal;\n  position:absolute;\n  pointer-events:none;\n  left:5px;\n  top:10px;\n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n\n/* active state */\ninput:focus ~ label, input:valid ~ label \t\t{\n  top:-20px;\n  font-size:14px;\n  color:#124720;\n}\n\n/* BOTTOM BARS ================================= */\n.bar \t{ position:relative; display:block; width:300px; }\n.bar:before, .bar:after \t{\n  content:'';\n  height:2px; \n  width:0;\n  bottom:1px; \n  position:absolute;\n  background:#124720; \n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n.bar:before {\n  left:50%;\n}\n.bar:after {\n  right:50%; \n}\n\n/* active state */\ninput:focus ~ .bar:before, input:focus ~ .bar:after {\n  width:50%;\n}\n\n/* HIGHLIGHTER ================================== */\n.highlight {\n  position:absolute;\n  height:60%; \n  width:100px; \n  top:25%; \n  left:0;\n  pointer-events:none;\n  opacity:0.5;\n}\n\n/* active state */\ninput:focus ~ .highlight {\n  -webkit-animation:inputHighlighter 0.3s ease;\n  -moz-animation:inputHighlighter 0.3s ease;\n  animation:inputHighlighter 0.3s ease;\n}\n\n/* ANIMATIONS ================ */\n@-webkit-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@-moz-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}", ""]);
 
 	// exports
 
