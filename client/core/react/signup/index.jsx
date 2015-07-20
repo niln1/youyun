@@ -21,9 +21,10 @@ let Container = React.createClass({
     },
     render: () => {
         return (
-            <div style={containerStyle}> 
-            <Minput/>
-            <input/>
+            <div style={containerStyle}>
+                <div>
+                    <Minput/>
+                </div>
             </div>
         )
     }

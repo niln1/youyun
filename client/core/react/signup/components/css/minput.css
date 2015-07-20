@@ -1,4 +1,7 @@
 /* form starting stylings ------------------------------- */
+/* bgcolor #ecf0f1*/
+/* dark school color #124720*/
+
 .group 			  { 
   position:relative; 
   margin-bottom:45px; 
@@ -32,7 +35,7 @@ label 				 {
 input:focus ~ label, input:valid ~ label 		{
   top:-20px;
   font-size:14px;
-  color:#5264AE;
+  color:#124720;
 }
 
 /* BOTTOM BARS ================================= */
@@ -43,7 +46,7 @@ input:focus ~ label, input:valid ~ label 		{
   width:0;
   bottom:1px; 
   position:absolute;
-  background:#5264AE; 
+  background:#124720; 
   transition:0.2s ease all; 
   -moz-transition:0.2s ease all; 
   -webkit-transition:0.2s ease all;
@@ -80,14 +83,14 @@ input:focus ~ .highlight {
 
 /* ANIMATIONS ================ */
 @-webkit-keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background:#124720; }
   to 	{ width:0; background:transparent; }
 }
 @-moz-keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background:#124720; }
   to 	{ width:0; background:transparent; }
 }
 @keyframes inputHighlighter {
-	from { background:#5264AE; }
+	from { background:#124720; }
   to 	{ width:0; background:transparent; }
 }
