@@ -10,7 +10,9 @@ let Step1 = React.createClass({
                 <br/>
                 <br/>
                 <Minput labelName={"Beta Token"}/>
-                <p style={ { "text-align" : "center" } }> HanLin is currently in beta, you need a Beta invitation key to register. </p>
+                <p style={ { "text-align" : "center" } }> Really sorry for any inconvenience </p>
+                <p style={ { "text-align" : "center" } }> A beta invitation key is needed for register </p>
+                <br/>
                 <button style={ {"width": "100%"} } className="btn btn-lg btn-success"> Submit </button>
             </div>
         )
