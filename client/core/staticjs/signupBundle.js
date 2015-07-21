@@ -20508,8 +20508,14 @@
 	            _react2["default"].createElement(
 	                "p",
 	                { style: { "text-align": "center" } },
-	                " HanLin is currently in beta, you need a Beta invitation key to register. "
+	                " Really sorry for any inconvenience "
 	            ),
+	            _react2["default"].createElement(
+	                "p",
+	                { style: { "text-align": "center" } },
+	                " A beta invitation key is needed for register "
+	            ),
+	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement(
 	                "button",
 	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
