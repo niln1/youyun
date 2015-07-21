@@ -3,8 +3,7 @@ import React from "react";
 require("./css/minput.css");
 
 let MInput = React.createClass({
-    render: () => {
-        // this is undefined
+    render: function () {
         return (
             <div className="group">      
                 <input type="text" required />

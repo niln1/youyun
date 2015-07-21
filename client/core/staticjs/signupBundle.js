@@ -52,20 +52,24 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsMinputJsx = __webpack_require__(157);
+	var _componentsStep1Jsx = __webpack_require__(157);
 
-	var _componentsMinputJsx2 = _interopRequireDefault(_componentsMinputJsx);
+	var _componentsStep1Jsx2 = _interopRequireDefault(_componentsStep1Jsx);
 
 	// start up code
 	$("body").addClass("full");
+	$("head").append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />");
 
 	var containerStyle = {
-	    maxWidth: "640px",
+	    maxWidth: "440px",
 	    minHeight: "300px",
 	    margin: "auto",
 	    position: "relative",
 	    top: "50%",
-	    transform: "translateY(50%)"
+	    transform: "translateY(50%)",
+	    "-webkit-transform": "translateY(50%)",
+	    "-ms-transform": "translateY(50%)",
+	    padding: "0 20px"
 	};
 
 	var Container = _react2["default"].createClass({
@@ -77,27 +81,17 @@
 	        };
 	    },
 	    render: function render() {
+	        var App = undefined;
+
+	        switch (this.state.currentStep) {
+	            default:
+	                App = _react2["default"].createElement(_componentsStep1Jsx2["default"], null);
+	        };
+
 	        return _react2["default"].createElement(
 	            "div",
 	            { style: containerStyle },
-	            _react2["default"].createElement(
-	                "div",
-	                null,
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "School Token" })
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                null,
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Email" }),
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Password" }),
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Retype Password" })
-	            ),
-	            _react2["default"].createElement(
-	                "div",
-	                null,
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "First Name" }),
-	                _react2["default"].createElement(_componentsMinputJsx2["default"], { labelName: "Last Name" })
-	            )
+	            App
 	        );
 	    }
 	});
@@ -20491,7 +20485,55 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(158);
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var Step1 = _react2["default"].createClass({
+	    displayName: "Step1",
+
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " Do u have a beta token? "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Beta Token" }),
+	            _react2["default"].createElement(
+	                "p",
+	                { style: { "text-align": "center" } },
+	                " HanLin is currently in beta, you need a Beta invitation key to register. "
+	            ),
+	            _react2["default"].createElement(
+	                "button",
+	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Submit "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = Step1;
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	__webpack_require__(159);
 
 	var MInput = _react2["default"].createClass({
 	    displayName: "MInput",
@@ -20506,7 +20548,7 @@
 	            _react2["default"].createElement(
 	                "label",
 	                null,
-	                undefined.props.labelName
+	                this.props.labelName
 	            )
 	        );
 	    }
@@ -20515,16 +20557,16 @@
 	module.exports = MInput;
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(159);
+	var content = __webpack_require__(160);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(161)(content, {});
+	var update = __webpack_require__(162)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20541,21 +20583,21 @@
 	}
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(160)();
+	exports = module.exports = __webpack_require__(161)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "/* form starting stylings ------------------------------- */\n/* bgcolor #ecf0f1*/\n/* dark school color #124720*/\n\n.group \t\t\t  { \n  position:relative; \n  margin-bottom:45px; \n}\ninput \t\t\t\t{\n  font-size:18px;\n  padding:10px 10px 10px 5px;\n  display:block;\n  width:300px;\n  border:none;\n  border-bottom:1px solid #757575;\n  background: transparent;\n}\ninput:focus \t\t{ outline:none; }\n\n/* LABEL ======================================= */\nlabel \t\t\t\t {\n  color:#999; \n  font-size:18px;\n  font-weight:normal;\n  position:absolute;\n  pointer-events:none;\n  left:5px;\n  top:10px;\n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n\n/* active state */\ninput:focus ~ label, input:valid ~ label \t\t{\n  top:-20px;\n  font-size:14px;\n  color:#124720;\n}\n\n/* BOTTOM BARS ================================= */\n.bar \t{ position:relative; display:block; width:300px; }\n.bar:before, .bar:after \t{\n  content:'';\n  height:2px; \n  width:0;\n  bottom:1px; \n  position:absolute;\n  background:#124720; \n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n.bar:before {\n  left:50%;\n}\n.bar:after {\n  right:50%; \n}\n\n/* active state */\ninput:focus ~ .bar:before, input:focus ~ .bar:after {\n  width:50%;\n}\n\n/* HIGHLIGHTER ================================== */\n.highlight {\n  position:absolute;\n  height:60%; \n  width:100px; \n  top:25%; \n  left:0;\n  pointer-events:none;\n  opacity:0.5;\n}\n\n/* active state */\ninput:focus ~ .highlight {\n  -webkit-animation:inputHighlighter 0.3s ease;\n  -moz-animation:inputHighlighter 0.3s ease;\n  animation:inputHighlighter 0.3s ease;\n}\n\n/* ANIMATIONS ================ */\n@-webkit-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@-moz-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}", ""]);
+	exports.push([module.id, "/* form starting stylings ------------------------------- */\n/* bgcolor #ecf0f1*/\n/* dark school color #124720*/\n\n.group \t\t\t  { \n  position:relative; \n  margin-bottom:45px; \n}\ninput \t\t\t\t{\n  font-size:18px;\n  padding:10px 10px 10px 5px;\n  display:block;\n  width:100%;\n  border:none;\n  border-bottom:1px solid #757575;\n  background: transparent;\n}\ninput:focus \t\t{ outline:none; }\n\n/* LABEL ======================================= */\nlabel \t\t\t\t {\n  color:#999; \n  font-size:18px;\n  font-weight:normal;\n  position:absolute;\n  pointer-events:none;\n  left:5px;\n  top:10px;\n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n\n/* active state */\ninput:focus ~ label, input:valid ~ label \t\t{\n  top:-20px;\n  font-size:14px;\n  color:#124720;\n}\n\n/* BOTTOM BARS ================================= */\n.bar \t{ position:relative; display:block; width:100%; }\n.bar:before, .bar:after \t{\n  content:'';\n  height:2px; \n  width:0;\n  bottom:1px; \n  position:absolute;\n  background:#124720; \n  transition:0.2s ease all; \n  -moz-transition:0.2s ease all; \n  -webkit-transition:0.2s ease all;\n}\n.bar:before {\n  left:50%;\n}\n.bar:after {\n  right:50%; \n}\n\n/* active state */\ninput:focus ~ .bar:before, input:focus ~ .bar:after {\n  width:50%;\n}\n\n/* HIGHLIGHTER ================================== */\n.highlight {\n  position:absolute;\n  height:60%; \n  width:100px; \n  top:25%; \n  left:0;\n  pointer-events:none;\n  opacity:0.5;\n}\n\n/* active state */\ninput:focus ~ .highlight {\n  -webkit-animation:inputHighlighter 0.3s ease;\n  -moz-animation:inputHighlighter 0.3s ease;\n  animation:inputHighlighter 0.3s ease;\n}\n\n/* ANIMATIONS ================ */\n@-webkit-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@-moz-keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}\n@keyframes inputHighlighter {\n\tfrom { background:#124720; }\n  to \t{ width:0; background:transparent; }\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports) {
 
 	/*
@@ -20611,7 +20653,7 @@
 
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
