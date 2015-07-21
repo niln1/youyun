@@ -59,5 +59,13 @@
     "forever-monitor": "~1.5.2",
     "mkdirp": "~0.5.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "react": "~0.13.3",
+    "node-libs-browser": "~0.5.2",
+    "webpack": "~1.10.1",
+    "babel-core": "~5.7.4",
+    "babel-loader": "~5.3.2",
+    "css-loader": "~0.15.5",
+    "style-loader": "~0.12.3"
+  }
 }

@@ -97,7 +97,7 @@ exports.checkUserSession = function(req, res, next) {
     var path = req.url;
     var isInWhitelist = false;
     var whitelistPatterns = [
-        /^\/(login|logout)/,
+        /^\/(login|logout|signup)/,
         /^\/api\/v\d\/account\/(login|logout|getuser)/
     ];
 
