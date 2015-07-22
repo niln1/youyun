@@ -22,14 +22,14 @@ let containerStyle = {
 let Container = React.createClass({
     getInitialState: () => {
         return {
-            currentStep: 'teacher1'
+            currentStep: 'parent1'
         }
     },
     render: function() {
         let App;
 
         switch(this.state.currentStep) {
-            case 'teacher1':
+            case 'parent1':
                 App = <ParentStep1 />;
             default: 
                 App = <Entry />;
