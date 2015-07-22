@@ -1,5 +1,7 @@
 import React from "react";
-import Step1 from "./components/step1.jsx";
+import Entry from "./components/entry.jsx";
+import ParentStep1 from "./components/parentstep1.jsx";
+
 
 // start up code
 $('body').addClass('full');
@@ -20,15 +22,17 @@ let containerStyle = {
 let Container = React.createClass({
     getInitialState: () => {
         return {
-            currentStep: 0
+            currentStep: 'teacher1'
         }
     },
     render: function() {
         let App;
 
         switch(this.state.currentStep) {
+            case 'teacher1':
+                App = <ParentStep1 />;
             default: 
-                App = <Step1 />
+                App = <Entry />;
         };
 
         return (

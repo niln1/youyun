@@ -52,9 +52,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsStep1Jsx = __webpack_require__(157);
+	var _componentsEntryJsx = __webpack_require__(157);
 
-	var _componentsStep1Jsx2 = _interopRequireDefault(_componentsStep1Jsx);
+	var _componentsEntryJsx2 = _interopRequireDefault(_componentsEntryJsx);
+
+	var _componentsParentstep1Jsx = __webpack_require__(163);
+
+	var _componentsParentstep1Jsx2 = _interopRequireDefault(_componentsParentstep1Jsx);
 
 	// start up code
 	$("body").addClass("full");
@@ -77,15 +81,17 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            currentStep: 0
+	            currentStep: "teacher1"
 	        };
 	    },
 	    render: function render() {
 	        var App = undefined;
 
 	        switch (this.state.currentStep) {
+	            case "teacher1":
+	                App = _react2["default"].createElement(_componentsParentstep1Jsx2["default"], null);
 	            default:
-	                App = _react2["default"].createElement(_componentsStep1Jsx2["default"], null);
+	                App = _react2["default"].createElement(_componentsEntryJsx2["default"], null);
 	        };
 
 	        return _react2["default"].createElement(
@@ -20489,8 +20495,8 @@
 
 	var _minputJsx2 = _interopRequireDefault(_minputJsx);
 
-	var Step1 = _react2["default"].createClass({
-	    displayName: "Step1",
+	var Entry = _react2["default"].createClass({
+	    displayName: "Entry",
 
 	    render: function render() {
 	        return _react2["default"].createElement(
@@ -20519,13 +20525,13 @@
 	            _react2["default"].createElement(
 	                "button",
 	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Submit "
+	                " Next "
 	            )
 	        );
 	    }
 	});
 
-	module.exports = Step1;
+	module.exports = Entry;
 
 /***/ },
 /* 158 */
@@ -20882,6 +20888,60 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var ParentStep1 = _react2["default"].createClass({
+	    displayName: "ParentStep1",
+
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " Do u have a teacher token? "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Beta Token" }),
+	            _react2["default"].createElement(
+	                "p",
+	                { style: { "text-align": "center" } },
+	                " Really sorry for any inconvenience "
+	            ),
+	            _react2["default"].createElement(
+	                "p",
+	                { style: { "text-align": "center" } },
+	                " A beta invitation key is needed for register "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(
+	                "button",
+	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Next "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = ParentStep1;
 
 /***/ }
 /******/ ]);
