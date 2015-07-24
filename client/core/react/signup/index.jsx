@@ -3,6 +3,7 @@ import Entry from "./components/entry.jsx";
 import ParentStep1 from "./components/parentstep1.jsx";
 import ParentStep2 from "./components/parentstep2.jsx";
 import ParentStep3 from "./components/parentstep3.jsx";
+import Success from "./components/success.jsx";
 
 // start up code
 $('body').addClass('full');
@@ -41,6 +42,9 @@ let Container = React.createClass({
                 break;
             case 'parent3':
                 App = <ParentStep3 changeStep={this.changeStep} />;
+                break;
+            case 'success':
+                App = <Success changeStep={this.changeStep} />;
                 break;
             default: 
                 App = <Entry changeStep={this.changeStep} />;
