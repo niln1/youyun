@@ -60,6 +60,14 @@
 
 	var _componentsParentstep1Jsx2 = _interopRequireDefault(_componentsParentstep1Jsx);
 
+	var _componentsParentstep2Jsx = __webpack_require__(164);
+
+	var _componentsParentstep2Jsx2 = _interopRequireDefault(_componentsParentstep2Jsx);
+
+	var _componentsParentstep3Jsx = __webpack_require__(165);
+
+	var _componentsParentstep3Jsx2 = _interopRequireDefault(_componentsParentstep3Jsx);
+
 	// start up code
 	$("body").addClass("full");
 	$("head").append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />");
@@ -81,17 +89,28 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            currentStep: "teacher1"
+	            currentStep: "entry"
 	        };
+	    },
+	    changeStep: function changeStep(step) {
+	        this.setState({ currentStep: step });
 	    },
 	    render: function render() {
 	        var App = undefined;
 
 	        switch (this.state.currentStep) {
-	            case "teacher1":
-	                App = _react2["default"].createElement(_componentsParentstep1Jsx2["default"], null);
+	            case "parent1":
+	                App = _react2["default"].createElement(_componentsParentstep1Jsx2["default"], { changeStep: this.changeStep });
+	                break;
+	            case "parent2":
+	                App = _react2["default"].createElement(_componentsParentstep2Jsx2["default"], { changeStep: this.changeStep });
+	                break;
+	            case "parent3":
+	                App = _react2["default"].createElement(_componentsParentstep3Jsx2["default"], { changeStep: this.changeStep });
+	                break;
 	            default:
-	                App = _react2["default"].createElement(_componentsEntryJsx2["default"], null);
+	                App = _react2["default"].createElement(_componentsEntryJsx2["default"], { changeStep: this.changeStep });
+	                break;
 	        };
 
 	        return _react2["default"].createElement(
@@ -20498,6 +20517,9 @@
 	var Entry = _react2["default"].createClass({
 	    displayName: "Entry",
 
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("parent1");
+	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
 	            "div",
@@ -20524,7 +20546,7 @@
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement(
 	                "button",
-	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
 	                " Next "
 	            )
 	        );
@@ -20908,6 +20930,9 @@
 	var ParentStep1 = _react2["default"].createClass({
 	    displayName: "ParentStep1",
 
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("parent2");
+	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
 	            "div",
@@ -20915,33 +20940,122 @@
 	            _react2["default"].createElement(
 	                "h2",
 	                { style: { "text-align": "center" } },
-	                " Do u have a teacher token? "
+	                " Welcome! Parent! "
 	            ),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Beta Token" }),
-	            _react2["default"].createElement(
-	                "p",
-	                { style: { "text-align": "center" } },
-	                " Really sorry for any inconvenience "
-	            ),
-	            _react2["default"].createElement(
-	                "p",
-	                { style: { "text-align": "center" } },
-	                " A beta invitation key is needed for register "
-	            ),
-	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Email" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Password" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Verify Password" }),
 	            _react2["default"].createElement(
 	                "button",
-	                { style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Next "
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Create Parent Account "
 	            )
 	        );
 	    }
 	});
 
 	module.exports = ParentStep1;
+
+/***/ },
+/* 164 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var ParentStep2 = _react2["default"].createClass({
+	    displayName: "ParentStep2",
+
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("parent3");
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " ",
+	                "What's your Name? :)",
+	                " "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
+	            _react2["default"].createElement(
+	                "button",
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Next "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = ParentStep2;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var ParentStep3 = _react2["default"].createClass({
+	    displayName: "ParentStep3",
+
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("parent3");
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " ",
+	                "What's your Name? :)",
+	                " "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
+	            _react2["default"].createElement(
+	                "button",
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Next "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = ParentStep3;
 
 /***/ }
 /******/ ]);

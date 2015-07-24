@@ -2,18 +2,20 @@ import React from "react";
 import Minput from "./minput.jsx";
 
 let ParentStep1 = React.createClass({
-    render: function () {
+    onNextClick() {
+        this.props.changeStep('parent2');
+    },
+    render() {
         return (
             <div>
-                <h2 style={ { "text-align" : "center" } }> Do u have a teacher token? </h2>
+                <h2 style={ { "text-align" : "center" } }> Welcome! Parent! </h2>
                 <br/>
                 <br/>
                 <br/>
-                <Minput labelName={"Beta Token"}/>
-                <p style={ { "text-align" : "center" } }> Really sorry for any inconvenience </p>
-                <p style={ { "text-align" : "center" } }> A beta invitation key is needed for register </p>
-                <br/>
-                <button style={ {"width": "100%"} } className="btn btn-lg btn-success"> Next </button>
+                <Minput labelName={"Email"}/>
+                <Minput labelName={"Password"}/>
+                <Minput labelName={"Verify Password"}/>
+                <button onClick={this.onNextClick} style={ {"width": "100%"} } className="btn btn-lg btn-success"> Create Parent Account </button>
             </div>
         )
     }

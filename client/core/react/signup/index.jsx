@@ -1,7 +1,8 @@
 import React from "react";
 import Entry from "./components/entry.jsx";
 import ParentStep1 from "./components/parentstep1.jsx";
-
+import ParentStep2 from "./components/parentstep2.jsx";
+import ParentStep3 from "./components/parentstep3.jsx";
 
 // start up code
 $('body').addClass('full');
@@ -20,19 +21,30 @@ let containerStyle = {
 };
 
 let Container = React.createClass({
-    getInitialState: () => {
+    getInitialState() {
         return {
-            currentStep: 'parent1'
+            currentStep: 'entry'
         }
+    },
+    changeStep(step) {
+        this.setState({currentStep: step});
     },
     render: function() {
         let App;
 
         switch(this.state.currentStep) {
             case 'parent1':
-                App = <ParentStep1 />;
+                App = <ParentStep1 changeStep={this.changeStep} />;
+                break;
+            case 'parent2':
+                App = <ParentStep2 changeStep={this.changeStep} />;
+                break;
+            case 'parent3':
+                App = <ParentStep3 changeStep={this.changeStep} />;
+                break;
             default: 
-                App = <Entry />;
+                App = <Entry changeStep={this.changeStep} />;
+                break;
         };
 
         return (

@@ -2,6 +2,9 @@ import React from "react";
 import Minput from "./minput.jsx";
 
 let Entry = React.createClass({
+    onNextClick() {
+        this.props.changeStep('parent1');
+    },
     render: function () {
         return (
             <div>
@@ -13,7 +16,7 @@ let Entry = React.createClass({
                 <p style={ { "text-align" : "center" } }> Really sorry for any inconvenience </p>
                 <p style={ { "text-align" : "center" } }> A beta invitation key is needed for register </p>
                 <br/>
-                <button style={ {"width": "100%"} } className="btn btn-lg btn-success"> Next </button>
+                <button onClick={this.onNextClick} style={ {"width": "100%"} } className="btn btn-lg btn-success"> Next </button>
             </div>
         )
     }
