@@ -15,7 +15,7 @@ block body-content
                     div.form-field-group
                         input.form-control.input-lg#password(placeholder='Password', type='password', name='password')
                         span.login-field-icon.glyphicon.glyphicon-lock
-                    a(data-toggle="modal" data-target="#sign-up-form").sign-up-btn.btn.btn-lg.btn-warning#signup Sign Up
+                    a(href="/signup").sign-up-btn.btn.btn-lg.btn-warning#signup Sign Up
                     button(type="submit").login-btn.btn.btn-lg.btn-success#submit Login
                 div.login-form-group-footer
                     p
@@ -32,16 +32,5 @@ block body-content
                     | YouYun © 2014 &nbsp;
                     img.yy-logo(src='/core/img/favicon.png')
                     | &nbsp;&nbsp;Youyun,Inc
-    div#sign-up-form.modal.fade(role="dialog" aria-labelledby="myLargeModalLabel")
-        div.modal-lg.modal-dialog
-            div.modal-content
-                div.modal-header
-                    button(type="button" class="close" data-dismiss="modal" aria-label="Close")
-                        span(aria-hidden="true") &times;
-                    h4 SignUp
-                div.modal-body
-                    |...
-                div.modal-footer
-                    button(type="button" class="btn btn-default" data-dismiss="modal") Close
     script(src='/core/staticjs/common.js')
     script(src='/core/staticjs/loginview.js')
