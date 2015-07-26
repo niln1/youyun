@@ -8,7 +8,7 @@ let ParentStep3 = React.createClass({
     render() {
         return (
             <div>
-                <h2 style={ { "text-align" : "center" } }> { "What's your Name? :)"} </h2>
+                <h2 style={ { "text-align" : "center" } }> { "Who is your child? :)"} </h2>
                 <br/>
                 <br/>
                 <br/>
