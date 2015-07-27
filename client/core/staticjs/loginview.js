@@ -5,13 +5,3 @@ $('#login-form input').on("focus", function highlightLogo () {
 $('#login-form input').on("blur", function highlightLogo () {
     $('.school-logo').removeClass('active');
 });
-
-$('.sign-up-btn').click(function () {
-
-})
-
-var App = {};
-
-App.showSignupPage = function () {
-    
-}
