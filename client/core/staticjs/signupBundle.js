@@ -60,15 +60,23 @@
 
 	var _componentsParentstep1Jsx2 = _interopRequireDefault(_componentsParentstep1Jsx);
 
-	var _componentsParentstep2Jsx = __webpack_require__(1);
+	var _componentsParentstep2Jsx = __webpack_require__(165);
 
 	var _componentsParentstep2Jsx2 = _interopRequireDefault(_componentsParentstep2Jsx);
 
-	var _componentsParentstep3Jsx = __webpack_require__(165);
+	var _componentsParentstep3Jsx = __webpack_require__(1);
 
 	var _componentsParentstep3Jsx2 = _interopRequireDefault(_componentsParentstep3Jsx);
 
-	var _componentsSuccessJsx = __webpack_require__(166);
+	var _componentsTeacherstep1Jsx = __webpack_require__(166);
+
+	var _componentsTeacherstep1Jsx2 = _interopRequireDefault(_componentsTeacherstep1Jsx);
+
+	var _componentsTeacherstep2Jsx = __webpack_require__(167);
+
+	var _componentsTeacherstep2Jsx2 = _interopRequireDefault(_componentsTeacherstep2Jsx);
+
+	var _componentsSuccessJsx = __webpack_require__(168);
 
 	var _componentsSuccessJsx2 = _interopRequireDefault(_componentsSuccessJsx);
 
@@ -112,6 +120,12 @@
 	            case "parent3":
 	                App = _react2["default"].createElement(_componentsParentstep3Jsx2["default"], { changeStep: this.changeStep });
 	                break;
+	            case "teacher1":
+	                App = _react2["default"].createElement(_componentsTeacherstep1Jsx2["default"], { changeStep: this.changeStep });
+	                break;
+	            case "teacher2":
+	                App = _react2["default"].createElement(_componentsTeacherstep2Jsx2["default"], { changeStep: this.changeStep });
+	                break;
 	            case "success":
 	                App = _react2["default"].createElement(_componentsSuccessJsx2["default"], { changeStep: this.changeStep });
 	                break;
@@ -146,11 +160,11 @@
 
 	var _minputJsx2 = _interopRequireDefault(_minputJsx);
 
-	var ParentStep2 = _react2["default"].createClass({
-	    displayName: "ParentStep2",
+	var ParentStep3 = _react2["default"].createClass({
+	    displayName: "ParentStep3",
 
 	    onNextClick: function onNextClick() {
-	        this.props.changeStep("parent3");
+	        this.props.changeStep("success");
 	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
@@ -160,14 +174,13 @@
 	                "h2",
 	                { style: { "text-align": "center" } },
 	                " ",
-	                "What's your Name? :)",
+	                "Who is your child? :)",
 	                " "
 	            ),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Who is your child?" }),
 	            _react2["default"].createElement(
 	                "button",
 	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
@@ -177,7 +190,7 @@
 	    }
 	});
 
-	module.exports = ParentStep2;
+	module.exports = ParentStep3;
 
 /***/ },
 /* 2 */
@@ -20571,11 +20584,17 @@
 	var MInput = _react2["default"].createClass({
 	    displayName: "MInput",
 
+	    getInitialState: function getInitialState() {
+	        return { data: "" };
+	    },
+	    onInputChange: function onInputChange(e) {
+	        this.setState({ data: e.target.value });
+	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
 	            "div",
 	            { className: "group" },
-	            _react2["default"].createElement("input", { type: "text", required: true }),
+	            _react2["default"].createElement("input", { type: "text", required: true, onChange: this.onInputChange, value: this.state.data }),
 	            _react2["default"].createElement("span", { className: "highlight" }),
 	            _react2["default"].createElement("span", { className: "bar" }),
 	            _react2["default"].createElement(
@@ -20930,7 +20949,17 @@
 	    displayName: "Entry",
 
 	    onNextClick: function onNextClick() {
-	        this.props.changeStep("parent1");
+	        switch (this.refs.betatoken.state.data) {
+	            case "hanlinparent":
+	                this.props.changeStep("parent1");
+	                break;
+	            case "hanlinteacher":
+	                this.props.changeStep("teacher1");
+	                break;
+	            default:
+	                alert("yo");
+	                break;
+	        }
 	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
@@ -20944,7 +20973,7 @@
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Beta Token" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Beta Token", ref: "betatoken" }),
 	            _react2["default"].createElement(
 	                "p",
 	                { style: { "text-align": "center" } },
@@ -21031,8 +21060,105 @@
 
 	var _minputJsx2 = _interopRequireDefault(_minputJsx);
 
-	var ParentStep3 = _react2["default"].createClass({
-	    displayName: "ParentStep3",
+	var ParentStep2 = _react2["default"].createClass({
+	    displayName: "ParentStep2",
+
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("parent3");
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " ",
+	                "What's your Name? :)",
+	                " "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
+	            _react2["default"].createElement(
+	                "button",
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Next "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = ParentStep2;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var TeacherStep1 = _react2["default"].createClass({
+	    displayName: "TeacherStep1",
+
+	    onNextClick: function onNextClick() {
+	        this.props.changeStep("teacher2");
+	    },
+	    render: function render() {
+	        return _react2["default"].createElement(
+	            "div",
+	            null,
+	            _react2["default"].createElement(
+	                "h2",
+	                { style: { "text-align": "center" } },
+	                " Welcome! Teacher! "
+	            ),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Email" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Password" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Verify Password" }),
+	            _react2["default"].createElement(
+	                "button",
+	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
+	                " Create Teacher Account "
+	            )
+	        );
+	    }
+	});
+
+	module.exports = TeacherStep1;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _minputJsx = __webpack_require__(158);
+
+	var _minputJsx2 = _interopRequireDefault(_minputJsx);
+
+	var TeacherStep2 = _react2["default"].createClass({
+	    displayName: "TeacherStep2",
 
 	    onNextClick: function onNextClick() {
 	        this.props.changeStep("success");
@@ -21045,26 +21171,27 @@
 	                "h2",
 	                { style: { "text-align": "center" } },
 	                " ",
-	                "Who is your child? :)",
+	                "What's your Name? :)",
 	                " "
 	            ),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Who is your child?" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
 	            _react2["default"].createElement(
 	                "button",
 	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Next "
+	                " Done! "
 	            )
 	        );
 	    }
 	});
 
-	module.exports = ParentStep3;
+	module.exports = TeacherStep2;
 
 /***/ },
-/* 166 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
