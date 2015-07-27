@@ -139,4 +139,72 @@ exports.changePassword = function(req, res) {
     });
 
 
-}
+};
+
+exports.registerAccount = function(req, res) {
+    return apiServer.apiCallHelper(req, res, {
+
+        infoMessage: "register new account",
+        userValidationHandler: function (user, signatureIsValid) {
+
+            return true;
+        },
+
+        processHandler: function () {
+
+            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+
+            delete data.signature;
+
+            logger.debug("Param: " + JSON.stringify(data));
+
+            var promise = User.create({
+                username: data.email,
+                password: data.password,
+                userType: data.userType
+            });
+
+            return promise;
+        },
+
+        successHandler: function (user) {
+            apiServer.sendResponse(req, res, user, 'Password changed');
+        }
+    });
+};
+
+exports.verifyToken = function(req, res) {
+    return apiServer.apiCallHelper(req, res, {
+
+        infoMessage: "register new account",
+        userValidationHandler: function (user, signatureIsValid) {
+
+            return true;
+        },
+
+        processHandler: function () {
+
+            var data = JSON.parse(JSON.stringify(req.body)); // create a simple clone just for the data
+
+            delete data.signature;
+
+            logger.debug("Param: " + JSON.stringify(data));
+
+            var defer = Q.defer();
+
+//
+//            var promise = User.create({
+//                username: data.username,
+//                password: data.password,
+//                userType: data.userType
+//            });
+
+            defer.resolve("test");
+            return defer.promise;
+        },
+
+        successHandler: function (user) {
+            apiServer.sendResponse(req, res, user, 'Password changed');
+        }
+    });
+};

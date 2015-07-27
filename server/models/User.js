@@ -26,15 +26,15 @@ var UserSchema = new Schema({
     },
     lastname: {
         type: String,
-        required: true
+        required: false
     },
     firstname: {
         type: String,
-        required: true
+        required: false
     },
     password: {
         type: String,
-        required: true,
+        required: true
         // get: passwordGetter
     },
     userImage: {

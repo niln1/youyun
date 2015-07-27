@@ -3,6 +3,12 @@
  */
 'use strict';
 
+exports.email = {
+    'type': 'email',
+    'param': 'email',
+    'description': 'user\'s email address.'
+};
+
 exports.username = {
     'type': 'string',
     'param': 'username',

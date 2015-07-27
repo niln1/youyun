@@ -67,4 +67,34 @@ module.exports = [{
         'description': 'update user password',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/account/verifyToken',
+    'POST': {
+        'handler': accounts.verifyToken,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        parameters.token 
+        ],
+        'optional': [
+        ],
+        'description': 'verify token',
+        'response': {} // sample data
+    }
+}, {
+    'url': '/api/v1/account/register',
+    'POST': {
+        'handler': accounts.registerAccount,
+        'content-type': 'application/json',
+        'required': [
+            parameters.signature,
+            parameters.email,
+            parameters.password,
+            parameters.userType
+        ],
+        'optional': [
+        ],
+        'description': 'register new account',
+        'response': {} // sample data
+    }
 }];

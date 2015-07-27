@@ -116,6 +116,17 @@ function isValidQueryParamsType(path, method, res, query) {
                             apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
                             return false;
                         }
+                    case 'email':
+                        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+                        if (re.test(queryData)) {
+                            logger.trace("Check email Type Passed - " + queryData);
+                            break;
+                        } else {
+                            logger.warn("Check email Type - " + queryData + "is Not a email");
+                            apiServer.invalidQueryParameters(res, 'Invalid Query Parameter Type');
+                            return false;
+                        }
                     case 'mongoId':
                         if (/^[0-9a-fA-F]{24}$/.test(queryData)) {
                             logger.trace("Check mongoId Type Passed - " + queryData);
@@ -197,6 +208,10 @@ exports.createObject = function(req, res) {
 
     if (__.has(apiSpec, req.path)) {
         // TODO: check content type; if not return error
+        if (!req.headers['content-type']){
+            apiServer.invalidContentType(res, 'Content-Type:  not supported.');
+            return;
+        }
         if (__.isEqual(req.headers['content-type'].split(';')[0],
             apiSpec[req.path][req.method]['content-type'])) {
             var queryParams = __.keys(req.body);
