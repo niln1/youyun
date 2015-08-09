@@ -4,13 +4,50 @@ import MuiMixin from "../mixins/MuiMixin";
 
 let ParentStep1 = React.createClass({
     mixins:[MuiMixin],
-    onNextClick() {
-        this.props.changeStep('parent2');
-    },
-    handleEmailFieldChange(e) {
+    persist() {
+        let { emailInput, passwordInput, verifyPasswordInput }
+            = this.refs;
+
+        let valid = true;
+
+        if (!validateEmail(emailInput.getValue())) {
+            emailInput.setErrorText('Please Enter a Valid Email');
+            valid = false;
+        }
+
+        if (passwordInput.getValue().length < 8) {
+            passwordInput.setErrorText('Password must have at Least 8 Characters');
+            valid = false;
+        }
+
+        if (passwordInput.getValue() !== verifyPasswordInput.getValue()) {
+            verifyPasswordInput.setErrorText('Make sure ur password match');
+            valid = false;
+        }
+
+        return valid;
 
     },
+    onNextClick() {
+        if (this.persist()) this.props.changeStep('parent2');
+    },
+    handleEmailFieldChange(e) {
+        let email = this.refs.emailInput.getValue();
+
+        if (!this.refs.emailInput.errorText) return;
+
+        if (!email || validateEmail(email)) {
+            this.refs.emailInput.setErrorText();
+            return;
+        } else {
+            this.refs.emailInput
+                .setErrorText('Please Enter a Valid Email');
+            return;
+        }
+    },
     handlePasswordFieldChange(e) {
+        let { passwordInput } = this.refs;
+        if (!passwordInput.errorText) return;
 
     },
     handleVerifyPasswordFieldChange(e) {
@@ -53,5 +90,10 @@ let ParentStep1 = React.createClass({
         )
     }
 })
+
+function validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
+}
 
 module.exports = ParentStep1;

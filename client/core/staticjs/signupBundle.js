@@ -41417,12 +41417,46 @@
 	    displayName: "ParentStep1",
 
 	    mixins: [_mixinsMuiMixin2["default"]],
+	    persist: function persist() {
+	        var _refs = this.refs;
+	        var emailInput = _refs.emailInput;
+	        var passwordInput = _refs.passwordInput;
+	        var verifyPasswordInput = _refs.verifyPasswordInput;
+
+	        var valid = true;
+
+	        if (!validateEmail(emailInput.getValue())) {
+	            emailInput.setErrorText("Please Enter a Valid Email");
+	            valid = false;
+	        }
+
+	        if (passwordInput.getValue().length < 8) {
+	            passwordInput.setErrorText("Password must have at Least 8 Characters");
+	            valid = false;
+	        }
+
+	        if (passwordInput.getValue() !== verifyPasswordInput.getValue()) {
+	            verifyPasswordInput.setErrorText("Make sure ur password match");
+	            valid = false;
+	        }
+
+	        return valid;
+	    },
 	    onNextClick: function onNextClick() {
-	        this.props.changeStep("parent2");
+	        if (this.persist()) this.props.changeStep("parent2");
 	    },
-	    handleTextFieldChange: function handleTextFieldChange(e) {
-	        debugger;
+	    handleEmailFieldChange: function handleEmailFieldChange(e) {
+	        var email = this.refs.emailInput.getValue();
+	        if (!email || validateEmail(email)) {
+	            this.refs.emailInput.setErrorText();
+	            return;
+	        } else {
+	            this.refs.emailInput.setErrorText("Please Enter a Valid Email");
+	            return;
+	        }
 	    },
+	    handlePasswordFieldChange: function handlePasswordFieldChange(e) {},
+	    handleVerifyPasswordFieldChange: function handleVerifyPasswordFieldChange(e) {},
 	    render: function render() {
 	        return _react2["default"].createElement(
 	            "div",
@@ -41439,21 +41473,21 @@
 	                type: "email",
 	                floatingLabelText: "Email",
 	                ref: "emailInput",
-	                onChange: this.handleTextFieldChange
+	                onChange: this.handleEmailFieldChange
 	            }),
 	            _react2["default"].createElement(_materialUi.TextField, {
 	                fullWidth: true,
 	                type: "password",
 	                floatingLabelText: "Password",
 	                ref: "passwordInput",
-	                onChange: this.handleTextFieldChange
+	                onChange: this.handlePasswordFieldChange
 	            }),
 	            _react2["default"].createElement(_materialUi.TextField, {
 	                fullWidth: true,
 	                type: "password",
 	                floatingLabelText: "Verify Password",
 	                ref: "verifyPasswordInput",
-	                onChange: this.handleTextFieldChange
+	                onChange: this.handleVerifyPasswordFieldChange
 	            }),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
@@ -41468,6 +41502,11 @@
 	        );
 	    }
 	});
+
+	function validateEmail(email) {
+	    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	    return re.test(email);
+	}
 
 	module.exports = ParentStep1;
 
