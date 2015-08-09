@@ -1,9 +1,11 @@
 import React from "react";
-import Minput from "./minput.jsx";
+import mui, { TextField } from 'material-ui';
+import MuiMixin from "../mixins/MuiMixin";
 
 let Entry = React.createClass({
+    mixins:[MuiMixin],
     onNextClick() {
-        switch(this.refs.betatoken.state.data) {
+        switch(this.refs.betatoken.getValue()) {
             case 'hanlinparent':
                 this.props.changeStep('parent1');
                 break;
@@ -11,7 +13,7 @@ let Entry = React.createClass({
                 this.props.changeStep('teacher1');
                 break;
             default:
-                alert('yo');
+                window.location.href = "/";
                 break;
         }      
     },
@@ -22,7 +24,13 @@ let Entry = React.createClass({
                 <br/>
                 <br/>
                 <br/>
-                <Minput labelName={"Beta Token"} ref="betatoken" />
+                <TextField
+                    fullWidth
+                    floatingLabelText="Beta Token"
+                    ref="betatoken"
+                    // onChange={this._handleFloatingErrorInputChange}
+                />
+                <br/>
                 <p style={ { "text-align" : "center" } }> Really sorry for any inconvenience </p>
                 <p style={ { "text-align" : "center" } }> A beta invitation key is needed for register </p>
                 <br/>
