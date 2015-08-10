@@ -26,10 +26,34 @@ let ParentStep1 = React.createClass({
         }
 
         return valid;
-
     },
     onNextClick() {
         if (this.persist()) this.props.changeStep('parent2');
+        let { emailInput, passwordInput, verifyPasswordInput }
+            = this.refs;
+
+        var url = "/api/v1/account/register";
+
+        var data = {
+            email: emailInput.getValue(),
+            password: verifyPasswordInput.getValue(),
+            userType: 4, // for parent 2 for teacher
+            signature: "tempkey"
+        };
+        
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(result) {
+                console.log('success');
+            },
+            error: function(result) {
+                console.log('error');
+            }
+        });
     },
     handleEmailFieldChange(e) {
         let email = this.refs.emailInput.getValue();
