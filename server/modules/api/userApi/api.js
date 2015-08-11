@@ -96,4 +96,20 @@ module.exports = [{
         'description': 'return child user of user with userId',
         'response': {} // sample data
     }
+}, {
+    'url': '/api/v1/users/child',
+    'POST': {
+        'handler': users.addChild,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        parameters.userId,
+        parameters.firstname,
+        parameters.lastname,
+        parameters.pickupLocation
+        ],
+        'optional': [],
+        'description': 'add child user to parent',
+        'response': {} // sample data
+    }
 }];
