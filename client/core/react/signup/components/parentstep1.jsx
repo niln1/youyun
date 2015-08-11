@@ -28,35 +28,33 @@ let ParentStep1 = React.createClass({
         return valid;
     },
     onNextClick() {
-                        this.refs.dialog.show();
+        if (!this.persist()) return; // no submit until valid
+        let { emailInput, passwordInput, verifyPasswordInput }
+            = this.refs;
 
-        // if (!this.persist()) return; // no submit until valid
-        // let { emailInput, passwordInput, verifyPasswordInput }
-        //     = this.refs;
+        var url = "/api/v1/account/register";
 
-        // var url = "/api/v1/account/register";
+        var data = {
+            email: emailInput.getValue(),
+            password: verifyPasswordInput.getValue(),
+            userType: 4, // for parent 2 for teacher
+            signature: "tempkey"
+        };
 
-        // var data = {
-        //     email: emailInput.getValue(),
-        //     password: verifyPasswordInput.getValue(),
-        //     userType: 4, // for parent 2 for teacher
-        //     signature: "tempkey"
-        // };
-
-        // $.ajax({
-        //     url: url,
-        //     type: 'POST',
-        //     data: JSON.stringify(data),
-        //     contentType: "application/json",
-        //     dataType: "json",
-        //     success: function(result) {
-        //         console.log('success');
-        //         this.refs.dialog.show();
-        //     }.bind(this),
-        //     error: function(result) {
-        //         console.log('error');
-        //     }
-        // });
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(result) {
+                console.log('success');
+                this.refs.dialog.show();
+            }.bind(this),
+            error: function(result) {
+                console.log('error');
+            }
+        });
     },
     handleEmailFieldChange(e) {
         let email = this.refs.emailInput.getValue();
