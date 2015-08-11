@@ -41443,10 +41443,41 @@
 	        return valid;
 	    },
 	    onNextClick: function onNextClick() {
-	        if (this.persist()) this.props.changeStep("parent2");
+	        if (!this.persist()) return; // no submit until valid
+	        var _refs2 = this.refs;
+	        var emailInput = _refs2.emailInput;
+	        var passwordInput = _refs2.passwordInput;
+	        var verifyPasswordInput = _refs2.verifyPasswordInput;
+
+	        var url = "/api/v1/account/register";
+
+	        var data = {
+	            email: emailInput.getValue(),
+	            password: verifyPasswordInput.getValue(),
+	            userType: 4, // for parent 2 for teacher
+	            signature: "tempkey"
+	        };
+
+	        $.ajax({
+	            url: url,
+	            type: "POST",
+	            data: JSON.stringify(data),
+	            contentType: "application/json",
+	            dataType: "json",
+	            success: (function (result) {
+	                console.log("success");
+	                this.refs.dialog.show();
+	            }).bind(this),
+	            error: function error(result) {
+	                console.log("error");
+	            }
+	        });
 	    },
 	    handleEmailFieldChange: function handleEmailFieldChange(e) {
 	        var email = this.refs.emailInput.getValue();
+
+	        if (!this.refs.emailInput.errorText) return;
+
 	        if (!email || validateEmail(email)) {
 	            this.refs.emailInput.setErrorText();
 	            return;
@@ -41455,9 +41486,18 @@
 	            return;
 	        }
 	    },
-	    handlePasswordFieldChange: function handlePasswordFieldChange(e) {},
+	    handlePasswordFieldChange: function handlePasswordFieldChange(e) {
+	        var passwordInput = this.refs.passwordInput;
+
+	        if (!passwordInput.errorText) return;
+	    },
 	    handleVerifyPasswordFieldChange: function handleVerifyPasswordFieldChange(e) {},
+	    _onDialogSubmit: function _onDialogSubmit(e) {
+	        // log people in.. make this a new page.
+	        window.location.href = "/";
+	    },
 	    render: function render() {
+	        var standardActions = [{ text: "Cancel" }, { text: "Submit", onTouchTap: this._onDialogSubmit, ref: "submit" }];
 	        return _react2["default"].createElement(
 	            "div",
 	            null,
@@ -41494,6 +41534,12 @@
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
+	            _react2["default"].createElement(_materialUi.Snackbar, {
+	                message: "Account Created!",
+	                action: "Next",
+	                openOnMount: true,
+	                autoHideDuration: 1000
+	            }),
 	            _react2["default"].createElement(
 	                "button",
 	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },

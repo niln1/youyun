@@ -80,7 +80,7 @@ exports.updateUserDevice = function (req, res) {
 
 
 exports.changePassword = function(req, res) {
-        return apiServer.apiCallHelper(req, res, {
+    return apiServer.apiCallHelper(req, res, {
 
         infoMessage: "update password",
         userValidationHandler: function(user, signatureIsValid) {
@@ -168,7 +168,11 @@ exports.registerAccount = function(req, res) {
         },
 
         successHandler: function (user) {
-            apiServer.sendResponse(req, res, user, 'Password changed');
+            user = user.toObject();
+            // casting out password
+            user.password = "This is a Joke, My friend";
+            req.session.user = user;
+            apiServer.sendResponse(req, res, user, 'register new account');
         }
     });
 };
