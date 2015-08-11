@@ -49,7 +49,7 @@ let ParentStep1 = React.createClass({
             dataType: "json",
             success: function(result) {
                 console.log('success');
-                this.refs.dialog.show();
+                window.location.href='/'; //login or set time out
             }.bind(this),
             error: function(result) {
                 console.log('error');
@@ -75,10 +75,6 @@ let ParentStep1 = React.createClass({
         if (!passwordInput.errorText) return;
     },
     handleVerifyPasswordFieldChange(e) {
-    },
-    _onDialogSubmit(e) {
-        // log people in.. make this a new page.
-        window.location.href = "/";
     },
     render() {
         let standardActions = [

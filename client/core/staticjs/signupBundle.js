@@ -41443,35 +41443,35 @@
 	        return valid;
 	    },
 	    onNextClick: function onNextClick() {
-	        this.refs.dialog.show();
+	        if (!this.persist()) return; // no submit until valid
+	        var _refs2 = this.refs;
+	        var emailInput = _refs2.emailInput;
+	        var passwordInput = _refs2.passwordInput;
+	        var verifyPasswordInput = _refs2.verifyPasswordInput;
 
-	        // if (!this.persist()) return; // no submit until valid
-	        // let { emailInput, passwordInput, verifyPasswordInput }
-	        //     = this.refs;
+	        var url = "/api/v1/account/register";
 
-	        // var url = "/api/v1/account/register";
+	        var data = {
+	            email: emailInput.getValue(),
+	            password: verifyPasswordInput.getValue(),
+	            userType: 4, // for parent 2 for teacher
+	            signature: "tempkey"
+	        };
 
-	        // var data = {
-	        //     email: emailInput.getValue(),
-	        //     password: verifyPasswordInput.getValue(),
-	        //     userType: 4, // for parent 2 for teacher
-	        //     signature: "tempkey"
-	        // };
-
-	        // $.ajax({
-	        //     url: url,
-	        //     type: 'POST',
-	        //     data: JSON.stringify(data),
-	        //     contentType: "application/json",
-	        //     dataType: "json",
-	        //     success: function(result) {
-	        //         console.log('success');
-	        //         this.refs.dialog.show();
-	        //     }.bind(this),
-	        //     error: function(result) {
-	        //         console.log('error');
-	        //     }
-	        // });
+	        $.ajax({
+	            url: url,
+	            type: "POST",
+	            data: JSON.stringify(data),
+	            contentType: "application/json",
+	            dataType: "json",
+	            success: (function (result) {
+	                console.log("success");
+	                this.refs.dialog.show();
+	            }).bind(this),
+	            error: function error(result) {
+	                console.log("error");
+	            }
+	        });
 	    },
 	    handleEmailFieldChange: function handleEmailFieldChange(e) {
 	        var email = this.refs.emailInput.getValue();
@@ -41493,7 +41493,7 @@
 	    },
 	    handleVerifyPasswordFieldChange: function handleVerifyPasswordFieldChange(e) {},
 	    _onDialogSubmit: function _onDialogSubmit(e) {
-	        // log people in
+	        // log people in.. make this a new page.
 	        window.location.href = "/";
 	    },
 	    render: function render() {
