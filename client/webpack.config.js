@@ -12,7 +12,7 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
+                test: /core\/react/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel',
                 query: {
@@ -21,5 +21,8 @@ module.exports = {
             },
             { test: /\.css$/, loader: "style-loader!css-loader" }
         ]
+    },
+    resolve: {
+        extensions: ['', '.js', '.jsx', '.css']
     }
 };
