@@ -41466,7 +41466,7 @@
 	            dataType: "json",
 	            success: (function (result) {
 	                console.log("success");
-	                this.refs.dialog.show();
+	                window.location.href = "/"; //login or set time out
 	            }).bind(this),
 	            error: function error(result) {
 	                console.log("error");
@@ -41492,10 +41492,6 @@
 	        if (!passwordInput.errorText) return;
 	    },
 	    handleVerifyPasswordFieldChange: function handleVerifyPasswordFieldChange(e) {},
-	    _onDialogSubmit: function _onDialogSubmit(e) {
-	        // log people in.. make this a new page.
-	        window.location.href = "/";
-	    },
 	    render: function render() {
 	        var standardActions = [{ text: "Cancel" }, { text: "Submit", onTouchTap: this._onDialogSubmit, ref: "submit" }];
 	        return _react2["default"].createElement(

@@ -6,9 +6,9 @@ module.exports = {
     output: {
         path: "./core/staticjs/",
         filename: "[name]Bundle.js",
-        chunkFilename: "[id]Bundle.js"
+        chunkFilename: "[id]Bundle.js",
         devtool: "eval"
-    }
+    },
     module: {
         loaders: [
             {

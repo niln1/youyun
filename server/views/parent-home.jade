@@ -6,24 +6,6 @@ block head-extra
 
 block main-content
     div#main-region.container-fluid
-        div.page-board.pageboard-shadow(style="background:white;")
-            div.col-lg-offset-3.col-lg-6.col-md-offset-2.col-md-8.col-sm-offset-2.col-sm-8
-                div.content-header
-                    div.header-inner
-                        h2.text-left Change Password
-                div.content-divider
-                div.content-container(style="padding: 10px; background:white")
-                        div.form-group.change-pwd-form-group
-                            div.form-field-group.form-group
-                                input.form-control.input-lg#oldPassword(placeholder='current password', type='password', name='oldPassword')
-                            div.form-field-group.form-group
-                                input.form-control.input-lg#newPassword1(placeholder='new password', type='password', name='newPassword')
-                            div.form-field-group.form-group
-                                input.form-control.input-lg#newPassword2(placeholder='repeat new password', type='password', name='newPassword')
-                            button(type="submit").btn.btn-block.btn-lg.btn-success#change-pwd-btn Update Password
-                            div#info-field.info-field(style="display:none;")
-
-                //    form#change-pwd-form(action="changePassword", method="post")
   
     script(src='/core/staticjs/common.js')
-    script(src='/core/staticjs/account-management.js')
+    script(src='/core/staticjs/parentHomeBundle.js')
