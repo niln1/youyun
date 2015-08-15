@@ -2,7 +2,8 @@ module.exports = {
     entry: "./core/react/signup/index.jsx",
     output: {
         path: "./core/staticjs/",
-        filename: "signupBundle.js"
+        filename: "signupBundle.js",
+        devtool: "eval"
     },
     module: {
         loaders: [
