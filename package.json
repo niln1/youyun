@@ -6,7 +6,8 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "postinstall": "node ./utilities/postinstall.js"
+    "postinstall": "node ./utilities/postinstall.js",
+    "buildjs": "cd ./client && webpack"
   },
   "dependencies": {
     "apn": "^1.5.2",

@@ -1,10 +1,14 @@
 module.exports = {
-    entry: "./core/react/signup/index.jsx",
+    entry: {
+        signup: "./core/react/signup/index.jsx",
+        parentHome: "./core/react/parentHome/main.jsx"
+    },
     output: {
         path: "./core/staticjs/",
-        filename: "signupBundle.js",
+        filename: "[name]Bundle.js",
+        chunkFilename: "[id]Bundle.js"
         devtool: "eval"
-    },
+    }
     module: {
         loaders: [
             {

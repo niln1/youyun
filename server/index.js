@@ -13,26 +13,49 @@ var userApiHelper = require('./modules/api/userApi/users.js').helpers;
 
 exports.main = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
-    logger.warn(req.session.user);
-    if (req.session.user.userType > 1 ) {
-        res.render('account-management', {
-            user: req.session.user,
-            school: 'Hanlin',
-            title: 'Account Management',
-        });
+    logger.debug(req.session.user);
+    if (req.session.user.userType === 4) { // is parent
+        return parentIndex(req, res);
     } else {
-         res.render('index', {
-            user: req.session.user,
-           
-        });
-        //res.redirect('/pickupreport');
-
+        res.redirect('/pickupreport');
     }
 };
 
+/**
+ * AccountMannagment Page, Change Password
+ */
+var parentIndex = exports.parentIndex = function(req, res) {
+    return res.render('parent-home', {
+        user: req.session.user,
+        school: 'Hanlin',
+        title: 'Home',
+    });
+}
+
+/**
+ * AccountMannagment Page, Change Password
+ */
+exports.oldIndex = function(req, res) {
+    return res.render('index', {
+        user: req.session.user,
+    });
+}
+/**
+ * AccountMannagment Page, Change Password
+ */
+exports.accountManagement = function(req, res) {
+    return res.render('account-management', {
+        user: req.session.user,
+        school: 'Hanlin',
+        title: 'Account Management',
+    });
+}
+
+/**
+ * User Profile Page, Change Image
+ */
 exports.profile = function(req, res) {
-    console.log('profile');
-    res.render('profile', {
+    return res.render('profile', {
         user: req.session.user,
         title: 'Account Management',
     });
@@ -40,11 +63,11 @@ exports.profile = function(req, res) {
 
 exports.lost = function (req, res) {
     logger.warn("Path Not defined");
-    res.send(404);
+    return res.send(404);
 };
 
 exports.postLogin = function (req, res) {
-    auth.doLogin(req, res);
+    return auth.doLogin(req, res);
 }
 
 exports.getLogin = function (req, res) {
@@ -54,7 +77,7 @@ exports.getLogin = function (req, res) {
     var message = req.flash('error');
     if (!message || message.length < 1) message = null;
 
-    res.render('login', {
+    return res.render('login', {
         school: 'Hanlin',
         title: 'Login',
         message: message,
@@ -66,7 +89,7 @@ exports.getSignup = function (req, res) {
     if (req.session.user) return res.redirect('/');
     else req.session.user = null;
 
-    res.render('signup', {
+    return res.render('signup', {
         school: 'Hanlin',
         title: 'Signup',
         user: req.session.user 
@@ -76,28 +99,28 @@ exports.getSignup = function (req, res) {
 exports.logout = function (req, res) {
     logger.info("Logging out");
     req.session.user = null;
-    res.redirect('/login');
+    return res.redirect('/login');
 }
 
 exports.populateDB = function (req, res) {
     db.populateDB();
-    res.send('see console');
+    return res.send('see console');
 }
 
 exports.addChild = function (req, res) {
     db.addChild();
-    res.send('see console');
+    return res.send('see console');
 }
 
 exports.home = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
-    res.render('home', {});
+    return res.render('home', {});
 }           
 
 exports.usermanage = function (req, res) {
     if (!req.session.user) return res.send(404);
     if (req.session.user.userType > 1) return res.send(401);
-    res.render('usermanage', {
+    return res.render('usermanage', {
         user: req.session.user,
         school: 'Hanlin',
         title: 'User Management'
@@ -107,7 +130,7 @@ exports.usermanage = function (req, res) {
 exports.pickupreport = function (req, res) {
     if (!req.session.user) return res.send(404);
     if (req.session.user.userType > 1) return res.send(401);
-    res.render('pickupreport', {
+    return res.render('pickupreport', {
         user: req.session.user,
         school: 'Hanlin',
         title: 'Pickup Report'
@@ -117,7 +140,7 @@ exports.pickupreport = function (req, res) {
 exports.styleguide = function (req, res) {
     if (!req.session.user) return res.send(404);
     if (req.session.user.userType > 1) return res.send(401);
-    res.render('styleguide', {
+    return res.render('styleguide', {
         user: req.session.user,
         school: 'Hanlin',
         title: 'StyleGuide'
