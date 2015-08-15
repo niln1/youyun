@@ -6,7 +6,7 @@ class UserPage extends React.Component {
   render () {
     return (
       <div>
-        <h3>Github</h3>
+        <h3>Hahah</h3>
           <div>
             <Link to="/facebook">View Facebook's profile & repositories</Link>
           </div>

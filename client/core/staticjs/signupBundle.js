@@ -60,23 +60,15 @@
 
 	var _componentsParentstep1Jsx2 = _interopRequireDefault(_componentsParentstep1Jsx);
 
-	var _componentsParentstep2Jsx = __webpack_require__(379);
-
-	var _componentsParentstep2Jsx2 = _interopRequireDefault(_componentsParentstep2Jsx);
-
-	var _componentsParentstep3Jsx = __webpack_require__(212);
-
-	var _componentsParentstep3Jsx2 = _interopRequireDefault(_componentsParentstep3Jsx);
-
-	var _componentsTeacherstep1Jsx = __webpack_require__(380);
+	var _componentsTeacherstep1Jsx = __webpack_require__(212);
 
 	var _componentsTeacherstep1Jsx2 = _interopRequireDefault(_componentsTeacherstep1Jsx);
 
-	var _componentsTeacherstep2Jsx = __webpack_require__(381);
+	var _componentsTeacherstep2Jsx = __webpack_require__(379);
 
 	var _componentsTeacherstep2Jsx2 = _interopRequireDefault(_componentsTeacherstep2Jsx);
 
-	var _componentsSuccessJsx = __webpack_require__(382);
+	var _componentsSuccessJsx = __webpack_require__(380);
 
 	var _componentsSuccessJsx2 = _interopRequireDefault(_componentsSuccessJsx);
 
@@ -113,12 +105,6 @@
 	        switch (this.state.currentStep) {
 	            case "parent1":
 	                App = _react2["default"].createElement(_componentsParentstep1Jsx2["default"], { changeStep: this.changeStep });
-	                break;
-	            case "parent2":
-	                App = _react2["default"].createElement(_componentsParentstep2Jsx2["default"], { changeStep: this.changeStep });
-	                break;
-	            case "parent3":
-	                App = _react2["default"].createElement(_componentsParentstep3Jsx2["default"], { changeStep: this.changeStep });
 	                break;
 	            case "teacher1":
 	                App = _react2["default"].createElement(_componentsTeacherstep1Jsx2["default"], { changeStep: this.changeStep });
@@ -20590,11 +20576,11 @@
 
 	var _minputJsx2 = _interopRequireDefault(_minputJsx);
 
-	var ParentStep3 = _react2["default"].createClass({
-	    displayName: "ParentStep3",
+	var TeacherStep1 = _react2["default"].createClass({
+	    displayName: "TeacherStep1",
 
 	    onNextClick: function onNextClick() {
-	        this.props.changeStep("success");
+	        this.props.changeStep("teacher2");
 	    },
 	    render: function render() {
 	        return _react2["default"].createElement(
@@ -20603,24 +20589,24 @@
 	            _react2["default"].createElement(
 	                "h2",
 	                { style: { "text-align": "center" } },
-	                " ",
-	                "Who is your child? :)",
-	                " "
+	                " Welcome! Teacher! "
 	            ),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
 	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Who is your child?" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Email" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Password" }),
+	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Verify Password" }),
 	            _react2["default"].createElement(
 	                "button",
 	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Next "
+	                " Create Teacher Account "
 	            )
 	        );
 	    }
 	});
 
-	module.exports = ParentStep3;
+	module.exports = TeacherStep1;
 
 /***/ },
 /* 213 */
@@ -41627,103 +41613,6 @@
 
 	var _minputJsx2 = _interopRequireDefault(_minputJsx);
 
-	var ParentStep2 = _react2["default"].createClass({
-	    displayName: "ParentStep2",
-
-	    onNextClick: function onNextClick() {
-	        this.props.changeStep("parent3");
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            null,
-	            _react2["default"].createElement(
-	                "h2",
-	                { style: { "text-align": "center" } },
-	                " ",
-	                "What's your Name? :)",
-	                " "
-	            ),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "First Name" }),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Last Name" }),
-	            _react2["default"].createElement(
-	                "button",
-	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Next "
-	            )
-	        );
-	    }
-	});
-
-	module.exports = ParentStep2;
-
-/***/ },
-/* 380 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _minputJsx = __webpack_require__(213);
-
-	var _minputJsx2 = _interopRequireDefault(_minputJsx);
-
-	var TeacherStep1 = _react2["default"].createClass({
-	    displayName: "TeacherStep1",
-
-	    onNextClick: function onNextClick() {
-	        this.props.changeStep("teacher2");
-	    },
-	    render: function render() {
-	        return _react2["default"].createElement(
-	            "div",
-	            null,
-	            _react2["default"].createElement(
-	                "h2",
-	                { style: { "text-align": "center" } },
-	                " Welcome! Teacher! "
-	            ),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement("br", null),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Email" }),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Password" }),
-	            _react2["default"].createElement(_minputJsx2["default"], { labelName: "Verify Password" }),
-	            _react2["default"].createElement(
-	                "button",
-	                { onClick: this.onNextClick, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
-	                " Create Teacher Account "
-	            )
-	        );
-	    }
-	});
-
-	module.exports = TeacherStep1;
-
-/***/ },
-/* 381 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _minputJsx = __webpack_require__(213);
-
-	var _minputJsx2 = _interopRequireDefault(_minputJsx);
-
 	var TeacherStep2 = _react2["default"].createClass({
 	    displayName: "TeacherStep2",
 
@@ -41758,7 +41647,7 @@
 	module.exports = TeacherStep2;
 
 /***/ },
-/* 382 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

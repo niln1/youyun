@@ -1,8 +1,6 @@
 import React from "react";
 import Entry from "./components/entry.jsx";
 import ParentStep1 from "./components/parentstep1.jsx";
-import ParentStep2 from "./components/parentstep2.jsx";
-import ParentStep3 from "./components/parentstep3.jsx";
 import TeacherStep1 from "./components/teacherstep1.jsx";
 import TeacherStep2 from "./components/teacherstep2.jsx";
 import Success from "./components/success.jsx";
@@ -38,12 +36,6 @@ let Container = React.createClass({
         switch(this.state.currentStep) {
             case 'parent1':
                 App = <ParentStep1 changeStep={this.changeStep} />;
-                break;
-            case 'parent2':
-                App = <ParentStep2 changeStep={this.changeStep} />;
-                break;
-            case 'parent3':
-                App = <ParentStep3 changeStep={this.changeStep} />;
                 break;
             case 'teacher1':
                 App = <TeacherStep1 changeStep={this.changeStep} />;
