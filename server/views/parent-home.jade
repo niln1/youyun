@@ -1,0 +1,11 @@
+extends app-header-v2
+
+block head-extra
+    script.
+        var current_user = !{JSON.stringify(user)};
+
+block main-content
+    div#main-region.container-fluid
+  
+    script(src='/core/staticjs/common.js')
+    script(src='/core/staticjs/parentHomeBundle.js')
