@@ -45174,11 +45174,12 @@
 	    _createClass(AddChild, [{
 	        key: "render",
 	        value: function render() {
+	            var textFields = [{ type: "text", label: "First Name", ref: "fname" }, { type: "text", label: "Last Name", ref: "lname" }, { type: "text", label: "PickupLocation", ref: "pickuplocation" }, { type: "text", label: "Grade", ref: "grade" }, { type: "text", label: "Room", ref: "room" }];
 	            return _react2["default"].createElement(
 	                "div",
 	                null,
 	                _react2["default"].createElement(_componentsSimpleForm2["default"], { header: "Add Child!",
-	                    textFields: [{ type: "text", label: "First Name", ref: "fname" }, { type: "text", label: "Last Name", ref: "lname" }],
+	                    textFields: textFields,
 	                    onNext: this.onNextClick,
 	                    submitButtonText: "Next"
 	                })
