@@ -1,5 +1,5 @@
 import React from "react";
-import mui, { TextField } from 'material-ui';
+import mui, { TextField, Snackbar } from 'material-ui';
 import MuiMixin from "../mixins/MuiMixin";
 
 let ParentStep1 = React.createClass({
@@ -26,10 +26,35 @@ let ParentStep1 = React.createClass({
         }
 
         return valid;
-
     },
     onNextClick() {
-        if (this.persist()) this.props.changeStep('parent2');
+        if (!this.persist()) return; // no submit until valid
+        let { emailInput, passwordInput, verifyPasswordInput }
+            = this.refs;
+
+        var url = "/api/v1/account/register";
+
+        var data = {
+            email: emailInput.getValue(),
+            password: verifyPasswordInput.getValue(),
+            userType: 4, // for parent 2 for teacher
+            signature: "tempkey"
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(result) {
+                console.log('success');
+                window.location.href='/'; //login or set time out
+            }.bind(this),
+            error: function(result) {
+                console.log('error');
+            }
+        });
     },
     handleEmailFieldChange(e) {
         let email = this.refs.emailInput.getValue();
@@ -48,12 +73,14 @@ let ParentStep1 = React.createClass({
     handlePasswordFieldChange(e) {
         let { passwordInput } = this.refs;
         if (!passwordInput.errorText) return;
-
     },
     handleVerifyPasswordFieldChange(e) {
-
     },
     render() {
+        let standardActions = [
+            { text: 'Cancel' },
+            { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
+        ];
         return (
             <div>
                 <h2 style={ { "text-align" : "center" } }> Welcome! Parent! </h2>
@@ -85,6 +112,12 @@ let ParentStep1 = React.createClass({
                 <br/>
                 <br/>
                 <br/>
+                <Snackbar
+                    message="Account Created!"
+                    action="Next"
+                    openOnMount
+                    autoHideDuration={1000}
+                />
                 <button onClick={this.onNextClick} style={ {"width": "100%"} } className="btn btn-lg btn-success"> Create Parent Account </button>
             </div>
         )
