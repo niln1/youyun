@@ -1,21 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, { Component } from "react";
+import mui, { TextField } from 'material-ui';
+import prepareMui from "../../decorators/prepareMui";
+import SimpleForm from "../../components/SimpleForm";
 
-class UserPage extends React.Component {
-
-  render () {
-    return (
-      <div>
-        <h3>Github</h3>
-          <div>
-            <Link to="/facebook">View Facebook's profile & repositories</Link>
-          </div>
-          <div>
-            <Link to="/google">View Google's profile & repositories</Link>
-          </div>
-      </div>
-    );
-  }
+export default class Entry extends Component {
+    onNextClick() {
+        console.log('yo');
+    }
+    render() {
+        return (
+            <div>
+                <SimpleForm header="Welcome To Hanlin!"
+                    textFields={[{type: 'text', label: 'First Name', ref: 'fname'},
+                        {type: 'text', label: 'Last Name', ref: 'lname'}]}
+                    onNext={this.onNextClick}
+                    submitButtonText={'Next'}
+                />
+            </div>
+        )
+    }
 }
-
-export default UserPage;

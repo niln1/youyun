@@ -1,5 +1,5 @@
 import React from "react";
-import MixinDecorator from 'react-mixin-decorator';
+import MixinDecorator from './mixinDecorator';
 import mui from 'material-ui';
 import hanlinTheme from "../../hanlinTheme";
 let ThemeManager = new mui.Styles.ThemeManager();
@@ -7,7 +7,7 @@ let Colors = mui.Styles.Colors;
 
 let MuiMixin = {
     childContextTypes: {
-        muiTheme: React.PropTypes.object
+        muiTheme: React.PropTypes.object.isRequired
     },
 
     getChildContext: function() {
