@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SimpleForm from "../../components/SimpleForm";
 
-export default class Welcome extends Component {
+export default class AddChild extends Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     }
@@ -11,7 +11,7 @@ export default class Welcome extends Component {
     render() {
         return (
             <div>
-                <SimpleForm header="Welcome To Hanlin!"
+                <SimpleForm header="Add Child!"
                     textFields={[{type: 'text', label: 'First Name', ref: 'fname'},
                         {type: 'text', label: 'Last Name', ref: 'lname'}]}
                     onNext={this.onNextClick}
@@ -19,5 +19,5 @@ export default class Welcome extends Component {
                 />
             </div>
         )
-    }
+    };
 }
