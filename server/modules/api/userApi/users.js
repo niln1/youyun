@@ -181,6 +181,45 @@ exports.addChild = function (req, res) {
     });
 }
 
+exports.updateChild = function(req, res) {
+    logger.info("Users - updateChild");
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+    ])
+    .spread(function (user, signatureIsValid) {
+
+        if (user.userType !==3 && user.userType !== 5 && user._id.toString() === req.body.userId) {
+            if (req.body.userId && signatureIsValid) return true;
+            else throw new Error('userId must be specified.');
+        } else {
+            console.log('no permission')
+            throw new Error("You don't have permission to add child");
+        }
+    })
+    .then(function () {
+        var defer = Q.defer();
+
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var pickupLocation = req.body.pickupLocation;
+        var childId = req.body.childId;
+
+        // StudentParent.findChildrenByParent(user).then(function(){
+            
+        //     );
+        // }
+
+        return defer.promise;
+    })
+    .then(function (student) {
+        apiServer.sendResponse(req, res, student, 'successfully added child')
+    })
+    .fail(function (err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
 
 //-----------------helpers--------------------//
 
