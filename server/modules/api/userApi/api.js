@@ -95,9 +95,7 @@ module.exports = [{
         'optional': [],
         'description': 'return child user of user with userId',
         'response': {} // sample data
-    }
-}, {
-    'url': '/api/v1/users/child',
+    },
     'POST': {
         'handler': users.addChild,
         'content-type': 'application/json',
@@ -112,4 +110,5 @@ module.exports = [{
         'description': 'add child user to parent',
         'response': {} // sample data
     }
+
 }];

@@ -148,10 +148,21 @@ exports.addChild = function (req, res) {
                 pickupLocation: pickupLocation,
                 userType: 3
             });
+ 
             newUser.save(function (err, user) {
                 if (!err && user) {
                     user = castOutPassword(user);
-                    apiServer.sendResponse(req, res, user, 'User created successfully');
+                    var studentParent = new StudentParent({
+                        student: mongoose.Types.ObjectId(user._id),
+                        parent: mongoose.Types.ObjectId(req.body.userId)
+                    });
+                    studentParent.save(function(err, studentParent) {
+                        if(!err && studentParent) {
+                            apiServer.sendResponse(req, res, user, 'User created successfully');
+                        }else {
+                            apiServer.sendError(req, res, err);
+                        }
+                    });
                 } else {
                     apiServer.sendError(req, res, err);
                 }
