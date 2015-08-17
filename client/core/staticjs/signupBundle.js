@@ -41578,7 +41578,6 @@
 	            _react2["default"].createElement(_materialUi.Snackbar, {
 	                message: "Account Created!",
 	                action: "Next",
-	                openOnMount: true,
 	                autoHideDuration: 1000
 	            }),
 	            _react2["default"].createElement(
