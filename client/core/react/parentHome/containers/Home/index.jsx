@@ -2,20 +2,18 @@ import React from 'react';
 import { Link } from 'react-router';
 
 class UserPage extends React.Component {
-
-  render () {
-    return (
-      <div>
-        <h3>Hahah</h3>
-          <div>
-            <Link to="/facebook">View Facebook's profile & repositories</Link>
-          </div>
-          <div>
-            <Link to="/google">View Google's profile & repositories</Link>
-          </div>
-      </div>
-    );
-  }
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    }
+    render() {
+        return (
+            <div>
+                <Link to='/addchild'> Add Child </Link>
+                <Link to='/welcome'> Change Name </Link>
+                <Link to='/addchild/1/schedule'> schedule </Link>
+            </div>
+        )
+    }
 }
 
 export default UserPage;

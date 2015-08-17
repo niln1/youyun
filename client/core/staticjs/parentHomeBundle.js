@@ -45283,7 +45283,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -45303,48 +45303,46 @@
 	var _reactRouter = __webpack_require__(179);
 
 	var UserPage = (function (_React$Component) {
-	  _inherits(UserPage, _React$Component);
+	    _inherits(UserPage, _React$Component);
 
-	  function UserPage() {
-	    _classCallCheck(this, UserPage);
+	    function UserPage() {
+	        _classCallCheck(this, UserPage);
 
-	    _get(Object.getPrototypeOf(UserPage.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(UserPage, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2['default'].createElement(
-	        'div',
-	        null,
-	        _react2['default'].createElement(
-	          'h3',
-	          null,
-	          'Hahah'
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          null,
-	          _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: '/facebook' },
-	            'View Facebook\'s profile & repositories'
-	          )
-	        ),
-	        _react2['default'].createElement(
-	          'div',
-	          null,
-	          _react2['default'].createElement(
-	            _reactRouter.Link,
-	            { to: '/google' },
-	            'View Google\'s profile & repositories'
-	          )
-	        )
-	      );
+	        _get(Object.getPrototypeOf(UserPage.prototype), 'constructor', this).apply(this, arguments);
 	    }
-	  }]);
 
-	  return UserPage;
+	    _createClass(UserPage, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2['default'].createElement(
+	                'div',
+	                null,
+	                _react2['default'].createElement(
+	                    _reactRouter.Link,
+	                    { to: '/addchild' },
+	                    ' Add Child '
+	                ),
+	                _react2['default'].createElement(
+	                    _reactRouter.Link,
+	                    { to: '/welcome' },
+	                    ' Change Name '
+	                ),
+	                _react2['default'].createElement(
+	                    _reactRouter.Link,
+	                    { to: '/addchild/1/schedule' },
+	                    ' schedule '
+	                )
+	            );
+	        }
+	    }], [{
+	        key: 'contextTypes',
+	        value: {
+	            router: _react2['default'].PropTypes.object.isRequired
+	        },
+	        enumerable: true
+	    }]);
+
+	    return UserPage;
 	})(_react2['default'].Component);
 
 	exports['default'] = UserPage;
