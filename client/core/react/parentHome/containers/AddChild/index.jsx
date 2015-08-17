@@ -6,7 +6,8 @@ export default class AddChild extends Component {
         router: React.PropTypes.object.isRequired
     }
     onNextClick = () => {
-        this.context.router.transitionTo('/addchild');
+        let id = 1;
+        this.context.router.transitionTo(`/addchild/${id}/schedule`);
     };
     render() {
         const textFields = [
