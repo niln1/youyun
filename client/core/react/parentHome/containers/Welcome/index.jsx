@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import mui, { TextField } from 'material-ui';
-import prepareMui from "../../decorators/prepareMui";
 import SimpleForm from "../../components/SimpleForm";
 
-export default class Entry extends Component {
-    onNextClick() {
-        console.log('yo');
+export default class Welcome extends Component {
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired
     }
+    onNextClick = () => {
+        this.context.router.transitionTo('/addchild');
+    };
     render() {
         return (
             <div>
