@@ -115,7 +115,6 @@ let ParentStep1 = React.createClass({
                 <Snackbar
                     message="Account Created!"
                     action="Next"
-                    openOnMount
                     autoHideDuration={1000}
                 />
                 <button onClick={this.onNextClick} style={ {"width": "100%"} } className="btn btn-lg btn-success"> Create Parent Account </button>
