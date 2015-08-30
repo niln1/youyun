@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import SimpleForm from "../../components/SimpleForm";
+import { connect } from 'react-redux';
+import { addChild } from '../../actions/actions';
 
 @connect(state => ({
     parent: state.parent
@@ -10,9 +12,11 @@ export default class AddChild extends Component {
     }
     onNextClick = () => {
         let id = 1;
+        this.props.dispatch(addChild({hello:'world'}));
         this.context.router.transitionTo(`/addchild/${id}/schedule`);
     };
     render() {
+        const { parent, dispatch } = this.props;
         const textFields = [
             {type: 'text', label: 'First Name', ref: 'fname'},
             {type: 'text', label: 'Last Name', ref: 'lname'},
@@ -26,6 +30,7 @@ export default class AddChild extends Component {
                     textFields={textFields}
                     onNext={this.onNextClick}
                     submitButtonText={'Next'}
+                    ref="form"
                 />
             </div>
         )

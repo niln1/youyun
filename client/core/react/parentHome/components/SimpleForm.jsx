@@ -8,9 +8,10 @@ let SimpleForm = React.createClass({
         const { header, textFields, onNext, submitButtonText } = this.props;
         return (
             <div>
-                <h2 style={ { "text-align" : "center" } }> {header} </h2>
+                <h2 style={ { "textAlign" : "center" } }> {header} </h2>
                 {textFields.map((each) => {
                     return <TextField
+                        key={each.ref}
                         fullWidth
                         type={each.type ? each.type : 'text'}
                         floatingLabelText={each.label ? each.label : null}

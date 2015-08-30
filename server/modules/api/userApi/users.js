@@ -137,6 +137,8 @@ exports.addChild = function (req, res) {
         var firstname = req.body.firstname;
         var lastname = req.body.lastname;
         var pickupLocation = req.body.pickupLocation;
+        var pickupStudentGrade = req.body.pickupStudentGrade;
+        var pickupStudentRoomNumber = req.body.pickupStudentRoomNumber;
 
         generateUsernameByFnLn(firstname, lastname, 1).then(function(username) {
             logger.debug("username: " + username);
@@ -146,6 +148,8 @@ exports.addChild = function (req, res) {
                 firstname: firstname,
                 lastname: lastname,
                 pickupLocation: pickupLocation,
+                pickupStudentGrade: pickupStudentGrade ? pickupStudentGrade : '',
+                pickupStudentRoomNumber: pickupStudentRoomNumber ? pickupStudentRoomNumber : '',
                 userType: 3
             });
  

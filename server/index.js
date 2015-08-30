@@ -42,7 +42,6 @@ var parentIndex = exports.parentIndex = function(req, res) {
         logger.error(err);
         return lost;
     });
-
 }
 
 /**

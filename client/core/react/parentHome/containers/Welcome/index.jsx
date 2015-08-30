@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SimpleForm from "../../components/SimpleForm";
+import { connect } from 'react-redux';
 
 @connect(state => ({
     parent: state.parent

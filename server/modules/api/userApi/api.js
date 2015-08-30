@@ -106,8 +106,11 @@ module.exports = [{
         parameters.lastname,
         parameters.pickupLocation
         ],
-        'optional': [],
-        'description': 'add child user to parent',
+        'optional': [
+        parameters.pickupStudentGrade,
+        parameters.pickupStudentRoomNumber
+        ],
+        'description': 'add child user to parent and create child parent relationship',
         'response': {
             "result": [
             {
@@ -141,7 +144,10 @@ module.exports = [{
         parameters.lastname,
         parameters.pickupLocation
         ],
-        'optional': [],
+        'optional': [
+        parameters.pickupStudentGrade,
+        parameters.pickupStudentRoomNumber
+        ],
         'description': 'update child info',
         'response': {} // sample data    
     }
