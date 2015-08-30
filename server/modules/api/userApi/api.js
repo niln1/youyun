@@ -95,5 +95,54 @@ module.exports = [{
         'optional': [],
         'description': 'return child user of user with userId',
         'response': {} // sample data
+    },
+    'POST': {
+        'handler': users.addChild,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        parameters.userId,
+        parameters.firstname,
+        parameters.lastname,
+        parameters.pickupLocation
+        ],
+        'optional': [],
+        'description': 'add child user to parent',
+        'response': {
+            "result": [
+            {
+                "_id": "55d143356420fd0000b3b688",
+                "userImage": "/static/img/default_image/default-user.png",
+                "username": "child1.test4",
+                "password": "Black Sheep Wall",
+                "firstname": "child1",
+                "lastname": "test",
+                "pickupLocation": "4",
+                "userType": 3,
+                "__v": 0,
+                "devices": [],
+                "classes": [],
+                "fullname": "child1 test",
+                "id": "55d143356420fd0000b3b688"
+            }
+            ],
+            "description": "Children info successfully retrieved",
+            "source": "YouYun Server"
+        } // sample data
+    },
+    'PATCH': {
+        'handler': users.updateChild,
+        'content-type': 'application/json',
+        'required': [
+        parameters.signature,
+        parameters.userId,
+        parameters.childId,
+        parameters.firstname,
+        parameters.lastname,
+        parameters.pickupLocation
+        ],
+        'optional': [],
+        'description': 'update child info',
+        'response': {} // sample data    
     }
 }];

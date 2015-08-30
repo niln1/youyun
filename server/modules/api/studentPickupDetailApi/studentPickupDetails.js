@@ -4,9 +4,12 @@
  'use strict';
 
  var StudentPickupDetail = require('../../../models/StudentPickupDetail');
+ var StudentParent = require('../../../models/StudentParent');
  var User = require('../../../models/User');
  var apiServer = require('../utils/apiServer');
  var logger = require('../../../utils/logger');
+ var mongoose = require('mongoose');
+
 
  var __ = require('underscore');
  var Q = require('q');
@@ -84,16 +87,49 @@ exports.read = function (req, res) {
     return apiServer.apiCallHelper(req, res, {
         infoMessage: "StudentPickupDetail -- Read",
         userValidationHandler: function(user, signatureIsValid) {
+            var defer = Q.defer();
+
             if (user.isAdmin()) {
-                return true;
+                defer.resolve(true);
+            } else if(user.isParent()){
+                //for parent user, they will only have permission if they are the parent of given child
+                var studentId = req.query.studentId;
+                //parent user not allowed to get pickup info of other children
+                if(!studentId) {
+                    defer.reject(new Error('U dont have Permission Dude'));
+                }
+
+                StudentParent.count({
+                    student: mongoose.Types.ObjectId(req.query.studentId),
+                    parent: mongoose.Types.ObjectId(user._id)
+                }, function (err, count) {
+                    if (err) {
+                        logger.debug('error');
+                        defer.reject(new Error('U dont have Permission Dude'));
+                    }else {
+                        logger.debug('the count ' + count);
+                        if(count > 0) {
+                            defer.resolve(true);
+                        } else {
+                            defer.reject(new Error('U dont have Permission Dude'));
+                        }
+                    }
+              });
             } else {
-                throw new Error("U dont have Permission Dude");
+                defer.reject(new Error('U dont have Permission Dude'));
             }
+            return defer.promise;
         },
         processHandler: function() {
             var defer = Q.defer();
 
-            StudentPickupDetail.find({})
+            var queryObject ={};
+            var studentId = req.query.studentId;
+            if(studentId) {
+                queryObject['student'] = mongoose.Types.ObjectId(studentId);
+            }
+
+            StudentPickupDetail.find(queryObject)
             .populate("student")
             .populate("pickedBy")
             .exec(function(err, details){

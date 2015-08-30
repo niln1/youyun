@@ -45,6 +45,7 @@ var apiServer = {};
     logger.info(opt.infoMessage);
     var self = this;
     Q.all([
+        this.validateUserSession(req, res),
         this.validateSignature(req, res)
         ])
     .spread(function (user, signatureIsValid) {

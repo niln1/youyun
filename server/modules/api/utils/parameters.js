@@ -93,6 +93,12 @@ exports.userId = {
     'description': 'userId'
 };
 
+exports.childId = {
+    'type': 'mongoId',
+    'param': 'childId',
+    'description': 'childId'
+};
+
 exports.reminderId = {
     'type': 'mongoId',
     'param': 'reminderId',
