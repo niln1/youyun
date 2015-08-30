@@ -11,6 +11,8 @@ var auth = require('./middlewares/auth');
 var logger = require('./utils/logger');
 var userApiHelper = require('./modules/api/userApi/users.js').helpers;
 
+var User = require('./models/User');
+
 exports.main = function (req, res) {
     if (!req.session.user) return res.redirect('/login');
     logger.debug(req.session.user);
@@ -22,14 +24,25 @@ exports.main = function (req, res) {
 };
 
 /**
- * AccountMannagment Page, Change Password
+ * ParentHome Page
  */
 var parentIndex = exports.parentIndex = function(req, res) {
-    return res.render('parent-home', {
-        user: req.session.user,
-        school: 'Hanlin',
-        title: 'Home',
+    var parent = new User(req.session.user);
+    parent.getChildren()
+    .then(function(children) {
+        req.session.user.children = children;
+        logger.debug(req.session.user);
+        return res.render('parent-home', {
+            user: req.session.user,
+            school: 'Hanlin',
+            title: 'Home',
+        });
+    })
+    .fail(function (err) {
+        logger.error(err);
+        return lost;
     });
+
 }
 
 /**
@@ -61,7 +74,7 @@ exports.profile = function(req, res) {
     });
 };
 
-exports.lost = function (req, res) {
+var lost = exports.lost = function (req, res) {
     logger.warn("Path Not defined");
     return res.send(404);
 };

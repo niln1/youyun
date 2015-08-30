@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
+@connect(state => ({
+    parent: state.parent
+}))
 class UserPage extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
