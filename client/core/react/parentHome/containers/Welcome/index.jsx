@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import SimpleForm from "../../components/SimpleForm";
 
+@connect(state => ({
+    parent: state.parent
+}))
 export default class Welcome extends Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired

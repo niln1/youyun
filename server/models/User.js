@@ -173,6 +173,27 @@ UserSchema.methods.getParents = function () {
     return defer.promise;
 };
 
+UserSchema.methods.getChildren = function () {
+    var defer = Q.defer();
+
+    logger.db('UserSchema -- getChildren');
+    if (this.userType === 4) {
+        StudentParent.find({
+            parent: this._id
+        })
+            .populate('student')
+            .exec(function (err, data) {
+                if (err) defer.reject(err);
+                var students = __.pluck(data, "student");
+                defer.resolve(students);
+            });
+    } else {
+        defer.reject(new Error("U cannot have child if not parent"));
+    }
+
+    return defer.promise;
+};
+
 UserSchema.methods.addDevice = function (device) {
     var defer = Q.defer();
 
