@@ -115,6 +115,111 @@ exports.getChild = function (req, res) {
     });
 }
 
+exports.addChild = function (req, res) {
+    logger.info("Users - addChild");
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+    ])
+    .spread(function (user, signatureIsValid) {
+
+        if (user.userType !==3 && user.userType !== 5 && user._id.toString() === req.body.userId) {
+            if (req.body.userId && signatureIsValid) return true;
+            else throw new Error('userId must be specified.');
+        } else {
+            console.log('no permission')
+            throw new Error("You don't have permission to add child");
+        }
+    })
+    .then(function () {
+        var defer = Q.defer();
+
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var pickupLocation = req.body.pickupLocation;
+
+        generateUsernameByFnLn(firstname, lastname, 1).then(function(username) {
+            logger.debug("username: " + username);
+            var newUser = new User({
+                username: username,
+                password: 'fakepassword',
+                firstname: firstname,
+                lastname: lastname,
+                pickupLocation: pickupLocation,
+                userType: 3
+            });
+ 
+            newUser.save(function (err, user) {
+                if (!err && user) {
+                    user = castOutPassword(user);
+                    var studentParent = new StudentParent({
+                        student: mongoose.Types.ObjectId(user._id),
+                        parent: mongoose.Types.ObjectId(req.body.userId)
+                    });
+                    studentParent.save(function(err, studentParent) {
+                        if(!err && studentParent) {
+                            apiServer.sendResponse(req, res, user, 'User created successfully');
+                        }else {
+                            apiServer.sendError(req, res, err);
+                        }
+                    });
+                } else {
+                    apiServer.sendError(req, res, err);
+                }
+            });
+        });
+
+
+        return defer.promise;
+    })
+    .then(function (student) {
+        apiServer.sendResponse(req, res, student, 'successfully added child')
+    })
+    .fail(function (err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
+
+exports.updateChild = function(req, res) {
+    logger.info("Users - updateChild");
+    Q.all([
+        apiServer.validateUserSession(req, res),
+        apiServer.validateSignature(req, res)
+    ])
+    .spread(function (user, signatureIsValid) {
+
+        if (user.userType !==3 && user.userType !== 5 && user._id.toString() === req.body.userId) {
+            if (req.body.userId && signatureIsValid) return true;
+            else throw new Error('userId must be specified.');
+        } else {
+            console.log('no permission')
+            throw new Error("You don't have permission to add child");
+        }
+    })
+    .then(function () {
+        var defer = Q.defer();
+
+        var firstname = req.body.firstname;
+        var lastname = req.body.lastname;
+        var pickupLocation = req.body.pickupLocation;
+        var childId = req.body.childId;
+
+        // StudentParent.findChildrenByParent(user).then(function(){
+            
+        //     );
+        // }
+
+        return defer.promise;
+    })
+    .then(function (student) {
+        apiServer.sendResponse(req, res, student, 'successfully added child')
+    })
+    .fail(function (err) {
+        logger.warn(err);
+        apiServer.sendBadRequest(req, res, err.toString());
+    });
+}
 
 //-----------------helpers--------------------//
 
@@ -232,4 +337,26 @@ function formatUsers(users) {
 function castOutPassword(user) {
     user.password = "Black Sheep Wall";
     return user;
+}
+
+function generateUsernameByFnLn( firstname, lastname, hit ) {
+    var self = this;
+    var string1 = firstname.replace(/\s+/g, '').replace(",", ".");
+    var string2 = lastname.replace(/\s+/g, '').replace(",", ".");
+
+    var testUsername = string1.toLowerCase() + '.' + string2.toLowerCase() + hit;
+
+    var deferred = Q.defer();
+
+    User.find({"username":testUsername}, function(err, users){
+        if (err) deferred.reject(err);
+        if ( users.length === 0 ) {
+            deferred.resolve(testUsername);
+        } else {
+            console.log("++++++++++USERNAME EXIST+++++++++");
+            deferred.resolve(generateUsernameByFnLn(firstname, lastname, hit + 1));
+        }
+    });
+
+    return deferred.promise;
 }
