@@ -29699,6 +29699,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -29715,6 +29717,32 @@
 	    displayName: "SimpleForm",
 
 	    mixins: [_mixinsMuiMixin2["default"]],
+	    getInitialState: function getInitialState() {
+	        var state = {};
+	        this.props.textFields.map(function (each) {
+	            state[each.ref] = "";
+	        });
+	        return state;
+	    },
+	    onChange: function onChange(ref, event) {
+	        this.setState(_defineProperty({}, ref, event.target.value));
+	        console.log(ref, this.state);
+	    },
+	    _renderTextFields: function _renderTextFields(textFields) {
+	        var _this = this;
+
+	        return textFields.map(function (each) {
+	            return _react2["default"].createElement(_materialUi.TextField, {
+	                key: each.ref,
+	                value: _this.state[each.ref],
+	                fullWidth: true,
+	                type: each.type ? each.type : "text",
+	                floatingLabelText: each.label ? each.label : null,
+	                ref: each.ref ? each.ref : null,
+	                onChange: _this.onChange.bind(null, each.ref)
+	            });
+	        });
+	    },
 	    render: function render() {
 	        var _props = this.props;
 	        var header = _props.header;
@@ -29732,16 +29760,7 @@
 	                header,
 	                " "
 	            ),
-	            textFields.map(function (each) {
-	                return _react2["default"].createElement(_materialUi.TextField, {
-	                    key: each.ref,
-	                    fullWidth: true,
-	                    type: each.type ? each.type : "text",
-	                    floatingLabelText: each.label ? each.label : null,
-	                    ref: each.ref ? each.ref : null,
-	                    onChange: each.onChange ? each.onChange : null
-	                });
-	            }),
+	            this._renderTextFields(textFields),
 	            _react2["default"].createElement(
 	                "button",
 	                { onClick: onNext, style: { "width": "100%" }, className: "btn btn-lg btn-success" },
@@ -50204,7 +50223,8 @@
 	                _react2["default"].createElement(_componentsSimpleForm2["default"], { header: "Add Child!",
 	                    textFields: textFields,
 	                    onNext: this.onNextClick,
-	                    submitButtonText: "Next"
+	                    submitButtonText: "Next",
+	                    ref: "form"
 	                })
 	            );
 	        }
