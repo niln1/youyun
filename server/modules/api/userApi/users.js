@@ -132,6 +132,7 @@ exports.addChild = function (req, res) {
         }
     })
     .then(function () {
+        // XXX: make this into a Mongoose method
         var defer = Q.defer();
 
         var firstname = req.body.firstname;
@@ -153,6 +154,7 @@ exports.addChild = function (req, res) {
                 userType: 3
             });
  
+            // XXX: turn this to a promise
             newUser.save(function (err, user) {
                 if (!err && user) {
                     user = castOutPassword(user);

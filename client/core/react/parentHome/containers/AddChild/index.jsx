@@ -12,7 +12,8 @@ export default class AddChild extends Component {
     }
     onNextClick = () => {
         let id = 1;
-        this.props.dispatch(addChild({hello:'world'}));
+        let child = this.refs.form.state;
+        this.props.dispatch(addChild(child));
         this.context.router.transitionTo(`/addchild/${id}/schedule`);
     };
     render() {

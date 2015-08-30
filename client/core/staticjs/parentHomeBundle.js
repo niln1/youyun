@@ -29726,7 +29726,6 @@
 	    },
 	    onChange: function onChange(ref, event) {
 	        this.setState(_defineProperty({}, ref, event.target.value));
-	        console.log(ref, this.state);
 	    },
 	    _renderTextFields: function _renderTextFields(textFields) {
 	        var _this = this;
@@ -50204,6 +50203,7 @@
 
 	        this.onNextClick = function () {
 	            var id = 1;
+	            debugger;
 	            _this.props.dispatch((0, _actionsActions.addChild)({ hello: "world" }));
 	            _this.context.router.transitionTo("/addchild/" + id + "/schedule");
 	        };
